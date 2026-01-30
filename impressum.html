@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Impressum - RV DJ’s Bike Shop Simplon Hard</title>
+    <meta name="description" content="RV Hard Impressum">
+    <meta name="keywords" content="RV Hard Impressum, Impressum Radverein">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/navigation.css" />
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+<header>
+    <div id="navigation-container"></div>
+</header>
+
+<body>
+    <div class="container">
+        <h1>Impressum</h1>
+
+        <section>
+            <h2>Verantwortlich für den Inhalt:</h2>
+            <p>RV DJ’s Bike Shop Simplon Hard</p>
+            <p>Telefon: 0043 (0) 664 3525900</p>
+            <p>ZVR: Zahl 855750678</p>
+            <p>E-Mail: <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a></p>
+
+            <h3>Konto:</h3>
+            <p>RV-DJ's Bikeshop Simplon Hard<br />
+                IBAN: AT763743100000060509<br />
+                BIC: RVVGAT2B431<br />
+                RAIFFEISENBANK BODENSEE-LEIBLACHTAL EGEN</p>
+        </section>
+
+        <section>
+            <h2>Haftungsausschluss für den Inhalt:</h2>
+            <p>Der Autor und Verein übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder
+                Qualität der bereitgestellten Informationen. Haftungsansprüche gegen den Autor, welche sich auf Schäden
+                materieller oder ideeller Art beziehen, die durch die Nutzung der dargebotenen Informationen verursacht
+                wurden, sind grundsätzlich ausgeschlossen, sofern seitens des Autors kein nachweislich vorsätzliches
+                oder grob fahrlässiges Verschulden vorliegt.</p>
+
+            <p>Alle unter der Domain <strong>rv-hard.at</strong> vorliegenden Fotos und Texte unterliegen dem
+                Urheberrecht. Soweit nicht anders angegeben, liegen die Kopierrechte bei RV DJ’s Bike Shop Simplon Hard.
+                Vervielfältigung, Wiedergabe und sonstige Verwendung gleich welcher Art ist – auch auszugsweise – nur
+                nach schriftlicher Genehmigung unter eindeutiger Quellenangabe erlaubt.</p>
+
+            <p>Für den Inhalt der verlinkten Seiten wird keine Haftung übernommen.</p>
+        </section>
+
+        <section>
+            <h2>Website-Erstellung und Verwaltung</h2>
+            <p>
+
+                Website erstellt und verwaltet von <a href="https://arnovoyer.com" target="_blank"
+                    style="text-decoration:none; color:inherit;">
+                    <img src="/assets/img/logo/arnovoyerlogo.webp" alt="Arno Voyer"
+                        style="height:24px; vertical-align:middle; margin-right:5px;"></a>
+            </p>
+        </section>
+
+
+
+    </div>
+</body>
+<footer id="site-footer"></footer>
+
+
+<script src="/assets/navigation-loader.js" defer></script>
+<script src="/assets/nav.js"></script>
+<script src="/assets/header-scroll.js" defer></script>
+<script src="/assets/cookie-banner.js" defer></script>
+
+<script>
+    fetch("/assets/footer.html")
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById("site-footer").innerHTML = html;
+        });
+</script>
+
+
+</html>

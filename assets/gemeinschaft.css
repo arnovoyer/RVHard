@@ -1,0 +1,183 @@
+.galerie, .gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.gallery img {
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+.slider {
+  overflow: hidden;
+  margin-top: 15px;
+  overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.slide-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+    will-change: transform;
+}
+
+
+
+.slide-track img {
+  flex: 0 0 auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+
+
+@keyframes scroll {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(-50%,0,0); }
+}
+
+
+.gemeinschaft-seite {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    overflow-x: hidden;
+}
+
+.mtb-section,
+.rennrad-section,
+.triathlon-section,
+.gemeinschaft-allgemein {
+    padding: 20px 0;
+}
+
+
+.mtb-section h2,
+.rennrad-section h2,
+.triathlon-section h2
+.gemeinschaft-allgemein h2 {
+    margin-bottom: 10px;
+}
+
+.mtb-section p,
+.rennrad-section p,
+.triathlon-section p
+.gemeinschaft-allgemein p {
+    margin-bottom: 15px;
+}
+
+/* ========================
+   Mobile Styles
+======================== */
+
+/* Tablets und kleine Laptops */
+@media (max-width: 768px) {
+    .slide-track img {
+        width: 200px;
+        height: 130px;
+    }
+
+
+
+    .mtb-section,
+    .rennrad-section,
+    .triathlon-section,
+    .gemeinschaft-allgemein {
+        padding: 15px;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 768px) {
+    .slide-track img {
+        width: 160px;
+        height: 110px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    .mtb-section,
+    .rennrad-section,
+    .triathlon-section,
+    .gemeinschaft-allgemein {
+        padding: 10px;
+    }
+}
+
+/* Kleine Smartphones */
+@media (max-width: 480px) {
+    .slide-track img {
+        width: 200px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 0.85rem;
+    }
+
+    .mtb-section,
+    .rennrad-section,
+    .triathlon-section,
+    .gemeinschaft-allgemein {
+        padding: 8px;
+    }
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+
+@media (max-width: 768px) {
+    .gemeinschaft-seite h1,
+    .gemeinschaft-seite h2,
+    .gemeinschaft-seite p {
+        text-align: center;
+    }
+}
+
+.gemeinschaft-seite > h1,
+.gemeinschaft-seite > p {
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}

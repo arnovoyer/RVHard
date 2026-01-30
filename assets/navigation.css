@@ -1,0 +1,413 @@
+/* POPPINS FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ===== Reset some default styles ===== */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== VARIABLES ===== */
+:root{
+    --bg-color: #333;
+    --primary-color: #fff;
+    --second-color: #ffc107;
+    --hover-bg-color: #444; /* WICHTIG: Einen leicht anderen Farbton für den Hover-Effekt, damit er sichtbar ist */
+    --shadow-1: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0px 2px 10px rgba(26, 112, 224, 0.4);
+}
+/* ===== BODY ===== */
+body{
+    margin: 0; /* Stellt sicher, dass kein Standard-Body-Margin vorhanden ist */
+
+    background-position: center;
+    background-size: cover;
+
+    /* Optional: Verhindert Scrollen des Hauptinhalts bei geöffnetem Mobile-Menü */
+    &.no-scroll { /* Diese Klasse wird per JS gesetzt, um Scrollen zu verhindern */
+        overflow: hidden;
+    }
+}
+
+/* ===== Reusable CSS ===== */
+.nav a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+    opacity: 0.85;
+}
+.nav a:hover {
+  opacity: 1;
+}
+ul{
+    list-style-type: none;
+}
+
+/* ===== Menu Toggle ===== */
+.menu-toggle{
+    display: none;
+    font-size: 24px;
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    z-index: 1000; /* Stellt sicher, dass das Toggle-Icon über allem liegt */
+}
+
+/* ===== Navigation Bar ===== */
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 3vw;
+    height: 70px;
+    background: var(--bg-color);
+    color: var(--primary-color);
+     background: rgba(51,51,51,0.95);
+  backdrop-filter: blur(6px);
+    /* align-items: center; - Ist schon durch flexbox default */
+    /* margin-bottom: 2rem; - Dieser Margin schiebt das Menü nach oben und kann zu Problemen führen
+                                wenn dein Hauptinhalt nicht direkt unter dem Menü beginnt.
+                                Wenn du Platz brauchst, füge ihn zu .main oder einem Container hinzu. */
+    position: relative; /* Wichtig für den Z-Index der Navigation */
+    z-index: 100; /* Stellt sicher, dass die gesamte Navigation über dem Inhalt liegt */
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+    max-width: 100%;
+    display: block;
+}
+.logo img:hover {
+  transform: none;
+}
+.nav-main-menu{
+    display: flex;
+    /* Für Desktop: Keine feste Höhe oder Overflow, um Dropdowns zu ermöglichen */
+    height: auto;
+    overflow: visible;
+}
+.nav-main-menu li {
+    position: relative; /* Jedes Listen-Element muss relativ sein, um die Kinder absolut zu positionieren */
+}
+.nav-link{
+    padding: 26px 10px; /* Prüfe diese Höhe, sie beeinflusst top: 100% */
+    margin-inline: 10px;
+    transition: .3s;
+    display: block; /* Wichtig, damit das Padding auf den Link angewendet wird */
+    transition: color .2s ease, opacity .2s ease;
+}
+.nav-link:hover {
+  color: var(--second-color);
+  opacity: 1;
+}
+.nav span{
+    margin-right: 5px;
+}
+.fa-chevron-down, .fa-chevron-right{
+    font-size: 12px;
+    transition: .3s;
+}
+
+.dropdown:hover .fa-chevron-down, .sub-dropdown:hover .fa-chevron-right{
+    transform: rotate(180deg);
+}
+.dropdown:hover .nav-link{
+    color: var(--second-color);
+    
+}
+
+/* ===== Dropdown (Desktop) ===== */
+.dropdown{
+    position: relative; /* Beibehalten */
+    z-index: 20; /* Höherer z-index für das erste Dropdown-Level */
+
+}
+.nav-main-menu .dropdown-content{
+    display: none;
+    position: absolute;
+    top: 100%; /* WICHTIG: Positioniert es genau unter dem Elternelement */
+    left: 0;
+    background: var(--bg-color);
+    min-width: 240px;
+    border-top: 3px solid #333;
+    border-radius: 0 0 3px 3px;
+    animation: slideUp .3s forwards; /* 'forwards' behält den Endzustand der Animation bei */
+    box-shadow: var(--shadow-1);
+    z-index: 25; /* Höher als das übergeordnete .dropdown, aber niedriger als sub-dropdown */
+}
+.dropdown-content,
+.sub-dropdown-content {
+  border-top: none;
+  border-radius: 16px;
+  padding: 8px 0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.dropdown-content li{
+    padding: 15px 20px; /* Etwas weniger Padding, kann nach Bedarf angepasst werden */
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */ /* DIESE LINIE ENTFERNT */
+}
+.dropdown-content li:last-child {
+    border-bottom: none; /* Kann bleiben, hat aber keine Wirkung, wenn keine Border existiert */
+}
+/*.dropdown-content li:hover{
+    /* background: var(--hover-bg-color); */ /* DIESE REGEL ENTFERNT, KEIN HINTERGRUND BEI HOVER */
+/*}
+/* WICHTIG: Ändere den Hover-Effekt direkt auf den Anker-Tag im Dropdown-Inhalt */
+.dropdown-content li a {
+    display: block; /* Damit der Link den gesamten Bereich des li-Elements ausfüllt */
+    width: 100%; /* Damit der Link den gesamten Bereich des li-Elements ausfüllt */
+    color: var(--primary-color); /* Standardfarbe des Links */
+}
+.dropdown-content li a:hover {
+    color: var(--second-color); /* Nur der Text wird gelb beim Hover */
+
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+
+/* ===== Sub - Dropdown (Desktop) ===== */
+.sub-dropdown {
+    position: relative; /* WICHTIG: Referenzpunkt für .sub-dropdown-content */
+    z-index: 15; /* Etwas niedriger als das Haupt-Dropdown, aber höher als der normale Inhalt */
+}
+.nav-main-menu .sub-dropdown-content{
+    display: none;
+    position: absolute;
+    top: 0; /* WICHTIG: Startet auf gleicher Höhe wie der Elternelement-Link */
+    left: 100%; /* WICHTIG: Positioniert es direkt rechts neben dem Elternelement */
+    background: var(--bg-color);
+    min-width: 240px;
+    border-top: 3px solid #333; /* Konsistenter mit Haupt-Dropdown */
+    border-radius: 3px;
+    animation: slideUp .3s forwards; /* 'forwards' behält den Endzustand der Animation bei */
+    box-shadow: var(--shadow-1);
+    z-index: 30; /* WICHTIG: Muss HÖHER sein als der z-index des übergeordneten Dropdowns (25), damit es drüber liegt */
+}
+.sub-dropdown-content li{
+    padding: 15px 20px;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */ /* DIESE LINIE ENTFERNT */
+}
+.sub-dropdown-content li:last-child {
+    border-bottom: none; /* Kann bleiben, hat aber keine Wirkung, wenn keine Border existiert */
+}
+/*.sub-dropdown-content li:hover{
+    /* background: var(--hover-bg-color); */ /* DIESE REGEL ENTFERNT, KEIN HINTERGRUND BEI HOVER */
+/*}
+/* WICHTIG: Ändere den Hover-Effekt direkt auf den Anker-Tag im Sub-Dropdown-Inhalt */
+.sub-dropdown-content li a {
+    display: block; /* Damit der Link den gesamten Bereich des li-Elements ausfüllt */
+    width: 100%; /* Damit der Link den gesamten Bereich des li-Elements ausfüllt */
+    color: var(--primary-color); /* Standardfarbe des Links */
+}
+.sub-dropdown-content li a:hover {
+    color: var(--second-color); /* Nur der Text wird gelb beim Hover */
+}
+.sub-dropdown:hover .sub-dropdown-content{
+    display: block;
+}
+
+@keyframes slideUp {
+    from{
+        opacity: 0;
+        transform: translateY(20px); /* Animation von unten nach oben */
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.dropdown-link{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px; /* Stellt sicher, dass das Padding auf den Link angewendet wird */
+    display: block; /* Für volle Klickfläche */
+    width: 100%; /* Für volle Klickfläche */
+}
+.btn{
+    font-size: 15px;
+    background-color: var(--second-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-2);
+    cursor: pointer;
+    transition: .3s;
+}
+.btn:hover{
+    opacity: 0.9;
+}
+
+
+/* ===== Responsive styles (Mobile) ===== */
+
+@media only screen and (max-width: 794px){
+    body.no-scroll { /* Wenn das mobile Menü offen ist, das Scrollen des Body verhindern */
+        overflow: hidden;
+    }
+    .menu-toggle{
+        display: block; /* Hamburger-Icon anzeigen */
+    }
+
+    .nav-main-menu{
+        flex-direction: column;
+        position: fixed; /* Fixed, um das gesamte Viewport zu füllen */
+        top: 70px; /* Startet direkt unter der festen Navigationsleiste */
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 70px); /* Füllt den Rest des Viewports */
+        background: var(--bg-color);
+        box-shadow: var(--shadow-1);
+        z-index: 99; /* Unter dem Hamburger-Icon */
+        overflow-y: auto; /* Ermöglicht Scrollen im Menü, wenn Inhalt zu lang ist */
+        transform: translateX(100%); /* Startet außerhalb des Bildschirms */
+        transition: transform 0.3s ease-out; /* Sanfte Slide-In/Out Animation */
+        display: flex; /* Standardmäßig Flex, aber mit transform versteckt */
+        opacity: 1; /* Standard-Opazität */
+    }
+
+    .nav-main-menu.active {
+        transform: translateX(0); /* Menü in den Viewport schieben */
+    }
+
+    .nav-main-menu li {
+        position: static; /* Setze li zurück auf statisch für mobiles Layout */
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 15px 20px;
+        margin-inline: 0;
+        width: 100%;
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */ /* DIESE LINIE ENTFERNT FÜR MOBILE NAV-LINKS */
+    }
+    /* Striche bei Kontakt und Sponsoren entfernen */
+    .nav-main-menu li:nth-last-child(1) .nav-link,
+    .nav-main-menu li:nth-last-child(2) .nav-link {
+        border-bottom: none;
+    }
+    .nav-main-menu li:last-child .nav-link { /* Falls Sponsoren das letzte Element ist */
+        border-bottom: none;
+    }
+
+    /* WICHTIG: Hover-Effekte auf mobilem Menü deaktivieren */
+  .dropdown:hover .dropdown-menu,
+  .sub-dropdown:hover .sub-dropdown-menu {
+    display: none !important; /* Hover-Öffnung auf Mobile verhindern */
+  }
+
+    /* Dropdown-Inhalte im mobilen Menü (standardmäßig versteckt, werden per JS geklappt) */
+    .nav-main-menu .dropdown-content,
+    .nav-main-menu .sub-dropdown-content {
+        position: static; /* WICHTIG: Setze Position auf static für mobiles Layout */
+        display: none; /* Standardmäßig versteckt, wird durch JS umgeschaltet */
+        width: 100%;
+        min-width: unset;
+        background: var(--bg-color);
+        border-top: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding-left: 20px; /* Einrückung für Submenus */
+        animation: none; /* Animationen für Mobile deaktivieren */
+    }
+    
+    /* Kein Hintergrund bei Hover für Submenus im mobilen Modus */
+    .sub-dropdown-content li:hover {
+        background: none; /* Entfernt den Hover-Hintergrund für Submenus im Mobile */
+    }
+    /* Optional: Leichter Hintergrund für alle mobilen Listen-Items bei Hover (oder Aktiv) */
+    .nav-main-menu li:hover {
+        background: none; /* Keine Hintergrundänderung bei Hover, falls gewünscht */
+    }
+    /* Aktive Dropdown-Items anzeigen (durch JS gesteuert) */
+    .dropdown.active-dropdown .dropdown-content,
+    .sub-dropdown.active-sub-dropdown .sub-dropdown-content {
+        display: block; /* Anzeigen, wenn die JS-Klasse gesetzt ist */
+    }
+
+    /* Styling für Dropdown-Links im mobilen Menü */
+    .dropdown-content li,
+    .sub-dropdown-content li {
+        padding: 10px 20px;
+        background: none;
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */ /* DIESE LINIE ENTFERNT FÜR MOBILE SUB-ITEMS */
+    }
+    .dropdown-content li:last-child,
+    .sub-dropdown-content li:last-child {
+        border-bottom: none;
+    }
+    /* Für den Text-Hover im mobilen Modus, ähnlich wie Desktop, aber nur auf dem Link */
+    .dropdown-content li a:hover,
+    .sub-dropdown-content li a:hover {
+        color: var(--second-color);
+    }
+
+
+    /* Icons im mobilen Modus drehen sich nur bei Klick */
+    .dropdown.active-dropdown .fa-chevron-down,
+    .sub-dropdown.active-sub-dropdown .fa-chevron-right {
+        transform: rotate(180deg);
+    }
+
+    /* Entferne die Transition auf .nav ul, da die .nav-main-menu.active Klasse die Transition steuert */
+    .nav ul {
+        transition: none; /* Entfernen */
+        transform: none; /* Entfernen */
+    }
+    /* Entferne @keyframes slideDown im media query block. Es sollte global oder im .nav-main-menu.active definiert sein. */
+
+      .dropdown-menu,
+  .sub-dropdown-menu {
+    display: none;
+  }
+
+  .active-dropdown > .dropdown-menu,
+  .active-sub-dropdown > .sub-dropdown-menu {
+    display: block;
+  }
+
+}
+/* Die @keyframes slideDown Definition gehört außerhalb des Media-Queries,
+   wenn sie sowohl für das Öffnen des Hauptmenüs (mobile) als auch für Dropdowns (Desktop) verwendet wird. */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.menu-toggle {
+    transition: transform 0.3s ease;
+}
+
+.menu-toggle.rotated {
+    transform: rotate(90deg);
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+header.hidden {
+  transform: translateY(-100%);
+}
+.nav-main-menu a {
+    position: relative;
+}
+

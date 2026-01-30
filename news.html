@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aktuelle Nachrichten - RV Hard</title>
+    <meta name="description" content="RV Hard News">
+    <meta name="keywords" content="RV Hard News, RV Hard Neuigkeiten">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main class="news-page">
+        <section class="container">
+            <h1 class="section-title">Aktuelle Nachrichten</h1>
+            <div id="news-container" class="news-container"></div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js" defer></script>
+    <script src="/assets/script-news.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavigation();
+            await loadNews();
+        });
+
+        async function loadNavigation() {
+            try {
+                const response = await fetch('/assets/navigationneu.html');
+                if (!response.ok) throw new Error(`Status: ${response.status}`);
+                document.getElementById('navigation-container').innerHTML = await response.text();
+                initNavigationMenu();
+            } catch (error) {
+                console.error('Fehler beim Laden der Navigation:', error);
+            }
+        }
+
+        async function loadNews() {
+            const newsContainer = document.getElementById('news-container');
+            try {
+                const response = await fetch('/data/news/news.json');
+                const news = await response.json();
+
+                // 🔽 Nur die 6 neuesten laden (davon ausgegangen, dass die Liste absteigend sortiert ist)
+                const latestNews = news.slice(0, 6);
+
+                latestNews.forEach(article => {
+                    const articleEl = document.createElement('article');
+                    articleEl.className = 'news-item';
+
+                    articleEl.innerHTML = `
+                    ${article.image ? `<img src="${article.image}" alt="${article.title}" class="news-image">` : ''}
+                    <div class="news-content" data-aos="flip-up">
+                        <h3>${article.title}</h3>
+                        <div class="news-meta">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <span class="news-date">${formatDate(article.date)}</span>
+                        </div>
+                        <p>${article.content}</p>
+                        <a class="gelber-button" style="align-self: flex-start;margin-top: auto;" href="${article.link || `news/${article.slug}.html`}">Weiterlesen</a>
+                    </div>
+                `;
+                    newsContainer.appendChild(articleEl);
+                });
+
+                // 🔽 Button zum Archiv hinzufügen
+                const archivButton = document.createElement('div');
+                archivButton.className = "news-archiv-wrapper";
+                archivButton.innerHTML = `
+    <a href="/news-archiv.html" class="gelber-button" style="align-self: flex-start;margin-top: auto;">
+        Zum News-Archiv
+    </a>
+`;
+                newsContainer.appendChild(archivButton);
+
+
+            } catch (error) {
+                console.error('Fehler beim Laden der Nachrichten:', error);
+                newsContainer.textContent = 'Fehler beim Laden der Nachrichten.';
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE');
+        }
+    </script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                mirror: true,
+            });
+            AOS.refresh();
+        }); </script>
+</body>
+
+</html>

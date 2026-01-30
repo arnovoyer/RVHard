@@ -1,0 +1,133 @@
+:root {
+    --accent: #f5b301;
+    --accent-soft: rgba(245, 179, 1, 0.15);
+    --text-main: #1f2933;
+    --text-muted: #6b7280;
+    --bg-main: #f6f7f9;
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: 'Inter', 'Open Sans', sans-serif;
+    margin: 0;
+    background: linear-gradient(180deg, #f6f7f9 0%, #ffffff 100%);
+    color: var(--text-main);
+    line-height: 1.65;
+}
+
+/* Container etwas luftiger */
+.verein-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+/* === Sections als moderne Cards === */
+section {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 20px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    position: relative;
+}
+
+/* subtiler Accent-Streifen */
+section::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 20px;
+    bottom: 20px;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent), #ffd866);
+    border-radius: 4px;
+    opacity: 0.9;
+}
+
+section:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+}
+
+/* === Headlines moderner === */
+h1, h2 {
+    color: var(--text-main);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 2.2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+/* Accent-Unterstrich */
+h2::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 3px;
+    background-color: var(--accent);
+    margin-top: 0.5rem;
+    border-radius: 2px;
+}
+.verein-container h2 {
+    color: var(--text-main);
+}
+
+/* Text ruhiger */
+p {
+    margin-bottom: 1.2rem;
+    color: var(--text-muted);
+}
+
+/* === Button modern & „soft“ === */
+
+
+/* Links cleaner */
+.mail-link {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.mail-link:hover {
+    text-decoration: underline;
+}
+
+/* === Vorstand modernisiert === */
+.vorstand-kurz {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.vorstand-kurz .mitglied {
+    text-align: center;
+}
+
+.vorstand-kurz .mitglied img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.8rem;
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.15),
+        0 0 0 6px var(--accent-soft);
+    transition: transform 0.3s ease;
+}
+
+.vorstand-kurz .mitglied img:hover {
+    transform: scale(1.05);
+}

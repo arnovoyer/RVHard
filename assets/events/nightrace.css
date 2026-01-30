@@ -1,0 +1,234 @@
+.nightrace-container {
+    max-width: 1000px;
+    /* Oder eine andere maximale Breite für den Inhalt */
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.nightrace-container h1,
+.nightrace-container h2 {
+    color: #ffc107;
+    /* Oder deine Vereinsfarbe */
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.info-section,
+.strecken-section,
+.zeitplan-section,
+.anmeldung-section,
+.partner-sponsoren-section {
+    background-color: #ffffff;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-section li {
+    margin-bottom: 8px;
+}
+
+.raceresult-embed-container {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+.registration-button {
+    display: inline-block;
+    background-color: #ffc107;
+    /* Gelber Button */
+    color: #333;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.registration-button:hover {
+    background-color: #e0a800;
+    /* Dunkleres Gelb beim Hover */
+    color: #333;
+}
+
+.streckenkarte {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 5px;
+}
+
+/* Optional: Anpassung für Tabellen im Zeitplan */
+.zeitplan-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.zeitplan-section th,
+.zeitplan-section td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.zeitplan-section th {
+    background-color: #ffc107;
+}
+
+.dokumente-liste {
+    /* Falls du das auch für andere Seiten nutzen möchtest */
+    list-style: none;
+    padding: 0;
+}
+
+.zeitplan-tabelle {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 2rem;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.zeitplan-tabelle thead {
+    background-color: #ffc107;
+    color: white;
+}
+
+.zeitplan-tabelle th,
+.zeitplan-tabelle td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.zeitplan-tabelle tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.zeitplan-tabelle tbody tr:hover {
+    background-color: #eef2f7;
+    transition: background-color 0.3s ease;
+}
+
+.pdf-section {
+    background: white;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.danke-section {
+    background-color: #f8f8f8;
+    padding: 2rem 1rem;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.ergebnisse-section {
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 600px) {
+    .zeitplan-tabelle thead {
+        display: none;
+        /* Kopf ausblenden */
+    }
+
+    .zeitplan-tabelle,
+    .zeitplan-tabelle tbody,
+    .zeitplan-tabelle tr,
+    .zeitplan-tabelle td {
+        display: block;
+        width: 100%;
+    }
+
+    .zeitplan-tabelle tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0.5rem;
+    }
+
+    .zeitplan-tabelle td {
+        text-align: left;
+        padding: 0.5rem;
+        position: relative;
+    }
+
+    .zeitplan-tabelle td::before {
+        content: attr(data-label);
+        /* zieht Überschrift rein */
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.25rem;
+        color: #ffc107;
+    }
+}
+
+/* Mobile Button nur auf kleinen Bildschirmen anzeigen */
+.open-raceresult-btn {
+    display: none; /* Desktop: ausblenden */
+    padding: 0.7rem 1.2rem;
+    background: #ffc107;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 1rem auto;
+    display: block;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .consent-placeholder {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .rr-mobile-box {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+.rr-mobile-box {
+  text-align: center;
+}
+
+.rr-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: #ffc107;
+  color: #fff !important;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.danke-section {
+    background-color: #f8f8f8;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+

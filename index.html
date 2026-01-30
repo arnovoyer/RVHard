@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RV Hard">
+    <meta name="keywords"
+        content="RV Hard, Radverein, Radverein Vorarlberg, Radverein Unterland, Triathlonverein, Triathlon Verein Vorarlberg, Triathlon Verein, Traithlonverein Vorarlberg, Radverein, Rad Verein, Rad Verein Vorarlberg, Rad Verein Unterland, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Simplon, Hard, Unterland, ">
+    <meta name="author" content="RV Hard">
+    <title>RV Hard</title>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/navigation.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
+    <style>
+        @keyframes slide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .logos {
+            overflow: hidden;
+            padding: 60px 0;
+            background: #f9fafb;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .logos:before,
+        .logos:after {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            content: "";
+            z-index: 2;
+        }
+
+        .logos:before {
+            left: 0;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+        }
+
+        .logos:after {
+            right: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+        }
+
+        .logos:hover .logos-slide {
+            animation-play-state: paused;
+        }
+
+        .logos-slide {
+            display: inline-block;
+            animation: 35s slide infinite linear;
+        }
+
+        .logos-slide img {
+            height: 50px;
+            width: auto;
+            /* NEU: Stellt sicher, dass die Breite proportional zur Höhe skaliert wird */
+            margin: 0 40px;
+            opacity: 0.7;
+            transition: opacity .3s ease;
+        }
+
+        .logos-slide img:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+
+            .logos:before,
+            .logos:after {
+                width: 80px;
+                /* statt 250px */
+            }
+        }
+    </style>
+    <style>
+        /* Events */
+        .gemeinschaft {
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 700px;
+        }
+
+        .gemeinschaft h2 {
+            margin-bottom: 1rem;
+        }
+
+        .gemeinschaft .gemeinschaft-teaser {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* Fakten */
+        /* Fakten */
+        .fakten {
+            text-align: center;
+            margin: 4rem auto;
+            padding: 0 1rem;
+        }
+
+        .fakten h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .fakten-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .fakt {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: none;
+        }
+
+        .fakt:hover {
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .fakt .icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .fakt h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .fakt p {
+            margin: 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+
+
+        .cta-mitglied {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .newsletter {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .mitglied-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #ffc107;
+            color: #333 !important;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+
+            border: none;
+            margin-top: 2rem;
+        }
+
+        .mitglied-button:hover {
+            background-color: #e0a800;
+
+            color: #222;
+
+            /* Oder eine andere Farbe, die gut zu dunklerem Gelb passt */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="navigation-container"></div>
+    </header>
+    <main>
+        <div class="hero-verein-wrapper" data-aos="fade-up">
+            <div class="hero-image img">
+                <img src="/assets/img/hero/Anradeln-2024-Auftsellung.webp" srcset="/assets/img/hero/Anradeln-2024-Auftsellung-small.webp 480w,
+                            /assets/img/hero/Anradeln-2024-Auftsellung-medium.webp 900w,
+                            /assets/img/hero/Anradeln-2024-Auftsellung.webp 1600w" sizes="(max-width: 600px) 100vw, 
+                            (max-width: 1200px) 80vw, 
+                            1600px" alt="Aufstellung Anradeln 2024" width="900" height="675">
+            </div>
+            <section class="verein-vorstellung">
+                <div data-aos="fade-up">
+                    <h1><strong>Wir sind der RV DJ's Bikeshop Simplon Hard</strong></h1>
+                    <p>Wir sind deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon – bei uns finden
+                        Radsportler jeden Alters und Levels ein Zuhause. Wir fördern den Nachwuchs, leben Gemeinschaft
+                        und
+                        lieben den Radsport in all seinen Facetten.</p>
+                    <div class="gelber-button-container" style="margin-top:10px;">
+                        <a href="/Verein/unser-verein.html" class="gelber-button">Mehr dazu...</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <section class="container">
+            <div class="top-events-container">
+
+                <!-- Summer Bike Series wie gehabt -->
+                <div class="event-card summer-series">
+                    <div data-aos="fade-up-right">
+
+                        <h3>Summer Bike Series</h3>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.07.2025 – 15:00 Uhr</p>
+                            <p class="event-name">Kammgarn Kriterium Hard</p>
+                        </div>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.07.2025 – 18:00 Uhr</p>
+                            <p class="event-name">Einzelzeitfahren Rohrspitz – Fußach</p>
+                        </div>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>06.07.2025 – 10:00 Uhr</p>
+                            <p class="event-name">Bergrennen Wolfurt–Buch</p>
+                        </div>
+
+                        <div>
+                            <a href="/events/sbs/summer-bike-series-2025.html" class="gelber-button">Mehr
+                                Infos und Anmeldung</a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Nightrace mit mehreren Unterkategorien -->
+                <div class="event-card nightrace">
+                    <div data-aos="fade-up-left">
+                        <h3>Nightrace 2025</h3>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – ab 9:15 Uhr
+                            </p>
+                            <p class="event-name">Kinderrennen</p>
+                        </div>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – 14:15 Uhr</p>
+                            <p class="event-name">Jugendrennen</p>
+                        </div>
+
+                        <div class="single-event">
+                            <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – ab 15.30 Uhr
+                            </p>
+                            <p class="event-name">Nightrace</p>
+                        </div>
+
+                        <div>
+                            <a href="events/nightrace/dachbau-schaffer-nightrace-2025.html" class="gelber-button">Zu den
+                                Ergebnissen</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </section>
+
+        <!-- Kein Instagram-HTML mehr im Body -->
+        <section id="instagram-placeholder"></section>
+
+
+
+
+        <section id="home-news-container" class="news-container" data-aos="zoom-out-right"></section>
+
+        <script>
+            (function () {
+                const CONTAINER_ID = 'home-news-container';
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const el = document.getElementById(CONTAINER_ID);
+                    if (!el) { console.warn('[HomeNews] Container nicht gefunden'); return; }
+                    loadLatestNews(el);
+                });
+
+                async function fetchFirst(urls) {
+                    for (const url of urls) {
+                        try {
+                            const res = await fetch(url);
+                            if (res.ok) { console.log('[HomeNews] geladen:', url); return await res.json(); }
+                            console.log('[HomeNews] versucht:', url, 'Status:', res.status);
+                        } catch (e) {
+                            console.log('[HomeNews] Fehler bei', url, e);
+                        }
+                    }
+                    throw new Error('Keine news.json gefunden (alle Pfade fehlgeschlagen)');
+                }
+
+                async function loadLatestNews(container) {
+                    try {
+                        // Passe die Reihenfolge/Einträge an deine Struktur an
+                        const news = await fetchFirst([
+                            '/data/News/news.json',
+                            '/data/news/news.json',
+                            '/news.json',
+                            'data/News/news.json',
+                            'news.json'
+                        ]);
+
+                        // Neueste (höchste ID) zuerst
+                        news.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+                        const latest = news.slice(0, 2);
+
+                        // Überschrift behalten, Inhalt ersetzen
+                        container.innerHTML = `
+        <a href="news.html"><h2>Neueste Nachrichten</h2></a>
+      `;
+
+                        latest.forEach(article => {
+                            const author =
+                                article.author ||
+                                (Array.isArray(article.tags)
+                                    ? (article.tags.find(t => t === 'Moritz' || t === 'Ralf') || '')
+                                    : '');
+
+                            const link = article.link || `/news/${article.slug}.html`;
+                            const date = formatDateAT(article.date);
+
+                            container.insertAdjacentHTML('beforeend', `
+          <div class="news-item">
+            <div class="news-content">
+              <h3>${escapeHtml(article.title)}</h3>
+              <p class="news-meta">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span class="news-date">${date}</span>${author ? ` | <span class="news-author">${escapeHtml(author)}</span>` : ''}
+              </p>
+              <p>${escapeHtml(article.content)}</p>
+              <a href="${link}" class="gelber-button" style="align-self: flex-start;margin-top: auto;">Weiterlesen</a>
+            </div>
+          </div>
+        `);
+                        });
+
+                    } catch (err) {
+                        console.error('Fehler beim Laden der Startseiten-News:', err);
+                        container.innerHTML += `<p>Fehler beim Laden der neuesten Nachrichten.</p>`;
+                    }
+                }
+
+                function formatDateAT(s) {
+                    const d = new Date(s);
+                    return isNaN(d) ? s : d.toLocaleDateString('de-AT', { day: '2-digit', month: 'long', year: 'numeric' });
+                }
+
+                function escapeHtml(str) {
+                    return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+                }
+            })();
+        </script>
+
+
+
+
+
+        <!-- FAKTEN -->
+        <section class="fakten">
+            <h2>Unsere Fakten</h2>
+            <div class="fakten-grid">
+                <div class="fakt" data-aos="flip-right">
+                    <div class="icon">👥</div>
+                    <h3>250+</h3>
+                    <p>Mitglieder</p>
+                </div>
+                <div class="fakt" data-aos="flip-right" data-aos-delay="600">
+                    <div class="icon">🏅</div>
+                    <h3>100+</h3>
+                    <p>Jahre Tradition</p>
+                </div>
+                <div class="fakt" data-aos="flip-right" data-aos-delay="1200">
+                    <div class="icon">👶</div>
+                    <h3>50+</h3>
+                    <p>Kinder & Jugendliche</p>
+                </div>
+                <div class="fakt" data-aos="flip-right" data-aos-delay="1800">
+                    <div class="icon">🚴</div>
+                    <h3>3</h3>
+                    <p>Sparten:<br>Rennrad, MTB, Triathlon</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- EVENTS / TEASER -->
+        <section class="gemeinschaft">
+            <h2>Erlebe unsere Gemeinschaft</h2>
+            <p class="gemeinschaft-teaser">
+                Du möchtest unsere Gemeinschaft erleben?<br>
+                <a href="/verein/gemeinschaft.html" class="gelber-button" target="_blank" style="margin-top:10px">Mehr
+                    Gemeinschaft</a>
+            </p>
+
+            <div class="gemeinschaft-grid"
+                style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5rem; margin-top:2rem;">
+                <div class="gemeinschaft-item" data-aos="fade-up">
+                    <img src="/assets/img/gemeinschaft/Rennrad.webp" alt="Rennrad Sparte"
+                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <h3>Rennrad</h3>
+                    <p>Gemeinsam auf der Straße unterwegs, Training & Rennen.</p>
+                </div>
+
+                <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="100">
+                    <img src="/assets/img/gemeinschaft/MTB1.webp" alt="MTB Sparte"
+                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <h3>MTB</h3>
+                    <p>Abenteuer im Gelände, Techniktraining und Teamfahrten.</p>
+                </div>
+
+                <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="200">
+                    <img src="/assets/img/gemeinschaft/triathlon.webp" alt="Triathlon Sparte"
+                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <h3>Triathlon</h3>
+                    <p>Schwimmen, Radfahren, Laufen – gemeinsam ans Ziel.</p>
+                </div>
+
+                <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="300">
+                    <img src="/assets/img/gemeinschaft/Gemeinschaft.webp" alt="Kinder & Jugend"
+                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <h3>Gemeinschaft</h3>
+                    <p>Gemeinsam Sport, Freundschaften und Erlebnisse erleben.</p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Call to Action -->
+        <section class="cta-mitglied" data-aos="zoom-out-up">
+            <h2>Werde Teil unserer Radsport-Familie</h2>
+            <p>Ob Rennrad, MTB oder Triathlon – wir freuen uns auf dich!</p>
+            <a href="/verein/mitglied-werden.html" class="gelber-button" style="margin-top:10px">Jetzt Mitglied
+                werden</a>
+        </section>
+
+
+        <section class="sponsoren-dank" data-aos="fade-up">
+            <h2>Ein herzliches Dankeschön an unsere Sponsoren</h2>
+            <div class="logos">
+                <div class="logos-slide">
+                    <a href="https://www.alpla.com/de" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50" />
+                    </a>
+                    <a href="https://www.becker-installationen.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/becker.webp" alt="Becker Installationen Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://www.djs.bike" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50" />
+                    </a>
+                    <a href="https://www.faigle.com/de" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50" />
+                    </a>
+                    <a href="https://www.tierklinik-fuerst.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/fürst.webp" alt="Tierklinik Fürst Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://www.generali.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/generali-medium.webp" alt="Generali Logo" width="907"
+                            height="50" />
+                    </a>
+                    <a href="https://lang-schiller.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/lang und schiller.webp" alt="Lang & Schiller Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://oeamtc.at" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50" />
+                    </a>
+                    <a href="https://www.profimed.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50" />
+                    </a>
+                    <a href="index.html">
+                        <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
+                            height="50" />
+                    </a>
+                    <a href="https://www.raiffeisen.at/de/privatkunden.html" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://schaffer-dachbau.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/schffer.webp" alt="Dachbau Schaffer Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://simplon.com/de" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417"
+                            height="50" />
+                    </a>
+                    <a href="https://www.vn.at/" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/vn.webp" alt="Vorarlberger Nachrichten Logo" width="340"
+                            height="50" />
+                    </a>
+                    <a href="https://vkw.at" target="_blank" rel="noopener noreferrer">
+                        <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" />
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+
+
+    </main>
+
+    <footer id="site-footer"></footer>
+
+
+
+    <script src="/assets/navigation-loader.js" defer></script>
+
+    <script>
+        var copy = document.querySelector(".logos-slide").cloneNode(true);
+        document.querySelector(".logos").appendChild(copy);
+    </script>
+
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Dauer der Animation in ms
+            once: true,     // Animation nur einmal beim Scrollen
+        });
+    </script>
+
+
+</body>
+
+</html>

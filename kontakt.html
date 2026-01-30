@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt - RV Hard</title>
+    <meta name="description" content="RV Hard Kontakt">
+    <meta name="keywords"
+        content="RV Hard Kontakt, Kontakt Radverein">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <style>
+        .kontakt-container section {
+            background: #f8f8f8;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .kontakt-container h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .kontakt-hinweis {
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="navigation-container">
+        </div>
+    </header>
+
+    <main class="kontakt-container">
+        <h1>Kontakt</h1>
+        <p>Wir freuen uns auf deine Anfrage – egal ob allgemein oder zur Mitgliedschaft.</p>
+
+
+        <section class="kontaktformular-bereich">
+            <div class="kontakt-buttons">
+                <div class="kontakt-button-wrapper">
+                    <h3>Allgemeine Anfragen:</h3>
+                    <a href="mailto:vorstand@rv-hard.at?subject=Kontaktanfrage:%20[Ihr%20Anliegen]&body=Sehr geehrter Vorstand,%20"
+                        class="gelber-button">Kontaktiere uns per E-Mail</a>
+                </div>
+                <div class="kontakt-button-wrapper">
+                    <h3>Mitglied werden</h3>
+                    <a href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880"
+                        class="gelber-button">Mitglied werden</a>
+                </div>
+            </div>
+        </section>
+        <section class="kontakt-faq">
+            <h3>Häufige Fragen</h3>
+
+            <details>
+                <summary>Wie werde ich Mitglied?</summary>
+                <p> Über das Online-Formular. Nach Prüfung melden wir uns bei dir.</p>
+            </details>
+
+            <details>
+                <summary>Welche Sparten gibt es?</summary>
+                <p> MTB, Rennrad und Triathlon.</p>
+            </details>
+
+            <details>
+                <summary>Gibt es Trainings für Anfänger?</summary>
+                <p> Ja. Schreib uns einfach.</p>
+            </details>
+        </section>
+
+        <section class="dokumente-bereich">
+            <h3>Wichtige Dokumente zum Download</h3>
+            <ul class="dokumente-liste">
+                <!--<li><a href="downloads/Aufnahmeantrag RV Hard.pdf" class="dokument-link" target="_blank"
+                        download="Mitgliedsantrag.pdf">Mitgliedsantrag
+                        (PDF)</a></li>-->
+                <li><a href="downloads/Spesen-Rennfahrer-Formular.pdf" class="dokument-link" target="_blank"
+                        download="Spesen-Rennfahrer-Formular.pdf">Spesen Rennfahrer Formular (PDF)</a>
+                </li>
+                <!--<li><a href="pfad/zu/datenschutzordnung.pdf" class="dokument-link" target="_blank"
+                        download="Datenschutzordnung.pdf">etwaige Dokumete
+                        (PDF)</a></li>-->
+            </ul>
+        </section>
+        <section class="kontakt-standort">
+            <h3>Vereinssitz</h3>
+            <p>
+                RV DJ's Bikeshop Simplon Hard<br>
+                Kohlplatzstraße 2a Hard<br>
+                Vorarlberg, Österreich
+            </p>
+
+            <a class="text-link">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d360.9757751018269!2d9.688983215544264!3d47.49268127732025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479b12155c8275d1%3A0xf726765d4de271e5!2sKohlplatzstra%C3%9Fe%202a%2C%206971%20Hard!5e0!3m2!1sde!2sat!4v1769276632778!5m2!1sde!2sat"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer id="site-footer"></footer>
+
+
+
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+</body>
+
+</html>

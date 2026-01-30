@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rennbericht St. Pauli Radmarathon to Hell 2023 - RV Hard
+    </title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Rennbericht St. Pauli Radmarathon to Hell 2023</h1>
+                    <p class="date">03.09.2023 </p>
+
+                    <div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                        <div class="news-detail-gallery" id="gallery-rennbericht1">
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/st-pauli-radmarathon-2023_1.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/st-pauli-radmarathon-2023_2.webp'); display: none;">
+                            </div>
+                            
+
+
+
+
+
+                        </div>
+                        <button class="gallery-control prev">&lt;</button>
+                        <button class="gallery-control next">&gt;</button>
+                    </div>
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p> Der St. Pauli Radmarathon to Hell ist ein Pflichttermin im norddeutschen Nord Cup
+                            RTF-Kalender und ein guter Saisonabschluss. Es gab Strecken zwischen 55 und 222km und einen
+                            Gravelparcours, somit war für alle etwas dabei. Nach den Cyclassics und 2 Wochen Bikepacking
+                            durch Skandinavien wollte ich gerne testen, was die Beine noch so hergeben.
+                            <br><br>
+                            Die Kaperfahrt über 222km und 1.200hm wurde RTF-typisch um 7:00 morgens und recht zügig
+                            gestartet, aber das Tempo pendelte sich nach etwa einer Stunde gut ein und nahm bis zum
+                            Enden nicht bedeutend ab. Selbstverständlich wurde jede Verpflegungsstation mitgenommen und
+                            bei bester Verpflegung kurz durchgeatmet. Fritz Kola, Isogetränke und vegane Sandwiches
+                            haben die Beine immer wieder aufs Neue angeschoben. Nach 6h16 Fahrzeit kamen wir mit einer
+                            reduzierten, aber immer noch motivierten Gruppe in Barsbüttel an.
+                            <br><br>
+                            Die Organisation hat einwandfrei funktioniert und die Strecke durch den Norden Hamburgs mit
+                            Schmankerln gespickt. Große Empfehlung für alle, die zufällig Anfang September in
+                            Norddeutschland sind!
+                            suchen.
+                            <br><br>
+                            Beste Grüße Moritz
+
+
+
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+        
+        }); </script>
+</body>
+
+</html>

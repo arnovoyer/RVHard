@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altstätten: Finale Stevens Bikecup 2019 - RV Hard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Altstätten: Finale Stevens Bikecup 2019</h1>
+                    <p class="date">05.09.2019 </p>
+
+                    
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Am vergangenen Samstagvormittag fand in Altstätten (CH) bei bestem Bikewetter der letzte
+                            Bewerb der Saison im Stevens Bikecup statt. Unser Verein war in den Altersklassen U7, U9 und
+                            U11 vertreten. In der Kategorie der Jüngsten konnte <b>Moritz Sageder</b> erst in der
+                            (vermeintlich) letzten Runde, den bis dorthin in Führung liegenden Fahrer überholen. Leider
+                            stellte sich heraus, dass der Rennleiter die Kids eine Runde zu weit fahren ließ. Somit kam
+                            der 2. Rang in die Wertung. Jonathan, Jannik, Matteo und Samuel fuhren ein super Rennen und
+                            konnten sich am Ende auch über die verdienten Medaillen freuen.
+                            <br><br>
+                            In der Klasse U9 lag <b>Linda</b> bei den Mädels lange in Führung, ehe ihre Konkurrentin sie
+                            nach
+                            einem kleinen Fahrfehler überholen konnte. In den letzten Kurven lag sie leider etwas zu
+                            weit zurück, sodass ein faires Überholen bis ins Ziel nicht mehr möglich war. Sie sicherte
+                            sich somit mit dem 2. Tagesrang ihren Gesamtsieg in der Rennserie in der Klasse U9w. Bei den
+                            U9-Burschen war es eine klare Angelegenheit für <b>Gerry Horn</b>, den Dominator dieser
+                            Saison. Er
+                            distanzierte <b>Pius</b> bereits in der ersten Runde. Allerdings lies Pius auch nach hinten
+                            nichts
+                            anbrennen und fuhr einen ungefährdeten 2. Platz heraus, der ihm auch den 2. Gesamtrang in
+                            der Saisonwertung brachte.
+                            <br><br>
+                            <b>Jöni, Jamie, Nico, Feilong & Colin</b> fuhren ebenfalls beherzte Rennen. Zwar gab es den
+                            einen
+                            oder anderen Sturz auf den taunassen Wiesenabschnitten, aber es konnten alle ihr Rennen
+                            beenden. <b>Nico und Colin</b> waren zum ersten Mal bei einem MTB-Rennen dabei und
+                            bewältigten
+                            dieses sicher.
+                            <br><br>
+                            <b>Moritz, Gabriel & Lars</b> fuhren bei der U11m. <b>Moritz</b> erreichte den 6.,
+                            <b>Gabriel</b> den 15. und
+                            <b>Lars</b> den 21. von 24 Plätzen. Für <b>Gabriel</b> war es (leider) das letzte Rennen
+                            seiner Karriere.
+                            Ich hoffe aber, dass er auch weiterhin Spaß am Radfahren haben wird. Bei der Klasse U11w
+                            erkämpfte sich <b>Johanna</b> sowohl in der Tages- als auch Gesamtwertung den 2. Platz.
+                            Erwähnenswert ist, dass sie und die erstplatzierte <b>Sophia Moosbrugger</b> von den
+                            Rundenzeiten
+                            her auch bei den Jungs ums Podest hätten mitfahren können, obwohl sie bereits in der ersten
+                            Runde die langsameren Burschen überholen mussten.
+                            <br><br>
+                            Es folgt nun am kommenden Samstag noch das letzte Rennen der Saison, das Finale des
+                            Alpencups am Dornbirner Zanzenberg. Die Strecken konnten wir bereits am Mittwoch im Rahmen
+                            unseres Trainings besichtigen. Sie versprechen spannende, packende Rennen, wenn das Wetter
+                            trocken bleibt. An ein verregnetes Wochenende, wie beim Rennen vor 2 Jahren, möchte ich erst
+                            gar nicht denken…
+
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+        }); </script>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rennbericht Tschengla Bike - RV Hard
+    </title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Rennbericht Tschengla Bike</h1>
+                    <p class="date">18.06.2023 </p>
+
+                    <div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                        <div class="news-detail-gallery" id="gallery-rennbericht1">
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/rennbericht-tschengla-bike-2023_1.webp'); display: none;">
+                            </div>
+                           
+
+
+
+
+                        </div>
+                        <button class="gallery-control prev">&lt;</button>
+                        <button class="gallery-control next">&gt;</button>
+                    </div>
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Am 18.6 ging der Vorarlberger Hillclimb Cup beim Tschengla Bike in Bürser Berg in die zweite
+                            Runde.
+                            <br>
+                            Im Vergleich zum Kobelhobel war unsere Equipe heute stark reduziert, es war aber am gleichen
+                            Tag auch noch Auquathlon in Bregenz und CC in Hohenems.
+                            <br><br>
+                            Nachdem ich in Dornbirn einen für den Cup guten Platz erreicht hatte, wollte ich dies in
+                            Bürserberg wiederholen, entsprechend hängte ich mich nach dem neutralisierten Start an meine
+                            Konkurrenten Gerhard Marte und Stefan Mörlitsch, ich konnte die ersten 20 Minuten auch mit
+                            ihnen mithalten bis es in das berüchtigte Steilstück ging, dort verlor ich recht früh den
+                            Grip und musste recht lange schieben, entweder hatte ich hier schon überpaced oder kam sonst
+                            aus dem Rythmus, danach hatte ich keine Chance mehr den beiden zu folgen.
+                            <br><br>
+                            Ich konnte danach mit aller Quälerei nicht mehr auf den gewünschten Puls kommen,
+                            letztendlich kam ich 4,5 Minuten nach Gerhard (den ich in Dornbirn und am Pfänder geschlagen
+                            habe) und 3 Minuten nach Stefan (der in Dornbirn hinter mir war) ins Ziel.
+                            <br><br>
+                            Zumindest meine bisherige Bestzeit von 56:08 habe ich heuer auf 55:01 verbessert, damit war ich bei meinem 11. Start beim Tschengla Bike um 13,5 Minuten schneller als bei meinem Debut 2012 mit 39.
+                            <br><br>
+                            Sportliche Grüße Ralf
+                            <br><br>
+                            <b>Ergebnisse:</b>
+                            <br><br>
+                            <b>Schüler M</b>
+                            <br>
+                            2 Sageder, Moritz 00:36:07
+                            <br><br>
+                            <b>Herren</b>
+                            <br>
+                            10 Heckmeier, Andreas 00:47:23
+                            <br>
+                            19 Martin, Ralf 00:55:01
+                            <br>
+                            29 Schwarz, Gerhard 01:04:27
+
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+        
+        }); </script>
+
+</body>
+
+</html>

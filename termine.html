@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termine - RV Hard</title>
+    <meta name="description" content="RV Hard Termine">
+    <meta name="keywords" content="RV Hard Termine, Termine Radverein">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main class="termine-seite">
+        <section class="container">
+            <h1 style="color: #111;">Unsere Termine</h1>
+
+            <h2>Bevorstehende Events</h2>
+            <div id="bevorstehende-events" class="event-grid"></div>
+
+            <button id="toggle-vergangene" class="gelber-button"
+                style="margin-top:12px; border: none;align-self: center;">Vergangene Events anzeigen</button>
+            <div id="vergangene-events" class="event-grid hidden"></div>
+        </section>
+    </main>
+
+    <script>
+        const events = [
+            {
+                id: 1,
+                datum: "2026-12-31",
+                zeit: "19:00",
+                titel: "TERMIN WIRD NOCH BEKANTGEGBEN JHV Spannrahmen",
+                beschreibung: "Jahreshauptversammlung des RV Hard. Obmannteam wird gewählt. Vorstand wird entlastet. Alle Mitglieder sind herzlich eingeladen.",
+                link: null,
+                ort: "Spannrahmen, In der Wirke 2, Hard",
+                sparten: ["MTB", "Rennrad"],
+                alter: null
+            },
+            {
+                id: 2,
+                datum: "2026-03-28",
+                zeit: "0:00-23:59",
+                titel: "Vereinsradwoche Senigallia",
+                beschreibung: "5 Tage Radfahren in Italien. Mit einem Hotel in Senigallia nahe am Meer und täglichen Rennrad und MTB Touren.",
+                link: null,
+                ort: "Hotel Bel Sit, Senigallia, Italien",
+                sparten: ["MTB", "Rennrad", "Triathlon"]
+            },
+            {
+                id: 3,
+                datum: "2026-12-31",
+                zeit: "10:00-16:00",
+                titel: "TERMIN WIRD NOCH BEKANTGEGBEN Anradeln 2025",
+                beschreibung: "Gemeinsames Saison-Eröffnungsradeln für alle Mitglieder.",
+                link: null,
+                ort: "Start: Rostlaube, Hard",
+                sparten: ["MTB", "Rennrad", "Triathlon"],
+                alter: "Alle Altersklassen"
+            },
+            {
+                id: 4,
+                datum: "2025-05-31",
+                zeit: "9:00-18:00",
+                titel: "Nightrace 2025",
+                beschreibung: "Viele spannenden Rennen von allen Alterkategorien mit dem Finale, dem traditionellen Harder MTB Nightrace.",
+                link: "/events/nightrace/dachbau-schaffer-nightrace-2025.html",
+                ort: "Stedepark, Hard",
+                sparten: ["MTB"],
+                alter: "Alle Altersklassen"
+            },
+            {
+                id: 5,
+                datum: "2026-12-31",
+                zeit: "9:00-15:00",
+                titel: "TERMIN WIRD NOCH BEKANTGEGBEN Summer Bike Series 2026",
+                beschreibung: "Summer Bike Series 2026 mit Bergrennen in Buch, Kriterium am Kangarm Areal und Zeitfahren in Fussach.",
+                link: "/events/sbs/summer-bike-series-2026.html",
+                ort: "Pfarrkirche St. Nikolaus, Wolfurt(Bergrennen); Kammgarn Areal, Hard(Kriterium); Camping Rohrspitz, Fußach(Zeitfahren)",
+                sparten: ["Rennrad"],
+                alter: "Alle Alterklassen"
+            },
+            {
+                id: 6,
+                datum: "2026-12-31",
+                zeit: "14:00-18:00",
+                titel: "TERMIN WIRD NOCH BEKANTGEGBEN Abradeln 2025",
+                beschreibung: "Saisonabschluss-Radeln mit gemütlichem Ausklang.",
+                link: null,
+                ort: "Start: Rostlaube, Hard",
+                sparten: ["MTB", "Rennrad", "Triathlon"],
+                alter: "Alle Altersklassen"
+            }
+        ];
+
+        const heute = new Date();
+        const bevorstehend = events.filter(e => new Date(e.datum) >= heute).sort((a, b) => new Date(a.datum) - new Date(b.datum));
+        const vergangen = events.filter(e => new Date(e.datum) < heute).sort((a, b) => new Date(b.datum) - new Date(a.datum));
+
+        function renderEvents(containerId, events) {
+            const container = document.getElementById(containerId);
+            events.forEach(event => {
+                const card = document.createElement('div');
+                card.classList.add('modern-event-card');
+
+                const titelElement = document.createElement('h3');
+                titelElement.classList.add('event-title');
+                titelElement.textContent = event.titel;
+
+
+                const datumElement = document.createElement('p');
+                const date = new Date(event.datum);
+                datumElement.textContent = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${event.zeit || ''}`;
+                datumElement.classList.add('event-date-time');
+
+                const beschreibungElement = document.createElement('p');
+                beschreibungElement.textContent = event.beschreibung;
+
+                card.appendChild(titelElement);
+                card.appendChild(datumElement);
+                card.appendChild(beschreibungElement);
+
+                if (event.sparten?.length) {
+                    const spartenElement = document.createElement('p');
+                    spartenElement.classList.add('event-sparten');
+                    spartenElement.innerHTML = `<strong>Sparten:</strong> ${event.sparten.join(", ")}`;
+                    card.appendChild(spartenElement);
+                }
+
+                if (event.alter) {
+                    const alterElement = document.createElement('p');
+                    alterElement.classList.add('event-alter');
+                    alterElement.innerHTML = `<strong>Altersklassen:</strong> ${event.alter}`;
+                    card.appendChild(alterElement);
+                }
+
+                if (event.ort) {
+                    const ortContainer = document.createElement('div');
+                    ortContainer.classList.add('event-location-list');
+
+                    // Orte aufteilen (Kommas + Klammern bleiben erhalten)
+                    const orte = event.ort
+                        .split(/\s*;\s*(?![^()]*\))/); // split bei Komma, nicht in Klammern
+
+                    orte.forEach(rawOrt => {
+                        const ort = rawOrt.replace(/^Start:\s*/i, '').trim();
+                        if (!ort) return;
+
+                        const ortLink = document.createElement('a');
+                        ortLink.classList.add('event-location');
+                        ortLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ort)}`;
+                        ortLink.target = "_blank";
+                        ortLink.rel = "noopener";
+                        ortLink.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${ort}`;
+
+                        ortContainer.appendChild(ortLink);
+                    });
+
+                    card.appendChild(ortContainer);
+                }
+
+
+
+                if (event.link) {
+                    const linkButton = document.createElement('a');
+                    linkButton.href = event.link;
+                    linkButton.classList.add('event-button', 'gelber-button');
+                    linkButton.textContent = 'Mehr Infos';
+
+                    linkButton.style.alignSelf = 'flex-start';
+
+                    card.appendChild(linkButton);
+                }
+
+
+                const kalenderButton = document.createElement('button');
+                kalenderButton.classList.add('event-button', 'kalender-button');
+                kalenderButton.innerHTML = '<i class="fa-regular fa-calendar-plus"></i> Zum Kalender hinzufügen';
+                kalenderButton.addEventListener('click', () => addToCalendar(event));
+                card.appendChild(kalenderButton);
+
+                container.appendChild(card);
+            });
+        }
+
+        renderEvents("bevorstehende-events", bevorstehend);
+        renderEvents("vergangene-events", vergangen);
+
+        // Toggle-Funktion für vergangene Events
+        const toggleBtn = document.getElementById("toggle-vergangene");
+        const vergangeneContainer = document.getElementById("vergangene-events");
+        toggleBtn.addEventListener("click", () => {
+            vergangeneContainer.classList.toggle("hidden");
+            toggleBtn.textContent = vergangeneContainer.classList.contains("hidden")
+                ? "Vergangene Events anzeigen"
+                : "Vergangene Events verbergen";
+        });
+
+        function addToCalendar(event) {
+            let timePart = '';
+            if (event.zeit?.includes('-')) {
+                timePart = event.zeit.split('-')[0].trim();
+            } else if (event.zeit && event.zeit !== 'ganztags' && event.zeit !== 'halbtags') {
+                timePart = event.zeit;
+            }
+
+            const [year, month, day] = event.datum.split('-').map(Number);
+            const [hours, minutes] = (timePart || '00:00').split(':').map(Number);
+            const date = new Date(year, month - 1, day, hours, minutes);
+
+            const utcYear = date.getUTCFullYear();
+            const utcMonth = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const utcDay = String(date.getUTCDate()).padStart(2, '0');
+            const utcHours = String(date.getUTCHours()).padStart(2, '0');
+            const utcMinutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+            const startTime = `${utcYear}${utcMonth}${utcDay}T${utcHours}${utcMinutes}00Z`;
+            const endTime = `${utcYear}${utcMonth}${utcDay}T${String(parseInt(utcHours) + 1).padStart(2, '0')}${utcMinutes}00Z`;
+
+            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${startTime}/${endTime}&text=${encodeURIComponent(event.titel)}&details=${encodeURIComponent(event.beschreibung)}&location=${encodeURIComponent(event.ort || '')}&sf=true&output=xml`;
+            window.open(url, '_blank');
+        }
+    </script>
+
+    <footer id="site-footer"></footer>
+
+
+
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

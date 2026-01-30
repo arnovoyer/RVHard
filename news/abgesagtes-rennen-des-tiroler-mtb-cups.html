@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abgesagtes Rennen des Tiroler MTB-Cups - RV Hard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Abgesagtes Rennen des Tiroler MTB-Cups</h1>
+                    <p class="date">30.05.2021 </p>
+
+                    <div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                        <div class="news-detail-gallery" id="gallery-rennbericht1">
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_1.webp');">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_2.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_3.JPG'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_4.JPG'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_5.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_6.JPG'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_7.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_8.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_9.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_10.JPG'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_11.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/Abgesagtes_Rennen_12.JPG'); display: none;">
+                            </div>
+                        </div>
+                        <button class="gallery-control prev">&lt;</button>
+                        <button class="gallery-control next">&gt;</button>
+                    </div>
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Am vergangenen Samstag sollte eigentlich in Achenkirch das 2. Rennen des Tiroler MTB-Cups
+                            stattfinden. Aufgrund behördlicher Auflagen musste die Veranstaltung aber abgesagt
+                            werden.
+                            <br><br>
+                            Da die Hotelbuchung für die Übernachtung nicht stornierbar war, haben die Athleten des
+                            RV
+                            DJ's Bikeshop Simplon Hard Linda Tessadri sowie Pius und Johanna Piringer mit ihren
+                            Betreuern kurzerhand ein kleines Trainingswochenende daraus gemacht.
+                            <br><br>
+                            Bereits am Anreisetag konnten wir am westlichen Achenseeufer eine schöne Tour in
+                            Richtung
+                            der Seewaldhütte unternehmen. technisch anspruchsvolle Trails belohnten den Aufstieg
+                            über
+                            den Güterweg.Am Samstag erkundeten wir die steilen Flanken am Ostufer. Nach dem etwas
+                            ungeplanten Einstieg (200hm) über den Singletrail / Wanderweg konnten wir dem Forstweg
+                            bis
+                            zur Köglalm folgen. Von dort ging es nach neuerlichen kurzen Schiebepassagen über das
+                            Kögeljoch über flowige Trails und einen Forstweg nach Steinberg am Rofan. Von dort
+                            folgten
+                            wir der Straße bis zum Ausgangspunkt in Achenkirch.
+                            <br><br>
+                            Alles in allem war es ein tolles unerwartetes Kurztrainingslager für die Kids.
+
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+        }); </script>
+</body>
+
+</html>

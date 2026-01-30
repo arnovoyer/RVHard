@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furx 2018 - RV Hard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Furx 2018</h1>
+                    <p class="date">10.10.2018 </p>
+
+                    
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Am vergangenen Sonntag den 7.10 fand in Sulz mit dem Furx Hillclimb wie üblich das Finale des
+                            Vorarlberger Mountainbike Cups statt. Fast alle üblichen Verdächtigen die heuer den Cup
+                            mitgefahren sind waren am Start. Ich wusste daß das Rennen heute nicht optimal laufen würde,
+                            da ich die letzte Woche mehrere Berglaufeinheiten absolviert hatte um mich auf den
+                            Staufenlauf nächste Woche vorzubereiten, trotzdem versuchte ich vom Start weg an Erich
+                            dranzubleiben, was mir dann aber nicht gelang (er hatte sich noch dazu von Wolfi Mossbrugger
+                            sein 26“ Razorblade tunen lassen anstatt mit seinem 29“ zu fahren), ich musste mich dann zur
+                            Abwechslung an anderen Fahrern orientieren, ich konnte im steilen und gefürchteten Suldner
+                            Stöck einen Platz gut machen wurde aber nach der Flach und Bergabpassage vor Laterns dann
+                            von den beiden Master IV Fahrern Anton Pfister und Walter Giobi überholt (beide sind u.a.
+                            bessere Bergabfahrer als ich) Bergauf überholte ich sie dann wieder und konnte auch Erich
+                            wieder sehen, mit Erich vor mir und Anton und Walter hinter mir (alle fast 20 Jahre älter
+                            als ich) gab ich im finalen Anstieg nach Furx nochmal alles und kam im Zielsprint ex aequo
+                            mit Anton ins Ziel.
+                            <br><br>
+                            Trotz meiner eigentlich schlechten Tagesform konnte ich mich gegenüber meiner bisherigen
+                            Bestzeit um gut zwei Minuten verbessern, womit ich dann doch sehr zufrieden bin. Wolfi
+                            Moosbrugger wurde wie üblich mit deutlichem Abstand erster in unserer AK, Erich Feuerstein
+                            wurde zweiter hinter einem Tiroler Fahrer, Evi Veit wurde dritter bei den Damen (ohne AK)
+                            und Lea Riem (die in Furx in ihrer AK diesmal die Lange Distanz fahren durfte) und Nico und
+                            Lean Hinteregger fuhren in ihren Klassen wieder super Ergebnisse ein.
+                            <br><br>
+                            Diese Woche versuche ich mich etwas zu erholen um dann zusammen mit Wolfi am Samstag beim
+                            Staufenlauf in Dornbirn nochmal Gas zu geben. Sportliche Grüße Ralf
+                            <br>
+                            
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+      
+        }); </script>
+
+</body>
+
+</html>

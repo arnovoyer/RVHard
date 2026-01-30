@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Bar With Dropdown | Ludiflex</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <style>
+        .nav-main-menu.active {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .nav-main-menu li {
+            margin: 0;
+            text-align: left;
+            padding: 10px 20px;
+        }
+
+        .nav-main-menu li a {
+            display: block;
+            padding: 10px 0;
+        }
+
+        .dropdown-content,
+        .sub-dropdown-content {
+            display: none;
+        }
+
+        .dropdown.open > .dropdown-content,
+        .sub-dropdown.open > .sub-dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content li,
+        .sub-dropdown-content li {
+            padding: 5px 20px;
+            line-height: 1.2;
+        }
+
+        .dropdown-content li a,
+        .sub-dropdown-content li a {
+            padding: 6px 0;
+            display: block;
+        }
+
+        .dropdown-content li a:hover,
+        .sub-dropdown-content li a:hover {
+            background-color: transparent;
+            color: #ffc107;
+        }
+
+        @media only screen and (max-width: 794px) {
+            .nav-main-menu {
+                display: none;
+                flex-direction: column;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-main-menu .dropdown-content,
+            .nav-main-menu .sub-dropdown-content {
+                position: static;
+                min-width: 100%;
+                border: none;
+                box-shadow: none;
+            }
+
+            .dropdown-link {
+                justify-content: space-between;
+            }
+
+            .dropdown-content li,
+            .sub-dropdown-content li {
+                padding: 0 20px;
+            }
+
+            .dropdown-content li a,
+            .sub-dropdown-content li a {
+                padding: 10px 0;
+            }
+
+            .dropdown-content li a:hover,
+            .sub-dropdown-content li a:hover {
+                background-color: transparent;
+                color: #ffc107;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo">
+            <a href="/index.html">
+                <img src="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.webp" alt="RV DJ's Bikeshop Simplon Hard Logo" height="120" width="255">
+            </a>
+        </div>
+
+        <button class="menu-toggle"><i class="fa fa-bars"></i></button>
+        <ul class="nav-main-menu">
+            
+            <li><a href="/index.html" class="nav-link">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">Verein <i class="fa fa-chevron-down"></i></a>
+                <ul class="dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                    <li><a href="/verein/unser-verein.html">Unser Verein</a></li>
+                    <li><a href="/verein/geschichte.html">Geschichte</a></li>
+                    <li><a href="/verein/vorstand.html">Vorstand</a></li>
+                    <li><a href="/verein/gemeinschaft.html">Gemeinschaft</a></li>
+                    <li><a href="/verein/mitglied-werden.html">Mitglied werden</a></li>
+                </ul>
+            </li>
+            <li><a href="/training.html" class="nav-link">Training</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">Events <i class="fa fa-chevron-down"></i></a>
+                <ul class="dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                    <li class="sub-dropdown">
+                        <a href="#" class="dropdown-link">Nightrace <i class="fa fa-chevron-right"></i></a>
+                        <ul class="sub-dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                            <li><a href="/events/nightrace/dachbau-schaffer-nightrace-2025.html">Nightrace 2025</a></li>
+                            <li><a href="/events/nightrace/dachbau-schaffer-nightrace-2024.html">Nightrace 2024</a></li>
+                            <li><a href="/events/nightrace/dachbau-schaffer-nightrace-2023.html">Nightrace 2023</a></li>
+                            <li><a href="/events/nightrace/dachbau-schaffer-nightrace-2022.html">Nightrace 2022</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-dropdown">
+                        <a href="#" class="dropdown-link">Summer Bike Series <i class="fa fa-chevron-right"></i></a>
+                        <ul class="sub-dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                            <li><a href="/events/sbs/summer-bike-series-2025.html">Summer Bike Series 2025</a></li>
+                            <li><a href="/events/sbs/summer-bike-series-2024.html">Summer Bike Series 2024</a></li>
+                            <li><a href="/events/sbs/summer-bike-series-2023.html">Summer Bike Series 2023</a></li>
+                            <li><a href="/events/sbs/summer-bike-series-2022.html">Summer Bike Series 2022</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-dropdown">
+                        <a href="#" class="dropdown-link">Cyclocross Fußach <i class="fa fa-chevron-right"></i></a>
+                        <ul class="sub-dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                            <li><a href="/events/cyclocross/cyclocross-fußach-2023.html">Cyclocross Fußach 2023</a></li>
+                            <li><a href="/events/cyclocross/cyclocross-fußach-2022.html">Cyclocross Fußach 2022</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-dropdown">
+                        <a href="#" class="dropdown-link">Fußach Triathlon <i class="fa fa-chevron-right"></i></a>
+                        <ul class="sub-dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
+                            <li><a href="/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html">3.JolSport Triathlon Fußach</a></li>
+                            <li><a href="/events/fussach-triathlon/2.-jolsport-triathlon-fussach.html">2.JolSport Triathlon Fußach</a></li>
+                            <li><a href="/events/fussach-triathlon/1.-jolsport-triathlon-fussach.html">1.JolSport Triathlon Fußach</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="/news.html" class="nav-link">News</a></li>
+            <li><a href="/termine.html" class="nav-link">Termine</a></li>
+            <li><a href="/kontakt.html" class="nav-link">Kontakt</a></li>
+            <li><a href="/sponsoren.html" class="nav-link">Sponsoren</a></li>
+        </ul>
+    </nav>
+    <main></main>
+
+    <script>
+        const toggleBtn = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-main-menu');
+        const dropdowns = document.querySelectorAll('.dropdown');
+        const subDropdowns = document.querySelectorAll('.sub-dropdown');
+
+        toggleBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        dropdowns.forEach(drop => {
+            drop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                drop.classList.toggle('open');
+                dropdowns.forEach(d => { if (d !== drop) d.classList.remove('open'); });
+            });
+        });
+
+        subDropdowns.forEach(sub => {
+            sub.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sub.classList.toggle('open');
+                subDropdowns.forEach(s => { if (s !== sub) s.classList.remove('open'); });
+            });
+        });
+
+        document.body.addEventListener('click', () => {
+            dropdowns.forEach(drop => drop.classList.remove('open'));
+            subDropdowns.forEach(sub => sub.classList.remove('open'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training - RV Hard</title>
+  <meta name="description" content="RV Hard Training">
+  <meta name="keywords" content="RV Hard Training, Training Radverein, Trainingszeiten RV Hard">
+  <meta name="author" content="RV Hard">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/navigation.css">
+  <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .training-seite {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .training-seite {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .training-seite section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      margin-top: 1px;
+    }
+
+    .training-seite h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #333;
+    }
+
+    .training-seite ul {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0 0;
+    }
+
+    .training-seite li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .training-seite li i {
+      color: #ffc400;
+    }
+
+    .training-seite section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .training-seite section:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .training-kontakt {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed #ddd;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .training-kontakt a {
+      color: #ffc107;
+      text-decoration: none;
+    }
+
+    .training-kontakt a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav id="navigation-container"></nav>
+  </header>
+
+  <main class="container">
+    <h1>Training</h1>
+    <p>Unsere regelmäßigen Trainings bieten dir die Möglichkeit, dich sportlich zu verbessern und gemeinsam Spaß am
+      Radfahren, Laufen und Schwimmen zu haben.</p>
+
+    <div class="training-seite" style="padding-top: 0px;">
+      <!-- MTB -->
+      <section style="margin-top: 20px;" data-aos="flip-left">
+        <h2><i class="fa-solid fa-mountain"></i> MTB</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Rostlaube, Technikübungsplatz</p>
+        <ul>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Je nach Altersklasse:</strong>verschiedene Uhrzeiten und
+            Tage</li>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Bei Nachfrage</strong> werden konkrete Zeiten gennant</li>
+        </ul>
+        <p class="training-kontakt">
+          <i class="fa-solid fa-user"></i> Kontakt:
+          <strong>Bernhard Piringer</strong><br>
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
+        </p>
+      </section>
+
+      <!-- Rennrad -->
+      <section data-aos="flip-left" data-aos-delay="150" style="margin-top: 20px;">
+        <h2><i class="fa-solid fa-person-biking"></i> Rennrad</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Schule am See, verschiedene Treffpunkte</p>
+        <ul>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 16:00-17:00 Uhr – Technik-Training</li>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Samstag:</strong> ab 11:00 Uhr – Ausfahrt (verschiedene
+            Treffpunkte)</li>
+        </ul>
+        <p class="training-kontakt">
+          <i class="fa-solid fa-user"></i> Kontakt:
+          <strong>Joel Voyer</strong><br>
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:mtb@rv-hard.at">vorstand@rv-hard.at</a>
+        </p>
+      </section>
+
+      <!-- Triathlon -->
+      <section data-aos="flip-left" data-aos-delay="300">
+        <h2><i class="fa-solid fa-person-running"></i> Triathlon</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Treffpunkte: Stadtbad Dornbirn, Parkstadion Lustenau</p>
+        <ul>
+          <li><i class="fa-solid fa-person-running"></i> <strong>Laufen:</strong> Donnerstag 17:00-18:00 Uhr –
+            Parkstadion Lustenau </li>
+          <li><i class="fa-solid fa-person-swimming"></i> <strong>Schwimmen:</strong> Freitag 15:00-16:15 Uhr –
+            Stadtbad Dornbirn </li>
+        </ul>
+        <p class="training-kontakt">
+          <i class="fa-solid fa-user"></i> Kontakt:
+          <strong>Simon Künz</strong><br>
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:simon.kuenz@rv-hard.at">simon.kuenz@rv-hard.at</a>
+        </p>
+      </section>
+
+      <!-- Hallentraining -->
+      <section data-aos="flip-left" data-aos-delay="450">
+        <h2><i class="fa-solid fa-dumbbell"></i> Hallentraining (Winter)</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Sporthalle Schule am See (Hard)</p>
+        <ul>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 17:00-18:00 Uhr – Kinder</li>
+          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 19:00-21:00 Uhr – Erwachsene</li>
+        </ul>
+        <p class="training-kontakt">
+          <i class="fa-solid fa-user"></i> Kontakt:
+          <strong>Manuel Hofer</strong><br>
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+
+
+  <script src="/assets/nav.js"></script>
+  <script src="/assets/navigation-loader.js" defer></script>
+  <script src="/assets/header-scroll.js" defer></script>
+  <script src="/assets/cookie-banner.js" defer></script>
+  <script>
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("site-footer").innerHTML = html;
+      });
+  </script>
+  <script>
+    AOS.init();
+  </script>
+  <script>
+    window.addEventListener('load', () => {
+      AOS.init({
+        duration: 1000,
+        once: true
+      });
+      AOS.refresh(); // alle Bilder geladen → Flip funktioniert
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+</body>
+
+</html>

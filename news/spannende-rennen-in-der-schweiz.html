@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spannende Rennen in der Schweiz! - RV Hard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Spannende Rennen in der Schweiz!</h1>
+                    <p class="date">09.05.2019 </p>
+
+                   
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Auf Neuland wagten sich die AthletInnen des RV- Dj's Bikeshop Simplon Hard beim zum Swiss
+                            Bikecup gehörenden Rennen in Buchs. Nicht nur Schnelligkeit, sondern insbesondere Technik
+                            war gefragt. Enge Kurven um Fässer, Auf- und Abfahrten über Stiegen, Balancieren im Stehen
+                            auf Paletten und vieles mehr stand auf dem Programm. Ohne viel Training und bei widrigen
+                            Bedingungen konnten sich unsere Jungs und Mädchen toll platzieren.
+                            <br><br>
+                            In der Kategorie U9 waren Pius Piringer, Linda Tessadri und „Jöni“ Jonas Vogel am Start und
+                            konnten das Rennen mit Platz zwei, fünf und fünfzehn beenden. Eine Kategorie „höher“
+                            schrammte Johanna Piringer knapp am Podest vorbei und wurde Vierte, punktegleich mit Platz
+                            drei. Moritz Vogel landete auf Platz 28. Luca Veljovic (U17) fuhr bei quasi winterlichen
+                            Verhältnissen auf den 71. Rang und komplettierte eine tolle mannschaftliche Leistung.
+                            <br><br>
+                            Spannend dann auch eine Woche später der Renntag beim traditionellen Osterhasenrennen in
+                            Arbon. Bei besten Verhältnissen konnten sich die Biker vom RV DJ's Bikeshop Simplon Hard
+                            spitze platzieren. Neu ins Renngeschehen eingestiegen ist Jannik Lecher und wurde bei seinem
+                            ersten Rennen in der Kategorie U7 Fünfter. Knapp dahinter Matteo Veljovic als Siebter. Für
+                            das Podest sorgte Jonathan Mäser als Dritter. Auch in der Kategorie U9 gab es mit Feilong
+                            Hagspiel einen Rookie, der sein erstes Rennen auf Patz 28 beendete. Ebenfalls neu in dieser
+                            Altersklasse war Jamie Lechner als Vierzehnter. Knapp davor Jonas „Jöni“ Vogel – auch er neu
+                            in der U9 – als Zehnter. Ganz vorne ging es knapp her. Pius Piringer führte lange musste
+                            sich dann aber doch – nicht zuletzt wegen regem „Verkehr“ auf der Strecke mit Platz zwei
+                            zufrieden geben.
+                            <br><br>
+                            Bei den Ladies konnte Linda Tessadri nach einem zweiten Platz im letzten Jahr mit einem
+                            Start Ziel Sieg diesmal ganz oben auf dem Siegertreppchen „Platz nehmen“ Knapp am Stockerl
+                            vorbei fuhr in der Kategorie U11 Moritz „Momo“ Vogel. Nur sechs Sekunden fehlten auf
+                            Edelmetall. 13, 15 und 16 waren die Plätze für Gabriel Mäser, Lean Hinteregger und Lars Wurm
+                            bei einem riesigen Starterfeld von 29 Fahrern. Bei den weiblichen Kolleginnen sorgte Johanna
+                            Piringer für ein Stockerlplatz als Dritte. Luca Veljovic fixierte in der Kategorie U17 den
+                            17 Platz. Bei den Senioren 1 belegte Bernhard Piringer den 21. Platz. Erfreulicherweise
+                            blieb der Sturz von Robert Weinhofer im Training ohne weitere Folgen.
+                            <br><br>
+                            Bereits am kommenden Samstag ist das Team der RV- DJ's Bikeshop Simplon Hard in Thal in der
+                            benachbarten Schweiz im Einsatz.
+
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+          
+        }); </script>
+
+</body>
+
+</html>

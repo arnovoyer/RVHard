@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/navigation.css">
+  <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+  <title>404 – Seite nicht gefunden - RV Hard</title>
+  <meta name="description" content="RV Hard 404">
+  <meta name="keywords" content="RV Hard 404, RV Hard Fehler 404">
+  <meta name="author" content="RV Hard">
+  <style>
+    .container-404 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .text-404 h1 {
+      font-size: 4rem;
+      margin: 0;
+      margin-top: 20px;
+    }
+
+    .text-404 p {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .graphik-404 img {
+      max-width: 500px;
+      height: auto;
+    }
+
+    .button-404 {
+      margin-top: 0px;
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      color: #fff;
+      background-color: none;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .attribution {
+      font-size: 0.5rem;
+      justify-content: right;
+    }
+
+    .attribution a {
+      color: #ffc107;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div id="navigation-container"></div>
+  </header>
+  <div class="container-404">
+    <div class="text-404">
+      <h1>ERROR 404</h1>
+      <p>Diese Seite hat sich wohl verfahren</p>
+    </div>
+    <div class="graphik-404">
+      <img src="/assets/img/404_new1.png" alt="Error 404 Graphik">
+    </div>
+    <div class="button-404">
+      <a href="/index.html" class="button">Zur Startseite</a>
+    </div>
+    <div class="attribution">
+      <p>Designed by <a href="https://www.freepik.com">Freepik</a></p>
+    </div>
+  </div>
+
+</body>
+<footer id="site-footer"></footer>
+
+
+
+<script src="/assets/navigation-loader.js" defer></script>
+<script src="/assets/nav.js"></script>
+<script src="/assets/header-scroll.js" defer></script>
+<script src="/assets/cookie-banner.js" defer></script>
+<script type="text/javascript">
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "tuql0s5dvl");
+</script>
+<script>
+  fetch("/assets/footer.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("site-footer").innerHTML = html;
+    });
+</script>
+
+</html>

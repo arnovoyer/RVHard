@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geschichte - RV Hard</title>
+    <meta name="description" content="RV Hard Geschichte">
+    <meta name="keywords" content="RV Hard Geschichte, Geschichte Radverein">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Beispielstil für cite, falls Sie es verwenden möchten */
+        cite {
+            font-style: italic;
+            color: #333;
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        p {
+            margin-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        p.jahr {
+            font-weight: bold;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(to bottom,
+                    transparent,
+                    #ffc107,
+                    #ffc107,
+                    transparent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Gemeinsame Styles */
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+        }
+
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(6px);
+            padding: 1.5rem 1.7rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-content h3 {
+            display: inline-block;
+            background: rgba(255, 193, 7, 0.15);
+            color: #b38700;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+
+
+        .timeline-content p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+
+
+        .timeline-item:hover .timeline-content {
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
+        }
+
+
+        .timeline-item.left:hover .timeline-content {
+            transform: translateX(-5px);
+        }
+
+        .timeline-item.right:hover .timeline-content {
+            transform: translateX(5px);
+        }
+
+
+        /* Mobile: Linie nach links */
+        @media (max-width: 768px) {
+            .timeline {
+                margin: 30px auto;
+            }
+
+            .timeline::after {
+                left: 16px;
+            }
+
+            .timeline-item {
+                padding-left: 50px;
+                padding-right: 15px;
+            }
+
+            .timeline-point {
+                left: 9px !important;
+            }
+        }
+
+
+        .timeline-point {
+            position: absolute;
+            top: 28px;
+            width: 14px;
+            height: 14px;
+            background: #ffc107;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);
+        }
+
+        .timeline-item.left .timeline-point {
+            right: -7px;
+        }
+
+        .timeline-item.right .timeline-point {
+            left: -7px;
+        }
+
+        .geschichte-abschnitt h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .geschichte-abschnitt>p {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            color: #666;
+        }
+
+        .timeline-item:first-child .timeline-content {
+            background: linear-gradient(135deg, #fff4cc, #ffffff);
+            border-color: rgba(255, 193, 7, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="navigation-container">
+        </div>
+    </header>
+
+    <main class="verein-container">
+        <section class="geschichte-abschnitt">
+            <h2>Unsere Geschichte</h2>
+            <p>
+                Hier möchten wir dir einen
+                Einblick in die bewegte und facettenreiche Geschichte unseres Vereins geben.
+            </p>
+            <div class="timeline">
+                <!-- Ereignisse -->
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>Zukunft</h3>
+                        <p> <strong>Willst du Teil
+                                unserer Geschichte werden?</strong> <a href="mitglied-werden.html">Werde Mitglied</a>
+                            und gestalte
+                            die Zukunft des RV Hard gemeinsam mit uns!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>Heute</h3>
+                        <p>Mit einem Fokus auf die Nachwuchsförderung bereiten wir den weg für die nächsten
+                            100 Jahre Leidenschaft auf zwei Rädern vor!</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>2022</h3>
+                        <p>100-Jahr-Jubiläum mit zahlreichen Veranstaltungen. Der Verein zählt rund 250 Mitglieder.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>2014</h3>
+                        <p>Das MTB-Nightrace in Hard wird erstmals durchgeführt und entwickelt sich zu einem Fixpunkt im
+                            Rennkalender.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>2010er</h3>
+                        <p>Erweiterung um die Sparte Triathlon. Bau eines modernen Fahrradübungsplatzes mit
+                            Unterstützung der Gemeinde.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>2011</h3>
+                        <p>Fusion mit RV DJ’s Bikeshop → Gründung des „ÖAMTC RV DJ’s Bikeshop Simplon Hard“. Stärkung
+                            der Jugendarbeit.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>2000–2001</h3>
+                        <p>Austragung der HRD-Radclassics – ein mehrere Radrennen in Kooperation mit den Radvereinen
+                            Dornbirn & Rankweil.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1990er</h3>
+                        <p>Talente wie Markus Ghesla feiern nationale und internationale Erfolge.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1980er–1990er</h3>
+                        <p>Die „Harder Radsporttage“ entwickeln sich zu bekannten Großveranstaltungen. Jugend- und
+                            Hobbyarbeit wird intensiviert.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1973–1978</h3>
+                        <p>Zwölf Vorarlberger Meistertitel auf Straße, Berg und Bahn. 1976 wird der Namenszusatz „Falke“
+                            gestrichen, um politische Unabhängigkeit zu betonen.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1966</h3>
+                        <p>Tiefpunkt der Mitgliederzahlen: Durch die zunehmende Motorisierung zählt der Verein nur noch
+                            79 Mitglieder.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1960</h3>
+                        <p>Anpassung an den Zeitgeist: Der Verein wird in „Rad- und Mopedfahrerverein Falke Hard“
+                            umbenannt, um auch Mopedfahrer in technischer Hinsicht und Verkehrserziehung zu
+                            schulen.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1950</h3>
+                        <p>Anton Fürst wird Vorarlberger Straßenmeister – der erste große Titel des Vereins..</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1949</h3>
+                        <p>Neuer Ausschuss unter Obmann Oskar Köhlmeier. Neue Statuten werden verabschiedet.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1947</h3>
+                        <p>Nach Kriegsende Wiedergründung am 6. August. Trainings finden erneut im Gasthof Löwen statt.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1930er</h3>
+                        <p>Der Verein übersteht die Weltwirtschaftskrise und wächst stetig weiter. 1937 erreicht er mit
+                            324 Mitgliedern seinen historischen Höchststand.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="zoom-in-right">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1923</h3>
+                        <p>Fahnenweihe am 19. August trotz extremer Inflation. Erste Vereinsrennen wie Langsamfahrten
+                            und Hindernisrennen mit Sachpreisen (Fett, Brot).</p>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="zoom-in-left">
+                    <span class="timeline-point"></span>
+                    <div class="timeline-content">
+                        <h3>1922</h3>
+                        <p>Gründung des Radfahrervereins „Falke“ Hard im Gasthaus Löwen durch 24 radsportbegeisterte
+                            Männer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: false,
+                mirror: true,
+            });
+            AOS.refresh();
+        });
+    </script>
+
+</body>
+
+</html>

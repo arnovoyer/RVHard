@@ -1,0 +1,1180 @@
+header {
+    height: 70px;
+    margin-bottom: 0;
+    /* falls gesetzt */
+}
+
+main {
+    padding-top: 60px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #444;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1rem;
+    /* Aktuelle Größe (Standard ist oft 16px, was 1rem entspricht) */
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Poppins', sans-serif;
+    color: #ffc107;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    margin-top: 2rem
+}
+
+a {
+    color: #ffc107;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #e0a800;
+}
+
+
+
+/* Media Queries für Responsivität */
+@media (max-width: 768px) {
+    main {
+        padding-top: 60px;
+        /* Wenn die mobile Navbar auch 60px hoch ist */
+    }
+
+    .container {
+        flex-direction: column;
+        /* Staple Bild und Text untereinander */
+        align-items: stretch;
+        /* Breite auf 100% ziehen */
+    }
+
+    .top-events-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-verein-wrapper {
+        width: 90%;
+        max-width: 600px;
+        /* Nutze 90% der Bildschirmbreite */
+        margin: 0 auto;
+        /* Zentriere den Container */
+        align-items: center;
+        /* zentriere den Text horizontal */
+        flex-direction: column !important;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 1rem;
+    }
+
+    .hero-verein-wrapper .verein-vorstellung {
+        width: 100%;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .hero-verein-wrapper h1 {
+        font-size: 1.25rem;
+        /* kleinere Schrift für h1 */
+        line-height: 1.4;
+        text-align: center;
+        word-break: normal;
+    }
+
+    .hero-verein-wrapper p {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .hero-verein-wrapper img {
+        width: 100%;
+        /* Bild breiter anzeigen */
+        max-width: 500px;
+        /* aber nicht riesig machen */
+    }
+
+    #news-container {
+        grid-template-columns: 1fr;
+        /* Staple die Artikel auf kleineren Bildschirmen */
+    }
+
+    .membership-options {
+        flex-direction: column;
+        /* Karten untereinander auf kleinen Bildschirmen */
+        align-items: center;
+        /* Zentriert die Karten */
+    }
+
+    .membership-card {
+        width: 90%;
+        /* Nimmt fast die ganze Breite ein */
+    }
+}
+
+
+@media (min-width: 769px) {
+
+    .vorstandsmitglieder {
+        grid-template-columns: repeat(2, 1fr);
+        /* Erzwingt 2 gleich breite Spalten */
+    }
+}
+
+@media (min-width: 1200px) {
+
+
+    .vorstand-container {
+        max-width: 1200px;
+        /* Behalte die maximale Breite des Containers */
+        margin: 2rem auto;
+        padding: 1rem;
+    }
+
+    .vorstandsmitglieder {
+        max-width: 1200px;
+        /* Passe die maximale Breite des Grids an */
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Hero-Bereich */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    /* Beibehalten für die Anordnung innerhalb des Wrappers */
+    flex-direction: column;
+    /* **Füge diese Zeile hinzu!** */
+    align-items: stretch;
+    /* Standardwert, sorgt dafür, dass Kinder die volle Breite einnehmen */
+}
+
+.hero-verein-wrapper {
+    display: flex;
+    align-items: center;
+    /* Vertikal zentrieren */
+    justify-content: flex-end;
+    /* Bild und Text nach rechts schieben */
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Zentriert den Wrapper auf der Seite */
+    padding: 0 1rem;
+    /* Seitliches Padding beibehalten */
+    margin-top: 2rem;
+    /* Füge etwas Abstand zwischen den Events und dem Wrapper hinzu */
+}
+
+.hero-image {
+    width: 50%;
+    /* Nimmt die Hälfte der Wrapper-Breite ein */
+    margin-bottom: 0;
+    box-shadow: none;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.verein-vorstellung {
+    width: 45%;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+
+.bullets h3 {
+    color: #222;
+    /* Standardfarbe für die Überschrift beibehalten */
+    margin-top: 0;
+}
+
+.bullets ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bullets li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.2rem;
+}
+
+.bullets li::before {
+    content: "\2022";
+    /* Bullet-Punkt */
+    color: #ffc107;
+    /* Gelbe Farbe für Bulletpoint */
+    position: absolute;
+    left: 0;
+}
+
+.gelber-button-container {
+    text-align: right;
+    margin-top: 1.5rem;
+}
+
+.gelber-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #ffc107;
+    /* Gelb für den Button-Hintergrund */
+    color: #333 !important;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    border: none;
+    /* Entferne den Standardrahmen */
+}
+
+.gelber-button:hover {
+    background-color: #e0a800;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+    color: #222;
+    /* Oder eine andere Farbe, die gut zu dunklerem Gelb passt */
+}
+
+/* News-Container */
+.news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.news-item {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.news-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.news-content h3 {
+    font-size: 1.3rem;
+    color: #222;
+}
+
+.news-item img.news-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.news-item h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.news-meta {
+    font-size: 0.9rem;
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.news-meta i {
+    color: #ccc;
+}
+
+.news-date {
+    margin-right: 0.5rem;
+}
+
+.news-item p {
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.weiterlesen-button {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.5rem 1rem;
+    background-color: #ffc400;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.weiterlesen-button:hover {
+    background-color: #e0a800;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+    color: #333;
+}
+
+
+/* Footer */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+/*Vorstand Css*/
+.vorstand-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.vorstand-intro {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.vorstand-intro h2 {
+    color: #ffc107;
+    /* Gelbe Farbe für die Überschrift */
+    margin-bottom: 1rem;
+}
+
+.vorstand-intro p {
+    color: #555;
+    line-height: 1.7;
+}
+
+.vorstandsmitglieder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.vorstandsmitglied {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.mitglied-bild {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ddd;
+    /* Platzhalterfarbe */
+    margin: 0 auto 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #777;
+    overflow: hidden;
+    /* Falls später Bilder verwendet werden */
+}
+
+.mitglied-bild img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    /* Für echte Bilder */
+}
+
+.mitglied-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.mitglied-funktion {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/*unser Verein*/
+.verein-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    line-height: 1.7;
+    color: #555;
+}
+
+.verein-container h2 {
+    color: #ffc107;
+    /* Gelbe Farbe für Überschriften */
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.geschichte-abschnitt {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.geschichte-abschnitt h3 {
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+/* Zusätzliche moderne Stile nach Bedarf */
+.highlight {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.jahr {
+    font-style: italic;
+    color: #777;
+    margin-right: 0.5rem;
+}
+
+/** Kontaktformular */
+.kontakt-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: #555;
+    line-height: 1.6;
+}
+
+.kontakt-container h2 {
+    color: #ffc107;
+    /* Gelbe Farbe für Überschriften */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.dokumente-bereich {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.dokumente-bereich h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.dokumente-liste {
+    list-style: none;
+    padding: 0;
+}
+
+.dokumente-liste li {
+    margin-bottom: 0.75rem;
+}
+
+.dokument-link {
+    display: inline-block;
+    color: #ffc107;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.dokument-link:hover {
+    background-color: #e0a800;
+    color: #fff;
+}
+
+.kontaktformular-bereich {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.kontaktformular-bereich h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.form-gruppe {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-eingabe {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    min-height: 100px;
+}
+
+.form-button {
+    /* ... deine bisherigen Button-Stile (ohne background-color) ... */
+    color: #000000;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    background-color: #ffc107;
+    /* Standard-Button-Farbe */
+}
+
+.form-button:hover {
+    background-color: #e0a800;
+    /* Standard-Hover-Farbe */
+}
+
+.kontakt-buttons {
+    display: flex;
+    gap: 1rem;
+    /* Abstand zwischen den Buttons */
+    margin-top: 1rem;
+    /* Abstand zum vorherigen Element */
+}
+
+.kontakt-button-wrapper {
+    flex: 1;
+    /* Nimmt gleichen Platz ein */
+    text-align: center;
+    /* Zentriert den Inhalt innerhalb */
+}
+
+.kontakt-button-wrapper h3 {
+    margin-top: 0;
+    /* Entfernt oberen Abstand der Überschrift */
+    margin-bottom: 0.5rem;
+}
+
+.kontakt-button {
+    background-color: #ffc107;
+    /* Spezifische Farbe für den Kontakt-Button */
+    display: inline-block;
+}
+
+.kontakt-button:hover {
+    background-color: #e0a800;
+    color: #333;
+    /* Spezifische Hover-Farbe */
+}
+
+/*Kontakt Links*/
+main.verein-container a {
+    color: #ffc107;
+    /* Gelb */
+    text-decoration: none;
+    /* Entfernt die standardmäßige Unterstreichung (optional) */
+}
+
+main.verein-container a:hover {
+    color: #e0a800;
+    /* Etwas dunkleres Gelb beim Hovern (optional) */
+    text-decoration: underline;
+    /* Fügt eine Unterstreichung beim Hovern hinzu (optional) */
+}
+
+/* --- Modern Top Events Container --- */
+.top-events-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    /* Behalte den unteren Margin, um Abstand zum nächsten Element zu haben */
+}
+
+.event-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    text-align: center;
+    width: 350px;
+    /* Feste Breite für die Karten */
+}
+
+.event-card h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.event-card .event-date {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.event-card p {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.event-name {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.event-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+}
+
+.event-card.nightrace .event-button {
+    background-color: #ffc107;
+    color: #222;
+}
+
+.event-card.nightrace .event-button:hover {
+    background-color: #e0a800;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+.event-card.upcoming-events .event-button {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.event-card.upcoming-events .event-button:hover {
+    background-color: #e0a800;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+.modern-event-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.modern-event-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.modern-event-list li:last-child {
+    border-bottom: none;
+}
+
+.event-list-date {
+    color: #555;
+    font-weight: bold;
+    width: 100px;
+    /* Feste Breite für das Datum */
+    flex-shrink: 0;
+    /* Verhindert, dass das Datum schrumpft */
+}
+
+.event-list-name {
+    color: #333;
+    flex-grow: 1;
+    /* Lässt den Namen den restlichen Platz einnehmen */
+    text-align: left;
+    margin-left: 1rem;
+}
+
+/* --- Font Awesome Icons (optional) --- */
+/* Du musst Font Awesome in deinem Projekt eingebunden haben, */
+/* falls du die Icons verwenden möchtest. */
+.fa-regular {
+    margin-right: 0.5rem;
+}
+
+/* --- Termine Seite --- */
+/* --- Termine Seite (angepasst) --- */
+.termine-seite .container {
+    max-width: 960px;
+}
+
+.termine-seite h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffc107;
+}
+
+#event-liste {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    row-gap: 5rem;
+    /* Deutlich größerer Wert zum Testen */
+}
+
+.modern-event-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.modern-event-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.modern-event-card h3 {
+    /* Titel */
+    color: #ffc107;
+    margin-top: 0;
+    margin-bottom: 0.1rem;
+    /* Noch weniger Abstand zum Datum */
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.2;
+    /* Verbessert den Zeilenabstand, falls der Titel mehrzeilig ist */
+}
+
+.modern-event-card .event-date-time {
+    /* Datum und Zeit */
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 0.05rem;
+    /* Etwas Abstand vom Titel */
+    margin-bottom: 0.8rem;
+    /* Leichter Abstand zur Beschreibung */
+}
+
+.modern-event-card p {
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.modern-event-card .event-button {
+    margin-top: 1rem;
+}
+
+.modern-event-card .kalender-button {
+    background-color: #6c757d;
+    /* Oder #495057 */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.modern-event-card .kalender-button:hover {
+    background-color: #6c757d;
+    /* Oder #495057 */
+    /
+}
+
+.modern-event-card .event-location {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    /* Für Icon und Text nebeneinander */
+    align-items: center;
+    /* Vertikal zentrieren */
+    gap: 0.3rem;
+    /* Abstand zwischen Icon und Text */
+}
+
+.modern-event-card .event-location i {
+    color: #ffc107;
+    /* Gelbe Farbe für das Location-Icon */
+}
+
+/* Anpassungen für die News-Seite */
+.news-page .container {
+    max-width: 960px;
+    /* Eine typische Containerbreite */
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.news-page h1 {
+    color: #ffc107;
+    /* Verwende Website-Farbe, falls definiert */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Responsives Grid-Layout */
+    gap: 20px;
+}
+
+.news-article {
+    background-color: var(--card-bg, white);
+    /* Verwende Website-Farbe, falls definiert */
+    border: 1px solid var(--border-color, #ddd);
+    /* Verwende Website-Farbe, falls definiert */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in-out;
+}
+
+.news-article:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.news-article h2 {
+    color: var(--heading-color, #333);
+    /* Verwende Website-Farbe, falls definiert */
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.news-article .date {
+    color: var(--text-muted, #777);
+    /* Verwende Website-Farbe, falls definiert */
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.news-article .content {
+    line-height: 1.7;
+    color: var(--text-color, #333);
+    /* Verwende Website-Farbe, falls definiert */
+}
+
+.news-article .news-image {
+    max-width: 600px;
+    /* Beispiel: Setze eine maximale Breite von 600 Pixeln */
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.news-detail-gallery {
+    position: relative;
+    max-width: 600px;
+    /* Deine gewünschte maximale Breite */
+    max-height: 400px;
+    /* Deine gewünschte maximale Höhe */
+    margin: 0 auto 15px;
+    border-radius: 5px;
+    overflow: hidden;
+    /* Wichtig für die Pfeile, weniger für das Bild */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery-image {
+    display: block;
+    max-width: 100%;
+    /* Bild wird nicht breiter als der Container */
+    max-height: 100%;
+    /* Bild wird nicht höher als der Container */
+    object-fit: scale-down;
+    /* Skaliert das Bild nur, wenn es größer als der Container ist */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* ... (Rest des CSS für .gallery-control) ... */
+
+.gallery-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 10;
+}
+
+.gallery-control.prev {
+    left: 10px;
+}
+
+.gallery-control.next {
+    right: 10px;
+}
+
+.news-detail-gallery:hover .gallery-control {
+    opacity: 1;
+}
+
+.news-detail-gallery:hover .gallery-control:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.membership-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* Heller Hintergrund für die Sektion */
+    border-radius: 8px;
+    /* Abgerundete Ecken */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Leichter Schatten */
+    margin-bottom: 30px;
+}
+
+.membership-options {
+    display: flex;
+    /* Für nebeneinander angeordnete Karten */
+    flex-wrap: wrap;
+    /* Erlaubt Umbruch auf kleineren Bildschirmen */
+    gap: 20px;
+    /* Abstand zwischen den Karten */
+    justify-content: center;
+    /* Zentriert die Karten, wenn sie nicht die volle Breite einnehmen */
+    margin-top: 20px;
+}
+
+.membership-card {
+    flex: 1;
+    /* Nimmt verfügbaren Platz ein */
+    min-width: 280px;
+    /* Mindestbreite der Karten, damit sie nicht zu klein werden */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in-out;
+    /* Kleiner Hover-Effekt */
+}
+
+.membership-card:hover {
+    transform: translateY(-5px);
+    /* Karte hebt sich leicht an beim Hover */
+}
+
+.membership-card h2 {
+    color: #ffc107;
+    /* Oder eine Akzentfarbe für die Kartentitel */
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.membership-card ul {
+    list-style: none;
+    /* Entfernt Standard-Listenpunkte */
+    padding: 0;
+    margin-top: 15px;
+}
+
+.membership-card ul li {
+    margin-bottom: 8px;
+    padding-left: 25px;
+    /* Platz für custom Icon */
+    position: relative;
+}
+
+.membership-card ul li::before {
+    content: '\2713';
+    /* Unicode Haken-Symbol */
+    color: #28a745;
+    /* Grüne Farbe für den Haken */
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* --- Stile für Links/Buttons wie bei Kontakt --- */
+/* Dies ist ein Beispiel, wie deine "Button"-Stile aussehen könnten */
+a.button,
+.download-link {
+    /* Verwende eine Klasse für deine Buttons/Links */
+    display: inline-block;
+    background-color: #ffc107;
+    /* Dein blauer Button-Farbe */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+    /* Abstand nach oben */
+}
+
+a.button:hover,
+.download-link:hover {
+    background-color: #e0a800;
+    /* Dunklerer Blauton beim Hover */
+}
+
+/* Speziell für den Download-Link, damit er wie ein Button aussieht */
+.membership-section p a[download] {
+    display: inline-block;
+    background-color: #ffc107;
+    /* Dein blauer Button-Farbe */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+.membership-section p a[download]:hover {
+    background-color: #e0a800;
+}
+
+/* Stile für E-Mail-Link */
+.membership-section p a[href^="mailto:"] {
+    color: #ffc107;
+    /* Farbe für E-Mail-Links */
+    text-decoration: underline;
+}
+
+.membership-section p a[href^="mailto:"]:hover {
+    text-decoration: none;
+}
+
+.social-feed,
+.sponsoren-dank {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.instagram-embed iframe {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sponsoren-logos {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.sponsoren-logos img {
+    max-height: 60px;
+    transition: transform 0.3s ease;
+}
+
+.sponsoren-logos img:hover {
+    transform: scale(1.05);
+}
+
+footer p,
+footer a {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.2rem;
+}
+
+.social-icons {
+    display: flex;
+    /* Damit die Icons nebeneinander sind */
+    justify-content: center;
+    /* Zentriert die Icons horizontal */
+    gap: 1.2rem;
+    /* Abstand zwischen den Icons */
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    font-size: 1.8rem;
+    /* Größe der Icons */
+    transition: color 0.3s ease;
+}
+
+/*cssminifier.com/*

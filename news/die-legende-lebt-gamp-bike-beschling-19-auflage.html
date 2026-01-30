@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Legende lebt! Gamp Bike, Beschling 19. Auflage - RV Hard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Die Legende lebt! Gamp Bike, Beschling 19. Auflage</h1>
+                    <p class="date">12.09.2019 </p>
+
+                    
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Seit 2001 heißt es Anfang September nochmal alle Motivation zusammenzukratzen und beim Gamp
+                            Bike in Beschling an den Start zu gehen. Schon Tage zuvor war zu befürchten, dass das Wetter
+                            schlecht sein würde. Das erklärt das für diese Hillclimbrennen sehr kleine Starterfeld von
+                            nicht mal 100 Teilnehmern. Die Abordnung des RV-Hard konnte sich dennoch sehen lassen: Erich
+                            Feurstein, Elmar Böhler, Ralf Martin, Andreas Renger und ich.
+                            <br><br>
+                            Der Rennverlauf ist schnell beschrieben: Nach ca. 500 m Neutralisation wird beim Dorfbrunnen
+                            in Beschling das Rennen freigegeben. Dann schaut jeder ganz einfach, dass er die 10 km und
+                            1.000 hm schnellstmöglich hinter sich bringt. Die Cracks vom RV-Hard sind im Bezug auf die
+                            Gesamtwertung des Vorarlberger Mountainbike Cups durchwegs gut unterwegs, sodass beim
+                            Finale, das heuer erstmals im Silbertal stattfinden wird, mit einigen Podesplätzen zu
+                            rechnen ist.
+                            <br><br>
+                            Kann nur jedem Radler - egal ob Rennradler oder Biker - empfehlen mal so einen Hillclimb
+                            mitzufahren. Die Stimmung vor und im Rennen ist angespannt;läuft es aber immer 100 % fair
+                            und im Ziel sind eigentlich immer alle zufrieden.
+                            <br><br>
+                            Danke an das Team des Laufclub Beschling für die professionelle Organisation! Der warme Tee
+                            und Kaffee plus die Keckle haben mich in kürzester Zeit wiederbelebt. Neben dem Finale im
+                            Silbertal ist noch das Rennen auf die Furx ausständig, bevor es für die Hillclimb-Gemeinde
+                            in die Winterpause geht.
+                            <br><br>
+                            Ergebnisliste und Bilder gibt es auf:
+                            <br>
+                            <a href="https://www.gampbike.com/">www.gampbike.com</a>
+                            <br>
+
+                            <br>
+                            Freu mich auf ein Wiedersehen, beim Rennen, bei einer Trainingsausfahrt oder in DJ Bikeshop,  
+                            <br>
+                            lieben Gruß Wolfgang
+                            
+
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror:false,
+                once:true
+            });
+  
+        }); </script>
+
+</body>
+
+</html>

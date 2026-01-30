@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unser Verein – RV DJ's Bikeshop Simplon Hard</title>
+    <meta name="description" content="RV Hard Verein">
+    <meta name="keywords" content="RV Hard Verein, RV Hard unser Verein">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="stylesheet" href="/assets/events/verein.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #f5b301;
+            --accent-soft: rgba(245, 179, 1, 0.15);
+            --text-main: #1f2933;
+            --text-muted: #6b7280;
+            --bg-main: #f6f7f9;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', 'Open Sans', sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, #f6f7f9 0%, #ffffff 100%);
+            color: var(--text-main);
+            line-height: 1.65;
+        }
+
+        /* Container etwas luftiger */
+        .verein-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* === Sections als moderne Cards === */
+        section {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 20px;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+        }
+
+        /* subtiler Accent-Streifen */
+        section::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 20px;
+            bottom: 20px;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), #ffd866);
+            border-radius: 4px;
+            opacity: 0.9;
+        }
+
+        section:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === Headlines moderner === */
+        h1,
+        h2 {
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* Accent-Unterstrich */
+        h2::after {
+            content: "";
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent);
+            margin-top: 0.5rem;
+            border-radius: 2px;
+        }
+
+        /* Text ruhiger */
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text-muted);
+        }
+
+
+        /* Links cleaner */
+        .mail-link {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .mail-link:hover {
+            text-decoration: underline;
+        }
+
+        /* === Vorstand modernisiert === */
+        .vorstand-kurz {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .vorstand-kurz .mitglied {
+            text-align: center;
+        }
+
+        .vorstand-kurz .mitglied img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 0.8rem;
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.15),
+                0 0 0 6px var(--accent-soft);
+            transition: transform 0.3s ease;
+        }
+
+        .vorstand-kurz .mitglied img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="navigation-container"></div>
+    </header>
+
+    <main class="verein-container">
+        <section class="intro-section" data-aos="fade-up">
+            <h1>Wir sind der RV DJ's Bikeshop Simplon Hard</h1>
+            <p>Deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon – bei uns finden Radsportlerinnen
+                und Radsportler jeden Alters und Leistungsniveaus ein Zuhause. Wir leben Gemeinschaft, fördern Talente
+                und lieben den Radsport in all seinen Facetten.</p>
+        </section>
+
+        <section class="geschichte-section" data-aos="fade-up" data-aos-delay="300">
+            <h2>Unsere Geschichte</h2>
+            <p>Seit unserer Gründung prägt der RV Hard die Radsportszene in Vorarlberg. Aus einer kleinen Gruppe
+                radsportbegeisterter Jugendlicher ist über die Jahre ein erfolgreicher, aktiver Verein geworden, der
+                weit über die Landesgrenzen hinaus bekannt ist.</p>
+            <a href="/verein/geschichte.html" class="gelber-button">Mehr über unsere Geschichte</a>
+        </section>
+
+        <section class="vorstand-section" data-aos="fade-up" data-aos-delay="600">
+            <h2>Der Vorstand</h2>
+            <p>Unser Vorstand besteht aus engagierten Radsport-Enthusiasten, die mit viel Herzblut den Verein leiten,
+                Veranstaltungen organisieren und sich für die Anliegen unserer Mitglieder einsetzen.</p>
+
+            <div class="vorstand-kurz">
+                <div class="mitglied">
+                    <img src="/assets/img/vorstand/Herby-Tessadri.jpg" alt="Herby Tessadri">
+                    <h3>Herby Tessadri</h3>
+                    <p>Obmann</p>
+                </div>
+                <div class="mitglied">
+                    <img src="/assets/img/vorstand/Dagmar-Rudolph.jpg" alt="Dagmar Rudolph">
+                    <h3>Dagmar Rudolph</h3>
+                    <p>Obfrau / Schriftführerin</p>
+                </div>
+                <div class="mitglied">
+                    <img src="/assets/img/vorstand/Simon-Kuenz.jpg" alt="Simon Künz">
+                    <h3>Simon Künz</h3>
+                    <p>Obmann / Sportl. Leiter Triathlon</p>
+                </div>
+            </div>
+
+            <a href="/verein/vorstand.html" class="gelber-button">Zum gesamten Vorstand</a>
+        </section>
+
+
+        <section class="mitglied-section" data-aos="fade-up">
+            <h2>Mitglied werden</h2>
+            <p>Du möchtest Teil unserer Radsport-Community werden? Super! Egal ob Hobbyfahrer:in, Nachwuchstalent oder
+                ambitionierte:r Wettkampfsportler:in – bei uns bist du willkommen.</p>
+            <a href="/verein/mitglied-werden.html" class="gelber-button">Jetzt Mitglied werden</a>
+        </section>
+
+        <section class="kontakt-section" data-aos="fade-up">
+            <h2>Du hast Fragen?</h2>
+            <p>Wir helfen dir gerne weiter! Schreib uns eine E-Mail an:</p>
+            <p><a href="mailto:vorstand@rvhard.at" class="mail-link">vorstand@rvhard.at</a></p>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+            AOS.refresh();
+        });
+    </script>
+</body>
+
+</html>

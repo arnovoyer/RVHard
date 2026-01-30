@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Archiv - RV Hard</title>
+    <meta name="description" content="RV Hard News-Archiv">
+    <meta name="keywords"
+        content="News-Archiv, RV Hard News Archiv, RV Hard News-Archiv">
+    <meta name="author" content="RV Hard">
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <style>
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-container select,
+        .filter-container input[type="search"] {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            min-width: 150px;
+            flex: 1;
+        }
+
+        .filter-container input[type="search"] {
+            flex: 2;
+        }
+
+        @media (max-width: 600px) {
+            .filter-container select {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main class="news-page">
+        <section class="container">
+            <h1 class="section-title">News Archiv</h1>
+
+            <div class="filter-container">
+                <select id="year-filter" class="year-filter">
+                    <option value="all">Alle Jahre</option>
+                </select>
+
+                <select id="tag-filter">
+                    <option value="all">Alle Sparten</option>
+                </select>
+
+                <input type="search" id="news-search" placeholder="News durchsuchen…" class="news-search" />
+            </div>
+
+            <div id="news-archive-list" class="news-container"></div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavigation();
+            loadNewsArchive();
+        });
+
+        async function loadNavigation() {
+            try {
+                const response = await fetch('/assets/navigationneu.html');
+                if (!response.ok) throw new Error(`Status: ${response.status}`);
+                document.getElementById('navigation-container').innerHTML = await response.text();
+                initNavigationMenu();
+            } catch (error) {
+                console.error('Fehler beim Laden der Navigation:', error);
+            }
+        }
+
+        async function loadNewsArchive() {
+            const container = document.getElementById('news-archive-list');
+            const yearFilter = document.getElementById('year-filter');
+            const tagFilter = document.getElementById('tag-filter');
+            const searchInput = document.getElementById('news-search');
+
+            try {
+                const response = await fetch('/data/news/news.json');
+                if (!response.ok) throw new Error(`Fehler beim Laden: ${response.status}`);
+                const news = await response.json();
+
+                news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                /* ===== Jahre ===== */
+                const years = [...new Set(news.map(n => new Date(n.date).getFullYear()))]
+                    .sort((a, b) => b - a);
+
+                years.forEach(year => {
+                    const opt = document.createElement('option');
+                    opt.value = year;
+                    opt.textContent = year;
+                    yearFilter.appendChild(opt);
+                });
+
+                /* ===== Tags ===== */
+                const allTags = new Set();
+                news.forEach(n => n.tags?.forEach(t => allTags.add(t)));
+
+                const allowedTags = ['MTB', 'Triathlon', 'Rennrad', "Rennbericht", 'Rennen', "Nachwuchs", "HC", "Verein","LM","Cyclocross","AYC","Nightrace","SBS","ÖM"];
+
+                [...allTags].sort().forEach(tag => {
+                    if (!allowedTags.includes(tag)) return; // alles andere ignorieren
+                    const opt = document.createElement('option');
+                    opt.value = tag;
+                    opt.textContent = tag;
+                    tagFilter.appendChild(opt);
+                });
+
+                /* ===== Anzeige ===== */
+                function displayNews() {
+                    const selectedYear = yearFilter.value;
+                    const selectedTag = tagFilter.value;
+                    const search = searchInput.value.toLowerCase();
+
+                    container.innerHTML = '';
+
+                    const filtered = news.filter(n => {
+                        const yearMatch =
+                            selectedYear === 'all' ||
+                            new Date(n.date).getFullYear() == selectedYear;
+
+                        const tagMatch =
+                            selectedTag === 'all' ||
+                            (n.tags && n.tags.includes(selectedTag));
+
+                        const searchMatch =
+                            search === '' ||
+                            n.title.toLowerCase().includes(search) ||
+                            n.content.toLowerCase().includes(search);
+
+                        return yearMatch && tagMatch && searchMatch;
+                    });
+
+                    if (!filtered.length) {
+                        container.innerHTML = '<p>Keine News gefunden.</p>';
+                        return;
+                    }
+
+                    filtered.forEach(article => {
+                        const date = new Date(article.date).toLocaleDateString('de-DE', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric'
+                        });
+
+                        const el = document.createElement('article');
+                        el.className = 'news-item';
+
+                        el.innerHTML = `
+                    ${article.image ? `<img src="${article.image}" alt="${article.title}" class="news-image">` : ''}
+                    <div class="news-content" data-aos="flip-up">
+                        <h3>${article.title}</h3>
+                        <div class="news-meta">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <span class="news-date">${date}</span> |
+                            <span class="news-author">${article.author || ''}</span>
+                        </div>
+                        <p>${article.content}</p>
+                        <a class="gelber-button"
+                           style="align-self:flex-start;margin-top:auto"
+                           href="${article.link || `news/${article.slug}.html`}">
+                           Weiterlesen
+                        </a>
+                    </div>
+                `;
+                        container.appendChild(el);
+                    });
+
+                    AOS.refresh();
+                }
+
+                /* ===== Events ===== */
+                yearFilter.addEventListener('change', displayNews);
+                tagFilter.addEventListener('change', displayNews);
+                searchInput.addEventListener('input', displayNews);
+
+                displayNews();
+
+            } catch (error) {
+                console.error(error);
+                container.textContent = 'Fehler beim Laden der Nachrichten.';
+            }
+        }
+    </script>
+
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                mirror: false,
+            });
+        });
+    </script>
+
+</body>
+
+</html>
