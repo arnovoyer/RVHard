@@ -208,33 +208,6 @@ a:hover {
     text-align: left;
 }
 
-
-.bullets h3 {
-    color: #222;
-    /* Standardfarbe für die Überschrift beibehalten */
-    margin-top: 0;
-}
-
-.bullets ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.bullets li {
-    padding: 0.5rem 0;
-    position: relative;
-    padding-left: 1.2rem;
-}
-
-.bullets li::before {
-    content: "\2022";
-    /* Bullet-Punkt */
-    color: #ffc107;
-    /* Gelbe Farbe für Bulletpoint */
-    position: absolute;
-    left: 0;
-}
-
 .gelber-button-container {
     text-align: right;
     margin-top: 1.5rem;
@@ -338,25 +311,6 @@ a:hover {
     margin-bottom: 1rem;
     color: #555;
 }
-
-.weiterlesen-button {
-    align-self: flex-start;
-    margin-top: auto;
-    padding: 0.5rem 1rem;
-    background-color: #ffc400;
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.weiterlesen-button:hover {
-    background-color: #e0a800;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
-    color: #333;
-}
-
 
 /* Footer */
 footer {
@@ -481,12 +435,6 @@ footer {
     color: #007bff;
 }
 
-.jahr {
-    font-style: italic;
-    color: #777;
-    margin-right: 0.5rem;
-}
-
 /** Kontaktformular */
 .kontakt-container {
     max-width: 900px;
@@ -543,63 +491,6 @@ footer {
     color: #fff;
 }
 
-.kontaktformular-bereich {
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.kontaktformular-bereich h3 {
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.form-gruppe {
-    margin-bottom: 1.25rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.form-eingabe {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem;
-}
-
-.form-textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    min-height: 100px;
-}
-
-.form-button {
-    /* ... deine bisherigen Button-Stile (ohne background-color) ... */
-    color: #000000;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    background-color: #ffc107;
-    /* Standard-Button-Farbe */
-}
-
-.form-button:hover {
-    background-color: #e0a800;
-    /* Standard-Hover-Farbe */
-}
 
 .kontakt-buttons {
     display: flex;
@@ -620,33 +511,6 @@ footer {
     margin-top: 0;
     /* Entfernt oberen Abstand der Überschrift */
     margin-bottom: 0.5rem;
-}
-
-.kontakt-button {
-    background-color: #ffc107;
-    /* Spezifische Farbe für den Kontakt-Button */
-    display: inline-block;
-}
-
-.kontakt-button:hover {
-    background-color: #e0a800;
-    color: #333;
-    /* Spezifische Hover-Farbe */
-}
-
-/*Kontakt Links*/
-main.verein-container a {
-    color: #ffc107;
-    /* Gelb */
-    text-decoration: none;
-    /* Entfernt die standardmäßige Unterstreichung (optional) */
-}
-
-main.verein-container a:hover {
-    color: #e0a800;
-    /* Etwas dunkleres Gelb beim Hovern (optional) */
-    text-decoration: underline;
-    /* Fügt eine Unterstreichung beim Hovern hinzu (optional) */
 }
 
 /* --- Modern Top Events Container --- */
@@ -1009,92 +873,6 @@ main.verein-container a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Leichter Schatten */
     margin-bottom: 30px;
-}
-
-.membership-options {
-    display: flex;
-    /* Für nebeneinander angeordnete Karten */
-    flex-wrap: wrap;
-    /* Erlaubt Umbruch auf kleineren Bildschirmen */
-    gap: 20px;
-    /* Abstand zwischen den Karten */
-    justify-content: center;
-    /* Zentriert die Karten, wenn sie nicht die volle Breite einnehmen */
-    margin-top: 20px;
-}
-
-.membership-card {
-    flex: 1;
-    /* Nimmt verfügbaren Platz ein */
-    min-width: 280px;
-    /* Mindestbreite der Karten, damit sie nicht zu klein werden */
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease-in-out;
-    /* Kleiner Hover-Effekt */
-}
-
-.membership-card:hover {
-    transform: translateY(-5px);
-    /* Karte hebt sich leicht an beim Hover */
-}
-
-.membership-card h2 {
-    color: #ffc107;
-    /* Oder eine Akzentfarbe für die Kartentitel */
-    margin-top: 0;
-    font-size: 1.4em;
-}
-
-.membership-card ul {
-    list-style: none;
-    /* Entfernt Standard-Listenpunkte */
-    padding: 0;
-    margin-top: 15px;
-}
-
-.membership-card ul li {
-    margin-bottom: 8px;
-    padding-left: 25px;
-    /* Platz für custom Icon */
-    position: relative;
-}
-
-.membership-card ul li::before {
-    content: '\2713';
-    /* Unicode Haken-Symbol */
-    color: #28a745;
-    /* Grüne Farbe für den Haken */
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-/* --- Stile für Links/Buttons wie bei Kontakt --- */
-/* Dies ist ein Beispiel, wie deine "Button"-Stile aussehen könnten */
-a.button,
-.download-link {
-    /* Verwende eine Klasse für deine Buttons/Links */
-    display: inline-block;
-    background-color: #ffc107;
-    /* Dein blauer Button-Farbe */
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
-    /* Abstand nach oben */
-}
-
-a.button:hover,
-.download-link:hover {
-    background-color: #e0a800;
-    /* Dunklerer Blauton beim Hover */
 }
 
 /* Speziell für den Download-Link, damit er wie ein Button aussieht */

@@ -7,7 +7,8 @@
     <meta name="description" content="RV Hard">
     <meta name="keywords"
         content="RV Hard, Radverein, Radverein Vorarlberg, Radverein Unterland, Triathlonverein, Triathlon Verein Vorarlberg, Triathlon Verein, Traithlonverein Vorarlberg, Radverein, Rad Verein, Rad Verein Vorarlberg, Rad Verein Unterland, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Simplon, Hard, Unterland, ">
-    <meta name="author" content="RV Hard">
+    <meta name="author"
+        content="Wir sind der RV DJ's Bikeshop Simplon Hard - dein Verein für Radsport & Triathlon im Unterland">
     <title>RV Hard</title>
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -163,6 +164,19 @@
             color: #555;
         }
 
+        @media (max-width: 480px) {
+            .fakten-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+                margin: 0 auto;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .fakt {
+                padding: 1.5rem;
+            }
+        }
 
 
         .cta-mitglied {
@@ -172,31 +186,34 @@
             margin: 2rem 0;
         }
 
-        .newsletter {
-            text-align: center;
-            margin: 2rem 0;
+        section {
+            margin-top: 5rem;
         }
 
-        .mitglied-button {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background-color: #ffc107;
-            color: #333 !important;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-weight: bold;
-
-            border: none;
+        .gemeinschaft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .mitglied-button:hover {
-            background-color: #e0a800;
+        /* Mobile fix */
+        @media (max-width: 480px) {
+            .gemeinschaft-grid {
+                grid-template-columns: 1fr;
+                /* Karten untereinander */
+                max-width: 360px;
+                margin: 2rem auto 0 auto;
+                gap: 1rem;
+            }
 
-            color: #222;
+            .gemeinschaft-item h3 {
+                font-size: 1.4rem;
+            }
 
-            /* Oder eine andere Farbe, die gut zu dunklerem Gelb passt */
+            .gemeinschaft-item p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -403,7 +420,7 @@
                 <div class="fakt" data-aos="flip-right" data-aos-delay="600">
                     <div class="icon">🏅</div>
                     <h3>100+</h3>
-                    <p>Jahre Tradition</p>
+                    <p>Jahre Tradition <br> Seit 1922</p>
                 </div>
                 <div class="fakt" data-aos="flip-right" data-aos-delay="1200">
                     <div class="icon">👶</div>
@@ -431,29 +448,29 @@
             <div class="gemeinschaft-grid"
                 style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5rem; margin-top:2rem;">
                 <div class="gemeinschaft-item" data-aos="fade-up">
-                    <img src="/assets/img/gemeinschaft/Rennrad.webp" alt="Rennrad Sparte"
-                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <img src="/assets/img/gemeinschaft/Rennrad.webp" loading="lazy" decoding="async"
+                        alt="Rennrad Sparte" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
                     <h3>Rennrad</h3>
                     <p>Gemeinsam auf der Straße unterwegs, Training & Rennen.</p>
                 </div>
 
                 <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="100">
-                    <img src="/assets/img/gemeinschaft/MTB1.webp" alt="MTB Sparte"
+                    <img src="/assets/img/gemeinschaft/MTB1.webp" loading="lazy" decoding="async" alt="MTB Sparte"
                         style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
                     <h3>MTB</h3>
                     <p>Abenteuer im Gelände, Techniktraining und Teamfahrten.</p>
                 </div>
 
                 <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="200">
-                    <img src="/assets/img/gemeinschaft/triathlon.webp" alt="Triathlon Sparte"
-                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <img src="/assets/img/gemeinschaft/triathlon.webp" loading="lazy" decoding="async"
+                        alt="Triathlon Sparte" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
                     <h3>Triathlon</h3>
                     <p>Schwimmen, Radfahren, Laufen – gemeinsam ans Ziel.</p>
                 </div>
 
                 <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="300">
-                    <img src="/assets/img/gemeinschaft/Gemeinschaft.webp" alt="Kinder & Jugend"
-                        style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                    <img src="/assets/img/gemeinschaft/Gemeinschaft.webp" loading="lazy" decoding="async"
+                        alt="Gemeinschaft" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
                     <h3>Gemeinschaft</h3>
                     <p>Gemeinsam Sport, Freundschaften und Erlebnisse erleben.</p>
                 </div>

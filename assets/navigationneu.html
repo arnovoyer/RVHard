@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigation Bar With Dropdown | Ludiflex</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/navigation.css">
     <style>
         .nav-main-menu.active {
@@ -34,8 +37,8 @@
             display: none;
         }
 
-        .dropdown.open > .dropdown-content,
-        .sub-dropdown.open > .sub-dropdown-content {
+        .dropdown.open>.dropdown-content,
+        .sub-dropdown.open>.sub-dropdown-content {
             display: block;
         }
 
@@ -59,8 +62,23 @@
 
         @media only screen and (max-width: 794px) {
             .nav-main-menu {
-                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                max-height: 0;
+                /* Start geschlossen */
+                overflow: hidden;
+                /* Versteckt überlaufenden Inhalt */
                 flex-direction: column;
+                background: var(--bg-color);
+                transition: max-height 0.35s ease-out;
+                z-index: 99;
+            }
+
+            .nav-main-menu.active {
+                max-height: 1000px;
+                /* Genug, damit alles sichtbar wird */
             }
 
             .menu-toggle {
@@ -94,20 +112,108 @@
                 background-color: transparent;
                 color: #ffc107;
             }
+
+            /* Dropdowns im Mobile */
+            .dropdown-content,
+            .sub-dropdown-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.35s ease-out;
+            }
+
+            .dropdown.active-dropdown>.dropdown-content,
+            .sub-dropdown.active-sub-dropdown>.sub-dropdown-content {
+                max-height: 500px;
+                /* genug Höhe für Untermenüs */
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        @media (max-width: 794px) {
+            .menu-toggle {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 30px;
+                /* länger für sauberes X */
+                height: 24px;
+                /* Abstand zwischen Balken */
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 1001;
+            }
+
+            .menu-toggle span {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 3px;
+                background: var(--primary-color);
+                border-radius: 3px;
+                transition: transform 0.35s ease, opacity 0.25s ease;
+                transform-origin: center;
+            }
+
+            /* SAUBERES X */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(10px) rotate(45deg);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+
+            .nav-main-menu li ul {
+                display: none;
+                flex-direction: column;
+                padding-left: 1rem;
+            }
+
+            .nav-main-menu li.open>ul {
+                display: flex;
+            }
+
+            .nav-main-menu li>ul {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.35s ease;
+            }
+
+            .nav-main-menu li.open>ul {
+                max-height: 1000px;
+                /* genug für alle */
+            }
+
         }
     </style>
 </head>
+
 <body>
     <nav class="nav">
         <div class="logo">
             <a href="/index.html">
-                <img src="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.webp" alt="RV DJ's Bikeshop Simplon Hard Logo" height="120" width="255">
+                <img src="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.webp"
+                    alt="RV DJ's Bikeshop Simplon Hard Logo" height="120" width="255">
             </a>
         </div>
 
-        <button class="menu-toggle"><i class="fa fa-bars"></i></button>
+        <button class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
         <ul class="nav-main-menu">
-            
+
             <li><a href="/index.html" class="nav-link">Home</a></li>
             <li class="dropdown">
                 <a href="#" class="nav-link">Verein <i class="fa fa-chevron-down"></i></a>
@@ -151,9 +257,12 @@
                     <li class="sub-dropdown">
                         <a href="#" class="dropdown-link">Fußach Triathlon <i class="fa fa-chevron-right"></i></a>
                         <ul class="sub-dropdown-content" style="border-radius:10px;background: rgba(51,51,51,0.95);">
-                            <li><a href="/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html">3.JolSport Triathlon Fußach</a></li>
-                            <li><a href="/events/fussach-triathlon/2.-jolsport-triathlon-fussach.html">2.JolSport Triathlon Fußach</a></li>
-                            <li><a href="/events/fussach-triathlon/1.-jolsport-triathlon-fussach.html">1.JolSport Triathlon Fußach</a></li>
+                            <li><a href="/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html">3.JolSport
+                                    Triathlon Fußach</a></li>
+                            <li><a href="/events/fussach-triathlon/2.-jolsport-triathlon-fussach.html">2.JolSport
+                                    Triathlon Fußach</a></li>
+                            <li><a href="/events/fussach-triathlon/1.-jolsport-triathlon-fussach.html">1.JolSport
+                                    Triathlon Fußach</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -169,33 +278,76 @@
     <script>
         const toggleBtn = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-main-menu');
+
+        toggleBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active'); // Menü öffnen/schließen
+            toggleBtn.classList.toggle('active'); // Balken zu X
+            document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
+        });
+
         const dropdowns = document.querySelectorAll('.dropdown');
         const subDropdowns = document.querySelectorAll('.sub-dropdown');
 
-        toggleBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+        //toggleBtn.addEventListener('click', () => {
+        //navMenu.classList.toggle('active');
+        //});
 
-        dropdowns.forEach(drop => {
-            drop.addEventListener('click', (e) => {
-                e.stopPropagation();
-                drop.classList.toggle('open');
-                dropdowns.forEach(d => { if (d !== drop) d.classList.remove('open'); });
+        //dropdowns.forEach(drop => {
+        //drop.addEventListener('click', (e) => {
+        //e.stopPropagation();
+        //drop.classList.toggle('open');
+        //dropdowns.forEach(d => { if (d !== drop) d.classList.remove('open'); });
+        //});
+        //});
+
+        //subDropdowns.forEach(sub => {
+        //sub.addEventListener('click', (e) => {
+        //e.stopPropagation();
+        //sub.classList.toggle('open');
+        //subDropdowns.forEach(s => { if (s !== sub) s.classList.remove('open'); });
+        //});
+        //});
+
+        //document.body.addEventListener('click', () => {
+        //dropdowns.forEach(drop => drop.classList.remove('open'));
+        //subDropdowns.forEach(sub => sub.classList.remove('open'));
+        //});
+        document.querySelectorAll('.nav-main-menu li > a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                if (window.innerWidth > 794) return;
+
+                const parentLi = this.parentElement;
+                const submenu = parentLi.querySelector('ul');
+
+                if (submenu) {
+                    e.preventDefault(); // Navigation stoppen
+                    parentLi.classList.toggle('open');
+                }
+            });
+        });
+        document.querySelectorAll('.nav-main-menu li > a').forEach(link => {
+            link.addEventListener('click', function (e) {
+
+                if (window.innerWidth > 794) return;
+
+                const li = this.parentElement;
+                const submenu = li.querySelector(':scope > ul');
+
+                if (submenu) {
+                    e.preventDefault();
+
+                    // Nur Geschwister auf gleicher Ebene schließen
+                    Array.from(li.parentElement.children).forEach(sibling => {
+                        if (sibling !== li) sibling.classList.remove('open');
+                    });
+
+                    li.classList.toggle('open');
+                }
             });
         });
 
-        subDropdowns.forEach(sub => {
-            sub.addEventListener('click', (e) => {
-                e.stopPropagation();
-                sub.classList.toggle('open');
-                subDropdowns.forEach(s => { if (s !== sub) s.classList.remove('open'); });
-            });
-        });
 
-        document.body.addEventListener('click', () => {
-            dropdowns.forEach(drop => drop.classList.remove('open'));
-            subDropdowns.forEach(sub => sub.classList.remove('open'));
-        });
     </script>
 </body>
+
 </html>

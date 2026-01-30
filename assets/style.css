@@ -60,10 +60,6 @@ a:hover {
     color: #e0a800;
 }
 
-
-
-
-
 /* Media Queries für Responsivität */
 @media (max-width: 768px) {
     main {
@@ -79,15 +75,21 @@ a:hover {
     }
 
     .top-events-container {
+        width: 90%;
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
+
         flex-direction: column;
+        /* ← DAS fehlt */
         align-items: center;
+        /* sauber zentriert */
     }
 
     .event-card {
-        width: 90%;
-        /* passt sich dem Screen an */
-        max-width: 400px;
-        /* bleibt handlich und schön zentriert */
+        width: 100%;
+        max-width: 100%;
     }
 
     .hero-verein-wrapper {
@@ -208,13 +210,13 @@ a:hover {
     /* Zentriert den Wrapper auf der Seite */
     padding: 0 1rem;
     /* Seitliches Padding beibehalten */
-    margin-top: 2rem;
+    margin-top: 0rem;
     /* Füge etwas Abstand zwischen den Events und dem Wrapper hinzu */
 
 }
 
 .hero-image {
-    width: 50%;
+    width: 80%;
     /* Nimmt die Hälfte der Wrapper-Breite ein */
     margin-bottom: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -430,7 +432,7 @@ footer {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top, rgba(255,193,7,0.08), transparent 60%);
+    background: radial-gradient(circle at top, rgba(255, 193, 7, 0.08), transparent 60%);
     pointer-events: none;
 }
 
@@ -469,7 +471,7 @@ footer {
     position: relative;
     transition: all 0.35s ease;
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0,0,0,0.03);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     overflow: hidden;
     cursor: default;
 }
@@ -514,6 +516,7 @@ footer {
     background: #ffc107;
     text-decoration: none;
 }
+
 .vorstandsmitglied:hover .mitglied-name {
     color: #000;
 }
