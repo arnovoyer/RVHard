@@ -915,23 +915,6 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sponsoren-logos {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.sponsoren-logos img {
-    max-height: 60px;
-    transition: transform 0.3s ease;
-}
-
-.sponsoren-logos img:hover {
-    transform: scale(1.05);
-}
-
 footer p,
 footer a {
     font-size: 0.9rem;
