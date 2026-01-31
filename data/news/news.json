@@ -1,7 +1,7 @@
     [
         
         {
-            "id": 96,
+            "id": 97,
             "slug": "abradeln-2025",
             "title": "Abradeln 2025",
             "date": "2025-10-20",
@@ -9,12 +9,20 @@
             "tags": ["Verein", "MTB", "Rennrad", "Triathlon", "Abradeln", "2025"]
         },
         {
-            "id": 95,
+            "id": 96,
             "slug": "summer-bike-series-2025",
             "title": "Summer Bike Series 2025",
             "date": "2025-07-07",
             "content": "Unsere Summer Bike Series war in diesem Jahr wieder ein voller Erfolg..",
             "tags": ["Verein", "SBS", "Rennrad", "Triathlon", "Rennen", "2025"]
+        },
+        {
+            "id": 95,
+            "slug": "dachbau-schaffer-nightrace-2025",
+            "title": "Dachbau Schaffer Nightrace 2025",
+            "date": "2025-06-01",
+            "content": "Das Harder Nightrace war dieses Jahr wieder ein voller Erfolg...",
+            "tags": ["Verein", "Nightrace", "MTB", "Rennbericht", "Rennen", "2025"]
         },
         {
             "id": 94,

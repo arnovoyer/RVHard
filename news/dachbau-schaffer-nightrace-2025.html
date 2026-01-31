@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dachbau Schaffer Nightrace 2025 - RV Hard
+    </title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/share-buttons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/news/news.css">
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container">
+        </nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1>Dachbau Schaffer Nightrace 2025</h1>
+                    <p class="date">01.06.2025</p>
+
+                    <!--<div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                        <div class="news-detail-gallery" id="gallery-rennbericht1">
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/trainingsrennen-fussach-2023_1.webp');">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/trainingsrennen-fussach-2023_2.webp'); display: none;">
+                            </div>
+                            <div class="gallery-slide"
+                                style="background-image: url('/assets/img/News/trainingsrennen-fussach-2023_3.webp'); display: none;">
+                            </div>
+
+                        </div>
+                        <button class="gallery-control prev">&lt;</button>
+                        <button class="gallery-control next">&gt;</button>
+                    </div>-->
+                    <div class="news-content-detail" data-aos="fade-up">
+                        <p>Das Harder Nightrace war dieses Jahr wieder ein voller Erfolg. Von den ersten Startschüssen am Vormittag bis zum
+                            großen Finale war der Stedepark fest in der Hand der Radsportler.
+                            <br><br>
+                            <b>Der Vormittag:</b>
+                            <br>
+                            Schon ab 08:30 Uhr herrschte reges Treiben bei der Startnummernausgabe. Den sportlichen
+                            Auftakt machten unsere Jüngsten:
+                            <br>
+                            Den Anfang machten die <b>U07</b>, die mit vollem Eifer ihre Runden drehten.
+                            <br><br>
+                            Gefolgt von den Klassen <b>U09 bis U13</b>, bei denen die Renndauer bereits auf bis zu 25
+                            Minuten
+                            anstieg. Es ist jedes Jahr beeindruckend zu sehen, mit wie viel Ehrgeiz und Freude schon die
+                            Kleinsten dabei sind. Die erste große Siegerehrung um 13:15 Uhr war dann auch das verdiente
+                            Highlight für die Kids.
+                            <br><br>
+                            <b> Der Nachmittag:</b>
+                            <br>
+                            Ab 14:15 Uhr zog das Tempo spürbar an. In der Klasse <b>U15 </b>wurde bereits 35 Minuten
+                            lang um
+                            jede Position gekämpft. Um 15:30 Uhr folgte dann das Hauptfeld der <b>U17 bis hin zu den
+                                Masters</b>. Über eine Stunde Renndauer plus die finale Runde verlangten den Fahrern
+                            alles ab –
+                            hier wurde Radsport auf höchstem Niveau geboten.
+                            <br>
+                            Mit der großen Siegerehrung um 17:00 Uhr ging ein langer, intensiver Renntag zu Ende.
+                            <br><br>
+                            <b>Ein herzliches Dankeschön:</b>
+                            <br>
+                            An alle Fahrer, die für spannende Rennen gesorgt haben.
+                            <br>
+                            An das Organisationsteam.
+                            <br>
+                            An alle Eltern, Fans und Zuschauer für die großartige Unterstützung an der Strecke!
+                            <br>
+                            Vielen Dank ebenfalls an alle Sponsoren, die solche Events möglich machen
+                            <br><br>
+                            Das Harder Nightrace 2025 war ein voller Erfolg - wir freuen uns auf die nächste Ausgabe
+                        </p>
+                    </div>
+                </div>
+                <aside id="related-news" class="more-news">
+                    <h2>Weitere Neuigkeiten</h2>
+                    <div class="related-news-list" data-aos="flip-up"></div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+    <footer id="site-footer"></footer>
+
+    <script>
+        fetch("/assets/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("site-footer").innerHTML = html;
+            });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const copyBtn = document.querySelector(".copy-link");
+            if (copyBtn) {
+                copyBtn.addEventListener("click", e => {
+                    e.preventDefault();
+                    navigator.clipboard.writeText(window.location.href);
+                    copyBtn.classList.add("copied");
+                    setTimeout(() => copyBtn.classList.remove("copied"), 2000);
+                });
+            }
+        });
+    </script>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/news/news.js"></script>
+    <script src="/assets/news/related-news-loader.js"></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="/assets/news/share-buttons.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                mirror: false,
+                once: true
+            });
+        }); </script>
+
+
+
+</body>
+
+</html>
