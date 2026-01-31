@@ -365,9 +365,4 @@ section.container {
   grid-column: 1 / -1;
   height: 0;
 }
-.news-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 2rem;
-}
 
