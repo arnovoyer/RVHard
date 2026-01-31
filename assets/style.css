@@ -75,9 +75,9 @@ a:hover {
     }
 
     .top-events-container {
-        width: 90%;
+        width: 100%;
         max-width: 360px;
-        margin: 0 auto;
+        margin: 10px auto;
         padding: 0;
         box-sizing: border-box;
 
@@ -709,9 +709,9 @@ footer {
     display: flex;
     justify-content: center;
     gap: 2rem;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
     max-width: 1200px;
-    margin: 0 auto 2rem;
+    /*margin: 0 auto 2rem;
     /* Behalte den unteren Margin, um Abstand zum nächsten Element zu haben */
 }
 

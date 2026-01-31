@@ -47,3 +47,45 @@ function initNavigationMenu() {
         subDropdowns.forEach(sub => sub.classList.remove('open'));
     });
 }
+function initNavigationMenu() {
+
+  const toggleBtn = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-main-menu');
+
+  if (!toggleBtn || !navMenu) {
+    console.warn('Navigation nicht gefunden');
+    return;
+  }
+
+  // Burger / X
+  toggleBtn.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    toggleBtn.classList.toggle('active');
+    document.body.classList.toggle(
+      'no-scroll',
+      navMenu.classList.contains('active')
+    );
+  });
+
+  // Dropdowns (Mobile)
+  document.querySelectorAll('.nav-main-menu li > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+
+      if (window.innerWidth > 794) return;
+
+      const li = this.parentElement;
+      const submenu = li.querySelector(':scope > ul');
+
+      if (submenu) {
+        e.preventDefault();
+
+        // Geschwister schließen
+        Array.from(li.parentElement.children).forEach(sibling => {
+          if (sibling !== li) sibling.classList.remove('open');
+        });
+
+        li.classList.toggle('open');
+      }
+    });
+  });
+}
