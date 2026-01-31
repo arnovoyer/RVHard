@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="/assets/news/news.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <style>
+        .news-archiv-wrapper {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+
+        /*.news-archiv-wrapper {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }*/
+    </style>
 </head>
 
 <body>
@@ -81,7 +95,7 @@
                 const archivButton = document.createElement('div');
                 archivButton.className = "news-archiv-wrapper";
                 archivButton.innerHTML = `
-    <a href="/news-archiv.html" class="gelber-button" style="align-self: flex-start;margin-top: auto;">
+    <a href="/news-archiv.html" class="gelber-button">
         Zum News-Archiv
     </a>
 `;
