@@ -1,13 +1,22 @@
     [
         
         {
-            "id": 95,
+            "id": 96,
             "slug": "abradeln-2025",
             "title": "Abradeln 2025",
             "date": "2025-10-20",
             "content": "Am Samstag, den 18. Oktober 2025, war es so weit: Der RV Hard lud zum traditionellen Abradeln ein, ...",
             "tags": ["Verein", "MTB", "Rennrad", "Triathlon", "Abradeln", "2025"]
-        },{
+        },
+        {
+            "id": 95,
+            "slug": "summer-bike-series-2025",
+            "title": "Summer Bike Series 2025",
+            "date": "2025-07-07",
+            "content": "Unsere Summer Bike Series war in diesem Jahr wieder ein voller Erfolg..",
+            "tags": ["Verein", "SBS", "Rennrad", "Triathlon", "Rennen", "2025"]
+        },
+        {
             "id": 94,
             "slug": "rennbericht-cadfish-luebeck-juni-2024",
             "title": "Rennbericht CadFish Lübeck Juni 2024!",
