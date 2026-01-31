@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontakt - RV Hard</title>
     <meta name="description" content="RV Hard Kontakt">
-    <meta name="keywords"
-        content="RV Hard Kontakt, Kontakt Radverein">
+    <meta name="keywords" content="RV Hard Kontakt, Kontakt Radverein">
     <meta name="author" content="RV Hard">
     <link rel="stylesheet" href="/assets/style.css">
     <link rel="stylesheet" href="/assets/navigation.css">
@@ -32,6 +31,31 @@
         .kontakt-hinweis {
             font-size: 0.9rem;
             color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .kontakt-buttons {
+                flex-direction: column;
+                /* untereinander */
+                gap: 1.25rem;
+                align-items: stretch;
+            }
+
+            .kontakt-button-wrapper {
+                width: 100%;
+            }
+
+            .kontakt-button-wrapper .gelber-button {
+                width: 100%;
+                justify-content: center;
+                /* Button-Text zentriert */
+            }
+        }
+        .kontakt-summary{
+            text-indent: 25px;
+        }
+        .kontakt-sum{
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -65,18 +89,18 @@
             <h3>Häufige Fragen</h3>
 
             <details>
-                <summary>Wie werde ich Mitglied?</summary>
-                <p> Über das Online-Formular. Nach Prüfung melden wir uns bei dir.</p>
+                <summary class="kontakt-sum">Wie werde ich Mitglied?</summary>
+                <p  class="kontakt-summary"> Über das Online-Formular. Nach Prüfung melden wir uns bei dir.</p>
             </details>
 
             <details>
-                <summary>Welche Sparten gibt es?</summary>
-                <p> MTB, Rennrad und Triathlon.</p>
+                <summary class="kontakt-sum">Welche Sparten gibt es?</summary>
+                <p class="kontakt-summary"> MTB, Rennrad und Triathlon.</p>
             </details>
 
             <details>
-                <summary>Gibt es Trainings für Anfänger?</summary>
-                <p> Ja. Schreib uns einfach.</p>
+                <summary class="kontakt-sum">Gibt es Trainings für Anfänger?</summary>
+                <p class="kontakt-summary"> Ja. Schreib uns einfach.</p>
             </details>
         </section>
 
