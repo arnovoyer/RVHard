@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .pop()
         .replace('.html', '');
 
-    fetch('/data/News/news.json')
+    fetch('/data/news/news.json')
         .then(response => {
             if (!response.ok) throw new Error("news.json konnte nicht geladen werden");
             return response.json();
