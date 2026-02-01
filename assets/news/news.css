@@ -1,82 +1,99 @@
 /* assets/news-gallery.css */
 
 .news-detail-gallery-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 400px; /* Limitiert die Breite auf großen Bildschirmen */
-    aspect-ratio: 1 / 1; /* ersetzt die feste Höhe */
-    margin: 20px auto;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  /* Limitiert die Breite auf großen Bildschirmen */
+  aspect-ratio: 1 / 1;
+  /* ersetzt die feste Höhe */
+  margin: 20px auto;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 
 .news-detail-gallery {
-    display: flex; /* Um die Slides nebeneinander zu halten (für JS-Animation) */
-    width: 100%; /* Passt sich dem Wrapper an */
-    height: 100%; /* Passt sich dem Wrapper an */
-    position: relative; /* Für absolute Positionierung der Slides, falls nötig */
+  display: flex;
+  /* Um die Slides nebeneinander zu halten (für JS-Animation) */
+  width: 100%;
+  /* Passt sich dem Wrapper an */
+  height: 100%;
+  /* Passt sich dem Wrapper an */
+  position: relative;
+  /* Für absolute Positionierung der Slides, falls nötig */
 }
 
 .gallery-slide {
-    flex-shrink: 0; /* Verhindert, dass Slides schrumpfen */
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center center; /* Bild im Container zentrieren */
-    background-size: contain; /* Bild vollständig anzeigen, ohne es zu beschneiden */
-    /* transition: opacity 0.5s ease-in-out; */ /* Optional für Fading-Effekt */
-    /* position: absolute; top: 0; left: 0; */ /* Wenn man Fading statt Side-Scrolling macht */
+  flex-shrink: 0;
+  /* Verhindert, dass Slides schrumpfen */
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* Bild im Container zentrieren */
+  background-size: contain;
+  /* Bild vollständig anzeigen, ohne es zu beschneiden */
+  /* transition: opacity 0.5s ease-in-out; */
+  /* Optional für Fading-Effekt */
+  /* position: absolute; top: 0; left: 0; */
+  /* Wenn man Fading statt Side-Scrolling macht */
 }
 
 /* Stil für die Navigations-Buttons des Sliders */
 .gallery-control {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1.5em;
-    border-radius: 5px;
-    z-index: 10; /* Stellt sicher, dass die Buttons über den Bildern liegen */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1.5em;
+  border-radius: 5px;
+  z-index: 10;
+  /* Stellt sicher, dass die Buttons über den Bildern liegen */
 }
 
 .gallery-control.prev {
-    left: 10px;
+  left: 10px;
 }
 
 .gallery-control.next {
-    right: 10px;
+  right: 10px;
 }
 
 .gallery-control:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .news-layout {
   display: flex;
-  gap: 2rem; /* Abstand zwischen Text und Sidebar */
+  gap: 2rem;
+  /* Abstand zwischen Text und Sidebar */
   align-items: flex-start;
 }
 
 /* Hauptinhalt links - ca. 65% Breite */
 #news-detail-container {
-  flex: 3;          /* macht den Textbereich breiter */
-  max-width: 100%;  /* optional – lässt mehr Breite zu */
+  flex: 3;
+  /* macht den Textbereich breiter */
+  max-width: 100%;
+  /* optional – lässt mehr Breite zu */
 }
 
 
 #related-news {
   flex: 0 0 30%;
   max-width: 30%;
-  margin-left: auto; /* Schiebt die Sidebar so weit wie möglich nach rechts */
-  padding-left: 20px; /* Abstand zum Haupttext */
+  margin-left: auto;
+  /* Schiebt die Sidebar so weit wie möglich nach rechts */
+  padding-left: 20px;
+  /* Abstand zum Haupttext */
   box-sizing: border-box;
 }
 
@@ -85,12 +102,13 @@
 .more-news {
   flex: 1;
   max-width: 280px;
-  margin-top: 40px; /* verschiebt die Box etwas nach unten */
+  margin-top: 40px;
+  /* verschiebt die Box etwas nach unten */
 }
 
 .more-news h2 {
-    font-size: 1.5em;
-    margin-bottom: 20px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 .related-news-list {
@@ -103,13 +121,13 @@
   border-radius: 10px;
   background-color: #fff;
   padding: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .related-news-item:hover {
   transform: scale(1.03);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -117,63 +135,67 @@
 
 
 .related-news-link {
-    display: flex;
-    text-decoration: none;
-    color: inherit;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
 }
 
 .related-news-thumb img {
-    width: 150px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
 }
 
 .related-news-text {
-    flex: 1;
+  flex: 1;
 }
 
 .related-news-text h3 {
-    margin: 0 0 5px;
-    font-size: 1.1rem;
+  margin: 0 0 5px;
+  font-size: 1.1rem;
 }
 
 .related-news-text p {
-    margin: 0;
-    color: #666;
+  margin: 0;
+  color: #666;
 }
+
 section.container {
   display: flex;
   gap: 40px;
   align-items: flex-start;
   padding-right: 20px;
 }
+
 .news-detail-main {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* Optional: Du möchtest Galerie + Text als Spalte mit kleinerer Breite */
 #news-detail-container {
-    flex: 0 0 60%;
-    max-width: 60%;
+  flex: 0 0 60%;
+  max-width: 60%;
 }
+
 .related-news-tags {
-    margin-top: 0.5em;
+  margin-top: 0.5em;
 }
+
 .related-news-tags .tag {
-    display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
-    font-size: 0.75em;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-right: 5px;
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 5px;
 }
 
 @media (max-width: 768px) {
@@ -188,21 +210,21 @@ section.container {
   }
 
   #related-news {
-  flex: 1 1 100%;
-  max-width: 100%;
-  margin-left: 0;
-  padding-left: 0;
-  padding-right: 0;
-  box-sizing: border-box;
-  overflow: hidden;
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
 
   .more-news {
-  width: 100%;
-  max-width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 
   .related-news-list {
@@ -235,54 +257,60 @@ section.container {
     padding: 0 10px;
   }
 
-    .news-detail-gallery-wrapper {
+  .news-detail-gallery-wrapper {
     width: 100%;
     max-width: 100%;
     margin: 20px 0;
   }
 }
+
 .news-search {
-    width: 90%;
-    max-width: 600px;
-    margin: 1rem auto;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    display: block;
+  width: 90%;
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: block;
 }
+
 .filter-container {
-    display: flex;
-    justify-content: flex-end; /* Rechts ausrichten */
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  /* Rechts ausrichten */
+  margin-bottom: 1rem;
 }
 
 .year-filter {
-    appearance: none; /* Standard-Dropdown entfernen */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    min-width: 180px; /* etwas breiter */
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.8rem center; /* mehr Abstand vom Text */
-    background-size: 0.65rem auto;
-    cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  /* Standard-Dropdown entfernen */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-width: 180px;
+  /* etwas breiter */
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  /* mehr Abstand vom Text */
+  background-size: 0.65rem auto;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .year-filter:hover {
-    border-color: #e0a800;
+  border-color: #e0a800;
 }
 
 .year-filter:focus {
-    outline: none;
-    border-color: #e0a800;
-    box-shadow: 0 0 5px rgba(0, 119, 204, 0.5);
+  outline: none;
+  border-color: #e0a800;
+  box-shadow: 0 0 5px rgba(0, 119, 204, 0.5);
 }
 
 /* --- Lightbox Styles (zusätzlich) --- */
@@ -290,9 +318,11 @@ section.container {
 .lightbox {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.9);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -315,7 +345,7 @@ section.container {
 /* Buttons in der Lightbox */
 .lightbox button {
   position: absolute;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
   font-size: 2rem;
@@ -325,19 +355,22 @@ section.container {
   z-index: 10000;
   transition: background 0.3s ease;
 }
+
 .lightbox button:hover {
-  background: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .lightbox .close-btn {
   top: 20px;
   right: 30px;
 }
+
 .lightbox .prev-btn {
   left: 30px;
   top: 50%;
   transform: translateY(-50%);
 }
+
 .lightbox .next-btn {
   right: 30px;
   top: 50%;
@@ -350,19 +383,21 @@ section.container {
     max-width: 95%;
     max-height: 80%;
   }
+
   .lightbox button {
     font-size: 1.5rem;
     padding: 0.3rem 0.8rem;
   }
 }
+
 /* Überschrift-Abstand nur auf News-Seiten anpassen */
 #news-detail-container h1:first-child,
 #news-detail-container h2:first-child {
-  margin-top: 0.5rem; /* oder 0 */
+  margin-top: 0.5rem;
+  /* oder 0 */
 }
 
 .news-break {
   grid-column: 1 / -1;
   height: 0;
 }
-
