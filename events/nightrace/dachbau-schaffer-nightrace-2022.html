@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/navigation.css">
     <link rel="stylesheet" href="/assets/events/nightrace.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
@@ -22,14 +23,14 @@
     </header>
 
     <main class="nightrace-container">
-        <section class="danke-section">
+        <section data-aos="zoom-in" class="danke-section">
             <h1>Danke für eure Teilnahme!</h1>
             <p>Das Dachbau Schaffer Nightrace 2022 war ein voller Erfolg – dank euch! Wir bedanken uns bei allen
                 Fahrer:innen, Helfer:innen, Sponsor:innen und Zuschauer:innen für diesen unvergesslichen Tag im
                 Stedepark.</p>
         </section>
 
-        <section class="ergebnisse-section">
+        <section class="ergebnisse-section" data-aos="zoom-in">
             <h2>Ergebnisse</h2>
             <p>Die offiziellen Resultate findest du hier:</p>
 
@@ -45,7 +46,7 @@
             </div>
         </section>
 
-        <section class="info-section">
+        <section class="info-section" data-aos="zoom-out">
             <h2>Allgemeine Informationen</h2>
             <p>
                 Das spektakuläre Radrennen fand unter Flutlicht im Stedepark statt und bot spannende Wettkämpfe und eine
@@ -60,12 +61,12 @@
             </ul>
         </section>
 
-        <section class="strecken-section">
+        <section class="strecken-section" data-aos="fade-up">
             <h2>Streckenverlauf</h2>
             <p>Das Nightrace fand auf einem 1,1 km langen Kurs statt – schnell, technisch, herausfordernd.</p>
         </section>
 
-        <table class="zeitplan-tabelle">
+        <table class="zeitplan-tabelle" data-aos="fade-up">
             <thead>
                 <tr>
                     <th>Uhrzeit</th>
@@ -116,7 +117,7 @@
             </tbody>
         </table>
 
-        <section class="pdf-section">
+        <section class="pdf-section" data-aos="fade-up">
             <h2>Infoblatt & Ausschreibung</h2>
             <p>Hier kannst du die <strong>Ausschreibung</strong> und den <strong>Streckenplan</strong> zum Nightrace
                 2022 ansehen und herunterladen:</p>
@@ -132,7 +133,7 @@
             </p>
         </section>
 
-        <section class="pdf-section">
+        <section class="pdf-section" data-aos="fade-up">
             <h3>Ergebnisse vergangener Jahre</h3>
             <ul>
                 <li><a href="/events/nightrace/dachbau-schaffer-nightrace-2025.html" class="gelber-button"
@@ -147,7 +148,7 @@
             </ul>
         </section>
 
-        <section class="partner-sponsoren-section">
+        <section class="partner-sponsoren-section" data-aos="zoom-out">
             <h2>Sponsoren</h2>
             <p>Ein großer Dank an unsere Sponsoren, die das Nightrace 2022 unterstützt haben.</p>
         </section>
@@ -162,12 +163,18 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
-
-
     <script src="/assets/navigation-loader.js"></script>
     <script src="/assets/nav.js"></script>
     <script src="/assets/cookie-banner.js" defer></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+            AOS.refresh();
+        }); </script>
 </body>
 
 </html>

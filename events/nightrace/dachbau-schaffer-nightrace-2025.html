@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/navigation.css">
     <link rel="stylesheet" href="/assets/events/nightrace.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
@@ -23,26 +24,28 @@
     </header>
 
     <main class="nightrace-container">
-        <h1>Dachbau Schaffer Nightrace 2025</h1>
-        <section class="danke-section">
+        <h1 data-aos="zoom-in">Dachbau Schaffer Nightrace 2025</h1>
+        <section class="danke-section" data-aos="zoom-in">
             <h1>Danke für eure Teilnahme!</h1>
             <p>Das Dachbau Schaffer Nightrace 2025 war ein voller Erfolg – dank euch! Wir bedanken uns bei allen
                 Fahrer:innen, Helfer:innen, Sponsor:innen und Zuschauer:innen für diesen unvergesslichen Tag im
                 Stedepark.</p>
         </section>
-
-        <div class="consent-placeholder" data-type="iframe" data-src="https://my.raceresult.com/337287/results/"
-            data-height="700" style="padding: 2rem; text-align: center; background: #f9f9f9;
+        <section class="anmeldung-section" data-aos="zoom-in">
+            <h2>Ergebnisse</h2>
+            <p>Hier findest du die offiziellen Ergebnisse</p>
+            <div class="consent-placeholder" data-type="iframe" data-src="https://my.raceresult.com/337287/results/"
+                data-height="700" style="padding: 2rem; text-align: center; background: #f9f9f9;
      border: 1px solid #ea800e; border-radius: 8px;">
-            <p>Bitte akzeptiere die Cookies, um die Ergebnisse zu sehen.</p>
-            <button class="accept-cookies-btn" style="margin-top:1rem; padding:0.5rem 1rem; background:#ffc107;
+                <p>Bitte akzeptiere die Cookies, um die Ergebnisse zu sehen.</p>
+                <button class="accept-cookies-btn" style="margin-top:1rem; padding:0.5rem 1rem; background:#ffc107;
            color:#fff; border:none; border-radius:5px; cursor:pointer;">
-                Cookies akzeptieren
-            </button>
-        </div>
+                    Cookies akzeptieren
+                </button>
+            </div>
+        </section>
 
-
-        <section class="info-section">
+        <section class="info-section" data-aos="zoom-out">
             <h2>Allgemeine Informationen</h2>
             <p>
                 Willkommen beim Dachbau Schaffer Nightrace 2025! Das spektakuläre Radrennen findet wieder statt und
@@ -58,7 +61,7 @@
             </ul>
         </section>
 
-        <section class="strecken-section">
+        <section class="strecken-section" data-aos="fade-up">
             <h2>Streckenverlauf</h2>
             <p>
                 Das Nightrace findet auf einem 1,1 km langen Kurs statt, der durch den Stedepark führt. Der Kurs ist
@@ -67,7 +70,7 @@
             <p>Detaillierte Informationen zum Streckenprofil folgen in Kürze.</p>
         </section>
 
-        <table class="zeitplan-tabelle">
+        <table class="zeitplan-tabelle" data-aos="fade-up">
             <thead>
                 <tr>
                     <th data-label="Uhrzeit">Uhrzeit</th>
@@ -124,7 +127,7 @@
             </tbody>
         </table>
 
-        <section class="pdf-section">
+        <section class="pdf-section" data-aos="fade-up">
             <h2>Infoblatt & Ausschreibung</h2>
             <p>
                 Hier kannst du den <strong>Technical Guide zum Nightrace 2025</strong> ansehen und herunterladen:
@@ -137,8 +140,7 @@
             </p>
         </section>
 
-
-        <section class="pdf-section">
+        <section class="pdf-section" data-aos="fade-up">
             <h3>Ergebnisse vergangener Jahre</h3>
             <p>Links zu den Ergebnissen vergangener Nightrace-Veranstaltungen findest du hier:</p>
             <ul>
@@ -154,7 +156,7 @@
             </ul>
         </section>
 
-        <section class="partner-sponsoren-section">
+        <section class="partner-sponsoren-section" data-aos="zoom-out">
             <h2>Sponsoren</h2>
             <p>Ein herzlicher Dank geht an unsere Sponsoren, die das Dachbau Schaffer Nightrace 2025
                 möglich machen.</p>
@@ -171,15 +173,19 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
-
-
     <script src="/assets/navigation-loader.js"></script>
     <script src="/assets/nav.js"></script>
     <script src="/assets/cookie-banner.js" defer></script>
     <script src="/assets/cookie-loader.js" defer></script>
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+            AOS.refresh();
+        }); </script>
 </body>
 
 </html>
