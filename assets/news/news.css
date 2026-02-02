@@ -471,14 +471,12 @@ section.container {
 
 .news-page .container {
   max-width: 960px;
-  /* Eine typische Containerbreite */
   margin: 20px auto;
   padding: 20px;
 }
 
 .news-page h1 {
   color: #ffc107;
-  /* Verwende Website-Farbe, falls definiert */
   margin-bottom: 20px;
   text-align: center;
 }

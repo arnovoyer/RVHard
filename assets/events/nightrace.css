@@ -1,14 +1,12 @@
 .nightrace-container {
     max-width: 1000px;
-    /* Oder eine andere maximale Breite für den Inhalt */
     margin: 20px auto;
     padding: 0 20px;
 }
 
 .nightrace-container h1,
 .nightrace-container h2 {
-    color: #ffc107;
-    /* Oder deine Vereinsfarbe */
+    color: #111;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -43,7 +41,6 @@
 .registration-button {
     display: inline-block;
     background-color: #ffc107;
-    /* Gelber Button */
     color: #333;
     padding: 12px 25px;
     border-radius: 5px;
@@ -55,7 +52,6 @@
 
 .registration-button:hover {
     background-color: #e0a800;
-    /* Dunkleres Gelb beim Hover */
     color: #333;
 }
 
