@@ -1,0 +1,321 @@
+.hero-verein-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    margin-top: 0rem;
+}
+
+.hero-image {
+    width: 80%;
+    margin-bottom: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 20px;
+}
+
+.hero-image:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+}
+.hero-image {
+    width: 80%;
+    margin-bottom: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 20px;
+}
+
+.hero-image:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.verein-vorstellung {
+    width: 45%;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    text-align: left;
+    overflow: hidden;
+
+}
+
+.verein-vorstellung:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+@media (max-width:768px) {
+    .top-events-container {
+        width: 100%;
+        max-width: 360px;
+        margin: 10px auto;
+        padding: 0;
+        box-sizing: border-box;
+
+        flex-direction: column;
+        /* ← DAS fehlt */
+        align-items: center;
+        /* sauber zentriert */
+    }
+
+    .event-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-verein-wrapper {
+        width: 90%;
+        max-width: 600px;
+        margin: 0 auto;
+        align-items: center;
+        flex-direction: column !important;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 1rem;
+    }
+
+    .hero-verein-wrapper .verein-vorstellung {
+        width: 100%;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .hero-verein-wrapper h1 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        text-align: center;
+        word-break: normal;
+    }
+
+    .hero-verein-wrapper p {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .hero-verein-wrapper img {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    #news-container {
+        grid-template-columns: 1fr;
+    }
+}
+.news-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.news-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.news-content h3 {
+    font-size: 1.3rem;
+    color: #222;
+}
+
+.news-item img.news-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.news-item h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.news-meta {
+    font-size: 0.9rem;
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.news-meta i {
+    color: #ccc;
+}
+
+.news-date {
+    margin-right: 0.5rem;
+}
+
+.news-item p {
+    margin-bottom: 1rem;
+    color: #555;
+}
+.top-events-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 1rem;
+    max-width: 1200px;
+    /*margin: 0 auto 2rem;
+    /* Behalte den unteren Margin, um Abstand zum nächsten Element zu haben */
+}
+
+.event-card,
+.fakt,
+.news-item {
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+}
+
+.event-card:hover,
+.fakt:hover {
+    transform: translateY(-4px);
+}
+
+.event-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    padding: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    width: 350px;
+    /* Feste Breite für die Karten */
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+}
+
+.event-card h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.event-card .event-date {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.event-card p {
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.event-name {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.modern-event-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.modern-event-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.modern-event-list li:last-child {
+    border-bottom: none;
+}
+
+.event-list-date {
+    color: #555;
+    font-weight: bold;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.event-list-name {
+    color: #333;
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 1rem;
+}
+.instagram-embed iframe {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.instagram-feed {
+    text-align: center;
+    margin: 3rem auto;
+    max-width: 1200px;
+}
+.instagram-feed h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.instagram-feed .embedsocial-hashtag {
+    max-width: 1100px;
+    /* Breiter auf großen Bildschirmen */
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .instagram-feed .embedsocial-hashtag {
+        max-width: 100%;
+        /* Auf kleinen Bildschirmen wieder volle Breite */
+    }
+}

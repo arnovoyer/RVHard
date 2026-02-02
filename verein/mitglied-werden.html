@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mitglied werden - RV Hard</title>
     <meta name="description" content="RV Hard Mitglied werden">
-    <meta name="keywords" content="RV Hard Mitglied, RV Hard Mitglied werden, Mitglied Radverein, Mitglied werden Radverein">
+    <meta name="keywords"
+        content="RV Hard Mitglied, RV Hard Mitglied werden, Mitglied Radverein, Mitglied werden Radverein">
     <meta name="author" content="RV Hard">
     <link rel="stylesheet" href="/assets/style.css">
     <link rel="stylesheet" href="/assets/navigation.css">
@@ -53,6 +54,25 @@
 
         .membership-card li {
             margin-bottom: 0.3rem;
+        }
+
+        @media (max-width:768px) {
+            .membership-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .membership-card {
+                width: 90%;
+                align-items: center;
+            }
+        }
+
+        .membership-section {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
         }
     </style>
 </head>

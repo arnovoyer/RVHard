@@ -41,10 +41,7 @@ h1,
 h2,
 h3 {
     font-family: 'Poppins', sans-serif;
-
     color: #111;
-
-
     line-height: 1.2;
     margin-bottom: 1rem;
     margin-top: 2rem
@@ -69,120 +66,12 @@ a:hover {
 
     .container {
         flex-direction: column;
-        /* Staple Bild und Text untereinander */
         align-items: stretch;
-        /* Breite auf 100% ziehen */
-    }
-
-    .top-events-container {
-        width: 100%;
-        max-width: 360px;
-        margin: 10px auto;
-        padding: 0;
-        box-sizing: border-box;
-
-        flex-direction: column;
-        /* ← DAS fehlt */
-        align-items: center;
-        /* sauber zentriert */
-    }
-
-    .event-card {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .hero-verein-wrapper {
-        width: 90%;
-        max-width: 600px;
-        /* Nutze 90% der Bildschirmbreite */
-        margin: 0 auto;
-        /* Zentriere den Container */
-        align-items: center;
-        /* zentriere den Text horizontal */
-        flex-direction: column !important;
-    }
-
-    .hero-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .hero-image {
-        width: 100%;
-        max-width: 600px;
-        margin-bottom: 1rem;
-    }
-
-    .hero-verein-wrapper .verein-vorstellung {
-        width: 100%;
-        font-size: 1rem;
-        text-align: center;
-    }
-
-    .hero-verein-wrapper h1 {
-        font-size: 1.25rem;
-        /* kleinere Schrift für h1 */
-        line-height: 1.4;
-        text-align: center;
-        word-break: normal;
-    }
-
-    .hero-verein-wrapper p {
-        font-size: 1rem;
-        text-align: center;
-    }
-
-    .hero-verein-wrapper img {
-        width: 100%;
-        /* Bild breiter anzeigen */
-        max-width: 500px;
-        /* aber nicht riesig machen */
     }
 
     #news-container {
         grid-template-columns: 1fr;
         /* Staple die Artikel auf kleineren Bildschirmen */
-    }
-
-    .membership-options {
-        flex-direction: column;
-        /* Karten untereinander auf kleinen Bildschirmen */
-        align-items: center;
-        /* Zentriert die Karten */
-    }
-
-    .membership-card {
-        width: 90%;
-        /* Nimmt fast die ganze Breite ein */
-        align-items: center;
-    }
-}
-
-
-@media (min-width: 769px) {
-
-    .vorstandsmitglieder {
-        grid-template-columns: repeat(2, 1fr);
-        /* Erzwingt 2 gleich breite Spalten */
-    }
-}
-
-@media (min-width: 1200px) {
-
-
-    .vorstand-container {
-        max-width: 1200px;
-        /* Behalte die maximale Breite des Containers */
-        margin: 2rem auto;
-        padding: 1rem;
-    }
-
-    .vorstandsmitglieder {
-        max-width: 1200px;
-        /* Passe die maximale Breite des Grids an */
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 
@@ -197,93 +86,6 @@ a:hover {
     /* **Füge diese Zeile hinzu!** */
     align-items: stretch;
     /* Standardwert, sorgt dafür, dass Kinder die volle Breite einnehmen */
-}
-
-.hero-verein-wrapper {
-    display: flex;
-    align-items: center;
-    /* Vertikal zentrieren */
-    justify-content: flex-end;
-    /* Bild und Text nach rechts schieben */
-    max-width: 1200px;
-    margin: 0 auto;
-    /* Zentriert den Wrapper auf der Seite */
-    padding: 0 1rem;
-    /* Seitliches Padding beibehalten */
-    margin-top: 0rem;
-    /* Füge etwas Abstand zwischen den Events und dem Wrapper hinzu */
-
-}
-
-.hero-image {
-    width: 80%;
-    /* Nimmt die Hälfte der Wrapper-Breite ein */
-    margin-bottom: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 20px;
-}
-
-.hero-image:hover {
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-
-}
-
-
-.hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    border-radius: 10px;
-}
-
-.verein-vorstellung {
-    width: 45%;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
-    text-align: left;
-    overflow: hidden;
-
-}
-
-.verein-vorstellung:hover {
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.bullets h3 {
-    color: #222;
-    /* Standardfarbe für die Überschrift beibehalten */
-    margin-top: 0;
-}
-
-.bullets ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.bullets li {
-    padding: 0.5rem 0;
-    position: relative;
-    padding-left: 1.2rem;
-}
-
-.bullets li::before {
-    content: "\2022";
-    /* Bullet-Punkt */
-    color: #ffc107;
-    /* Gelbe Farbe für Bulletpoint */
-    position: absolute;
-    left: 0;
 }
 
 .gelber-button {
@@ -307,7 +109,7 @@ a:hover {
 }
 
 a.gelber-button {
-    color: #1a1a1a;
+    color: #111;
 }
 
 
@@ -332,74 +134,6 @@ a.gelber-button {
     }
 }
 
-.news-item {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.news-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-}
-
-.news-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.news-content {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.news-content h3 {
-    font-size: 1.3rem;
-    color: #222;
-}
-
-.news-item img.news-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-}
-
-.news-item h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.news-meta {
-    font-size: 0.9rem;
-    color: #777;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.news-meta i {
-    color: #ccc;
-}
-
-.news-date {
-    margin-right: 0.5rem;
-}
-
-.news-item p {
-    margin-bottom: 1rem;
-    color: #555;
-}
-
-
 /* Footer */
 footer {
     background-color: #343a40;
@@ -410,566 +144,19 @@ footer {
     margin-top: 2rem;
 }
 
-/*Vorstand Css*/
-.vorstand-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-}
-
-.vorstand-intro {
-    margin-bottom: 3rem;
-    padding: 2.5rem 2rem;
-    background: linear-gradient(135deg, #ffffff, #fafafa);
-    border-radius: 18px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.vorstand-intro::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top, rgba(255, 193, 7, 0.08), transparent 60%);
-    pointer-events: none;
-}
-
-.vorstand-intro h2 {
-    color: #ffc107;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    letter-spacing: 0.3px;
-}
-
-.vorstand-intro p {
-    color: #555;
-    line-height: 1.8;
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-
-
-.vorstandsmitglieder {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2.2rem;
-    margin-top: 2.5rem;
-    perspective: 1200px;
-}
-
-
-
-
-.vorstandsmitglied {
-    background: linear-gradient(180deg, #ffffff, #fbfbfb);
-    border-radius: 18px;
-    padding: 2rem 1.5rem 1.8rem;
-    text-align: center;
-    position: relative;
-    transition: all 0.35s ease;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    overflow: hidden;
-    cursor: default;
-}
-
-.vorstandsmitglied::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 5px;
-    width: 100%;
-    background: linear-gradient(90deg, #ffc107, #f5b301);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.vorstandsmitglied:hover::before {
-    opacity: 1;
-}
-
-.vorstandsmitglied:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-}
-
-.mitglied-mail {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.6rem;
-    font-size: 0.85rem;
-    color: #666;
-    text-decoration: none;
-    padding: 0.35rem 0.7rem;
-    border-radius: 999px;
-    background: #f3f3f3;
-    transition: all 0.25s ease;
-}
-
-.mitglied-mail:hover {
-    color: #1a1a1a;
-    background: #ffc107;
-    text-decoration: none;
-}
-
-.vorstandsmitglied:hover .mitglied-name {
-    color: #000;
-}
-
-.mitglied-bild {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    margin: 0 auto 1.2rem;
-    overflow: hidden;
-    background: #eee;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-
-.vorstandsmitglied:hover .mitglied-bild {
-    transform: scale(1.08);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-}
-
-.mitglied-bild img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.mitglied-name {
-    font-weight: 700;
-    color: #1f1f1f;
-    margin-bottom: 0.3rem;
-    font-size: 1.05rem;
-}
-
-.mitglied-funktion {
-    color: #777;
-    font-size: 0.9rem;
-    margin-bottom: 0.6rem;
-}
-
-
-
-/*unser Verein*/
-.verein-container {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    line-height: 1.7;
-    color: #555;
-}
-
-.verein-container h2 {
-    color: #ffc107;
-    /* Gelbe Farbe für Überschriften */
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 0.5rem;
-}
-
-.geschichte-abschnitt {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-}
-
-.geschichte-abschnitt h3 {
-    color: #333;
-    margin-bottom: 0.75rem;
-}
-
-/* Zusätzliche moderne Stile nach Bedarf */
-.highlight {
-    font-weight: bold;
-    color: #007bff;
-}
-
-.jahr {
-    font-style: italic;
-    color: #777;
-    margin-right: 0.5rem;
-}
-
-/** Kontaktformular */
-.kontakt-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    color: #555;
-    line-height: 1.6;
-    justify-content: center;
-}
-
-.kontakt-container h2 {
-    color: #ffc107;
-    /* Gelbe Farbe für Überschriften */
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    justify-content: center;
-}
-
-.kontakt-container p {
-    justify-content: center;
-
-}
-
-.dokumente-bereich {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    margin-top: 20px;
-    border-radius: 10px;
-}
-
-.dokumente-bereich h3 {
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.dokumente-liste {
-    list-style: none;
-    padding: 0;
-}
-
-.dokumente-liste li {
-    margin-bottom: 0.75rem;
-}
-
-.dokument-link {
-    display: inline-block;
-    color: #ffc107;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ffc107;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.dokument-link:hover {
-    background-color: #e0a800;
-    color: #fff;
-}
-
-
-
-
-
-
-.kontakt-buttons {
-    display: flex;
-    gap: 1rem;
-    /* Abstand zwischen den Buttons */
-    margin-top: 1rem;
-    /* Abstand zum vorherigen Element */
-}
-
-.kontakt-button-wrapper {
-    flex: 1;
-    /* Nimmt gleichen Platz ein */
-    text-align: center;
-    /* Zentriert den Inhalt innerhalb */
-}
-
-.kontakt-button-wrapper h3 {
-    margin-top: 0;
-    /* Entfernt oberen Abstand der Überschrift */
-    margin-bottom: 0.5rem;
-}
-
-.kontakt-button {
-    background-color: #ffc107;
-    /* Spezifische Farbe für den Kontakt-Button */
-    display: inline-block;
-}
-
-.kontakt-button:hover {
-    background-color: #e0a800;
-    color: #333;
-    /* Spezifische Hover-Farbe */
-}
-
-
-
-/* --- Modern Top Events Container --- */
-.top-events-container {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1rem 1rem;
-    max-width: 1200px;
-    /*margin: 0 auto 2rem;
-    /* Behalte den unteren Margin, um Abstand zum nächsten Element zu haben */
-}
-
-.event-card,
-.fakt,
-.news-item {
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.event-card:hover,
-.fakt:hover {
-    transform: translateY(-4px);
-}
-
-.event-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    padding: 1.5rem;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-    width: 350px;
-    /* Feste Breite für die Karten */
-}
-
-.event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.event-card h3 {
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.event-card .event-date {
-    color: #777;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.event-card p {
-    color: #555;
-    margin-bottom: 1rem;
-}
-
-.event-name {
-    margin-bottom: 1rem;
-    color: #333;
-}
-
-.modern-event-list {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1rem;
-}
-
-.modern-event-list li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.modern-event-list li:last-child {
-    border-bottom: none;
-}
-
-.event-list-date {
-    color: #555;
-    font-weight: bold;
-    width: 100px;
-    /* Feste Breite für das Datum */
-    flex-shrink: 0;
-    /* Verhindert, dass das Datum schrumpft */
-}
-
-.event-list-name {
-    color: #333;
-    flex-grow: 1;
-    /* Lässt den Namen den restlichen Platz einnehmen */
-    text-align: left;
-    margin-left: 1rem;
-}
-
-/* --- Font Awesome Icons (optional) --- */
-/* Du musst Font Awesome in deinem Projekt eingebunden haben, */
-/* falls du die Icons verwenden möchtest. */
 .fa-regular {
     margin-right: 0.5rem;
-}
-
-/* --- Termine Seite --- */
-/* --- Termine Seite (angepasst) --- */
-.termine-seite .container {
-    max-width: 960px;
-}
-
-.termine-seite h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #ffc107;
-}
-
-#event-liste {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    row-gap: 5rem;
-    /* Deutlich größerer Wert zum Testen */
-}
-
-.event-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.modern-event-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.modern-event-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.modern-event-card h3 {
-    /* Titel */
-    color: #ffc107;
-    margin-top: 0;
-    margin-bottom: 0.1rem;
-    /* Noch weniger Abstand zum Datum */
-    font-size: 1.2rem;
-    font-weight: bold;
-    line-height: 1.2;
-    /* Verbessert den Zeilenabstand, falls der Titel mehrzeilig ist */
-}
-
-.modern-event-card .event-date-time {
-    /* Datum und Zeit */
-    color: #777;
-    font-size: 0.9rem;
-    margin-top: 0.05rem;
-    /* Etwas Abstand vom Titel */
-    margin-bottom: 0.8rem;
-    /* Leichter Abstand zur Beschreibung */
-}
-
-.modern-event-card p {
-    color: #555;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.modern-event-card .event-button {
-    margin-top: 1rem;
-}
-
-.modern-event-card .kalender-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-
-    background: linear-gradient(135deg, #6c757d, #5a6268);
-    color: #ffffff;
-
-    padding: 0.65rem 1.2rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-
-    border-radius: 999px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
-}
-
-.modern-event-card .kalender-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-}
-
-
-
-
-.modern-event-card .event-location i {
-    color: #ffc107;
-    /* Gelbe Farbe für das Location-Icon */
-}
-
-.modern-event-card .event-location:hover {
-
-    color: #f4b400;
-    /* dein Gelb */
-    text-decoration: underline;
-}
-
-.modern-event-card .event-location-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    margin-top: 0.4rem;
-}
-
-.modern-event-card .event-title {
-    color: #111;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-}
-
-/* Anpassungen für die News-Seite */
-.news-page .container {
-    max-width: 960px;
-    /* Eine typische Containerbreite */
-    margin: 20px auto;
-    padding: 20px;
-}
-
-.news-page h1 {
-    color: #ffc107;
-    /* Verwende Website-Farbe, falls definiert */
-    margin-bottom: 20px;
-    text-align: center;
 }
 
 #news-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    /* Responsives Grid-Layout */
     gap: 20px;
 }
 
 .news-article {
     background-color: var(--card-bg, white);
-    /* Verwende Website-Farbe, falls definiert */
     border: 1px solid var(--border-color, #ddd);
-    /* Verwende Website-Farbe, falls definiert */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -980,19 +167,16 @@ footer {
 .news-article:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
 }
 
 .news-article h2 {
     color: var(--heading-color, #333);
-    /* Verwende Website-Farbe, falls definiert */
     margin-top: 0;
     margin-bottom: 10px;
 }
 
 .news-article .date {
     color: var(--text-muted, #777);
-    /* Verwende Website-Farbe, falls definiert */
     font-size: 0.9em;
     margin-bottom: 15px;
 }
@@ -1000,203 +184,14 @@ footer {
 .news-article .content {
     line-height: 1.7;
     color: var(--text-color, #333);
-    /* Verwende Website-Farbe, falls definiert */
 }
 
 .news-article .news-image {
     max-width: 600px;
-    /* Beispiel: Setze eine maximale Breite von 600 Pixeln */
     height: auto;
     margin-bottom: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.news-detail-gallery {
-    position: relative;
-    max-width: 600px;
-    /* Deine gewünschte maximale Breite */
-    max-height: 400px;
-    /* Deine gewünschte maximale Höhe */
-    margin: 0 auto 15px;
-    border-radius: 10px;
-    overflow: hidden;
-    /* Wichtig für die Pfeile, weniger für das Bild */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.gallery-image {
-    display: block;
-    max-width: 100%;
-    /* Bild wird nicht breiter als der Container */
-    max-height: 100%;
-    /* Bild wird nicht höher als der Container */
-    object-fit: scale-down;
-    /* Skaliert das Bild nur, wenn es größer als der Container ist */
-    transition: opacity 0.3s ease-in-out;
-}
-
-/* ... (Rest des CSS für .gallery-control) ... */
-
-.gallery-control {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 10;
-}
-
-.gallery-control.prev {
-    left: 10px;
-}
-
-.gallery-control.next {
-    right: 10px;
-}
-
-.news-detail-gallery:hover .gallery-control {
-    opacity: 1;
-}
-
-.news-detail-gallery:hover .gallery-control:hover {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.membership-section {
-
-    background-color: #f9f9f9;
-    /* Heller Hintergrund für die Sektion */
-    border-radius: 10px;
-    /* Abgerundete Ecken */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    /* Leichter Schatten */
-    margin-bottom: 30px;
-}
-
-.membership-options {
-    display: flex;
-    /* Für nebeneinander angeordnete Karten */
-    flex-wrap: wrap;
-    /* Erlaubt Umbruch auf kleineren Bildschirmen */
-    gap: 20px;
-    /* Abstand zwischen den Karten */
-    justify-content: center;
-    /* Zentriert die Karten, wenn sie nicht die volle Breite einnehmen */
-    margin-top: 20px;
-}
-
-.membership-card {
-    flex: 1;
-    /* Nimmt verfügbaren Platz ein */
-    min-width: 280px;
-    /* Mindestbreite der Karten, damit sie nicht zu klein werden */
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-    transition: transform 0.2s ease-in-out;
-    /* Kleiner Hover-Effekt */
-}
-
-.membership-card:hover {
-    transform: translateY(-5px);
-    /* Karte hebt sich leicht an beim Hover */
-}
-
-.membership-card h2 {
-    color: #ffc107;
-    /* Oder eine Akzentfarbe für die Kartentitel */
-    margin-top: 0;
-    font-size: 1.4em;
-}
-
-.membership-card ul {
-    list-style: none;
-    /* Entfernt Standard-Listenpunkte */
-    padding: 0;
-    margin-top: 15px;
-}
-
-.membership-card ul li {
-    margin-bottom: 8px;
-    padding-left: 25px;
-    /* Platz für custom Icon */
-    position: relative;
-}
-
-.membership-card ul li::before {
-    content: '\2713';
-    /* Unicode Haken-Symbol */
-    color: #28a745;
-    /* Grüne Farbe für den Haken */
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-/* --- Stile für Links/Buttons wie bei Kontakt --- */
-/* Dies ist ein Beispiel, wie deine "Button"-Stile aussehen könnten */
-a.button,
-.download-link {
-    /* Verwende eine Klasse für deine Buttons/Links */
-    display: inline-block;
-    background-color: #ffc107;
-    /* Dein blauer Button-Farbe */
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
-    /* Abstand nach oben */
-}
-
-a.button:hover,
-.download-link:hover {
-    background-color: #e0a800;
-    /* Dunklerer Blauton beim Hover */
-}
-
-/* Speziell für den Download-Link, damit er wie ein Button aussieht */
-.membership-section p a[download] {
-    display: inline-block;
-    background-color: #ffc107;
-    /* Dein blauer Button-Farbe */
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
-}
-
-.membership-section p a[download]:hover {
-    background-color: #e0a800;
-}
-
-/* Stile für E-Mail-Link */
-.membership-section p a[href^="mailto:"] {
-    color: #ffc107;
-    /* Farbe für E-Mail-Links */
-    text-decoration: underline;
-}
-
-.membership-section p a[href^="mailto:"]:hover {
-    text-decoration: none;
 }
 
 .social-feed,
@@ -1204,38 +199,6 @@ a.button:hover,
     padding: 2rem;
     text-align: center;
 }
-
-.instagram-embed iframe {
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-}
-
-.instagram-feed {
-    text-align: center;
-    margin: 3rem auto;
-    max-width: 1200px;
-    /* Standardbreite für große Bildschirme */
-}
-
-.instagram-feed h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-}
-
-.instagram-feed .embedsocial-hashtag {
-    max-width: 1100px;
-    /* Breiter auf großen Bildschirmen */
-    margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-    .instagram-feed .embedsocial-hashtag {
-        max-width: 100%;
-        /* Auf kleinen Bildschirmen wieder volle Breite */
-    }
-}
-
 
 .sponsoren-logos {
     display: flex;
@@ -1263,17 +226,13 @@ footer a {
 
 .social-icons {
     display: flex;
-    /* Damit die Icons nebeneinander sind */
     justify-content: center;
-    /* Zentriert die Icons horizontal */
     gap: 1.2rem;
-    /* Abstand zwischen den Icons */
     margin-top: 1rem;
 }
 
 .social-icons a {
     font-size: 1.8rem;
-    /* Größe der Icons */
     transition: color 0.3s ease;
 }
 
@@ -1294,6 +253,3 @@ footer a {
     transform: scale(1.1);
     transform: rotate(10deg)
 }
-
-
-/*cssminifier.com/*

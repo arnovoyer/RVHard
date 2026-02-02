@@ -84,16 +84,11 @@ h2::after {
     color: var(--text-main);
 }
 
-/* Text ruhiger */
 p {
     margin-bottom: 1.2rem;
     color: var(--text-muted);
 }
 
-/* === Button modern & „soft“ === */
-
-
-/* Links cleaner */
 .mail-link {
     color: var(--accent);
     font-weight: 600;
@@ -104,7 +99,6 @@ p {
     text-decoration: underline;
 }
 
-/* === Vorstand modernisiert === */
 .vorstand-kurz {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -130,4 +124,44 @@ p {
 
 .vorstand-kurz .mitglied img:hover {
     transform: scale(1.05);
+}
+/*unser Verein*/
+.verein-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    line-height: 1.7;
+    color: #555;
+}
+
+.verein-container h2 {
+    color: #111;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.geschichte-abschnitt {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.geschichte-abschnitt h3 {
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+
+.highlight {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.jahr {
+    font-style: italic;
+    color: #777;
+    margin-right: 0.5rem;
 }

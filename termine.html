@@ -18,6 +18,118 @@
         .hidden {
             display: none;
         }
+
+        .termine-seite .container {
+            max-width: 960px;
+        }
+
+        .termine-seite h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ffc107;
+        }
+
+        #event-liste {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            row-gap: 5rem;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .modern-event-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .modern-event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .modern-event-card h3 {
+            color: #ffc107;
+            margin-top: 0;
+            margin-bottom: 0.1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .modern-event-card .event-date-time {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 0.05rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .modern-event-card p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modern-event-card .event-button {
+            margin-top: 1rem;
+        }
+
+        .modern-event-card .kalender-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: #ffffff;
+            padding: 0.65rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .modern-event-card .kalender-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .modern-event-card .event-location i {
+            color: #ffc107;
+        }
+
+        .modern-event-card .event-location:hover {
+            color: #f4b400;
+            text-decoration: underline;
+        }
+
+        .modern-event-card .event-location-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin-top: 0.4rem;
+        }
+
+        .modern-event-card .event-title {
+            color: #111;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
     </style>
 </head>
 
