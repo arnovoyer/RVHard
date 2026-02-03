@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Training - RV Hard</title>
-  <meta name="description" content="RV Hard Training">
+  <meta name="description" content="RV Hard Trainin & Sparten">
   <meta name="keywords" content="RV Hard Training, Training Radverein, Trainingszeiten RV Hard">
   <meta name="author" content="RV Hard">
   <link rel="stylesheet" href="/assets/style.css">
@@ -20,6 +20,7 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1rem;
+      margin-top:10px;
     }
 
     @media (min-width: 768px) {
@@ -35,13 +36,6 @@
       padding: 1.5rem;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       margin-top: 1px;
-    }
-
-    .training-seite h2 {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #333;
     }
 
     .training-seite ul {
@@ -91,6 +85,94 @@
     .training-kontakt a:hover {
       text-decoration: underline;
     }
+
+    .sparte-beschreibung {
+      margin-bottom: 1rem;
+      color: #444;
+    }
+
+    .sparte-vorteile {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.75rem;
+    }
+
+    .sparte-vorteile li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sparte-vorteile i {
+      color: #ffc400;
+    }
+
+    .sparte-beschreibung p {
+      line-height: 1.6;
+      margin-bottom: 0.6rem;
+    }
+
+    .sparte-verein {
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      color: #555;
+      font-style: italic;
+    }
+
+    .sparte-vorteile {
+      margin: 0.5rem 0;
+    }
+
+    .sparte-vorteile li {
+      font-size: 0.9rem;
+    }
+
+    .training-seite h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #333;
+      min-height: 3rem;
+    }
+
+    @media (max-width: 480px) {
+      .training-seite h2 {
+        min-height: 2.5rem;
+      }
+    }
+
+    .training-block {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 2px dashed #e0e0e0;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .training-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .training-block ul {
+      margin: 0.5rem 0 0.8rem 0;
+    }
+
+    .training-block li {
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    .training-block i {
+      color: #ffc400;
+    }
   </style>
 </head>
 
@@ -100,77 +182,185 @@
   </header>
 
   <main class="container">
-    <h1>Training</h1>
-    <p>Unsere regelmäßigen Trainings bieten dir die Möglichkeit, dich sportlich zu verbessern und gemeinsam Spaß am
-      Radfahren, Laufen und Schwimmen zu haben.</p>
+    <h1>Training & Sparten</h1>
+    <p>
+      Der RV Hard bietet ein vielseitiges Trainingsangebot – vom spielerischen Einstieg bis
+      zum leistungsorientierten Training. Unsere Sparten decken alle Bereiche des Radsports
+      und Triathlons ab.
+    </p>
 
     <div class="training-seite" style="padding-top: 0px;">
       <!-- MTB -->
-      <section style="margin-top: 20px;" data-aos="flip-left">
-        <h2><i class="fa-solid fa-mountain"></i> MTB</h2>
-        <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Rostlaube, Technikübungsplatz</p>
-        <ul>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Je nach Altersklasse:</strong>verschiedene Uhrzeiten und
-            Tage</li>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Bei Nachfrage</strong> werden konkrete Zeiten gennant</li>
-        </ul>
-        <p class="training-kontakt">
-          <i class="fa-solid fa-user"></i> Kontakt:
-          <strong>Bernhard Piringer</strong><br>
-          <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
-        </p>
+      <section class="sparte" data-aos="fade-up">
+        <h2><i class="fa-solid fa-mountain"></i> Mountainbike</h2>
+
+        <div class="sparte-beschreibung">
+          <p>
+            Mountainbiken verbindet Technik, Ausdauer und Naturerlebnis. Gefahren wird auf
+            unterschiedlichem Untergrund – das schult Balance, Reaktion und Radkontrolle.
+          </p>
+
+          <ul class="sparte-vorteile">
+            <li><i class="fa-solid fa-check"></i> Verbesserung von Technik & Sicherheit</li>
+            <li><i class="fa-solid fa-check"></i> Spielerischer Einstieg für Kinder & Jugendliche</li>
+            <li><i class="fa-solid fa-check"></i> Abwechslungsreiches Training in der Natur</li>
+          </ul>
+
+          <p class="sparte-verein">
+            Beim RV Hard trainieren wir in altersgerechten Gruppen mit Fokus auf Technik,
+            Spaß und gemeinsames Erleben.
+          </p>
+        </div>
+
+        <!-- Bestehendes Training -->
+        <div class="training-block">
+          <p class="training-label">
+            <i class="fa-solid fa-stopwatch"></i> Trainingszeiten & Orte
+          </p>
+
+          <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Rostlaube, Technikübungsplatz</p>
+          <ul>
+            <li><i class="fa-regular fa-calendar"></i> Je nach Altersklasse unterschiedliche Zeiten</li>
+            <li><i class="fa-regular fa-calendar"></i> Zeiten werden bei Nachfrage bekannt gegeben</li>
+          </ul>
+
+          <p class="training-kontakt">
+            <i class="fa-solid fa-user"></i> Kontakt:
+            <strong>Bernhard Piringer</strong><br>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
+          </p>
+        </div>
       </section>
 
       <!-- Rennrad -->
-      <section data-aos="flip-left" data-aos-delay="150" style="margin-top: 20px;">
+
+      <section id="rennrad" data-aos="flip-left" data-aos-delay="150">
         <h2><i class="fa-solid fa-person-biking"></i> Rennrad</h2>
-        <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Schule am See, verschiedene Treffpunkte</p>
-        <ul>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 16:00-17:00 Uhr – Technik-Training</li>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Samstag:</strong> ab 11:00 Uhr – Ausfahrt (verschiedene
-            Treffpunkte)</li>
-        </ul>
-        <p class="training-kontakt">
-          <i class="fa-solid fa-user"></i> Kontakt:
-          <strong>Joel Voyer</strong><br>
-          <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:mtb@rv-hard.at">vorstand@rv-hard.at</a>
-        </p>
+
+        <div class="sparte-beschreibung">
+          <p>
+            Rennradfahren steht für Ausdauer, Geschwindigkeit und effiziente Bewegung.
+            Es stärkt das Herz-Kreislauf-System und bildet die Basis für sportliche Leistungsfähigkeit.
+          </p>
+
+          <ul class="sparte-vorteile">
+            <li><i class="fa-solid fa-check"></i> Aufbau von Ausdauer & Grundlagentraining</li>
+            <li><i class="fa-solid fa-check"></i> Sicheres Fahren in der Gruppe</li>
+            <li><i class="fa-solid fa-check"></i> Technik- & Tempotraining</li>
+          </ul>
+
+          <p class="sparte-verein">
+            Beim RV Hard trainieren wir gemeinsam in der Gruppe – mit Technik-Einheiten,
+            strukturierten Ausfahrten und Fokus auf Sicherheit.
+          </p>
+        </div>
+
+        <div class="training-block">
+          <p class="training-label">
+            <i class="fa-solid fa-stopwatch"></i> Trainingszeiten & Orte
+          </p>
+
+          <p><i class="fa-solid fa-location-dot"></i> Treffpunkt: Schule am See, verschiedene Treffpunkte</p>
+          <ul>
+            <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 16:00-17:00 Uhr – Technik-Training
+            </li>
+            <li><i class="fa-regular fa-calendar"></i> <strong>Samstag:</strong> ab 11:00 Uhr – Ausfahrt (verschiedene
+              Treffpunkte)</li>
+          </ul>
+          <p class="training-kontakt">
+            <i class="fa-solid fa-user"></i> Kontakt:
+            <strong>Joel Voyer</strong><br>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:mtb@rv-hard.at">vorstand@rv-hard.at</a>
+          </p>
+        </div>
       </section>
 
       <!-- Triathlon -->
       <section data-aos="flip-left" data-aos-delay="300">
         <h2><i class="fa-solid fa-person-running"></i> Triathlon</h2>
-        <p><i class="fa-solid fa-location-dot"></i> Treffpunkte: Stadtbad Dornbirn, Parkstadion Lustenau</p>
-        <ul>
-          <li><i class="fa-solid fa-person-running"></i> <strong>Laufen:</strong> Donnerstag 17:00-18:00 Uhr –
-            Parkstadion Lustenau </li>
-          <li><i class="fa-solid fa-person-swimming"></i> <strong>Schwimmen:</strong> Freitag 15:00-16:15 Uhr –
-            Stadtbad Dornbirn </li>
-        </ul>
-        <p class="training-kontakt">
-          <i class="fa-solid fa-user"></i> Kontakt:
-          <strong>Simon Künz</strong><br>
-          <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:simon.kuenz@rv-hard.at">simon.kuenz@rv-hard.at</a>
-        </p>
+        <div class="sparte-beschreibung">
+          <p>
+            Triathlon kombiniert Schwimmen, Radfahren und Laufen zu einer vielseitigen
+            Ausdauersportart, die den ganzen Körper fordert und fördert.
+          </p>
+
+          <ul class="sparte-vorteile">
+            <li><i class="fa-solid fa-check"></i> Ganzkörpertraining durch drei Disziplinen</li>
+            <li><i class="fa-solid fa-check"></i> Abwechslungsreich & motivierend</li>
+            <li><i class="fa-solid fa-check"></i> Ideal für Wettkämpfe & persönliche Ziele</li>
+          </ul>
+
+          <p class="sparte-verein">
+            Beim RV Hard trainieren wir die Disziplinen gezielt und altersgerecht –
+            vom Einstieg bis zur Wettkampfvorbereitung.
+          </p>
+        </div>
+
+        <div class="training-block">
+          <p class="training-label">
+            <i class="fa-solid fa-stopwatch"></i> Trainingszeiten & Orte
+          </p>
+
+          <p><i class="fa-solid fa-location-dot"></i> Treffpunkte: Stadtbad Dornbirn, Parkstadion Lustenau</p>
+          <ul>
+            <li><i class="fa-solid fa-person-running"></i> <strong>Laufen:</strong> Donnerstag 17:00-18:00 Uhr –
+              Parkstadion Lustenau </li>
+            <li><i class="fa-solid fa-person-swimming"></i> <strong>Schwimmen:</strong> Freitag 15:00-16:15 Uhr –
+              Stadtbad Dornbirn </li>
+            <li><i class="fa-solid fa-person-biking"></i> <strong>Radfahren:</strong> Mittwoch & Samstag mit der
+              <a href="#rennrad">Rennradgruppe</a>
+            </li>
+          </ul>
+          <p class="training-kontakt">
+            <i class="fa-solid fa-user"></i> Kontakt:
+            <strong>Simon Künz</strong><br>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:simon.kuenz@rv-hard.at">simon.kuenz@rv-hard.at</a>
+          </p>
+        </div>
       </section>
 
       <!-- Hallentraining -->
       <section data-aos="flip-left" data-aos-delay="450">
         <h2><i class="fa-solid fa-dumbbell"></i> Hallentraining (Winter)</h2>
-        <p><i class="fa-solid fa-location-dot"></i> Sporthalle Schule am See (Hard)</p>
-        <ul>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 17:00-18:00 Uhr – Kinder</li>
-          <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 19:00-21:00 Uhr – Erwachsene</li>
-        </ul>
-        <p class="training-kontakt">
-          <i class="fa-solid fa-user"></i> Kontakt:
-          <strong>Manuel Hofer</strong><br>
-          <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
-        </p>
+
+        <div class="sparte-beschreibung">
+          <p>
+            Das Hallentraining ergänzt den Outdoor-Sport in der kalten Jahreszeit.
+            Im Mittelpunkt stehen Kraft, Koordination und Beweglichkeit.
+          </p>
+
+          <ul class="sparte-vorteile">
+            <li><i class="fa-solid fa-check"></i> Stärkung von Rumpf & Muskulatur</li>
+            <li><i class="fa-solid fa-check"></i> Verletzungsprävention im Winter</li>
+            <li><i class="fa-solid fa-check"></i> Vielseitige Übungen & Teamspiele</li>
+          </ul>
+
+          <p class="sparte-verein">
+            Der RV Hard bietet Hallentraining für Kinder und Erwachsene –
+            angepasst an Alter und Leistungsniveau.
+          </p>
+        </div>
+
+        <div class="training-block">
+          <p class="training-label">
+            <i class="fa-solid fa-stopwatch"></i> Trainingszeiten & Orte
+          </p>
+
+          <p><i class="fa-solid fa-location-dot"></i> Sporthalle Schule am See (Hard)</p>
+          <ul>
+            <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 17:00-18:00 Uhr – Kinder</li>
+            <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 19:00-21:00 Uhr – Erwachsene</li>
+          </ul>
+          <p class="training-kontakt">
+            <i class="fa-solid fa-user"></i> Kontakt:
+            <strong>Manuel Hofer</strong><br>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
+          </p>
+        </div>
       </section>
     </div>
   </main>
