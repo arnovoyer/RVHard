@@ -15,14 +15,12 @@ body {
     line-height: 1.65;
 }
 
-/* Container etwas luftiger */
 .verein-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 3rem 1.5rem;
 }
 
-/* === Sections als moderne Cards === */
 section {
     background-color: var(--card-bg);
     padding: 2.5rem;
@@ -35,7 +33,6 @@ section {
     position: relative;
 }
 
-/* subtiler Accent-Streifen */
 section::before {
     content: "";
     position: absolute;
@@ -50,11 +47,11 @@ section::before {
 
 section:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
 }
 
-/* === Headlines moderner === */
-h1, h2 {
+h1,
+h2 {
     color: var(--text-main);
     margin-top: 0;
     margin-bottom: 1rem;
@@ -70,7 +67,6 @@ h2 {
     color: var(--text-main);
 }
 
-/* Accent-Unterstrich */
 h2::after {
     content: "";
     display: block;
@@ -80,6 +76,7 @@ h2::after {
     margin-top: 0.5rem;
     border-radius: 2px;
 }
+
 .verein-container h2 {
     color: var(--text-main);
 }
@@ -117,7 +114,7 @@ p {
     border-radius: 50%;
     margin-bottom: 0.8rem;
     box-shadow:
-        0 10px 25px rgba(0,0,0,0.15),
+        0 10px 25px rgba(0, 0, 0, 0.15),
         0 0 0 6px var(--accent-soft);
     transition: transform 0.3s ease;
 }
@@ -125,7 +122,7 @@ p {
 .vorstand-kurz .mitglied img:hover {
     transform: scale(1.05);
 }
-/*unser Verein*/
+
 .verein-container {
     max-width: 1000px;
     margin: 2rem auto;

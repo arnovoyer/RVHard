@@ -7,7 +7,6 @@ body {
 header {
     height: 70px;
     margin-bottom: 0;
-    /* falls gesetzt */
 }
 
 main {
@@ -21,7 +20,6 @@ main> :first-child {
 body {
     font-family: 'Poppins', system-ui, sans-serif;
     font-weight: 500;
-    /* NICHT bold */
     letter-spacing: -0.02em;
     line-height: 1.65;
     color: #222;
@@ -34,7 +32,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 1rem;
     padding-top: 70px;
-    /* Aktuelle Größe (Standard ist oft 16px, was 1rem entspricht) */
 }
 
 h1,
@@ -57,11 +54,9 @@ a:hover {
     color: #e0a800;
 }
 
-/* Media Queries für Responsivität */
 @media (max-width: 768px) {
     main {
         padding-top: 70px;
-        /* Wenn die mobile Navbar auch 60px hoch ist */
     }
 
     .container {
@@ -71,7 +66,13 @@ a:hover {
 
     #news-container {
         grid-template-columns: 1fr;
-        /* Staple die Artikel auf kleineren Bildschirmen */
+    }
+
+    .news-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
     }
 }
 
@@ -81,11 +82,8 @@ a:hover {
     margin: 0 auto;
     padding: 2rem 1rem;
     display: flex;
-    /* Beibehalten für die Anordnung innerhalb des Wrappers */
     flex-direction: column;
-    /* **Füge diese Zeile hinzu!** */
     align-items: stretch;
-    /* Standardwert, sorgt dafür, dass Kinder die volle Breite einnehmen */
 }
 
 .gelber-button {
@@ -112,8 +110,6 @@ a.gelber-button {
     color: #111;
 }
 
-
-/* News-Container */
 .news-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -124,17 +120,7 @@ a.gelber-button {
     margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-    .news-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        /* sorgt für Zentrierung */
-        gap: 1.5rem;
-    }
-}
 
-/* Footer */
 footer {
     background-color: #343a40;
     color: #fff;
@@ -146,12 +132,6 @@ footer {
 
 .fa-regular {
     margin-right: 0.5rem;
-}
-
-#news-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
 }
 
 .social-feed,

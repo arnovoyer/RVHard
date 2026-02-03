@@ -1,6 +1,7 @@
 .summer-bike-series {
   padding: 2rem;
 }
+
 .event-block {
   border: 1px solid #ccc;
   border-radius: 12px;
@@ -8,8 +9,9 @@
   margin-bottom: 3rem;
   background-color: #f9f9f9;
 }
+
 .event-block h3 {
-  margin-top: 2.5rem; /* Abstand zur vorherigen Section */
+  margin-top: 2.5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -17,17 +19,20 @@
   display: inline-block;
   margin-top: 1rem;
 }
+
 .pdf-link {
   text-align: center;
   margin-top: 2rem;
 }
+
 .raceresult-embed-container {
   margin-bottom: 2rem;
 }
+
 .danke-section {
-    background-color: #f8f8f8;
-    padding: 2rem 1rem;
-    text-align: center;
-    border-radius: 12px;
-    margin-bottom: 2rem;
+  background-color: #f8f8f8;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 2rem;
 }

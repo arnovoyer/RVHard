@@ -14,19 +14,16 @@
     --bg-color: #333;
     --primary-color: #fff;
     --second-color: #ffc107;
-    --hover-bg-color: #444; /* WICHTIG: Einen leicht anderen Farbton für den Hover-Effekt, damit er sichtbar ist */
+    --hover-bg-color: #444; 
     --shadow-1: 0px 2px 10px rgba(0, 0, 0, 0.3);
     --shadow-2: 0px 2px 10px rgba(26, 112, 224, 0.4);
 }
 /* ===== BODY ===== */
 body{
-    margin: 0; /* Stellt sicher, dass kein Standard-Body-Margin vorhanden ist */
-
+    margin: 0; 
     background-position: center;
     background-size: cover;
-
-    /* Optional: Verhindert Scrollen des Hauptinhalts bei geöffnetem Mobile-Menü */
-    &.no-scroll { /* Diese Klasse wird per JS gesetzt, um Scrollen zu verhindern */
+    &.no-scroll {
         overflow: hidden;
     }
 }
@@ -53,7 +50,7 @@ ul{
     border: none;
     color: var(--primary-color);
     cursor: pointer;
-    z-index: 1000; /* Stellt sicher, dass das Toggle-Icon über allem liegt */
+    z-index: 1000; 
 }
 
 /* ===== Navigation Bar ===== */

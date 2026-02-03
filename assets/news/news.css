@@ -1,49 +1,31 @@
-/* assets/news-gallery.css */
-
 .news-detail-gallery-wrapper {
   position: relative;
   width: 100%;
   max-width: 400px;
-  /* Limitiert die Breite auf großen Bildschirmen */
   aspect-ratio: 1 / 1;
-  /* ersetzt die feste Höhe */
   margin: 20px auto;
   overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
 }
-
 
 .news-detail-gallery {
   display: flex;
-  /* Um die Slides nebeneinander zu halten (für JS-Animation) */
   width: 100%;
-  /* Passt sich dem Wrapper an */
   height: 100%;
-  /* Passt sich dem Wrapper an */
   position: relative;
-  /* Für absolute Positionierung der Slides, falls nötig */
 }
 
 .gallery-slide {
   flex-shrink: 0;
-  /* Verhindert, dass Slides schrumpfen */
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  /* Bild im Container zentrieren */
   background-size: contain;
-  /* Bild vollständig anzeigen, ohne es zu beschneiden */
-  /* transition: opacity 0.5s ease-in-out; */
-  /* Optional für Fading-Effekt */
-  /* position: absolute; top: 0; left: 0; */
-  /* Wenn man Fading statt Side-Scrolling macht */
 }
 
-/* Stil für die Navigations-Buttons des Sliders */
 .gallery-control {
   position: absolute;
   top: 50%;
@@ -56,7 +38,6 @@
   font-size: 1.5em;
   border-radius: 5px;
   z-index: 10;
-  /* Stellt sicher, dass die Buttons über den Bildern liegen */
 }
 
 .gallery-control.prev {
@@ -74,36 +55,26 @@
 .news-layout {
   display: flex;
   gap: 2rem;
-  /* Abstand zwischen Text und Sidebar */
   align-items: flex-start;
 }
 
-/* Hauptinhalt links - ca. 65% Breite */
 #news-detail-container {
   flex: 3;
-  /* macht den Textbereich breiter */
   max-width: 100%;
-  /* optional – lässt mehr Breite zu */
 }
-
 
 #related-news {
   flex: 0 0 30%;
   max-width: 30%;
   margin-left: auto;
-  /* Schiebt die Sidebar so weit wie möglich nach rechts */
   padding-left: 20px;
-  /* Abstand zum Haupttext */
   box-sizing: border-box;
 }
 
-/* Optional: Animation für das Wechseln der Slides (muss im JS gesteuert werden) */
-/* .gallery-slide.active { display: block; opacity: 1; } */
 .more-news {
   flex: 1;
   max-width: 280px;
   margin-top: 40px;
-  /* verschiebt die Box etwas nach unten */
 }
 
 .more-news h2 {
@@ -129,10 +100,6 @@
   transform: scale(1.03);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
-
-
-
-
 
 .related-news-link {
   display: flex;
@@ -178,7 +145,6 @@ section.container {
   gap: 30px;
 }
 
-/* Optional: Du möchtest Galerie + Text als Spalte mit kleinerer Breite */
 #news-detail-container {
   flex: 0 0 60%;
   max-width: 60%;
@@ -262,6 +228,16 @@ section.container {
     max-width: 100%;
     margin: 20px 0;
   }
+
+  .lightbox img {
+    max-width: 95%;
+    max-height: 80%;
+  }
+
+  .lightbox button {
+    font-size: 1.5rem;
+    padding: 0.3rem 0.8rem;
+  }
 }
 
 .news-search {
@@ -278,17 +254,14 @@ section.container {
 .filter-container {
   display: flex;
   justify-content: flex-end;
-  /* Rechts ausrichten */
   margin-bottom: 1rem;
 }
 
 .year-filter {
   appearance: none;
-  /* Standard-Dropdown entfernen */
   -webkit-appearance: none;
   -moz-appearance: none;
   min-width: 180px;
-  /* etwas breiter */
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -297,7 +270,6 @@ section.container {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.8rem center;
-  /* mehr Abstand vom Text */
   background-size: 0.65rem auto;
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -313,7 +285,6 @@ section.container {
   box-shadow: 0 0 5px rgba(0, 119, 204, 0.5);
 }
 
-/* --- Lightbox Styles (zusätzlich) --- */
 
 .lightbox {
   display: none;
@@ -342,7 +313,6 @@ section.container {
   cursor: zoom-out;
 }
 
-/* Buttons in der Lightbox */
 .lightbox button {
   position: absolute;
   background: rgba(255, 255, 255, 0.2);
@@ -377,24 +347,9 @@ section.container {
   transform: translateY(-50%);
 }
 
-/* Mobil-Optimierung */
-@media (max-width: 768px) {
-  .lightbox img {
-    max-width: 95%;
-    max-height: 80%;
-  }
-
-  .lightbox button {
-    font-size: 1.5rem;
-    padding: 0.3rem 0.8rem;
-  }
-}
-
-/* Überschrift-Abstand nur auf News-Seiten anpassen */
 #news-detail-container h1:first-child,
 #news-detail-container h2:first-child {
   margin-top: 0.5rem;
-  /* oder 0 */
 }
 
 .news-break {
@@ -406,7 +361,6 @@ section.container {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
@@ -530,4 +484,10 @@ section.container {
 
 .news-detail-gallery:hover .gallery-control:hover {
   background: rgba(0, 0, 0, 0.7);
+}
+
+#news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }

@@ -22,6 +22,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
 }
+
 .hero-image {
     width: 80%;
     margin-bottom: 0;
@@ -53,13 +54,13 @@
     margin-bottom: 2rem;
     text-align: left;
     overflow: hidden;
-
 }
 
 .verein-vorstellung:hover {
     transform: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .hero-image img {
     width: 100%;
     height: auto;
@@ -75,11 +76,8 @@
         margin: 10px auto;
         padding: 0;
         box-sizing: border-box;
-
         flex-direction: column;
-        /* ← DAS fehlt */
         align-items: center;
-        /* sauber zentriert */
     }
 
     .event-card {
@@ -132,12 +130,15 @@
     #news-container {
         grid-template-columns: 1fr;
     }
+        .instagram-feed .embedsocial-hashtag {
+        max-width: 100%;
+    }
 }
+
 .news-item {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     display: flex;
@@ -199,14 +200,13 @@
     margin-bottom: 1rem;
     color: #555;
 }
+
 .top-events-container {
     display: flex;
     justify-content: center;
     gap: 2rem;
     padding: 1rem 1rem;
     max-width: 1200px;
-    /*margin: 0 auto 2rem;
-    /* Behalte den unteren Margin, um Abstand zum nächsten Element zu haben */
 }
 
 .event-card,
@@ -214,7 +214,6 @@
 .news-item {
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
 }
 
 .event-card:hover,
@@ -226,13 +225,11 @@
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
     padding: 1.5rem;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     width: 350px;
-    /* Feste Breite für die Karten */
 }
 
 .event-card:hover {
@@ -293,15 +290,18 @@
     text-align: left;
     margin-left: 1rem;
 }
+
 .instagram-embed iframe {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .instagram-feed {
     text-align: center;
     margin: 3rem auto;
     max-width: 1200px;
 }
+
 .instagram-feed h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
@@ -309,13 +309,11 @@
 
 .instagram-feed .embedsocial-hashtag {
     max-width: 1100px;
-    /* Breiter auf großen Bildschirmen */
     margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-    .instagram-feed .embedsocial-hashtag {
-        max-width: 100%;
-        /* Auf kleinen Bildschirmen wieder volle Breite */
-    }
+#news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
 }
