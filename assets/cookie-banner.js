@@ -1,4 +1,3 @@
-//TODO: Cookie Banner Button for Mobile
 (function () {
   if (window.location.pathname === "/datenschutz.html") return;
 

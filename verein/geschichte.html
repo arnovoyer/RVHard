@@ -137,8 +137,62 @@
             .timeline-point {
                 left: 9px !important;
             }
-        }
 
+            .timeline {
+                margin: 30px auto;
+            }
+
+            .timeline::after {
+                left: 16px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 50px;
+                padding-right: 15px;
+                text-align: left;
+            }
+
+            .timeline-item.left,
+            .timeline-item.right {
+                text-align: left;
+            }
+
+            .timeline-point {
+                left: 9px !important;
+                right: auto;
+            }
+
+            /* Hover-Animationen auf Mobile deaktivieren */
+            .timeline-item.left:hover .timeline-content,
+            .timeline-item.right:hover .timeline-content {
+                transform: none;
+            }
+
+            .timeline-content {
+                border-radius: 14px;
+                padding: 1.2rem 1.4rem;
+            }
+
+            .timeline-content h3 {
+                font-size: 1.05rem;
+            }
+
+            .timeline-content p {
+                font-size: 0.9rem;
+            }
+
+            .timeline-item:first-child .timeline-content {
+                box-shadow: 0 12px 30px rgba(255, 193, 7, 0.25);
+            }
+
+            .geschichte-abschnitt p {
+                max-width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
 
         .timeline-point {
             position: absolute;
