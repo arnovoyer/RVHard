@@ -151,25 +151,49 @@
         width: 100%;
     }
 
+    .zeitplan-tabelle {
+        border-spacing: 0;
+        margin-top: 1rem;
+        padding: 0;
+    }
+
     .zeitplan-tabelle tr {
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         border: 1px solid #ddd;
         border-radius: 8px;
-        padding: 0.5rem;
+        padding: 1rem;
+        background-color: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .zeitplan-tabelle tr:nth-child(even) {
+        background-color: #ffffff;
     }
 
     .zeitplan-tabelle td {
         text-align: left;
-        padding: 0.5rem;
+        padding: 0.75rem 0;
         position: relative;
+        display: block;
+        padding-left: 0;
+        border: none;
+    }
+
+    .zeitplan-tabelle td:first-child {
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #ffc107;
     }
 
     .zeitplan-tabelle td::before {
         content: attr(data-label);
         font-weight: bold;
         display: block;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.3rem;
         color: #ffc107;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .consent-placeholder {
