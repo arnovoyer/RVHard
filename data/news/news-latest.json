@@ -1,0 +1,50 @@
+[
+  {
+    "id": 97,
+    "slug": "abradeln-2025",
+    "title": "Abradeln 2025",
+    "date": "2025-10-20",
+    "content": "Am Samstag, den 18. Oktober 2025, war es so weit: Der RV Hard lud zum traditionellen Abradeln ein, ...",
+    "tags": ["Verein", "MTB", "Rennrad", "Triathlon", "Abradeln", "2025"]
+  },
+  {
+    "id": 96,
+    "slug": "summer-bike-series-2025",
+    "title": "Summer Bike Series 2025",
+    "date": "2025-07-07",
+    "content": "Unsere Summer Bike Series war in diesem Jahr wieder ein voller Erfolg..",
+    "tags": ["Verein", "SBS", "Rennrad", "Triathlon", "Rennen", "2025"]
+  },
+  {
+    "id": 95,
+    "slug": "dachbau-schaffer-nightrace-2025",
+    "title": "Dachbau Schaffer Nightrace 2025",
+    "date": "2025-06-01",
+    "content": "Das Harder Nightrace war dieses Jahr wieder ein voller Erfolg...",
+    "tags": ["Verein", "Nightrace", "MTB", "Rennbericht", "Rennen", "2025"]
+  },
+  {
+    "id": 94,
+    "slug": "rennbericht-cadfish-luebeck-juni-2024",
+    "title": "Rennbericht CadFish Lübeck Juni 2024!",
+    "date": "2025-01-14",
+    "content": "Rennbericht CadFish Lübeck von Moritz",
+    "tags": ["Deutschland", "Gravel", "Rennbericht", "Moritz", "Langstrecke", "2024"]
+  },
+  {
+    "id": 93,
+    "slug": "rennbericht-gran-fondo-vosges-mai-2024",
+    "title": "Rennbericht Gran Fondo Vosges Mai 2024",
+    "date": "2025-01-13",
+    "content": "Rennbericht Gran Fondo Vosges von Moritz",
+    "tags": ["Frankreich", "Gran Fondo", "Rennbericht", "Moritz", "Langstrecke", "2024"]
+  },
+  {
+    "id": 92,
+    "slug": "rennbericht-bazora-hc-2024",
+    "title": "Rennbericht Bazora HC 2024",
+    "date": "2024-09-21",
+    "content": "Am 21.09 war für mich der vorraussichtliche Abschluß der Rennsaison 2024 beim Bazora Bergradrenna.",
+    "tags": ["Vorarlberg", "HC", "Rennrad", "Ralf", "2024"]
+  }
+]
