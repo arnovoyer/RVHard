@@ -49,12 +49,24 @@
         }
 
         .membership-card ul {
-            margin: 0.5rem 0 0 1.2rem;
+            margin: 0.5rem 0 0;
             padding: 0;
+            list-style: none;
         }
 
         .membership-card li {
             margin-bottom: 0.3rem;
+            padding-left: 1.4rem;
+            position: relative;
+        }
+
+        .membership-card li::before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #2e7d32;
+            font-weight: 700;
         }
 
         @media (max-width: 768px) {
@@ -81,7 +93,7 @@
         }
 
         .membership-section p {
-            max-width: 900px;
+            max-width: 90%;
             margin-left: auto;
             margin-right: auto;
         }
@@ -153,7 +165,7 @@
                     📄 Mitgliedsantrag ausfüllen
                 </a>
             </div>
-            <!--TODO: Text auf Mobile nicht lesbar -->
+
             <div style="text-align:right;"> 
                 <p style="margin-top:1.5rem; text-align:right; @media (max-width:768px){text-align:center}">
                     Bei weiteren Fragen wende dich an:
