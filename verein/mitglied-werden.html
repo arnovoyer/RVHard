@@ -25,6 +25,7 @@
             gap: 1.5rem;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             margin: 2rem 0;
+            padding: 0 16px;
         }
 
         .membership-card {
@@ -76,6 +77,13 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             margin-bottom: 30px;
+            padding: 0 16px 24px;
+        }
+
+        .membership-section p {
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -146,8 +154,8 @@
                 </a>
             </div>
             <!--TODO: Text auf Mobile nicht lesbar -->
-            <div style="@media (max-width:768px){text-align:center}"> 
-                <p style="margin-top:1.5rem; text-align:right;">
+            <div style="text-align:right;"> 
+                <p style="margin-top:1.5rem; text-align:right; @media (max-width:768px){text-align:center}">
                     Bei weiteren Fragen wende dich an:
                     <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
                 </p>
