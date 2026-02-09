@@ -86,9 +86,11 @@
     }
 
     .hero-verein-wrapper {
-        width: 90%;
+        width: 100%;
         max-width: 600px;
         margin: 0 auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
         align-items: center;
         flex-direction: column !important;
     }
@@ -120,11 +122,16 @@
     .hero-verein-wrapper p {
         font-size: 1rem;
         text-align: center;
+        margin: 0.75rem 0 1rem;
     }
 
     .hero-verein-wrapper img {
         width: 100%;
         max-width: 500px;
+    }
+
+    .gelber-button-container {
+        margin-top: 0.75rem;
     }
 
     #news-container {
