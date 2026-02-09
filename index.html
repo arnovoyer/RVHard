@@ -17,14 +17,23 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="preload" href="/assets/events/index.css" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/assets/events/index.css"></noscript>
+    <noscript>
+        <link rel="stylesheet" href="/assets/events/index.css">
+    </noscript>
     <link rel="stylesheet" href="assets/navigation.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></noscript>
+    <noscript>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    </noscript>
     <link rel="icon" type="image/png" href="assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    </noscript>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
 
@@ -263,67 +272,51 @@
         <section class="container">
             <div class="top-events-container">
 
-                <!-- Summer Bike Series wie gehabt -->
                 <div class="event-card summer-series">
                     <div data-aos="fade-up-right">
-
                         <h3>Summer Bike Series</h3>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.07.2025 – 15:00 Uhr</p>
                             <p class="event-name">Kammgarn Kriterium Hard</p>
                         </div>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.07.2025 – 18:00 Uhr</p>
                             <p class="event-name">Einzelzeitfahren Rohrspitz – Fußach</p>
                         </div>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>06.07.2025 – 10:00 Uhr</p>
                             <p class="event-name">Bergrennen Wolfurt–Buch</p>
                         </div>
-
                         <div>
                             <a href="/events/sbs/summer-bike-series-2025.html" class="gelber-button">Mehr
                                 Infos und Anmeldung</a>
                         </div>
                     </div>
-
-
                 </div>
 
-                <!-- Nightrace mit mehreren Unterkategorien -->
                 <div class="event-card nightrace">
                     <div data-aos="fade-up-left">
                         <h3>Nightrace 2025</h3>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – ab 9:15 Uhr
                             </p>
                             <p class="event-name">Kinderrennen</p>
                         </div>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – 14:15 Uhr</p>
                             <p class="event-name">Jugendrennen</p>
                         </div>
-
                         <div class="single-event">
                             <p class="event-date"><i class="fa-regular fa-calendar-days"></i>31.05.2025 – ab 15.30 Uhr
                             </p>
                             <p class="event-name">Nightrace</p>
                         </div>
-
                         <div>
                             <a href="events/nightrace/dachbau-schaffer-nightrace-2025.html" class="gelber-button">Zu den
                                 Ergebnissen</a>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </section>
 
@@ -356,7 +349,6 @@
 
                 async function loadLatestNews(container) {
                     try {
-                        // Passe die Reihenfolge/Einträge an deine Struktur an
                         const news = await fetchFirst([
                             '/data/News/news.json',
                             '/data/news/news.json',
@@ -365,11 +357,9 @@
                             'news.json'
                         ]);
 
-                        // Neueste (höchste ID) zuerst
                         news.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
                         const latest = news.slice(0, 2);
 
-                        // Überschrift behalten, Inhalt ersetzen
                         container.innerHTML = `
         <a href="news.html"><h2>Neueste Nachrichten</h2></a>
       `;
@@ -494,21 +484,24 @@
             <div class="logos">
                 <div class="logos-slide">
                     <a href="https://www.alpla.com/de" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.becker-installationen.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/becker.webp" alt="Becker Installationen Logo" width="340"
                             height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.djs.bike" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.faigle.com/de" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.tierklinik-fuerst.at/" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/fürst.webp" alt="Tierklinik Fürst Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/fürst.webp" alt="Tierklinik Fürst Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.generali.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/generali-medium.webp" alt="Generali Logo" width="907"
@@ -519,44 +512,45 @@
                             height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://oeamtc.at" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.profimed.at/" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="index.html">
                         <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
                             height="150" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.raiffeisen.at/de/privatkunden.html" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340" height="50"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://schaffer-dachbau.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/schffer.webp" alt="Dachbau Schaffer Logo" width="340"
                             height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://simplon.com/de" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417"
-                            height="300" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417" height="300"
+                            loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.vn.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/vn.webp" alt="Vorarlberger Nachrichten Logo" width="340"
                             height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://vkw.at" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" loading="eager" decoding="async" />
+                        <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" loading="eager"
+                            decoding="async" />
                     </a>
                 </div>
             </div>
-
         </section>
     </main>
 
     <footer id="site-footer"></footer>
 
     <script src="/assets/navigation-loader.js" defer></script>
-
     <script>
         var copy = document.querySelector(".logos-slide").cloneNode(true);
         document.querySelector(".logos").appendChild(copy);
@@ -574,10 +568,9 @@
     <script>
         AOS.init({
             duration: 1000,
-            once: true, 
+            once: true,
         });
     </script>
-
 </body>
 
 </html>
