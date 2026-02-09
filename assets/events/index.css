@@ -93,6 +93,7 @@
         box-sizing: border-box;
         align-items: center;
         flex-direction: column !important;
+        gap: 0.5rem;
     }
 
     .hero-container {
@@ -103,7 +104,7 @@
     .hero-image {
         width: 100%;
         max-width: 600px;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
 
     .hero-verein-wrapper .verein-vorstellung {

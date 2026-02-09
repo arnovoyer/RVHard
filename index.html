@@ -16,10 +16,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/events/index.css">
+    <link rel="preload" href="/assets/events/index.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/assets/events/index.css"></noscript>
     <link rel="stylesheet" href="assets/navigation.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></noscript>
     <link rel="icon" type="image/png" href="assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
 
@@ -233,16 +238,16 @@
     <header>
         <div id="navigation-container"></div>
     </header>
-    <main>
+    <main style="padding-top:0px">
         <div class="hero-verein-wrapper" data-aos="fade-up">
             <div class="hero-image img">
                 <img src="/assets/img/hero/Anradeln-2024-Auftsellung.webp" srcset="/assets/img/hero/Anradeln-2024-Auftsellung-small.webp 480w,
                             /assets/img/hero/Anradeln-2024-Auftsellung-medium.webp 900w,
                             /assets/img/hero/Anradeln-2024-Auftsellung.webp 1600w" sizes="(max-width: 600px) 100vw, 
                             (max-width: 1200px) 80vw, 
-                            1600px" alt="Aufstellung Anradeln 2024" width="900" height="675">
+                            1600px" alt="Aufstellung Anradeln 2024" width="900" height="675" fetchpriority="high">
             </div>
-            <section class="verein-vorstellung">
+            <section class="verein-vorstellung" style="margin-top:0px;">
                 <div data-aos="fade-up">
                     <h1><strong>Wir sind der RV DJ's Bikeshop Simplon Hard</strong></h1>
                     <p>Wir sind deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon – bei uns finden
@@ -489,58 +494,58 @@
             <div class="logos">
                 <div class="logos-slide">
                     <a href="https://www.alpla.com/de" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.becker-installationen.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/becker.webp" alt="Becker Installationen Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.djs.bike" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.faigle.com/de" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.tierklinik-fuerst.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/fürst.webp" alt="Tierklinik Fürst Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.generali.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/generali-medium.webp" alt="Generali Logo" width="907"
-                            height="50" />
+                            height="100" loading="eager" decoding="async" />
                     </a>
                     <a href="https://lang-schiller.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/lang und schiller.webp" alt="Lang & Schiller Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://oeamtc.at" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.profimed.at/" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="index.html">
                         <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
-                            height="50" />
+                            height="150" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.raiffeisen.at/de/privatkunden.html" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://schaffer-dachbau.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/schffer.webp" alt="Dachbau Schaffer Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://simplon.com/de" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417"
-                            height="50" />
+                            height="300" loading="eager" decoding="async" />
                     </a>
                     <a href="https://www.vn.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/vn.webp" alt="Vorarlberger Nachrichten Logo" width="340"
-                            height="50" />
+                            height="50" loading="eager" decoding="async" />
                     </a>
                     <a href="https://vkw.at" target="_blank" rel="noopener noreferrer">
-                        <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" />
+                        <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" loading="eager" decoding="async" />
                     </a>
                 </div>
             </div>
