@@ -1,0 +1,1 @@
+This is probably the next Website for RV DJ's Bikeshop Simplon Hard. The current Version ist online at rv-hard.arnovoyer.com. If there are any reclamations about Picture rights or used pictures with you in it, please contact me for removal.
