@@ -1,14 +1,8 @@
 (function () {
   if (window.location.pathname === "/datenschutz.html") return;
 
-  /* =========================
-     Platzhalter-Cache
-  ========================== */
   const placeholderCache = new Map();
 
-  /* =========================
-     Externe Inhalte laden / entfernen
-  ========================== */
   function loadConsentContent(allowExternal = false) {
     function isMobileView() {
       return window.innerWidth <= 768;
@@ -27,16 +21,12 @@
       const mobileLink = container.dataset.mobileLink || src;
 
 
-
-
-      // ❌ Desktop + keine Zustimmung → Platzhalter
       if (!allowExternal) {
         container.innerHTML = placeholderCache.get(container);
         return;
       }
 
 
-      // 📱 Mobile → IMMER Button (egal ob Cookies erlaubt)
       if (isMobile && type === "iframe" && mobileLink) {
         container.innerHTML = `
     <div class="rr-mobile-box">
@@ -49,7 +39,6 @@
         return;
       }
 
-      // 🖥 Desktop → normales iframe
       container.classList.remove("rr-mobile-active");
       container.innerHTML = "";
       const iframe = document.createElement("iframe");
@@ -62,9 +51,7 @@
     });
   }
 
-  /* =========================
-     Cookie Banner erstellen
-  ========================== */
+
   function createCookieBanner() {
     if (document.getElementById("cookie-overlay")) return;
 
@@ -92,19 +79,21 @@
       box-shadow: 0 4px 25px rgba(0,0,0,0.3);
       font-size: 0.95rem;
       line-height: 1.5;
+      font-family: 'Poppins', sans-serif;
     `;
 
     banner.innerHTML = `
       <style>
+        #cookie-banner { font-family: 'Poppins', sans-serif; }
         #cookie-banner a { color: #ffc107; text-decoration: underline; }
         .cookie-actions { display:flex; gap:0.75rem; margin-top:1rem; flex-wrap:wrap; justify-content:flex-end; }
-        .cookie-actions button { padding:12px 18px; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+        .cookie-actions button { padding:12px 18px; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-family: 'Poppins', sans-serif; }
         #accept-all { background:#ffc107; }
         #decline-all { background:#f0f0f0; }
         #open-preferences { background:#eaeaea; }
         #cookie-detailed { display:none; margin-top:1rem; border-top:1px solid #ddd; padding-top:1rem; }
         .cookie-checkbox { background:#f7f7f7; padding:1rem; border-radius:8px; margin-bottom:1rem; }
-        .save-pref { background:#f0f0f0; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; }
+        .save-pref { background:#f0f0f0; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-family: 'Poppins', sans-serif; }
       </style>
 
       <h3>Cookie-Informationen</h3>
@@ -127,7 +116,7 @@
         </div>
 
         <div class="cookie-checkbox">
-          <input type="checkbox" id="chk-external">
+          <input type="checkbox" id="chk-external" style=">
           <strong>Externe Inhalte</strong>
           <div style="font-size:0.9rem;">
             YouTube, RaceResult, Instagram / EmbedSocial.
@@ -144,7 +133,7 @@
     overlay.appendChild(banner);
     document.body.appendChild(overlay);
 
-    /* Banner Events */
+
     banner.querySelector("#open-preferences").onclick = () => {
       banner.querySelector("#cookie-detailed").style.display = "block";
       banner.querySelector("#open-preferences").style.display = "none";
@@ -154,14 +143,14 @@
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: true }));
       overlay.remove();
       loadConsentContent(true);
-      updateInstagramSection(true); // ✔ direkt true
+      updateInstagramSection(true); 
     };
 
     banner.querySelector("#decline-all").onclick = () => {
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: false }));
       overlay.remove();
       loadConsentContent(false);
-      updateInstagramSection(false); // ✔ direkt false
+      updateInstagramSection(false); 
     };
 
     banner.querySelector("#save-preferences").onclick = () => {
@@ -169,13 +158,11 @@
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external }));
       overlay.remove();
       loadConsentContent(external);
-      updateInstagramSection(external); // ✔ korrekt
+      updateInstagramSection(external); 
     };
   }
 
-  /* =========================
-     Platzhalter-Button: Cookies akzeptieren
-  ========================== */
+
   document.addEventListener("click", e => {
     const btn = e.target.closest(".accept-cookies-btn");
     if (!btn) return;
@@ -185,9 +172,6 @@
     loadConsentContent(true);
   });
 
-  /* =========================
-   Instagram / EmbedSocial dynamisch
-========================= */
 
   function getInstagramPlaceholder() {
     return document.getElementById("instagram-placeholder");
@@ -205,7 +189,7 @@
 
   function showInstagramSection() {
     const instagramPlaceholder = getInstagramPlaceholder();
-    if (!instagramPlaceholder) return;   // ✅ wenn Seite keinen Placeholder hat → nix tun
+    if (!instagramPlaceholder) return;
     if (instagramPlaceholder.innerHTML) return;
 
     instagramPlaceholder.innerHTML = `
@@ -236,9 +220,6 @@
   }
 
 
-  /* =========================
-   Initialisierung
-========================== */
   document.addEventListener("DOMContentLoaded", () => {
     const stored = localStorage.getItem("cookieChoice");
     const choice = stored ? JSON.parse(stored) : { external: false };
@@ -246,12 +227,12 @@
       createCookieBanner();
     } else {
       const choice = JSON.parse(stored);
-      loadConsentContent(choice.external); // bleibt
-      updateInstagramSection(choice.external); // NEU: Instagram Section updaten
+      loadConsentContent(choice.external);
+      updateInstagramSection(choice.external);
     }
   });
 
-  // 🔁 Reagiere auf Viewport-Wechsel (Emulator + Desktop ↔ Mobile)
+
   window.addEventListener("resize", () => {
     const stored = localStorage.getItem("cookieChoice");
     const choice = stored ? JSON.parse(stored) : { external: false };
@@ -261,10 +242,6 @@
   });
 
 
-
-  /* =========================
-     Footer-Link: Cookie-Einstellungen öffnen
-  ========================== */
   document.addEventListener("click", e => {
     const btn = e.target.closest("#open-cookie-settings");
     if (!btn) return;

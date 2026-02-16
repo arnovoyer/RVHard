@@ -8,25 +8,16 @@
     <meta name="description" content="RV Hard News">
     <meta name="keywords" content="RV Hard News, RV Hard Neuigkeiten">
     <meta name="author" content="RV Hard">
-
-    <!-- Preconnect für kritische Domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    
-    <!-- Poppins Font mit font-display:swap -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
-    
     <link rel="stylesheet" href="/assets/style.css" />
     <link rel="stylesheet" href="/assets/news/news.css" />
-    
     <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-    
-    <!-- Critical CSS inline für sofortiges Rendering -->
     <style>
-        /* Critical Styles */
         html, body {
             margin: 0;
             padding: 0;
@@ -48,7 +39,6 @@
             margin-bottom: 0;
         }
         
-        /* Skeleton für Navigation - verhindert Layout Shift */
         #navigation-container:empty {
             min-height: 70px;
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -56,7 +46,6 @@
             animation: skeleton-loading 1.5s ease-in-out infinite;
         }
         
-        /* Skeleton für Footer - verhindert Layout Shift */
         #site-footer:empty {
             min-height: 150px;
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -86,7 +75,6 @@
             margin-bottom: 2rem;
         }
         
-        /* Einfache Fade-in Animation statt AOS */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -138,18 +126,15 @@
 
     <footer id="site-footer"></footer>
 
-    <!-- Nur initNavigationMenu wird benötigt -->
     <script src="/assets/navigation-loader.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Paralleles Laden für bessere Performance
             const [navResult, newsResult, footerResult] = await Promise.allSettled([
                 loadNavigation(),
                 loadNews(),
                 loadFooter()
             ]);
 
-            // Fehlerbehandlung
             if (navResult.status === 'rejected') console.error('Navigation-Fehler:', navResult.reason);
             if (newsResult.status === 'rejected') console.error('News-Fehler:', newsResult.reason);
             if (footerResult.status === 'rejected') console.error('Footer-Fehler:', footerResult.reason);
@@ -192,7 +177,6 @@
                     newsContainer.appendChild(articleEl);
                 });
 
-                // 🔽 Button zum Archiv hinzufügen
                 const archivButton = document.createElement('div');
                 archivButton.className = "news-archiv-wrapper";
                 archivButton.innerHTML = `
