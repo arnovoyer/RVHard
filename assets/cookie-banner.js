@@ -93,13 +93,16 @@
         #open-preferences { background:#eaeaea; }
         #cookie-detailed { display:none; margin-top:1rem; border-top:1px solid #ddd; padding-top:1rem; }
         .cookie-checkbox { background:#f7f7f7; padding:1rem; border-radius:8px; margin-bottom:1rem; }
-        .save-pref { background:#f0f0f0; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-family: 'Poppins', sans-serif; }
+        .save-pref { display:none; background:#f0f0f0; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-family: 'Poppins', sans-serif; }
       </style>
 
       <h3>Cookie-Informationen</h3>
       <p>
-        Wir verwenden Cookies, um die Funktionalität der Seite zu gewährleisten.
-        Externe Inhalte werden nur mit deiner Zustimmung geladen.
+        Wir verwenden technisch notwendige Cookies für den Betrieb der Website. 
+        Externe Inhalte (z.B. YouTube, RaceResult, Instagram/EmbedSocial) werden 
+        erst nach Ihrer ausdrücklichen Einwilligung geladen. 
+        Dabei können personenbezogene Daten an Drittanbieter übermittelt werden.
+
         Mehr Infos in der <a href="/datenschutz.html">Datenschutzerklärung</a>.
       </p>
 
@@ -116,11 +119,11 @@
         </div>
 
         <div class="cookie-checkbox">
-          <input type="checkbox" id="chk-external" style=">
+          <input type="checkbox" id="chk-external">
           <strong>Externe Inhalte</strong>
           <div style="font-size:0.9rem;">
             YouTube, RaceResult, Instagram / EmbedSocial.
-            Beim Laden können personenbezogene Daten übertragen werden.
+            Beim Laden können personenbezogene Daten übertragen werden. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
           </div>
         </div>
 
@@ -136,6 +139,7 @@
 
     banner.querySelector("#open-preferences").onclick = () => {
       banner.querySelector("#cookie-detailed").style.display = "block";
+      banner.querySelector("#save-preferences").style.display = "block";
       banner.querySelector("#open-preferences").style.display = "none";
     };
 
@@ -143,14 +147,14 @@
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: true }));
       overlay.remove();
       loadConsentContent(true);
-      updateInstagramSection(true); 
+      updateInstagramSection(true);
     };
 
     banner.querySelector("#decline-all").onclick = () => {
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: false }));
       overlay.remove();
       loadConsentContent(false);
-      updateInstagramSection(false); 
+      updateInstagramSection(false);
     };
 
     banner.querySelector("#save-preferences").onclick = () => {
@@ -158,7 +162,7 @@
       localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external }));
       overlay.remove();
       loadConsentContent(external);
-      updateInstagramSection(external); 
+      updateInstagramSection(external);
     };
   }
 
