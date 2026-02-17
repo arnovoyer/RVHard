@@ -64,8 +64,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-toggleBtn.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    toggleBtn.classList.toggle('rotated');
-});
 
