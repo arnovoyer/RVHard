@@ -27,7 +27,6 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Synthese:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
-        /* Beispielstil für cite, falls Sie es verwenden möchten */
         cite {
             font-style: italic;
             color: #333;
@@ -68,7 +67,6 @@
             transform: translateX(-50%);
         }
 
-        /* Gemeinsame Styles */
         .timeline-item {
             position: relative;
             width: 50%;
@@ -127,8 +125,6 @@
             transform: translateX(5px);
         }
 
-
-        /* Mobile: Linie nach links */
         @media (max-width: 768px) {
             .timeline {
                 margin: 30px auto;
@@ -173,7 +169,6 @@
                 right: auto;
             }
 
-            /* Hover-Animationen auf Mobile deaktivieren */
             .timeline-item.left:hover .timeline-content,
             .timeline-item.right:hover .timeline-content {
                 transform: none;
@@ -256,7 +251,6 @@
                 Einblick in die bewegte und facettenreiche Geschichte unseres Vereins geben.
             </p>
             <div class="timeline">
-                <!-- Ereignisse -->
                 <div class="timeline-item left" data-aos="zoom-in-right">
                     <span class="timeline-point"></span>
                     <div class="timeline-content">
@@ -426,8 +420,6 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
-
-
     <script src="/assets/navigation-loader.js" defer></script>
     <script src="/assets/nav.js"></script>
     <script src="/assets/header-scroll.js" defer></script>
@@ -443,7 +435,6 @@
             AOS.refresh();
         });
     </script>
-
 </body>
 
 </html>

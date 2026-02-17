@@ -1,5 +1,3 @@
-// assets/script-news.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const galleries = document.querySelectorAll('.news-detail-gallery-wrapper');
 
@@ -38,9 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showSlide(currentSlide);
 
-        /* ------------------------------------
-         * 🖼️ Lightbox Funktionalität
-         * ------------------------------------ */
         const lightbox = document.createElement('div');
         lightbox.classList.add('lightbox');
         lightbox.innerHTML = `
@@ -65,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function openLightbox() {
             const bg = slides[currentSlide].style.backgroundImage;
-            const imgUrl = bg.slice(5, -2); // entfernt url("...") Syntax
+            const imgUrl = bg.slice(5, -2);
             lightboxImg.src = imgUrl;
             lightbox.style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -86,17 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
         prevLightbox.addEventListener('click', () => navigateLightbox(-1));
         nextLightbox.addEventListener('click', () => navigateLightbox(1));
 
-        // Zoom durch Klick auf das Bild
         lightboxImg.addEventListener('click', () => {
             lightbox.classList.toggle('zoomed');
         });
 
-        // Klick auf Hintergrund = schließen
         lightbox.addEventListener('click', e => {
             if (e.target === lightbox) closeLightbox();
         });
 
-        // Tastatursteuerung
         document.addEventListener('keydown', e => {
             if (lightbox.style.display === 'flex') {
                 if (e.key === 'ArrowRight') navigateLightbox(1);
@@ -107,12 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-// ---------------------------------------------------
-// 📰 Related News Laden
-// ---------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-    const currentSlug = "Rennbericht-CadFish-Lübeck-Juni-2024"; // ← pro Seite anpassen
+    const currentSlug = "Rennbericht-CadFish-Lübeck-Juni-2024"
     fetch("/assets/news/news.json")
         .then(res => res.json())
         .then(news => {

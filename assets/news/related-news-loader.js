@@ -22,10 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentTags = currentItem.tags || [];
             const currentDate = currentItem.date ? new Date(currentItem.date) : null;
 
-            /* ===============================
-               1️⃣ TAG-MATCHING (gewichtigt)
-            =============================== */
-
             let relatedItems = newsItems
                 .filter(item => item.slug !== currentSlug && Array.isArray(item.tags))
                 .map(item => {
@@ -38,9 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .filter(item => item.tagScore > 0)
                 .sort((a, b) => b.tagScore - a.tagScore);
 
-            /* ===============================
-               2️⃣ FALLBACK: ähnlicher Zeitraum
-            =============================== */
 
             if (relatedItems.length === 0 && currentDate) {
                 relatedItems = newsItems
@@ -54,9 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     .sort((a, b) => a.dateDiff - b.dateDiff);
             }
 
-            /* ===============================
-               3️⃣ RENDERING (unverändert)
-            =============================== */
 
             relatedItems.slice(0, 2).forEach(item => {
                 const div = document.createElement("div");

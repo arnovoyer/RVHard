@@ -57,7 +57,6 @@ function initNavigationMenu() {
     return;
   }
 
-  // Burger / X
   toggleBtn.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     toggleBtn.classList.toggle('active');
@@ -67,7 +66,6 @@ function initNavigationMenu() {
     );
   });
 
-  // Dropdowns (Mobile)
   document.querySelectorAll('.nav-main-menu li > a').forEach(link => {
     link.addEventListener('click', function (e) {
 
@@ -79,7 +77,6 @@ function initNavigationMenu() {
       if (submenu) {
         e.preventDefault();
 
-        // Geschwister schließen
         Array.from(li.parentElement.children).forEach(sibling => {
           if (sibling !== li) sibling.classList.remove('open');
         });

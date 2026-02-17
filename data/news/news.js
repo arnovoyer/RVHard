@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (article.image) {
                     const imageElement = document.createElement('img');
                     imageElement.src = article.image;
-                    imageElement.alt = article.title; // Wichtig für Barrierefreiheit
-                    imageElement.classList.add('news-image'); // Optional: CSS-Klasse für Styling
+                    imageElement.alt = article.title;
+                    imageElement.classList.add('news-image');
                     articleDiv.appendChild(imageElement);
                 }
 

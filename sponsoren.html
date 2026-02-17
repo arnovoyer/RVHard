@@ -122,7 +122,6 @@
     <script src="/assets/sponsoren/sponsoren-raster.js"></script>
     <script src="/assets/nav.js"></script>
     <script>
-        // Sponsoren-Grid-Spalten zählen
         const sponsorenGrid = document.querySelector('.sponsoren-grid');
         if (sponsorenGrid) {
             const style = getComputedStyle(sponsorenGrid);
@@ -130,26 +129,21 @@
             sponsorenGrid.style.setProperty('--grid-cols', gridColumnCount);
         }
 
-        // Sponsor-Logo Animation
         const sponsorLogos = document.querySelectorAll('.sponsor-logo');
 
         sponsorLogos.forEach(logo => {
             const img = logo.querySelector('img');
 
             logo.addEventListener('mouseenter', () => {
-                // Erst nach unten raus
                 img.style.animation = 'slideOutDown 0.4s forwards';
 
                 setTimeout(() => {
-                    // Sofort oben platzieren
                     img.style.top = '-100%';
                     img.style.opacity = '0';
-                    // Dann nach unten einfliegen
                     img.style.animation = 'slideInFromTop 0.4s forwards';
                 }, 400);
             });
 
-            // Optional: Bild zurücksetzen beim Mouseleave
             logo.addEventListener('mouseleave', () => {
                 img.style.top = '50%';
                 img.style.opacity = '1';
@@ -176,7 +170,6 @@
             });
             AOS.refresh();
         }); </script>
-
 </body>
 
 </html>

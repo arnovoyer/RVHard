@@ -29,28 +29,90 @@
         .filter-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 30px;
+            align-items: center;
         }
 
         .filter-container select,
         .filter-container input[type="search"] {
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 0.95rem;
-            min-width: 150px;
-            flex: 1;
+            padding: 0.45rem 0.65rem;
+            border-radius: 6px;
+            border: 2px solid #e0e0e0;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-container select {
+            min-width: 120px;
+            flex: 0 1 auto;
         }
 
         .filter-container input[type="search"] {
-            flex: 2;
+            flex: 1 1 200px;
+            min-width: 200px;
         }
 
-        @media (max-width: 600px) {
+        .filter-container select:hover,
+        .filter-container input[type="search"]:hover {
+            border-color: #ffc107;
+            background-color: #fffbf0;
+        }
+
+        .filter-container select:focus,
+        .filter-container input[type="search"]:focus {
+            outline: none;
+            border-color: #ffc107;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+        }
+
+        .search-btn {
+            padding: 0.45rem 1.2rem;
+            background: linear-gradient(135deg, #ffc107, #f5b301);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 0 1 auto;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
             .filter-container select {
-                max-height: 200px;
-                overflow-y: auto;
+                width: 100%;
+                min-width: unset;
+            }
+
+            .filter-container input[type="search"] {
+                width: 100%;
+                flex: 1 1 auto;
+                min-width: unset;
+            }
+
+            .search-btn {
+                width: 100%;
             }
         }
     </style>
@@ -75,6 +137,8 @@
                 </select>
 
                 <input type="search" id="news-search" placeholder="News durchsuchen…" class="news-search" />
+
+                <button class="search-btn" id="search-btn">Suchen</button>
             </div>
 
             <div id="news-archive-list" class="news-container"></div>
@@ -85,7 +149,6 @@
 
     <script src="/assets/navigation-loader.js"></script>
     <script src="/assets/nav.js" defer></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             await loadNavigation();
@@ -109,6 +172,10 @@
             const tagFilter = document.getElementById('tag-filter');
             const searchInput = document.getElementById('news-search');
 
+            const STORAGE_YEAR = 'news-filter-year';
+            const STORAGE_TAG = 'news-filter-tag';
+            const STORAGE_SEARCH = 'news-filter-search';
+
             try {
                 const response = await fetch('/data/news/news.json');
                 if (!response.ok) throw new Error(`Fehler beim Laden: ${response.status}`);
@@ -116,7 +183,6 @@
 
                 news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                /* ===== Jahre ===== */
                 const years = [...new Set(news.map(n => new Date(n.date).getFullYear()))]
                     .sort((a, b) => b - a);
 
@@ -127,21 +193,27 @@
                     yearFilter.appendChild(opt);
                 });
 
-                /* ===== Tags ===== */
                 const allTags = new Set();
                 news.forEach(n => n.tags?.forEach(t => allTags.add(t)));
 
                 const allowedTags = ['MTB', 'Triathlon', 'Rennrad', "Rennbericht", 'Rennen', "Nachwuchs", "HC", "Verein","LM","Cyclocross","AYC","Nightrace","SBS","ÖM"];
 
                 [...allTags].sort().forEach(tag => {
-                    if (!allowedTags.includes(tag)) return; // alles andere ignorieren
+                    if (!allowedTags.includes(tag)) return;
                     const opt = document.createElement('option');
                     opt.value = tag;
                     opt.textContent = tag;
                     tagFilter.appendChild(opt);
                 });
 
-                /* ===== Anzeige ===== */
+                const savedYear = localStorage.getItem(STORAGE_YEAR);
+                const savedTag = localStorage.getItem(STORAGE_TAG);
+                const savedSearch = localStorage.getItem(STORAGE_SEARCH);
+
+                if (savedYear) yearFilter.value = savedYear;
+                if (savedTag) tagFilter.value = savedTag;
+                if (savedSearch) searchInput.value = savedSearch;
+
                 function displayNews() {
                     const selectedYear = yearFilter.value;
                     const selectedTag = tagFilter.value;
@@ -204,10 +276,25 @@
                     AOS.refresh();
                 }
 
-                /* ===== Events ===== */
-                yearFilter.addEventListener('change', displayNews);
-                tagFilter.addEventListener('change', displayNews);
-                searchInput.addEventListener('input', displayNews);
+                yearFilter.addEventListener('change', () => {
+                    localStorage.setItem(STORAGE_YEAR, yearFilter.value);
+                    displayNews();
+                });
+
+                tagFilter.addEventListener('change', () => {
+                    localStorage.setItem(STORAGE_TAG, tagFilter.value);
+                    displayNews();
+                });
+
+                searchInput.addEventListener('input', () => {
+                    localStorage.setItem(STORAGE_SEARCH, searchInput.value);
+                    displayNews();
+                });
+
+                document.getElementById('search-btn').addEventListener('click', () => {
+                    localStorage.setItem(STORAGE_SEARCH, searchInput.value);
+                    displayNews();
+                });
 
                 displayNews();
 
@@ -220,7 +307,6 @@
 
     <script src="/assets/header-scroll.js" defer></script>
     <script src="/assets/cookie-banner.js" defer></script>
-
     <script>
         fetch("/assets/footer.html")
             .then(r => r.text())
@@ -228,7 +314,6 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
     <script>
         window.addEventListener('load', () => {
@@ -239,7 +324,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

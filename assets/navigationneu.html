@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigation Bar With Dropdown | Ludiflex</title>
-    <!-- Font-Awesome mit font-display:swap für bessere Performance -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -70,9 +69,7 @@
                 left: 0;
                 width: 100%;
                 max-height: 0;
-                /* Start geschlossen */
                 overflow: hidden;
-                /* Versteckt überlaufenden Inhalt */
                 flex-direction: column;
                 background: var(--bg-color);
                 transition: max-height 0.35s ease-out;
@@ -81,7 +78,6 @@
 
             .nav-main-menu.active {
                 max-height: 1000px;
-                /* Genug, damit alles sichtbar wird */
             }
 
             .menu-toggle {
@@ -116,7 +112,6 @@
                 color: #ffc107;
             }
 
-            /* Dropdowns im Mobile */
             .dropdown-content,
             .sub-dropdown-content {
                 max-height: 0;
@@ -127,7 +122,6 @@
             .dropdown.active-dropdown>.dropdown-content,
             .sub-dropdown.active-sub-dropdown>.sub-dropdown-content {
                 max-height: 500px;
-                /* genug Höhe für Untermenüs */
             }
         }
 
@@ -141,9 +135,7 @@
                 flex-direction: column;
                 justify-content: space-between;
                 width: 30px;
-                /* länger für sauberes X */
                 height: 24px;
-                /* Abstand zwischen Balken */
                 background: transparent;
                 border: none;
                 cursor: pointer;
@@ -162,7 +154,6 @@
                 transform-origin: center;
             }
 
-            /* SAUBERES X */
             .menu-toggle.active span:nth-child(1) {
                 transform: translateY(10px) rotate(45deg);
             }
@@ -193,7 +184,6 @@
 
             .nav-main-menu li.open>ul {
                 max-height: 1000px;
-                /* genug für alle */
             }
 
         }
@@ -208,13 +198,11 @@
                     alt="RV DJ's Bikeshop Simplon Hard Logo" height="120" width="255">
             </a>
         </div>
-
         <button class="menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </button>
-
         <ul class="nav-main-menu">
 
             <li><a href="/index.html" class="nav-link">Home</a></li>
@@ -277,14 +265,13 @@
         </ul>
     </nav>
     <main></main>
-
     <script>
         const toggleBtn = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-main-menu');
 
         toggleBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active'); // Menü öffnen/schließen
-            toggleBtn.classList.toggle('active'); // Balken zu X
+            navMenu.classList.toggle('active');
+            toggleBtn.classList.toggle('active');
             document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
         });
 
@@ -323,7 +310,7 @@
                 const submenu = parentLi.querySelector('ul');
 
                 if (submenu) {
-                    e.preventDefault(); // Navigation stoppen
+                    e.preventDefault();
                     parentLi.classList.toggle('open');
                 }
             });
@@ -339,7 +326,6 @@
                 if (submenu) {
                     e.preventDefault();
 
-                    // Nur Geschwister auf gleicher Ebene schließen
                     Array.from(li.parentElement.children).forEach(sibling => {
                         if (sibling !== li) sibling.classList.remove('open');
                     });
@@ -348,8 +334,6 @@
                 }
             });
         });
-
-
     </script>
 </body>
 

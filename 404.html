@@ -13,8 +13,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
     media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   </noscript>
   <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
   <title>404 – Seite nicht gefunden - RV Hard</title>
@@ -48,19 +47,6 @@
       height: auto;
     }
 
-    .button-404 {
-      margin-top: 0px;
-      display: inline-block;
-      padding: 12px 24px;
-      font-size: 1.2rem;
-      color: #fff;
-      background-color: none;
-      border: none;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
     .attribution {
       font-size: 0.5rem;
       justify-content: right;
@@ -70,11 +56,61 @@
       color: #ffc107;
       text-decoration: none;
     }
+
+    .gelber-button a {
+      color: #1a1a1a !important;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .container-404 {
+        height: auto;
+        padding: 2rem 1rem;
+        gap: 15px;
+        flex: 1;
+      }
+
+      .text-404 h1 {
+        font-size: 2.5rem;
+        margin-top: 10px;
+      }
+
+      .text-404 p {
+        font-size: 1rem;
+      }
+
+      .graphik-404 img {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .text-404 h1 {
+        font-size: 2rem;
+      }
+
+      .graphik-404 img {
+        max-height: 200px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <!--Diese Seite ist garnicht mobile optimiert.-->
   <header>
     <div id="navigation-container"></div>
   </header>
@@ -86,7 +122,7 @@
     <div class="graphik-404">
       <img src="/assets/img/404_new1.png" alt="Error 404 Graphik">
     </div>
-    <div class="button-404">
+    <div class="gelber-button">
       <a href="/index.html" class="button">Zur Startseite</a>
     </div>
     <div class="attribution">
@@ -96,8 +132,6 @@
 
 </body>
 <footer id="site-footer"></footer>
-
-
 
 <script src="/assets/navigation-loader.js" defer></script>
 <script src="/assets/nav.js"></script>

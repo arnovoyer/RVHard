@@ -39,7 +39,6 @@
         @media (max-width: 600px) {
             .kontakt-buttons {
                 flex-direction: column;
-                /* untereinander */
                 gap: 1.25rem;
                 align-items: stretch;
             }
@@ -51,7 +50,6 @@
             .kontakt-button-wrapper .gelber-button {
                 width: 100%;
                 justify-content: center;
-                /* Button-Text zentriert */
             }
         }
 
@@ -78,7 +76,6 @@
 
         .kontakt-container h2 {
             color: #ffc107;
-            /* Gelbe Farbe für Überschriften */
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
             justify-content: center;
@@ -190,15 +187,9 @@
         <section class="dokumente-bereich">
             <h3>Wichtige Dokumente zum Download</h3>
             <ul class="dokumente-liste">
-                <!--<li><a href="downloads/Aufnahmeantrag RV Hard.pdf" class="dokument-link" target="_blank"
-                        download="Mitgliedsantrag.pdf">Mitgliedsantrag
-                        (PDF)</a></li>-->
                 <li><a href="downloads/Spesen-Rennfahrer-Formular.pdf" class="dokument-link" target="_blank"
                         download="Spesen-Rennfahrer-Formular.pdf">Spesen Rennfahrer Formular (PDF)</a>
                 </li>
-                <!--<li><a href="pfad/zu/datenschutzordnung.pdf" class="dokument-link" target="_blank"
-                        download="Datenschutzordnung.pdf">etwaige Dokumete
-                        (PDF)</a></li>-->
             </ul>
         </section>
         <section class="kontakt-standort">
@@ -209,26 +200,15 @@
                 Vorarlberg, Österreich
             </p>
 
-            <!--<a class="text-link">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d360.9757751018269!2d9.688983215544264!3d47.49268127732025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479b12155c8275d1%3A0xf726765d4de271e5!2sKohlplatzstra%C3%9Fe%202a%2C%206971%20Hard!5e0!3m2!1sde!2sat!4v1769276632778!5m2!1sde!2sat"
-                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </a>-->
-
         </section>
 
     </main>
-
     <footer id="site-footer"></footer>
-
-
 
     <script src="/assets/navigation-loader.js" defer></script>
     <script src="/assets/nav.js"></script>
     <script src="/assets/header-scroll.js" defer></script>
     <script src="/assets/cookie-banner.js" defer></script>
-
     <script>
         fetch("/assets/footer.html")
             .then(r => r.text())
@@ -236,7 +216,6 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
-
 </body>
 
 </html>

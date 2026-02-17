@@ -279,9 +279,8 @@
                     const ortContainer = document.createElement('div');
                     ortContainer.classList.add('event-location-list');
 
-                    // Orte aufteilen (Kommas + Klammern bleiben erhalten)
                     const orte = event.ort
-                        .split(/\s*;\s*(?![^()]*\))/); // split bei Komma, nicht in Klammern
+                        .split(/\s*;\s*(?![^()]*\))/);
 
                     orte.forEach(rawOrt => {
                         const ort = rawOrt.replace(/^Start:\s*/i, '').trim();
@@ -300,8 +299,6 @@
                     card.appendChild(ortContainer);
                 }
 
-
-
                 if (event.link) {
                     const linkButton = document.createElement('a');
                     linkButton.href = event.link;
@@ -312,7 +309,6 @@
 
                     card.appendChild(linkButton);
                 }
-
 
                 const kalenderButton = document.createElement('button');
                 kalenderButton.classList.add('event-button', 'kalender-button');
@@ -327,7 +323,6 @@
         renderEvents("bevorstehende-events", bevorstehend);
         renderEvents("vergangene-events", vergangen);
 
-        // Toggle-Funktion für vergangene Events
         const toggleBtn = document.getElementById("toggle-vergangene");
         const vergangeneContainer = document.getElementById("vergangene-events");
         toggleBtn.addEventListener("click", () => {
@@ -364,8 +359,6 @@
     </script>
 
     <footer id="site-footer"></footer>
-
-
 
     <script src="/assets/nav.js"></script>
     <script src="/assets/navigation-loader.js" defer></script>

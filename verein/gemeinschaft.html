@@ -38,7 +38,7 @@
       das Miteinander im
       Vordergrund. Wir
       veranstalten Ausfahrten, Radwochen und gemeinsame Feste, die für alle Vereinsmitglieder offen sind.</p>
-    <!-- MTB Slider -->
+
     <section class="mtb-section">
       <h2 data-aos="zoom-in">MTB</h2>
       <p data-aos="zoom-in"><i class="fa-solid fa-mountain" style="margin-right:5px"></i> Gemeinsame Trainings,
@@ -63,7 +63,7 @@
           <img src="/assets/img/gemeinschaft/MTB15.webp" loading="lazy" alt="MTB Training" width="300" height="200">
           <img src="/assets/img/gemeinschaft/MTB16.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
           <img src="/assets/img/gemeinschaft/MTB17.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
-          <!--Duplizierung für nahtloses Scrollen-->
+          <!--Duplizierung-->
           <img src="/assets/img/gemeinschaft/MTB1.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
           <img src="/assets/img/gemeinschaft/MTB2.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
           <img src="/assets/img/gemeinschaft/MTB3.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
@@ -85,7 +85,6 @@
       </div>
     </section>
 
-    <!-- Rennrad Slider -->
     <section class="rennrad-section">
       <h2 data-aos="zoom-in">Rennrad</h2>
       <p data-aos="zoom-in"><i class="fa-solid fa-person-biking" style="margin-right:5px"></i>Ausfahrten, Rennen und
@@ -143,7 +142,7 @@
             height="200">
           <img src="/assets/img/gemeinschaft/Rennrad38.webp" loading="lazy" alt="Radwoche" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Rennrad39.webp" loading="lazy" alt="Kriterium" width="300" height="200">
-          <!--Duplizierung für nahtloses Scrollen-->
+          <!--Duplizierung-->
           <img src="/assets/img/gemeinschaft/Rennrad.webp" loading="eager" alt="Kriterium" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Rennrad1.webp" loading="eager" alt="Ausfahrt" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Rennrad2.webp" loading="eager" alt="Italien Radwoche" width="300"
@@ -199,7 +198,6 @@
       </div>
     </section>
 
-    <!-- Triathlon Slider -->
     <section class="triathlon-section">
       <h2 data-aos="zoom-in">Triathlon</h2>
       <p data-aos="zoom-in"><i class="fa-solid fa-person-running" style="margin-right:5px"></i> Gemeinsame Wettkämpfe,
@@ -229,8 +227,7 @@
           <img src="/assets/img/gemeinschaft/Triathlon16.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Triathlon17.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Triathlon18.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
-          <!--<img src="/assets/img/gemeinschaft/Triathlon7.webp" alt="Abend nach dem Bewerb" width="300" height="200">-->
-          <!--Duplizierung für nahtloses Scrollen-->
+          <!--Duplizierung-->
           <img src="/assets/img/gemeinschaft/Triathlon1.webp" loading="lazy" alt="Schwimmtraining" width="300"
             height="200">
           <img src="/assets/img/gemeinschaft/Triathlon2.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
@@ -257,7 +254,6 @@
       </div>
     </section>
 
-    <!-- Allgemeine Gemeinschaftsaktivitäten -->
     <section class="gemeinschaft-allgemein">
       <h2 data-aos="zoom-in">Gemeinschaft abseits des Rads</h2>
       <p data-aos="zoom-in"><i class="fa-solid fa-users" style="margin-right:5px"></i><!--TODO: Beerbeiten--> Neben dem
@@ -322,8 +318,7 @@
             height="200">
           <img src="/assets/img/gemeinschaft/Gemeinschaft28.webp" loading="lazy" alt="Essen nach der Ausfahrt"
             width="300" height="200">
-          <!--<img src="/assets/img/gemeinschaft/Gemeinschaft2.webp" loading="lazy" alt="Gemeinschaft Bild 3" width="300" height="200">-->
-          <!--Duplizierung für nahtloses Scrollen-->
+          <!--Duplizierung-->
           <img src="/assets/img/gemeinschaft/Gemeinschaft9.webp" loading="lazy"
             alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
           <img src="/assets/img/gemeinschaft/Gemeinschaft10.webp" loading="lazy"
@@ -380,7 +375,6 @@
             height="200">
           <img src="/assets/img/gemeinschaft/Gemeinschaft28.webp" loading="lazy" alt="Essen nach der Ausfahrt"
             width="300" height="200">
-          <!--<img src="/assets/img/gemeinschaft/Gemeinschaft2.webp" loading="lazy" alt="Gemeinschaft Bild 3" width="300" height="200">-->
         </div>
       </div>
     </section>
@@ -396,21 +390,19 @@
         document.getElementById("site-footer").innerHTML = html;
       });
   </script>
-
-  <script>// JavaScript für flüssiges Endlos-Scrolling
+  <script>
     document.querySelectorAll('.slider').forEach(slider => {
       const track = slider.querySelector('.slide-track');
       const imgs = track.querySelectorAll('img');
 
-      // Track duplizieren
       track.innerHTML += track.innerHTML;
 
       let x = 0;
-      const speed = 0.5; // Pixel pro Frame
+      const speed = 0.5;
 
       function animate() {
         x -= speed;
-        if (x <= -track.scrollWidth / 2) x = 0; // reset nach Hälfte
+        if (x <= -track.scrollWidth / 2) x = 0;
         track.style.transform = `translateX(${x}px)`;
         requestAnimationFrame(animate);
       }
