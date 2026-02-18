@@ -17,6 +17,8 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     </noscript>
+    <link rel="stylesheet" href="/assets/share-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/news/news.css">
     <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
 </head>
@@ -73,10 +75,13 @@
                         </p>
                     </div>
                 </div>
-                <aside id="related-news" class="more-news">
-                    <h2>Weitere Neuigkeiten</h2>
-                    <div class="related-news-list" data-aos="flip-up"></div>
-                </aside>
+                <div class="news-sidebar">
+                    <aside id="share-widget" class="share-widget" data-aos="flip-up"></aside>
+                                    <aside id="related-news" class="more-news">
+                                        <h2>Weitere Neuigkeiten</h2>
+                                        <div class="related-news-list" data-aos="flip-up"></div>
+                                    </aside>
+                </div>
             </div>
         </section>
     </main>
@@ -89,12 +94,26 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
+    <script>
+        fetch("/assets/share-button.html")
+            .then(r => r.text())
+            .then(html => {
+                const shareWidget = document.getElementById("share-widget");
+                if (shareWidget) {
+                    shareWidget.innerHTML = html;
+                    if (window.initShareButtons) {
+                        window.initShareButtons();
+                    }
+                }
+            });
+    </script>
     <script src="/assets/navigation-loader.js"></script>
     <script src="/assets/nav.js"></script>
     <script src="/assets/news/news.js"></script>
     <script src="/assets/news/related-news-loader.js"></script>
     <script src="/assets/header-scroll.js" defer></script>
     <script src="/assets/cookie-banner.js" defer></script>
+    <script src="/assets/share-button.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
     <script>
         window.addEventListener('load', () => {

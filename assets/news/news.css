@@ -63,18 +63,29 @@
   max-width: 100%;
 }
 
-#related-news {
+.news-sidebar {
   flex: 0 0 30%;
   max-width: 30%;
   margin-left: auto;
   padding-left: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#related-news {
+  flex: 1 1 auto;
+  max-width: 100%;
+  margin-left: 0;
+  padding-left: 0;
   box-sizing: border-box;
 }
 
 .more-news {
   flex: 1;
   max-width: 280px;
-  margin-top: 40px;
+  margin-top: 0;
 }
 
 .more-news h2 {
@@ -175,6 +186,13 @@ section.container {
     max-width: 100%;
   }
 
+  .news-sidebar {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
   #related-news {
     flex: 1 1 100%;
     max-width: 100%;
@@ -186,6 +204,7 @@ section.container {
   }
 
 
+  .share-widget,
   .more-news {
     width: 100%;
     max-width: 100%;

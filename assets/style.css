@@ -10,7 +10,7 @@ header {
 }
 
 main {
-    padding-top: 40px;
+    padding-top: 0px;
 }
 
 main> :first-child {
@@ -56,7 +56,7 @@ a:hover {
 
 @media (max-width: 768px) {
     main {
-        padding-top: 70px;
+        padding-top: 0px;
     }
 
     .container {
