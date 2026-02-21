@@ -223,26 +223,37 @@
     else removeInstagramSection();
   }
 
+  function safeReadCookieChoice() {
+    const stored = localStorage.getItem("cookieChoice");
+    if (!stored) return { external: false, hasChoice: false };
+
+    try {
+      const parsed = JSON.parse(stored);
+      return { external: !!parsed.external, hasChoice: true };
+    } catch (error) {
+      return { external: false, hasChoice: false };
+    }
+  }
+
 
   document.addEventListener("DOMContentLoaded", () => {
-    const stored = localStorage.getItem("cookieChoice");
-    const choice = stored ? JSON.parse(stored) : { external: false };
-    if (!stored) {
+    const choice = safeReadCookieChoice();
+    if (!choice.hasChoice) {
       createCookieBanner();
     } else {
-      const choice = JSON.parse(stored);
       loadConsentContent(choice.external);
       updateInstagramSection(choice.external);
     }
   });
 
-
+  let resizeTimeout;
   window.addEventListener("resize", () => {
-    const stored = localStorage.getItem("cookieChoice");
-    const choice = stored ? JSON.parse(stored) : { external: false };
-
-    loadConsentContent(choice.external);
-    updateInstagramSection(choice.external);
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const choice = safeReadCookieChoice();
+      loadConsentContent(choice.external);
+      updateInstagramSection(choice.external);
+    }, 150);
   });
 
 

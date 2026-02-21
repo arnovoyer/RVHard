@@ -4,10 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Training - RV Hard</title>
-  <meta name="description" content="RV Hard Trainin & Sparten">
+  <title>Training & Sparten | RV Hard</title>
+  <meta name="description"
+    content="Trainingsangebote des RV Hard für Mountainbike, Rennrad, Triathlon und Hallentraining – Zeiten, Orte und Kontakte.">
+  <meta name="robots" content="index, follow">
   <meta name="keywords" content="RV Hard Training, Training Radverein, Trainingszeiten RV Hard">
   <meta name="author" content="RV Hard">
+  <link rel="canonical" href="https://rv-hard.at/training">
+  <meta property="og:locale" content="de_AT">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RV Hard">
+  <meta property="og:title" content="Training & Sparten | RV Hard">
+  <meta property="og:description"
+    content="Trainingsangebote des RV Hard für Mountainbike, Rennrad, Triathlon und Hallentraining – Zeiten, Orte und Kontakte.">
+  <meta property="og:url" content="https://rv-hard.at/training">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Training & Sparten | RV Hard">
+  <meta name="twitter:description"
+    content="Trainingsangebote des RV Hard für Mountainbike, Rennrad, Triathlon und Hallentraining – Zeiten, Orte und Kontakte.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://unpkg.com">
@@ -20,7 +34,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   </noscript>
   <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -196,7 +210,9 @@
       zum leistungsorientierten Training. Unsere Sparten decken alle Bereiche des Radsports
       und Triathlons ab.
     </p>
+
     <div class="training-seite" style="padding-top: 0px;">
+
       <section class="sparte" data-aos="fade-up">
         <h2><i class="fa-solid fa-mountain"></i> Mountainbike</h2>
         <div class="sparte-beschreibung">
@@ -231,6 +247,7 @@
           </p>
         </div>
       </section>
+
       <section id="rennrad" data-aos="flip-left" data-aos-delay="150">
         <h2><i class="fa-solid fa-person-biking"></i> Rennrad</h2>
         <div class="sparte-beschreibung">
@@ -263,10 +280,11 @@
             <i class="fa-solid fa-user"></i> Kontakt:
             <strong>Joel Voyer</strong><br>
             <i class="fa-solid fa-envelope"></i>
-            <a href="mailto:mtb@rv-hard.at">vorstand@rv-hard.at</a>
+            <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
           </p>
         </div>
       </section>
+
       <section data-aos="flip-left" data-aos-delay="300">
         <h2><i class="fa-solid fa-person-running"></i> Triathlon</h2>
         <div class="sparte-beschreibung">
@@ -306,6 +324,7 @@
           </p>
         </div>
       </section>
+
       <section data-aos="flip-left" data-aos-delay="450">
         <h2><i class="fa-solid fa-dumbbell"></i> Hallentraining (Winter)</h2>
         <div class="sparte-beschreibung">
@@ -343,19 +362,17 @@
     </div>
   </main>
   <footer id="site-footer"></footer>
-  <script src="/assets/nav.js"></script>
+  <script src="/assets/nav.js" defer></script>
   <script src="/assets/navigation-loader.js" defer></script>
   <script src="/assets/header-scroll.js" defer></script>
   <script src="/assets/cookie-banner.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
   <script>
     fetch("/assets/footer.html")
       .then(r => r.text())
       .then(html => {
         document.getElementById("site-footer").innerHTML = html;
       });
-  </script>
-  <script>
-    AOS.init();
   </script>
   <script>
     window.addEventListener('load', () => {
@@ -366,7 +383,6 @@
       AOS.refresh();
     });
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
 </body>
 
 </html>
