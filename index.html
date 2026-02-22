@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RV Hard – dein Verein für Mountainbike, Rennrad und Triathlon in Hard. Training, Termine, News und Vereinsleben auf einen Blick.">
     <meta name="robots" content="index, follow">
-    <meta name="keywords"
-        content="RV Hard, Radverein, Radverein Vorarlberg, Radverein Unterland, Triathlonverein, Triathlon Verein Vorarlberg, Triathlon Verein, Traithlonverein Vorarlberg, Radverein, Rad Verein, Rad Verein Vorarlberg, Rad Verein Unterland, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Mountainbike, Mountainbike Verein Vorarlberg, Mountainbikeverein Vorarlberg, Simplon, Hard, Unterland, ">
     <meta name="author"
         content="RV Hard">
     <title>RV Hard | Radsport- und Triathlonverein in Hard</title>
@@ -20,11 +18,15 @@
         content="Training, Termine, News und Vereinsleben beim RV Hard – Mountainbike, Rennrad und Triathlon in Vorarlberg.">
     <meta property="og:url" content="https://rv-hard.at/">
     <meta property="og:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image:alt" content="Logo des RV Hard">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="RV Hard | Radsport- und Triathlonverein in Hard">
     <meta name="twitter:description"
         content="Training, Termine, News und Vereinsleben beim RV Hard – Mountainbike, Rennrad und Triathlon in Vorarlberg.">
     <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <meta name="twitter:image:alt" content="Logo des RV Hard">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,13 +49,24 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </noscript>
-        <script type="application/ld+json">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
                 {
-                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "@id": "https://rv-hard.at/#website",
+                    "url": "https://rv-hard.at/",
+                    "name": "RV Hard",
+                    "inLanguage": "de-AT"
+                },
+                {
                     "@type": "SportsOrganization",
-                    "name": "RV DJ's Bikeshop Simplon Hard",
+                    "@id": "https://rv-hard.at/#organization",
+                    "name": "RV Hard",
                     "url": "https://rv-hard.at/",
                     "email": "vorstand@rv-hard.at",
+                    "logo": "https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png",
                     "address": {
                         "@type": "PostalAddress",
                         "streetAddress": "Kohlplatzstraße 2a",
@@ -67,8 +80,22 @@
                         "Triathlon"
                     ]
                 }
-        </script>
+            ]
+        }
+    </script>
     <style>
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         @keyframes slide {
             from {
                 transform: translateX(0);
@@ -287,6 +314,7 @@
             </section>
         </div>
         <section class="container">
+            <h2 class="visually-hidden">Veranstaltungshighlights</h2>
             <div class="top-events-container">
 
                 <div class="event-card summer-series">
@@ -375,9 +403,9 @@
                         news.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
                         const latest = news.slice(0, 2);
 
-                        container.innerHTML = `
-        <a href="news.html"><h2>Neueste Nachrichten</h2></a>
-      `;
+                                                container.innerHTML = `
+                <h2><a href="news.html">Neueste Nachrichten</a></h2>
+            `;
 
                         latest.forEach(article => {
                             const author =
@@ -534,7 +562,7 @@
                         <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50"
                             loading="eager" decoding="async" />
                     </a>
-                    <a href="index.html">
+                    <a href="/">
                         <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
                             height="150" loading="eager" decoding="async" />
                     </a>
