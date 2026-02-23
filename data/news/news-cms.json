@@ -1,6 +1,35 @@
 {
   "items": [
     {
+      "body": "adsfasdf\n\n\n\nwie es heute geht is abhöngig davon\n\n\n\ndasss",
+      "slug": "test-2",
+      "date": "2026-02-23",
+      "title": "test 2",
+      "images": [
+        "/assets/img/news/3-laendermarathon-2023_2.webp"
+      ],
+      "tags": [
+        "Rennrad"
+      ],
+      "content": "adsf",
+      "id": 99,
+      "image": "/assets/img/news/3-laendermarathon-2023_1.webp"
+    },
+    {
+      "id": 98,
+      "title": "News - Test",
+      "slug": "news-test",
+      "date": "2026-02-23",
+      "content": "Heute steht der erste TEst an",
+      "body": "hahahhhahahahahahahahah",
+      "tags": [
+        "Verein",
+        "Test"
+      ],
+      "link": "Externer Link (optional",
+      "images": []
+    },
+    {
       "id": 97,
       "slug": "abradeln-2025",
       "title": "Abradeln 2025",
@@ -13,7 +42,9 @@
         "Triathlon",
         "Abradeln",
         "2025"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 96,
@@ -28,7 +59,9 @@
         "Triathlon",
         "Rennen",
         "2025"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 95,
@@ -43,7 +76,9 @@
         "Rennbericht",
         "Rennen",
         "2025"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 94,
@@ -58,7 +93,9 @@
         "Moritz",
         "Langstrecke",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 93,
@@ -73,7 +110,9 @@
         "Moritz",
         "Langstrecke",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 92,
@@ -87,20 +126,24 @@
         "Rennrad",
         "Ralf",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 91,
       "slug": "rennbericht-albstadt-bike-marathon-2024",
       "title": "Rennbericht Albstadt Bike Marathon 2024",
       "date": "2024-07-13",
-      "content": "Am zweiten Samstag im Juli ist immer der Albstadt Bike Marathon ",
+      "content": "Am zweiten Samstag im Juli ist immer der Albstadt Bike Marathon",
       "tags": [
         "Deutschland",
         "Langstrecke",
         "Ralf",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 90,
@@ -115,7 +158,9 @@
         "Ralf",
         "HC",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 89,
@@ -128,9 +173,10 @@
         "Rennrad",
         "Rennen",
         "Ralf",
-        "",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 88,
@@ -142,10 +188,11 @@
         "Ã–sterreich",
         "Nachwuchs",
         "Rennen",
-        "",
         "MTB",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 87,
@@ -160,7 +207,9 @@
         "Rennrad",
         "MTB",
         "2024"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 86,
@@ -173,9 +222,10 @@
         "Verein",
         "Rennen",
         "Cyclocross",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 85,
@@ -188,9 +238,10 @@
         "Verein",
         "Rennen",
         "Cyclocross",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 84,
@@ -203,9 +254,10 @@
         "Marathon",
         "Rennen",
         "Laufen",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 83,
@@ -218,9 +270,10 @@
         "MTB",
         "Rennen",
         "Andi",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 82,
@@ -235,7 +288,9 @@
         "Ã–M",
         "Nachwuchs",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 81,
@@ -248,9 +303,10 @@
         "Rennrad",
         "Rennen",
         "Moritz",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 80,
@@ -263,9 +319,10 @@
         "MTB",
         "Rennen",
         "HC",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 79,
@@ -278,9 +335,10 @@
         "Rennrad",
         "Rennen",
         "Moritz",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 78,
@@ -293,9 +351,10 @@
         "MTB",
         "Rennen",
         "Nachwuchs",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 77,
@@ -308,9 +367,10 @@
         "MTB",
         "Rennen",
         "Ralf",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 76,
@@ -323,9 +383,10 @@
         "MTB",
         "Rennen",
         "Nachwuchs",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 75,
@@ -338,9 +399,10 @@
         "Triathlon",
         "Rennen",
         "WM",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 74,
@@ -352,10 +414,11 @@
         "Deutschland",
         "MTB",
         "Rennen",
-        "",
         "Ralf",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 73,
@@ -370,7 +433,9 @@
         "HC",
         "Ralf",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 72,
@@ -385,7 +450,9 @@
         "HC",
         "Ralf",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 71,
@@ -400,7 +467,9 @@
         "Nightrace",
         "Verein",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 70,
@@ -415,7 +484,9 @@
         "Nightrace",
         "Verein",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 69,
@@ -428,16 +499,17 @@
         "MTB",
         "Rennen",
         "HC",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 68,
       "slug": "rennbericht-ralf-martin",
       "title": "Rennbericht Ralf Martin",
       "date": "2023-05-20",
-      "content": "Nachdem ich heuer schon beim Cycle Cross in FuÃŸach (2 AK), Leiblachlauf in Hergensweiler (1 AK) und Duathlon in Ruggel (Vizelandesmeister) gestartet bin ... ",
+      "content": "Nachdem ich heuer schon beim Cycle Cross in FuÃŸach (2 AK), Leiblachlauf in Hergensweiler (1 AK) und Duathlon in Ruggel (Vizelandesmeister) gestartet bin ...",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -445,37 +517,41 @@
         "HC",
         "Ralf",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 67,
       "slug": "ayc-scheffau-u13m",
       "title": "AYC Scheffau U13m",
       "date": "2023-05-15",
-      "content": "U13 Austrian Youngsters Cup. Momentan fÃ¼hrt der Sieg in der Ã¶sterreichischen U13 MTB-XCO Nachwuchs-Rennserie Ã¼ber Pius Piringer. ",
+      "content": "U13 Austrian Youngsters Cup. Momentan fÃ¼hrt der Sieg in der Ã¶sterreichischen U13 MTB-XCO Nachwuchs-Rennserie Ã¼ber Pius Piringer.",
       "tags": [
         "AYC",
         "MTB",
         "Rennen",
         "Nachwuchs",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 66,
       "slug": "ayc-scheffau-u15w",
       "title": "AYC Scheffau U15w",
       "date": "2023-05-15",
-      "content": "15w AYC Scheffau. Beeindruckende Leistung von Johanna Piringer. ",
+      "content": "15w AYC Scheffau. Beeindruckende Leistung von Johanna Piringer.",
       "tags": [
         "AYC",
         "MTB",
         "Rennen",
         "Nachwuchs",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 65,
@@ -490,7 +566,9 @@
         "LM",
         "Alpencup",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 64,
@@ -502,9 +580,10 @@
         "Ã–sterreich",
         "MTB",
         "Rennen",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 63,
@@ -518,21 +597,24 @@
         "Rennen",
         "Marathon",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 62,
       "slug": "haiming-mountainbike-festival-2023",
       "title": "Haiming Mountainbike Festival 2023",
       "date": "2023-04-18",
-      "content": "Am Samstag, 15.4.2023 fand der erste Bewerb des diesjÃ¤hrigen Ã¶sterreichischen Nachwuchscup statt. ",
+      "content": "Am Samstag, 15.4.2023 fand der erste Bewerb des diesjÃ¤hrigen Ã¶sterreichischen Nachwuchscup statt.",
       "tags": [
         "Ã–sterreich",
         "MTB",
         "Rennen",
-        "",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 61,
@@ -546,7 +628,9 @@
         "Verein",
         "Nightrace",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 60,
@@ -557,10 +641,11 @@
       "tags": [
         "Schweiz",
         "MTB",
-        "",
         "Rennen",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 59,
@@ -574,7 +659,9 @@
         "Verein",
         "Rennen",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 58,
@@ -588,7 +675,9 @@
         "Nachwuchs",
         "Rennen",
         "2023"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 57,
@@ -602,7 +691,9 @@
         "Nachwuchs",
         "Rennen",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 56,
@@ -616,7 +707,9 @@
         "Nachwuchs",
         "Rennen",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 55,
@@ -630,7 +723,9 @@
         "Nachwuchs",
         "Rennen",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 54,
@@ -644,7 +739,9 @@
         "Nachwuchs",
         "Rennen",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 53,
@@ -658,7 +755,9 @@
         "Verein",
         "SBS",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 52,
@@ -672,7 +771,9 @@
         "Verein",
         "SBS",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 51,
@@ -686,7 +787,9 @@
         "Verein",
         "SBS",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 50,
@@ -700,7 +803,9 @@
         "HC",
         "Challenge",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 49,
@@ -714,7 +819,9 @@
         "Rennen",
         "Ã–M",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 48,
@@ -728,7 +835,9 @@
         "Rennen",
         "Nachwuchs",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 47,
@@ -742,7 +851,9 @@
         "Rennen",
         "Nachwuchs",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 46,
@@ -754,9 +865,10 @@
         "Vorarlberg",
         "Rennrad",
         "Rennen",
-        "",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 45,
@@ -770,7 +882,9 @@
         "Nightrace",
         "LM",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 44,
@@ -784,7 +898,9 @@
         "Nightrace",
         "Verein",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 43,
@@ -798,7 +914,9 @@
         "Rennen",
         "AYC",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 42,
@@ -812,7 +930,9 @@
         "Rennen",
         "AYC",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 41,
@@ -824,9 +944,10 @@
         "Schweiz",
         "MTB",
         "Rennen",
-        "",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 40,
@@ -840,7 +961,9 @@
         "Rennen",
         "Training",
         "2022"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 39,
@@ -855,7 +978,9 @@
         "Nachwuchs",
         "AYC",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 38,
@@ -869,7 +994,9 @@
         "MTB",
         "HC",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 37,
@@ -883,7 +1010,9 @@
         "MTB",
         "Alpencup",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 36,
@@ -897,7 +1026,9 @@
         "MTB",
         "Nachwuchs",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 35,
@@ -911,7 +1042,9 @@
         "MTB",
         "Charity",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 34,
@@ -926,14 +1059,16 @@
         "Nachwuchs",
         "AYC",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 33,
       "slug": "austrias-youngsters-cup-koppl-salzburg",
       "title": "Austrias Youngsters Cup Koppl (Salzburg)",
       "date": "2021-09-06",
-      "content": "  In der Klasse U11 konnte Pius zeigen, was er kann und musste den spÃ¤teren Sieger nur auf Grund eines Sturzes vorbeiziehen lassen.",
+      "content": "In der Klasse U11 konnte Pius zeigen, was er kann und musste den spÃ¤teren Sieger nur auf Grund eines Sturzes vorbeiziehen lassen.",
       "tags": [
         "Ã–sterreich",
         "Rennen",
@@ -941,7 +1076,9 @@
         "Nachwuchs",
         "AYC",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 32,
@@ -955,21 +1092,25 @@
         "CrossCountry",
         "Nachwuchs",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 31,
       "slug": "rennbericht-ironbike-festival-2021",
       "title": "Rennbericht Ironbike Festival 2021",
       "date": "2021-08-16",
-      "content": "Nachdem ich die letzten beiden Jahre bedingt durch Nachwuchs und Pandemie nicht in Ischgl war fuhr ich letzen Donnerstag mit dem Kompletten Anhang (2 WettkampfrÃ¤der, Frau, Kinder und Aupair) ins Paznaun zum 26. Ischgl Ironbike. ",
+      "content": "Nachdem ich die letzten beiden Jahre bedingt durch Nachwuchs und Pandemie nicht in Ischgl war fuhr ich letzen Donnerstag mit dem Kompletten Anhang (2 WettkampfrÃ¤der, Frau, Kinder und Aupair) ins Paznaun zum 26. Ischgl Ironbike.",
       "tags": [
         "Tirol",
         "Rennen",
         "MTB",
         "Ralf",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 30,
@@ -983,7 +1124,9 @@
         "Triathlon",
         "LM",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 29,
@@ -997,7 +1140,9 @@
         "Triathlon",
         "Ã–M",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 28,
@@ -1011,7 +1156,9 @@
         "Duathlon",
         "MTB",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 27,
@@ -1025,7 +1172,9 @@
         "Ã–M",
         "MTB",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 26,
@@ -1039,7 +1188,9 @@
         "Ã–M",
         "MTB",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 25,
@@ -1053,7 +1204,9 @@
         "Cup",
         "MTB",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 24,
@@ -1067,7 +1220,9 @@
         "Cup",
         "MTB",
         "2021"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 23,
@@ -1082,7 +1237,9 @@
         "MTB",
         "AYC",
         "2020"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 22,
@@ -1096,7 +1253,9 @@
         "Charity",
         "MTB",
         "2020"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 21,
@@ -1110,12 +1269,14 @@
         "Verein",
         "Rennrad",
         "2020"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 20,
       "slug": "zanzenberg-rennen-2020-oder-the-same-procedure-as-every-year",
-      "title": "Zanzenberg-Rennen 2020, oder â€žThe same procedure as every year!â€œ ",
+      "title": "Zanzenberg-Rennen 2020, oder â€žThe same procedure as every year!â€œ",
       "date": "2020-09-03",
       "content": "Am 29.08.2020 fand in Dornbirn wie jedes Jahr am Zanzenberg das Rennen des RV-Dornbirn statt.",
       "tags": [
@@ -1124,7 +1285,9 @@
         "Nachwuchs",
         "MTB",
         "2020"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 19,
@@ -1138,7 +1301,9 @@
         "Wolfgang",
         "MTB",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 18,
@@ -1152,7 +1317,9 @@
         "MTB",
         "Bikecup",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 17,
@@ -1166,7 +1333,9 @@
         "MTB",
         "LM",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 16,
@@ -1180,7 +1349,9 @@
         "MTB",
         "Alpencup",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 15,
@@ -1194,7 +1365,9 @@
         "MTB",
         "Rennen",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 14,
@@ -1208,7 +1381,9 @@
         "MTB",
         "Rennen",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 13,
@@ -1222,7 +1397,9 @@
         "MTB",
         "LM",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 12,
@@ -1236,7 +1413,9 @@
         "MTB",
         "Ralf",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 11,
@@ -1250,7 +1429,9 @@
         "Ina",
         "Trainingslager",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 10,
@@ -1264,7 +1445,9 @@
         "MTB",
         "Ralf",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 9,
@@ -1278,7 +1461,9 @@
         "MTB",
         "Cup",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 8,
@@ -1292,7 +1477,9 @@
         "Rennrad",
         "Forster",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 7,
@@ -1306,7 +1493,9 @@
         "MTB",
         "Event",
         "2019"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 6,
@@ -1318,7 +1507,9 @@
         "Training",
         "Herbert",
         "2018"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 5,
@@ -1332,7 +1523,9 @@
         "MTB",
         "Ralf",
         "2018"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 4,
@@ -1346,7 +1539,9 @@
         "MTB",
         "Ralf",
         "2018"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 3,
@@ -1360,7 +1555,9 @@
         "MTB",
         "Ralf",
         "2018"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 2,
@@ -1374,7 +1571,9 @@
         "MTB",
         "Ralf",
         "2018"
-      ]
+      ],
+      "body": "",
+      "images": []
     },
     {
       "id": 1,
@@ -1388,20 +1587,9 @@
         "MTB",
         "Andi",
         "2018"
-      ]
-    },
-    {
-      "id": 98,
-      "title": "News - Test",
-      "slug": "news-test",
-      "date": "2026-02-23",
-      "content": "Heute steht der erste TEst an",
-      "body": "hahahhhahahahahahahahah",
-      "tags": [
-        "Verein",
-        "Test"
       ],
-      "link": "Externer Link (optional"
+      "body": "",
+      "images": []
     }
   ]
 }
