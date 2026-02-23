@@ -2,17 +2,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.related-news-list');
     if (!container) return;
 
-    const currentSlug = window.location.pathname
+    const url = new URL(window.location.href);
+    const slugFromQuery = url.searchParams.get('slug');
+    const currentSlug = slugFromQuery || window.location.pathname
         .split('/')
         .pop()
         .replace('.html', '');
 
-    fetch('/data/news/news.json')
+    function normalizeNewsPayload(payload) {
+        if (Array.isArray(payload)) return payload;
+        if (payload && Array.isArray(payload.items)) return payload.items;
+        return [];
+    }
+
+    fetch('/data/news/news-cms.json')
         .then(response => {
-            if (!response.ok) throw new Error("news.json konnte nicht geladen werden");
-            return response.json();
+            if (response.ok) return response.json();
+            return fetch('/data/news/news.json').then(fallback => {
+                if (!fallback.ok) throw new Error("news.json konnte nicht geladen werden");
+                return fallback.json();
+            });
         })
-        .then(newsItems => {
+        .then(response => {
+            const newsItems = normalizeNewsPayload(response);
             const currentItem = newsItems.find(item => item.slug === currentSlug);
             if (!currentItem) {
                 console.warn("Aktueller Artikel nicht in news.json gefunden.");
@@ -53,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.className = "related-news-item";
 
                 div.innerHTML = `
-                    <a href="/news/${item.slug}.html">
+                    <a href="${item.link || `/news/artikel.html?slug=${encodeURIComponent(item.slug)}`}">
                         <div class="related-news-thumb" style="background-image: url('${item.image}');"></div>
                         <div class="related-news-text">
                             <h3>${item.title}</h3>

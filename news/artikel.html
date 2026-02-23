@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News | RV Hard</title>
+    <meta name="description" content="News und Rennberichte des RV Hard." />
+    <meta name="robots" content="index, follow" />
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+    </noscript>
+    <style>
+        .news-inline-main-image {
+            width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0 1.5rem 0;
+            object-fit: cover;
+            max-height: 500px;
+        }
+
+        .news-inline-gallery {
+            display: grid;
+            gap: 0.75rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            margin: 1.2rem 0 0.5rem 0;
+        }
+
+        .news-inline-gallery img {
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            min-height: 130px;
+            max-height: 220px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1 id="news-title">Artikel wird geladen …</h1>
+                    <p id="news-date" class="date"></p>
+                    <div id="news-content" class="news-content-detail"></div>
+                </div>
+                <div class="news-sidebar">
+                    <aside id="related-news" class="more-news">
+                        <h2>Weitere Neuigkeiten</h2>
+                        <div class="related-news-list"></div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="/assets/navigation-loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        function normalizeNewsPayload(payload) {
+            if (Array.isArray(payload)) return payload;
+            if (payload && Array.isArray(payload.items)) return payload.items;
+            return [];
+        }
+
+        async function fetchNewsData() {
+            const urls = ['/data/news/news-cms.json', '/data/news/news.json'];
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const payload = await response.json();
+                    const list = normalizeNewsPayload(payload);
+                    if (list.length) return list;
+                } catch (_) {
+                }
+            }
+            throw new Error('News-Daten konnten nicht geladen werden.');
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, m => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m]));
+        }
+
+        function renderBody(article) {
+            if (article.body && window.marked) {
+                return window.marked.parse(article.body);
+            }
+            const fallbackText = article.body || article.content || '';
+            return `<p>${escapeHtml(fallbackText).replace(/\n/g, '<br>')}</p>`;
+        }
+
+        function normalizeImageList(article) {
+            const images = [];
+            if (typeof article.image === 'string' && article.image.trim()) {
+                images.push(article.image.trim());
+            }
+            if (Array.isArray(article.images)) {
+                article.images.forEach(item => {
+                    if (typeof item === 'string' && item.trim()) {
+                        images.push(item.trim());
+                        return;
+                    }
+                    if (item && typeof item.image === 'string' && item.image.trim()) {
+                        images.push(item.image.trim());
+                    }
+                });
+            }
+            return [...new Set(images)];
+        }
+
+        function renderImageSection(article) {
+            const images = normalizeImageList(article);
+            if (!images.length) return '';
+
+            const [mainImage, ...galleryImages] = images;
+            const safeTitle = escapeHtml(article.title || 'News Bild');
+
+            const mainHtml = `<img class="news-inline-main-image" src="${mainImage}" alt="${safeTitle}" loading="lazy" decoding="async">`;
+            if (!galleryImages.length) return mainHtml;
+
+            const galleryHtml = galleryImages
+                .map((src, index) => `<img src="${src}" alt="${safeTitle} ${index + 2}" loading="lazy" decoding="async">`)
+                .join('');
+
+            return `${mainHtml}<div class="news-inline-gallery">${galleryHtml}</div>`;
+        }
+
+        function articleSlugFromUrl() {
+            const url = new URL(window.location.href);
+            return url.searchParams.get('slug');
+        }
+
+        async function loadNavigation() {
+            const response = await fetch('/assets/navigationneu.html');
+            if (!response.ok) throw new Error(`Status: ${response.status}`);
+            document.getElementById('navigation-container').innerHTML = await response.text();
+            initNavigationMenu();
+        }
+
+        async function loadFooter() {
+            const response = await fetch('/assets/footer.html');
+            if (!response.ok) throw new Error(`Status: ${response.status}`);
+            document.getElementById('site-footer').innerHTML = await response.text();
+        }
+
+        async function loadArticle() {
+            const slug = articleSlugFromUrl();
+            const titleEl = document.getElementById('news-title');
+            const dateEl = document.getElementById('news-date');
+            const contentEl = document.getElementById('news-content');
+
+            if (!slug) {
+                titleEl.textContent = 'Kein Artikel-Slug übergeben';
+                contentEl.innerHTML = '<p>Bitte über einen gültigen News-Link öffnen.</p>';
+                return;
+            }
+
+            try {
+                const news = await fetchNewsData();
+                const article = news.find(item => item.slug === slug);
+
+                if (!article) {
+                    titleEl.textContent = 'Artikel nicht gefunden';
+                    contentEl.innerHTML = '<p>Der angeforderte Artikel existiert nicht.</p>';
+                    return;
+                }
+
+                document.title = `${article.title} | RV Hard`;
+                titleEl.textContent = article.title;
+
+                const date = new Date(article.date);
+                dateEl.textContent = isNaN(date)
+                    ? article.date || ''
+                    : date.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+
+                contentEl.innerHTML = `${renderImageSection(article)}${renderBody(article)}`;
+            } catch (error) {
+                console.error(error);
+                titleEl.textContent = 'Fehler beim Laden';
+                contentEl.innerHTML = '<p>Der Artikel konnte derzeit nicht geladen werden.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tasks = [loadNavigation(), loadFooter(), loadArticle()];
+            const [navRes, footerRes] = await Promise.allSettled(tasks);
+            if (navRes?.status === 'rejected') console.error('Navigation-Fehler:', navRes.reason);
+            if (footerRes?.status === 'rejected') console.error('Footer-Fehler:', footerRes.reason);
+        });
+    </script>
+
+    <script src="/assets/news/related-news-loader.js" defer></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+</body>
+
+</html>

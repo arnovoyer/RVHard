@@ -1,0 +1,96 @@
+backend:
+  name: github
+  repo: arnovoyer/RVHard
+  branch: main
+  base_url: https://rv-hard.arnovoyer.com
+  auth_endpoint: /api/auth
+
+local_backend: false
+
+publish_mode: editorial_workflow
+
+editor:
+  preview: false
+
+media_folder: assets/img/news
+public_folder: /assets/img/news
+
+collections:
+  - name: content
+    label: News
+    files:
+      - name: news
+        label: News (alle Artikel)
+        file: data/news/news-cms.json
+        format: json
+        fields:
+          - label: Artikel
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.date}} · {{fields.title}}'
+            fields:
+              - { label: ID, name: id, widget: number, value_type: int, min: 1, step: 1 }
+              - { label: Titel, name: title, widget: string }
+              - { label: Slug, name: slug, widget: string, hint: 'z. B. abradeln-2025 (nur kleinbuchstaben, zahlen, bindestrich)' }
+              - { label: Datum, name: date, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+              - { label: Teaser, name: content, widget: text, hint: 'Kurzer Vorschautext für Listenansichten' }
+              - { label: Artikeltext, name: body, widget: markdown, required: true }
+              - label: Tags
+                name: tags
+                widget: select
+                required: true
+                multiple: true
+                create: true
+                options:
+                  - Verein
+                  - MTB
+                  - Rennrad
+                  - Triathlon
+                  - Rennbericht
+                  - Rennen
+                  - Nachwuchs
+                  - HC
+                  - LM
+                  - Cyclocross
+                  - AYC
+                  - Nightrace
+                  - SBS
+                  - ÖM
+                  - Deutschland
+                  - Österreich
+                  - Schweiz
+                  - Tirol
+                  - Frankreich
+                  - EM
+                  - WM
+                  - Marathon
+                  - Laufen
+                  - Cup
+                  - Alpencup
+                  - Bikecup
+                  - XCO
+                  - CrossCountry
+                  - Charity
+                  - Trainingslager
+                  - Training
+                  - Event
+                  - Challenge
+                  - Moritz
+                  - Ralf
+                  - Andi
+                  - Ina
+                  - Abradeln
+                  - Gravel
+                  - Gran Fondo
+              - { label: Autor, name: author, widget: string, required: false }
+              - { label: Hauptbild, name: image, widget: image, required: false }
+              - label: Zusätzliche Bilder
+                name: images
+                widget: list
+                required: false
+                field:
+                  label: Bild
+                  name: image
+                  widget: image
+              - { label: Externer Link (optional), name: link, widget: string, required: false }

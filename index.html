@@ -390,15 +390,24 @@
                     throw new Error('Keine news.json gefunden (alle Pfade fehlgeschlagen)');
                 }
 
+                function normalizeNewsPayload(payload) {
+                    if (Array.isArray(payload)) return payload;
+                    if (payload && Array.isArray(payload.items)) return payload.items;
+                    return [];
+                }
+
                 async function loadLatestNews(container) {
                     try {
-                        const news = await fetchFirst([
+                        const payload = await fetchFirst([
+                            '/data/news/news-cms.json',
                             '/data/News/news.json',
                             '/data/news/news.json',
                             '/news.json',
                             'data/News/news.json',
                             'news.json'
                         ]);
+
+                        const news = normalizeNewsPayload(payload);
 
                         news.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
                         const latest = news.slice(0, 2);
@@ -414,7 +423,7 @@
                                     ? (article.tags.find(t => t === 'Moritz' || t === 'Ralf') || '')
                                     : '');
 
-                            const link = article.link || `/news/${article.slug}.html`;
+                            const link = article.link || `/news/artikel.html?slug=${encodeURIComponent(article.slug)}`;
                             const date = formatDateAT(article.date);
 
                             container.insertAdjacentHTML('beforeend', `

@@ -160,11 +160,33 @@
             initNavigationMenu();
         }
 
+        function normalizeNewsPayload(payload) {
+            if (Array.isArray(payload)) return payload;
+            if (payload && Array.isArray(payload.items)) return payload.items;
+            return [];
+        }
+
+        async function fetchNewsData() {
+            const urls = ['/data/news/news-cms.json', '/data/news/news-latest.json', '/data/news/news.json'];
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const payload = await response.json();
+                    const news = normalizeNewsPayload(payload);
+                    if (news.length) return news;
+                } catch (_) {
+                }
+            }
+            throw new Error('Keine News-Daten gefunden.');
+        }
+
         async function loadNews() {
             const newsContainer = document.getElementById('news-container');
             try {
-                const response = await fetch('/data/news/news-latest.json');
-                const latestNews = await response.json();
+                const allNews = await fetchNewsData();
+                allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                const latestNews = allNews.slice(0, 6);
 
                 latestNews.forEach((article, index) => {
                     const articleEl = document.createElement('article');
@@ -184,7 +206,7 @@
                                 <span class="news-date">${formatDate(article.date)}</span>
                             </div>
                             <p>${article.content}</p>
-                            <a class="gelber-button" style="align-self: flex-start;margin-top: auto;" href="${article.link || `news/${article.slug}.html`}">Weiterlesen</a>
+                            <a class="gelber-button" style="align-self: flex-start;margin-top: auto;" href="${article.link || `news/artikel.html?slug=${encodeURIComponent(article.slug)}`}">Weiterlesen</a>
                         </div>
                     `;
                     newsContainer.appendChild(articleEl);

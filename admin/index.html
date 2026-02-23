@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RV Hard CMS</title>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    window.addEventListener('message', function (event) {
+      if (event.origin !== window.location.origin) return;
+      if (typeof event.data !== 'string') return;
+      if (!event.data.startsWith('authorization:github:success:')) return;
+
+      try {
+        var payloadText = event.data.replace('authorization:github:success:', '');
+        var payload = JSON.parse(payloadText);
+        if (!payload || !payload.token) return;
+
+        var user = {
+          backendName: 'github',
+          token: payload.token
+        };
+
+        window.localStorage.setItem('decap-cms-user', JSON.stringify(user));
+        setTimeout(function () {
+          window.location.reload();
+        }, 120);
+      } catch (error) {
+        console.error('OAuth-Fallback konnte Token nicht übernehmen:', error);
+      }
+    });
+  </script>
+  <script src="/admin/custom.js"></script>
+</body>
+</html>

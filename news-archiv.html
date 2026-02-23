@@ -198,10 +198,29 @@
             const STORAGE_TAG = 'news-filter-tag';
             const STORAGE_SEARCH = 'news-filter-search';
 
+            function normalizeNewsPayload(payload) {
+                if (Array.isArray(payload)) return payload;
+                if (payload && Array.isArray(payload.items)) return payload.items;
+                return [];
+            }
+
+            async function fetchNewsData() {
+                const urls = ['/data/news/news-cms.json', '/data/news/news.json'];
+                for (const url of urls) {
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) continue;
+                        const payload = await response.json();
+                        const list = normalizeNewsPayload(payload);
+                        if (list.length) return list;
+                    } catch (_) {
+                    }
+                }
+                throw new Error('Fehler beim Laden der News-Daten.');
+            }
+
             try {
-                const response = await fetch('/data/news/news.json');
-                if (!response.ok) throw new Error(`Fehler beim Laden: ${response.status}`);
-                const news = await response.json();
+                const news = await fetchNewsData();
 
                 news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -287,7 +306,7 @@
                         <p>${article.content}</p>
                         <a class="gelber-button"
                            style="align-self:flex-start;margin-top:auto"
-                           href="${article.link || `news/${article.slug}.html`}">
+                                    href="${article.link || `news/artikel.html?slug=${encodeURIComponent(article.slug)}`}">
                            Weiterlesen
                         </a>
                     </div>

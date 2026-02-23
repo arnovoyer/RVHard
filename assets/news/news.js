@@ -100,10 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const currentSlug = "Rennbericht-CadFish-Lübeck-Juni-2024"
-    fetch("/assets/news/news.json")
+    const currentSlug = new URL(window.location.href).searchParams.get('slug') || "";
+    fetch("/data/news/news-cms.json")
         .then(res => res.json())
-        .then(news => {
+        .then(payload => {
+            const news = Array.isArray(payload) ? payload : (Array.isArray(payload.items) ? payload.items : []);
             const relatedContainer = document.querySelector(".related-news-list");
             if (!relatedContainer) return;
 
@@ -113,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const div = document.createElement("div");
                 div.className = "related-news-item";
                 div.innerHTML = `
-                    <a href="/news/${item.slug}.html">
+                    <a href="${item.link || `/news/artikel.html?slug=${encodeURIComponent(item.slug)}`}">
                         <img src="${item.image}" alt="${item.title}">
                         <h3>${item.title}</h3>
                         <p>${item.content.substring(0, 100)}...</p>
