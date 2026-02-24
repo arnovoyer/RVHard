@@ -1,6 +1,21 @@
 {
   "items": [
     {
+      "body": "sdfsdfhadskljkfiownflsd\n\nafsdlöjgas\n\ndgadskjfaösdf\n\n\n\nwasdfsa\n\n\n\n\n\nadfjöadsf",
+      "slug": "test-test",
+      "date": "2026-02-24",
+      "title": "test test",
+      "images": [
+        "/assets/img/news/3-laendermarathon-2023_2.webp"
+      ],
+      "tags": [
+        "MTB"
+      ],
+      "content": "löasfdjlökgn\nlkalsdjföas",
+      "id": 99,
+      "image": "/assets/img/news/3-laendermarathon-2023_1.webp"
+    },
+    {
       "body": "dieser test ist ein test. \n\ndieser test ist noch ein tst\n\njööö schwaiger spioniert",
       "slug": "test",
       "date": "2026-02-24",
