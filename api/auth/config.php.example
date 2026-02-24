@@ -1,6 +1,0 @@
-<?php
-return [
-    'client_id' => 'GITHUB_CLIENT_ID',
-    'client_secret' => 'GITHUB_CLIENT_SECRET',
-    'redirect_uri' => 'https://rv-hard.arnovoyer.com/api/auth',
-];

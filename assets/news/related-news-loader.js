@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.related-news-list');
     if (!container) return;
 
+    container.innerHTML = '';
+
     const url = new URL(window.location.href);
     const slugFromQuery = url.searchParams.get('slug');
     const currentSlug = slugFromQuery || window.location.pathname
@@ -15,15 +17,43 @@ document.addEventListener('DOMContentLoaded', () => {
         return [];
     }
 
-    fetch('/data/news/news-cms.json')
-        .then(response => {
-            if (response.ok) return response.json();
-            return fetch('/data/news/news.json').then(fallback => {
-                if (!fallback.ok) throw new Error("news.json konnte nicht geladen werden");
-                return fallback.json();
-            });
-        })
-        .then(response => {
+    function resolveArticleLink(item, legacySlugs) {
+        const slug = String(item.slug || '').trim();
+        const fallback = `/news/artikel.html?slug=${encodeURIComponent(slug)}`;
+        const external = typeof item.link === 'string' ? item.link.trim() : '';
+
+        if (slug && legacySlugs.has(slug)) return `/news/${slug}.html`;
+
+        if (external && !external.toLowerCase().startsWith('externer link')) {
+            if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
+        }
+        return fallback;
+    }
+
+    async function fetchLegacySlugs() {
+        try {
+            const response = await fetch('/data/news/legacy-slugs.json');
+            if (!response.ok) return new Set();
+            const payload = await response.json();
+            if (!Array.isArray(payload)) return new Set();
+            return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
+        } catch (_) {
+            return new Set();
+        }
+    }
+
+    Promise.all([
+        fetch('/data/news/news-cms.json')
+            .then(response => {
+                if (response.ok) return response.json();
+                return fetch('/data/news/news.json').then(fallback => {
+                    if (!fallback.ok) throw new Error("news.json konnte nicht geladen werden");
+                    return fallback.json();
+                });
+            }),
+        fetchLegacySlugs()
+    ])
+        .then(([response, legacySlugs]) => {
             const newsItems = normalizeNewsPayload(response);
             const currentItem = newsItems.find(item => item.slug === currentSlug);
             if (!currentItem) {
@@ -59,17 +89,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     .sort((a, b) => a.dateDiff - b.dateDiff);
             }
 
+            const seen = new Set();
+            relatedItems = relatedItems.filter(item => {
+                const key = String(item.title || '').trim().toLowerCase();
+                if (!key) return false;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
 
             relatedItems.slice(0, 2).forEach(item => {
                 const div = document.createElement("div");
                 div.className = "related-news-item";
+                const href = resolveArticleLink(item, legacySlugs);
+                const thumbStyle = item.image ? ` style="background-image: url('${item.image}');"` : '';
+                const teaser = String(item.content || '').trim();
+                const teaserText = teaser.length > 120 ? `${teaser.slice(0, 120)}…` : teaser;
 
                 div.innerHTML = `
-                    <a href="${item.link || `/news/artikel.html?slug=${encodeURIComponent(item.slug)}`}">
-                        <div class="related-news-thumb" style="background-image: url('${item.image}');"></div>
+                    <a href="${href}">
+                        <div class="related-news-thumb"${thumbStyle}></div>
                         <div class="related-news-text">
                             <h3>${item.title}</h3>
-                            <p>${item.content.substring(0, 100)}...</p>
+                            ${teaserText ? `<p>${teaserText}</p>` : ''}
                         </div>
                     </a>
                 `;

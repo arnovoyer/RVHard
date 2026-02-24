@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- generated: news-html -->
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News - Test | RV Hard</title>
+  <meta name="description" content="News und Rennberichte des RV Hard." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/news/news.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+  </noscript>
+</head>
+
+<body>
+  <header>
+    <nav id="navigation-container"></nav>
+  </header>
+
+  <main class="news-detail-page">
+    <section class="container">
+      <div class="news-layout">
+        <div id="news-detail-container" data-aos="fade-up">
+          <h1 id="news-title" data-aos="fade-up">News - Test</h1>
+          <p id="news-date" class="date" data-aos="fade-up">23. Februar 2026</p>
+          <div id="news-content" class="news-content-detail" data-aos="fade-up"><p>hahahhhahahahahahahahah</p></div>
+        </div>
+        <div class="news-sidebar" data-aos="fade-left">
+          <aside id="related-news" class="more-news">
+            <h2>Weitere Neuigkeiten</h2>
+            <div class="related-news-list"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="/assets/navigation-loader.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const navRes = await fetch('/assets/navigationneu.html');
+        if (navRes.ok) {
+          document.getElementById('navigation-container').innerHTML = await navRes.text();
+          if (typeof initNavigationMenu === 'function') initNavigationMenu();
+        }
+
+        const footerRes = await fetch('/assets/footer.html');
+        if (footerRes.ok) {
+          document.getElementById('site-footer').innerHTML = await footerRes.text();
+        }
+
+        if (typeof window.initNewsGalleries === 'function') {
+          window.initNewsGalleries(document);
+        }
+      } catch (err) {
+        console.error('Fehler beim Laden von Navigation/Footer:', err);
+      }
+    });
+  </script>
+  <script src="/assets/news/news.js" defer></script>
+  <script src="/assets/news/related-news-loader.js" defer></script>
+  <script src="/assets/nav.js" defer></script>
+  <script src="/assets/header-scroll.js" defer></script>
+  <script src="/assets/cookie-banner.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      if (window.AOS && typeof window.AOS.init === 'function') {
+        window.AOS.init({ duration: 1000, once: true, mirror: false });
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -396,6 +396,31 @@
                     return [];
                 }
 
+                async function fetchLegacySlugs() {
+                    try {
+                        const response = await fetch('/data/news/legacy-slugs.json');
+                        if (!response.ok) return new Set();
+                        const payload = await response.json();
+                        if (!Array.isArray(payload)) return new Set();
+                        return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
+                    } catch (_) {
+                        return new Set();
+                    }
+                }
+
+                function resolveArticleLink(article, legacySlugs) {
+                    const slug = String(article.slug || '').trim();
+                    const fallback = `/news/artikel.html?slug=${encodeURIComponent(slug)}`;
+                    const external = typeof article.link === 'string' ? article.link.trim() : '';
+
+                    if (slug && legacySlugs.has(slug)) return `/news/${slug}.html`;
+
+                    if (external && !external.toLowerCase().startsWith('externer link')) {
+                        if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
+                    }
+                    return fallback;
+                }
+
                 async function loadLatestNews(container) {
                     try {
                         const payload = await fetchFirst([
@@ -408,8 +433,14 @@
                         ]);
 
                         const news = normalizeNewsPayload(payload);
+                        const legacySlugs = await fetchLegacySlugs();
 
-                        news.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+                        news.sort((a, b) => {
+                            const dateA = new Date(a?.date || 0).getTime();
+                            const dateB = new Date(b?.date || 0).getTime();
+                            if (dateA !== dateB) return dateB - dateA;
+                            return (Number(b?.id) || 0) - (Number(a?.id) || 0);
+                        });
                         const latest = news.slice(0, 2);
 
                                                 container.innerHTML = `
@@ -423,7 +454,7 @@
                                     ? (article.tags.find(t => t === 'Moritz' || t === 'Ralf') || '')
                                     : '');
 
-                            const link = article.link || `/news/artikel.html?slug=${encodeURIComponent(article.slug)}`;
+                            const link = resolveArticleLink(article, legacySlugs);
                             const date = formatDateAT(article.date);
 
                             container.insertAdjacentHTML('beforeend', `

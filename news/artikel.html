@@ -15,30 +15,6 @@
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
     </noscript>
-    <style>
-        .news-inline-main-image {
-            width: 100%;
-            border-radius: 10px;
-            margin: 1rem 0 1.5rem 0;
-            object-fit: cover;
-            max-height: 500px;
-        }
-
-        .news-inline-gallery {
-            display: grid;
-            gap: 0.75rem;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            margin: 1.2rem 0 0.5rem 0;
-        }
-
-        .news-inline-gallery img {
-            width: 100%;
-            border-radius: 10px;
-            object-fit: cover;
-            min-height: 130px;
-            max-height: 220px;
-        }
-    </style>
 </head>
 
 <body>
@@ -90,6 +66,18 @@
             throw new Error('News-Daten konnten nicht geladen werden.');
         }
 
+        async function fetchLegacySlugs() {
+            try {
+                const response = await fetch('/data/news/legacy-slugs.json');
+                if (!response.ok) return new Set();
+                const payload = await response.json();
+                if (!Array.isArray(payload)) return new Set();
+                return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
+            } catch (_) {
+                return new Set();
+            }
+        }
+
         function escapeHtml(str) {
             return String(str ?? '').replace(/[&<>"']/g, m => ({
                 '&': '&amp;',
@@ -131,17 +119,19 @@
             const images = normalizeImageList(article);
             if (!images.length) return '';
 
-            const [mainImage, ...galleryImages] = images;
-            const safeTitle = escapeHtml(article.title || 'News Bild');
-
-            const mainHtml = `<img class="news-inline-main-image" src="${mainImage}" alt="${safeTitle}" loading="lazy" decoding="async">`;
-            if (!galleryImages.length) return mainHtml;
-
-            const galleryHtml = galleryImages
-                .map((src, index) => `<img src="${src}" alt="${safeTitle} ${index + 2}" loading="lazy" decoding="async">`)
+            const slidesHtml = images
+                .map(src => `<div class="gallery-slide" style="background-image: url('${src}');"></div>`)
                 .join('');
 
-            return `${mainHtml}<div class="news-inline-gallery">${galleryHtml}</div>`;
+            return `
+                <div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                    <div class="news-detail-gallery">
+                        ${slidesHtml}
+                    </div>
+                    <button class="gallery-control prev">&lt;</button>
+                    <button class="gallery-control next">&gt;</button>
+                </div>
+            `;
         }
 
         function articleSlugFromUrl() {
@@ -175,6 +165,12 @@
             }
 
             try {
+                const legacySlugs = await fetchLegacySlugs();
+                if (legacySlugs.has(slug)) {
+                    window.location.replace(`/news/${slug}.html`);
+                    return;
+                }
+
                 const news = await fetchNewsData();
                 const article = news.find(item => item.slug === slug);
 
@@ -193,6 +189,9 @@
                     : date.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
 
                 contentEl.innerHTML = `${renderImageSection(article)}${renderBody(article)}`;
+                if (typeof window.initNewsGalleries === 'function') {
+                    window.initNewsGalleries(contentEl);
+                }
             } catch (error) {
                 console.error(error);
                 titleEl.textContent = 'Fehler beim Laden';
@@ -208,6 +207,7 @@
         });
     </script>
 
+    <script src="/assets/news/news.js" defer></script>
     <script src="/assets/news/related-news-loader.js" defer></script>
     <script src="/assets/header-scroll.js" defer></script>
     <script src="/assets/cookie-banner.js" defer></script>

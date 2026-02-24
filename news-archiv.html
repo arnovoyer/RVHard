@@ -219,8 +219,34 @@
                 throw new Error('Fehler beim Laden der News-Daten.');
             }
 
+            async function fetchLegacySlugs() {
+                try {
+                    const response = await fetch('/data/news/legacy-slugs.json');
+                    if (!response.ok) return new Set();
+                    const payload = await response.json();
+                    if (!Array.isArray(payload)) return new Set();
+                    return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
+                } catch (_) {
+                    return new Set();
+                }
+            }
+
+            function resolveArticleLink(article, legacySlugs) {
+                const slug = String(article.slug || '').trim();
+                const fallback = `/news/artikel.html?slug=${encodeURIComponent(slug)}`;
+                const external = typeof article.link === 'string' ? article.link.trim() : '';
+
+                if (slug && legacySlugs.has(slug)) return `/news/${slug}.html`;
+
+                if (external && !external.toLowerCase().startsWith('externer link')) {
+                    if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
+                }
+                return fallback;
+            }
+
             try {
                 const news = await fetchNewsData();
+                const legacySlugs = await fetchLegacySlugs();
 
                 news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -290,12 +316,12 @@
                             month: 'long',
                             year: 'numeric'
                         });
+                        const articleLink = resolveArticleLink(article, legacySlugs);
 
                         const el = document.createElement('article');
                         el.className = 'news-item';
 
                         el.innerHTML = `
-                    ${article.image ? `<img src="${article.image}" alt="${article.title}" class="news-image">` : ''}
                     <div class="news-content" data-aos="flip-up">
                         <h3>${article.title}</h3>
                         <div class="news-meta">
@@ -306,7 +332,7 @@
                         <p>${article.content}</p>
                         <a class="gelber-button"
                            style="align-self:flex-start;margin-top:auto"
-                                    href="${article.link || `news/artikel.html?slug=${encodeURIComponent(article.slug)}`}">
+                                    href="${articleLink}">
                            Weiterlesen
                         </a>
                     </div>

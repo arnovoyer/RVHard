@@ -1,8 +1,12 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const galleries = document.querySelectorAll('.news-detail-gallery-wrapper');
+function initNewsGalleries(root = document) {
+    const galleries = root.querySelectorAll('.news-detail-gallery-wrapper');
 
     galleries.forEach(wrapper => {
+        if (wrapper.dataset.galleryInitialized === '1') return;
+        wrapper.dataset.galleryInitialized = '1';
+
         const gallery = wrapper.querySelector('.news-detail-gallery');
+        if (!gallery) return;
         const slides = gallery.querySelectorAll('.gallery-slide');
         const prevButton = wrapper.querySelector('.gallery-control.prev');
         const nextButton = wrapper.querySelector('.gallery-control.next');
@@ -97,33 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    const currentSlug = new URL(window.location.href).searchParams.get('slug') || "";
-    fetch("/data/news/news-cms.json")
-        .then(res => res.json())
-        .then(payload => {
-            const news = Array.isArray(payload) ? payload : (Array.isArray(payload.items) ? payload.items : []);
-            const relatedContainer = document.querySelector(".related-news-list");
-            if (!relatedContainer) return;
-
-            const otherNews = news.filter(item => item.slug !== currentSlug);
-            otherNews.sort(() => 0.5 - Math.random());
-            otherNews.slice(0, 3).forEach(item => {
-                const div = document.createElement("div");
-                div.className = "related-news-item";
-                div.innerHTML = `
-                    <a href="${item.link || `/news/artikel.html?slug=${encodeURIComponent(item.slug)}`}">
-                        <img src="${item.image}" alt="${item.title}">
-                        <h3>${item.title}</h3>
-                        <p>${item.content.substring(0, 100)}...</p>
-                    </a>
-                `;
-                relatedContainer.appendChild(div);
-            });
-        })
-        .catch(err => {
-            console.error("Fehler beim Laden der News:", err);
-        });
+    initNewsGalleries();
+    // Related News werden ausschließlich über related-news-loader.js gerendert.
 });
+
+window.initNewsGalleries = initNewsGalleries;
