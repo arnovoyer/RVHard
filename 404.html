@@ -35,14 +35,43 @@
   <title>404 – Seite nicht gefunden | RV Hard</title>
   <meta name="author" content="RV Hard">
   <style>
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    html {
+      background-color: #343a40;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #f7f7f7;
+      overscroll-behavior-y: none;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+    }
+
     .container-404 {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 80vh;
+      min-height: calc(100vh - 260px);
       text-align: center;
       gap: 20px;
+      box-sizing: border-box;
+      padding: 1.5rem 1rem;
+      width: 100%;
+    }
+
+    main> :first-child {
+      padding-top: 0;
     }
 
     .text-404 h1 {
@@ -62,8 +91,9 @@
     }
 
     .attribution {
-      font-size: 0.5rem;
-      justify-content: right;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      text-align: center;
     }
 
     .attribution a {
@@ -77,48 +107,57 @@
     }
 
     footer {
-      margin-top: auto;
+      margin-top: 0;
     }
 
     @media (max-width: 768px) {
       body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+        min-height: auto;
+        display: block;
+      }
+
+      main {
+        display: block;
+        flex: none;
       }
 
       .container-404 {
-        height: auto;
-        padding: 2rem 1rem;
-        gap: 15px;
-        flex: 1;
+        min-height: auto;
+        padding: 2rem 1rem 0.75rem;
+        gap: 14px;
       }
 
       .text-404 h1 {
-        font-size: 2.5rem;
-        margin-top: 10px;
+        font-size: 2.8rem;
+        margin-top: 24px;
       }
 
       .text-404 p {
-        font-size: 1rem;
+        font-size: 1.15rem;
+        margin-top: 0.4rem;
       }
 
       .graphik-404 img {
         max-width: 100%;
         width: 100%;
         height: auto;
-        max-height: 300px;
+        max-height: 340px;
         object-fit: contain;
       }
     }
 
     @media (max-width: 480px) {
       .text-404 h1 {
-        font-size: 2rem;
+        font-size: 2.35rem;
+        margin-top: 20px;
+      }
+
+      .text-404 p {
+        font-size: 1.05rem;
       }
 
       .graphik-404 img {
-        max-height: 200px;
+        max-height: 240px;
       }
     }
   </style>
@@ -136,12 +175,12 @@
       </div>
       <div class="graphik-404">
         <img src="/assets/img/404_new1.png" alt="Error 404 Graphik">
+        <div class="attribution">
+          <p>Designed by <a href="https://www.freepik.com">Freepik</a></p>
+        </div>
       </div>
       <div class="gelber-button">
         <a href="/" class="button">Zur Startseite</a>
-      </div>
-      <div class="attribution">
-        <p>Designed by <a href="https://www.freepik.com">Freepik</a></p>
       </div>
     </div>
   </main>

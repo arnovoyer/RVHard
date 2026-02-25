@@ -17,16 +17,17 @@
     <meta property="og:description"
         content="Training, Termine, News und Vereinsleben beim RV Hard – Mountainbike, Rennrad und Triathlon in Vorarlberg.">
     <meta property="og:url" content="https://rv-hard.at/">
-    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-    <meta property="og:image:alt" content="Logo des RV Hard">
+    <meta property="og:image" content="https://rv-hard.at/assets/img/social/og-home-1200x630.png">
+    <meta property="og:image:alt" content="RV Hard – Radsport- und Triathlonverein in Hard">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="RV Hard | Radsport- und Triathlonverein in Hard">
     <meta name="twitter:description"
         content="Training, Termine, News und Vereinsleben beim RV Hard – Mountainbike, Rennrad und Triathlon in Vorarlberg.">
-    <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
-    <meta name="twitter:image:alt" content="Logo des RV Hard">
+    <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-home-1200x630.png">
+    <meta name="twitter:image:alt" content="RV Hard – Radsport- und Triathlonverein in Hard">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,6 +60,20 @@
                     "url": "https://rv-hard.at/",
                     "name": "RV Hard",
                     "inLanguage": "de-AT"
+                },
+                {
+                    "@type": "WebPage",
+                    "@id": "https://rv-hard.at/#webpage",
+                    "url": "https://rv-hard.at/",
+                    "name": "RV Hard | Radsport- und Triathlonverein in Hard",
+                    "description": "RV Hard – dein Verein für Mountainbike, Rennrad und Triathlon in Hard. Training, Termine, News und Vereinsleben auf einen Blick.",
+                    "inLanguage": "de-AT",
+                    "isPartOf": {
+                        "@id": "https://rv-hard.at/#website"
+                    },
+                    "about": {
+                        "@id": "https://rv-hard.at/#organization"
+                    }
                 },
                 {
                     "@type": "SportsOrganization",
@@ -112,6 +127,7 @@
             background: #f9fafb;
             white-space: nowrap;
             position: relative;
+            border-radius: 14px;
         }
 
         .logos:before,
@@ -156,10 +172,16 @@
         }
 
         @media (max-width: 768px) {
+            .logos {
+                width: calc(100% - 0.5rem);
+                margin: 0 auto;
+                padding: 42px 0;
+                border-radius: 16px;
+            }
 
             .logos:before,
             .logos:after {
-                width: 80px;
+                width: 38px;
             }
 
             .logos:before {
@@ -177,6 +199,8 @@
             text-align: center;
             margin: 4rem auto;
             max-width: 700px;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .gemeinschaft h2 {
@@ -257,10 +281,14 @@
         }
 
         @media (max-width: 480px) {
+            .gemeinschaft {
+                padding: 0 1.25rem;
+            }
+
             .gemeinschaft-grid {
                 grid-template-columns: 1fr;
-                max-width: 360px;
-                margin: 2rem auto 0 auto;
+                max-width: 100%;
+                margin: 2rem 0 0 0;
                 gap: 1rem;
             }
 
@@ -365,7 +393,10 @@
 
         <section id="instagram-placeholder"></section>
 
-        <section id="home-news-container" class="news-container" data-aos="zoom-out-right"></section>
+        <section id="home-news-container" class="news-container" data-aos="zoom-out-right">
+            <h2><a href="/news.html">Neueste Nachrichten</a></h2>
+            <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news.html">News-Seite</a>.</p>
+        </section>
 
         <script>
             (function () {
@@ -381,10 +412,8 @@
                     for (const url of urls) {
                         try {
                             const res = await fetch(url);
-                            if (res.ok) { console.log('[HomeNews] geladen:', url); return await res.json(); }
-                            console.log('[HomeNews] versucht:', url, 'Status:', res.status);
-                        } catch (e) {
-                            console.log('[HomeNews] Fehler bei', url, e);
+                            if (res.ok) { return await res.json(); }
+                        } catch (_) {
                         }
                     }
                     throw new Error('Keine news.json gefunden (alle Pfade fehlgeschlagen)');
@@ -443,8 +472,8 @@
                         });
                         const latest = news.slice(0, 2);
 
-                                                container.innerHTML = `
-                <h2><a href="news.html">Neueste Nachrichten</a></h2>
+                        container.innerHTML = `
+                <h2><a href="/news.html">Neueste Nachrichten</a></h2>
             `;
 
                         latest.forEach(article => {

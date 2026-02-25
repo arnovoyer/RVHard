@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>News-Archiv | RV Hard</title>
-    <meta name="description" content="News-Archiv beim RV Hard – Radsport, Triathlon, Training, Termine und Vereinsinfos.">
+    <meta name="description" content="News-Archiv beim RV Hard â€“ Radsport, Triathlon, Training, Termine und Vereinsinfos.">
     <meta name="robots" content="index, follow">
     <meta name="author" content="RV Hard">
     <link rel="canonical" href="https://rv-hard.at/news-archiv">
@@ -14,15 +14,15 @@
     <meta property="og:site_name" content="RV Hard">
     <meta property="og:title" content="News-Archiv | RV Hard">
     <meta property="og:description"
-        content="Alle älteren Nachrichten und Rennberichte des RV Hard im News-Archiv – schnell durchsuchbar nach Jahr und Sparte.">
+        content="Alle Ã¤lteren Nachrichten und Rennberichte des RV Hard im News-Archiv â€“ schnell durchsuchbar nach Jahr und Sparte.">
     <meta property="og:url" content="https://rv-hard.at/news-archiv">
-    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiÃŸ-Photoroom-removebg-preview.png">
     <meta property="og:image:alt" content="Logo des RV Hard">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="News-Archiv | RV Hard">
     <meta name="twitter:description"
-        content="Alle älteren Nachrichten und Rennberichte des RV Hard im News-Archiv – schnell durchsuchbar nach Jahr und Sparte.">
-    <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+        content="Alle Ã¤lteren Nachrichten und Rennberichte des RV Hard im News-Archiv â€“ schnell durchsuchbar nach Jahr und Sparte.">
+    <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/RV_Hard_weiÃŸ-Photoroom-removebg-preview.png">
     <meta name="twitter:image:alt" content="Logo des RV Hard">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="/assets/style.css" />
     <link rel="stylesheet" href="/assets/news/news.css" />
     <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiß-Photoroom-removebg-preview.png">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_weiÃŸ-Photoroom-removebg-preview.png">
     <style>
         html,
         body {
@@ -162,14 +162,14 @@
                 <select id="tag-filter">
                     <option value="all">Alle Sparten</option>
                 </select>
-                <input type="search" id="news-search" placeholder="News durchsuchen…" class="news-search" />
+                <input type="search" id="news-search" placeholder="News durchsuchenâ€¦" class="news-search" />
                 <button class="search-btn" id="search-btn">Suchen</button>
             </div>
             <div id="news-archive-list" class="news-container"></div>
         </section>
     </main>
     <footer id="site-footer"></footer>
-    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/navigation-loader.js" defer></script>
     <script src="/assets/nav.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -263,7 +263,7 @@
                 const allTags = new Set();
                 news.forEach(n => n.tags?.forEach(t => allTags.add(t)));
 
-                const allowedTags = ['MTB', 'Triathlon', 'Rennrad', "Rennbericht", 'Rennen', "Nachwuchs", "HC", "Verein","LM","Cyclocross","AYC","Nightrace","SBS","ÖM"];
+                const allowedTags = ['MTB', 'Triathlon', 'Rennrad', "Rennbericht", 'Rennen', "Nachwuchs", "HC", "Verein","LM","Cyclocross","AYC","Nightrace","SBS","Ã–M"];
 
                 [...allTags].sort().forEach(tag => {
                     if (!allowedTags.includes(tag)) return;

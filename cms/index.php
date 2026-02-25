@@ -287,11 +287,28 @@
         return normalize_items($items);
     }
 
-    function save_items(array $items): void
+    function save_items(array $items): bool
     {
         $payload = ['items' => normalize_items($items)];
         $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        file_put_contents(DATA_FILE, $json . PHP_EOL, LOCK_EX);
+        if (!is_string($json)) {
+            return false;
+        }
+
+        return file_put_contents(DATA_FILE, $json . PHP_EOL, LOCK_EX) !== false;
+    }
+
+    function slug_conflicts_with_existing_file(string $slug, string $currentSlug = ''): bool
+    {
+        $slug = strtolower(trim($slug));
+        $currentSlug = strtolower(trim($currentSlug));
+
+        if ($slug === '' || $slug === $currentSlug) {
+            return false;
+        }
+
+        $targetFile = NEWS_DIR . '/' . $slug . '.html';
+        return is_file($targetFile);
     }
 
     function get_next_id(array $items): int
@@ -556,11 +573,11 @@
         return '<div class="news-detail-gallery-wrapper" data-aos="fade-up"><div class="news-detail-gallery">' . $slides . '</div><button class="gallery-control prev">&lt;</button><button class="gallery-control next">&gt;</button></div>';
     }
 
-    function generate_article_html(array $item): void
+    function generate_article_html(array $item): bool
     {
         $slug = trim((string)($item['slug'] ?? ''));
         if ($slug === '') {
-            return;
+            return false;
         }
 
         $title = htmlspecialchars((string)($item['title'] ?? 'News'), ENT_QUOTES, 'UTF-8');
@@ -633,7 +650,7 @@
             . "</html>\n";
 
         $target = NEWS_DIR . '/' . $slug . '.html';
-        file_put_contents($target, $html, LOCK_EX);
+        return file_put_contents($target, $html, LOCK_EX) !== false;
     }
 
     function refresh_legacy_slugs(): void
@@ -666,8 +683,9 @@
             if (empty($item['slug'])) {
                 continue;
             }
-            generate_article_html($item);
-            $count++;
+            if (generate_article_html($item)) {
+                $count++;
+            }
         }
         refresh_legacy_slugs();
         return $count;
@@ -876,6 +894,27 @@
                 $slug = preg_replace('/-+/', '-', (string)$slug);
                 $slug = trim((string)$slug, '-');
 
+                $slugConflict = null;
+                foreach ($items as $item) {
+                    $itemId = (int)($item['id'] ?? 0);
+                    $itemSlug = strtolower(trim((string)($item['slug'] ?? '')));
+                    if ($itemId !== $id && $itemSlug !== '' && $itemSlug === $slug) {
+                        $slugConflict = $item;
+                        break;
+                    }
+                }
+
+                $existingSlug = strtolower(trim((string)($existingRecord['slug'] ?? '')));
+                $slugFileConflict = slug_conflicts_with_existing_file($slug, $existingSlug);
+
+                if ($slug === '') {
+                    $error = 'Ungültiger Slug. Bitte nur Buchstaben, Zahlen und Bindestriche verwenden.';
+                } elseif ($slugConflict !== null) {
+                    $error = 'Slug bereits vergeben: "' . (string)($slugConflict['title'] ?? 'Unbekannter Artikel') . '" verwendet diesen Slug bereits.';
+                } elseif ($slugFileConflict) {
+                    $error = 'Slug bereits durch eine vorhandene Datei belegt (/news/' . $slug . '.html). Bitte einen anderen Slug wählen.';
+                } else {
+
                 $tagsSelected = isset($_POST['tags']) && is_array($_POST['tags']) ? $_POST['tags'] : [];
                 $tagsCustomRaw = (string)($_POST['tags_custom'] ?? '');
                 $tagsCustom = array_values(array_filter(array_map('trim', explode(',', $tagsCustomRaw)), static fn($t) => $t !== ''));
@@ -933,10 +972,18 @@
                     $items[] = $record;
                 }
 
-                save_items($items);
-                generate_article_html($record);
-                refresh_legacy_slugs();
-                $notice = 'Artikel gespeichert und HTML-Datei erstellt.';
+                if (!save_items($items)) {
+                    $error = 'Speichern fehlgeschlagen: news-cms.json konnte nicht geschrieben werden.';
+                } else {
+                    $htmlGenerated = generate_article_html($record);
+                    refresh_legacy_slugs();
+                    if ($htmlGenerated) {
+                        $notice = 'Artikel gespeichert und HTML-Datei erstellt.';
+                    } else {
+                        $error = 'Artikel gespeichert, aber HTML-Datei konnte nicht geschrieben werden.';
+                    }
+                }
+                }
             }
 
             if ($action === 'delete') {
@@ -953,7 +1000,9 @@
                     $kept[] = $item;
                 }
 
-                save_items($kept);
+                if (!save_items($kept)) {
+                    $error = 'Löschen fehlgeschlagen: news-cms.json konnte nicht geschrieben werden.';
+                } else {
 
                 $usedImages = [];
                 foreach ($kept as $remainingItem) {
@@ -986,6 +1035,7 @@
                 }
                 refresh_legacy_slugs();
                 $notice = 'Artikel gelöscht.';
+                }
             }
 
             if ($action === 'generate_all') {
@@ -1110,6 +1160,8 @@
         .image-item { border:1px solid #e5e5e5; border-radius:8px; padding:8px; display:flex; gap:8px; align-items:flex-start; }
         .image-item img { width:64px; height:64px; object-fit:cover; border-radius:6px; }
         .hint { font-size:12px; color:#666; margin:6px 0 0 0; }
+        .required-star { color:#c62828; font-weight:700; }
+        .required-note { font-size:12px; color:#666; margin:0 0 10px 0; }
         .auth-shell { min-height: calc(100vh - 120px); display:flex; align-items:center; justify-content:center; }
         .auth-card { width:100%; max-width:460px; padding:24px; border-radius:14px; box-shadow: 0 12px 30px rgba(0,0,0,.08); }
         .auth-title { margin:0 0 6px 0; }
@@ -1210,6 +1262,7 @@
         <?php if ($view === 'articles'): ?>
         <div class="card">
         <h2><?= $editItem ? 'Artikel bearbeiten' : 'Neuer Artikel' ?></h2>
+        <p class="required-note"><span class="required-star">*</span> Pflichtfelder</p>
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save" />
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
@@ -1217,23 +1270,23 @@
 
             <div class="grid">
             <div>
-                <label>Titel</label>
+                <label>Titel<span class="required-star">*</span> (Titel und slug sollten übereinstimmen oder ähnlich sein)</label>
                 <input type="text" name="title" required value="<?= htmlspecialchars((string)($editItem['title'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
             </div>
             <div>
-                <label>Slug</label>
+                <label>Slug<span class="required-star">*</span> (nur Kleinbuchstaben, Zahlen, Bindestriche & Unterstriche. Keine Sonderzeichen)</label>
                 <input type="text" name="slug" required value="<?= htmlspecialchars((string)($editItem['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
             </div>
             <div>
-                <label>Datum (YYYY-MM-DD)</label>
+                <label>Datum (DD-MM-YYYY) <span class="required-star">*</span></label>
                 <input type="date" name="date" required value="<?= htmlspecialchars((string)($editItem['date'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
             </div>
             <div class="full">
-                <label>Teaser</label>
+                <label>Teaser <span class="required-star">*</span> (Kann auch der erste Satz vom Artikeltext sein)</label>
                 <textarea name="content" required><?= htmlspecialchars((string)($editItem['content'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
             </div>
             <div class="full">
-                <label>Artikeltext (visueller Editor)</label>
+                <label>Artikeltext <span class="required-star">*</span></label>
                 <div class="editor-toolbar" data-for="body-editor">
                 <button type="button" data-cmd="bold" title="Fett"><strong>B</strong></button>
                 <button type="button" data-cmd="italic" title="Kursiv"><em>I</em></button>
@@ -1245,10 +1298,10 @@
                 </div>
                 <div id="body-editor-view" contenteditable="true" style="min-height:220px; border:1px solid #ccc; border-radius:8px; padding:10px; background:#fff;"></div>
                 <textarea id="body-editor" name="body" required style="display:none;"><?= htmlspecialchars((string)($editItem['body'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-                <p class="hint">Der Editor speichert HTML. Änderungen sind direkt sichtbar.</p>
+                <p class="hint"><!--Der Editor speichert HTML. Änderungen sind direkt sichtbar.--></p>
             </div>
             <div class="full">
-                <label>Tags (Dropdown mit Kategorien)</label>
+                <label>Tags <span class="required-star">*</span> (Immer zumindest Jahr, Sparte und ein weiteres wählen. Optimal 5)</label>
                 <?php $selectedTags = array_map('strval', (array)($editItem['tags'] ?? [])); ?>
                 <details class="tag-dropdown" id="tag-dropdown">
                 <summary id="tag-dropdown-summary">Tags auswählen</summary>
@@ -1289,7 +1342,7 @@
                 <input type="text" name="tags_custom" value="" placeholder="z. B. Trainingscamp, Saisonstart" />
             </div>
             <div class="full">
-                <label>Bilder</label>
+                <label>Bilder (falls vorhanden hier hochladen)</label>
                 <?php
                 $existingImages = [];
                 foreach ((array)($editItem['images'] ?? []) as $img) {
@@ -1314,9 +1367,9 @@
                 </div>
                 <p class="hint">Haken entfernen, um ein Bild beim Speichern aus dem Artikel zu entfernen.</p>
                 <?php endif; ?>
-                <label style="margin-top:8px;">Neue Bilder hochladen</label>
+                <label style="margin-top:8px;"><!--Neue Bilder hochladen--></label>
                 <input type="file" name="images_upload[]" multiple accept=".jpg,.jpeg,.png,.webp,.gif,image/*" />
-                <p class="hint">Upload wird automatisch als WebP gespeichert (wenn GD/WebP verfügbar ist).</p>
+                <p class="hint"><!--Upload wird automatisch als WebP gespeichert (wenn GD/WebP verfügbar ist).--></p>
             </div>
             </div>
 

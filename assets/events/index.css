@@ -137,8 +137,15 @@
     #news-container {
         grid-template-columns: 1fr;
     }
-        .instagram-feed .embedsocial-hashtag {
+
+    .instagram-feed .embedsocial-hashtag {
         max-width: 100%;
+    }
+
+    .social-feed,
+    .sponsoren-dank {
+        padding: 1rem;
+        text-align: center;
     }
 }
 
@@ -323,4 +330,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+}
+
+.social-feed,
+.sponsoren-dank {
+    padding: 2rem;
+    text-align: center;
 }

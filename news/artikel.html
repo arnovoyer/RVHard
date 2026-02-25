@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -26,7 +26,7 @@
         <section class="container">
             <div class="news-layout">
                 <div id="news-detail-container">
-                    <h1 id="news-title">Artikel wird geladen …</h1>
+                    <h1 id="news-title">Artikel wird geladen â€¦</h1>
                     <p id="news-date" class="date"></p>
                     <div id="news-content" class="news-content-detail"></div>
                 </div>
@@ -42,7 +42,7 @@
 
     <footer id="site-footer"></footer>
 
-    <script src="/assets/navigation-loader.js"></script>
+    <script src="/assets/navigation-loader.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         function normalizeNewsPayload(payload) {
@@ -159,8 +159,8 @@
             const contentEl = document.getElementById('news-content');
 
             if (!slug) {
-                titleEl.textContent = 'Kein Artikel-Slug übergeben';
-                contentEl.innerHTML = '<p>Bitte über einen gültigen News-Link öffnen.</p>';
+                titleEl.textContent = 'Kein Artikel-Slug Ã¼bergeben';
+                contentEl.innerHTML = '<p>Bitte Ã¼ber einen gÃ¼ltigen News-Link Ã¶ffnen.</p>';
                 return;
             }
 
@@ -214,3 +214,4 @@
 </body>
 
 </html>
+
