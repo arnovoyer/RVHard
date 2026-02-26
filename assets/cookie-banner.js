@@ -2,6 +2,43 @@
   if (window.location.pathname === "/datenschutz.html") return;
 
   const placeholderCache = new Map();
+  const CONSENT_COOKIE_NAME = "rvhard_cookie_consent";
+  const CONSENT_STORAGE_KEY = "cookieChoice";
+  const CONSENT_VERSION = 1;
+  const CONSENT_MAX_AGE_DAYS = 180;
+
+  function writeConsentCookie(choice) {
+    const payload = {
+      necessary: true,
+      external: !!choice.external,
+      version: CONSENT_VERSION,
+      timestamp: new Date().toISOString()
+    };
+    const maxAge = CONSENT_MAX_AGE_DAYS * 24 * 60 * 60;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    const value = encodeURIComponent(JSON.stringify(payload));
+    document.cookie = `${CONSENT_COOKIE_NAME}=${value}; Max-Age=${maxAge}; Path=/; SameSite=Lax${secure}`;
+  }
+
+  function readConsentCookie() {
+    const cookieString = document.cookie || "";
+    const parts = cookieString.split("; ");
+    const prefix = `${CONSENT_COOKIE_NAME}=`;
+    const raw = parts.find(part => part.startsWith(prefix));
+    if (!raw) return null;
+
+    try {
+      return JSON.parse(decodeURIComponent(raw.slice(prefix.length)));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function persistConsent(choice) {
+    const normalized = { necessary: true, external: !!choice.external };
+    writeConsentCookie(normalized);
+    localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(normalized));
+  }
 
   function loadConsentContent(allowExternal = false) {
     function isMobileView() {
@@ -144,14 +181,14 @@
     };
 
     banner.querySelector("#accept-all").onclick = () => {
-      localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: true }));
+      persistConsent({ necessary: true, external: true });
       overlay.remove();
       loadConsentContent(true);
       updateInstagramSection(true);
     };
 
     banner.querySelector("#decline-all").onclick = () => {
-      localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: false }));
+      persistConsent({ necessary: true, external: false });
       overlay.remove();
       loadConsentContent(false);
       updateInstagramSection(false);
@@ -159,7 +196,7 @@
 
     banner.querySelector("#save-preferences").onclick = () => {
       const external = banner.querySelector("#chk-external").checked;
-      localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external }));
+      persistConsent({ necessary: true, external });
       overlay.remove();
       loadConsentContent(external);
       updateInstagramSection(external);
@@ -171,7 +208,7 @@
     const btn = e.target.closest(".accept-cookies-btn");
     if (!btn) return;
 
-    localStorage.setItem("cookieChoice", JSON.stringify({ necessary: true, external: true }));
+    persistConsent({ necessary: true, external: true });
     document.getElementById("cookie-overlay")?.remove();
     loadConsentContent(true);
   });
@@ -224,11 +261,17 @@
   }
 
   function safeReadCookieChoice() {
-    const stored = localStorage.getItem("cookieChoice");
+    const cookieConsent = readConsentCookie();
+    if (cookieConsent && typeof cookieConsent.external !== "undefined") {
+      return { external: !!cookieConsent.external, hasChoice: true };
+    }
+
+    const stored = localStorage.getItem(CONSENT_STORAGE_KEY);
     if (!stored) return { external: false, hasChoice: false };
 
     try {
       const parsed = JSON.parse(stored);
+      persistConsent(parsed);
       return { external: !!parsed.external, hasChoice: true };
     } catch (error) {
       return { external: false, hasChoice: false };
