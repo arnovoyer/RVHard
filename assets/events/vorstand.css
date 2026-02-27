@@ -42,7 +42,6 @@
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 2.2rem;
             margin-top: 2.5rem;
-            perspective: 1200px;
         }
 
         .vorstandsmitglied {

@@ -250,9 +250,19 @@
             }
         ];
 
+        function parseDateOnly(datumString) {
+            const [year, month, day] = datumString.split('-').map(Number);
+            return new Date(year, month - 1, day);
+        }
+
         const heute = new Date();
-        const bevorstehend = events.filter(e => new Date(e.datum) >= heute).sort((a, b) => new Date(a.datum) - new Date(b.datum));
-        const vergangen = events.filter(e => new Date(e.datum) < heute).sort((a, b) => new Date(b.datum) - new Date(a.datum));
+        const heuteOhneUhrzeit = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate());
+        const bevorstehend = events
+            .filter(e => parseDateOnly(e.datum) >= heuteOhneUhrzeit)
+            .sort((a, b) => parseDateOnly(a.datum) - parseDateOnly(b.datum));
+        const vergangen = events
+            .filter(e => parseDateOnly(e.datum) < heuteOhneUhrzeit)
+            .sort((a, b) => parseDateOnly(b.datum) - parseDateOnly(a.datum));
 
         function renderEvents(containerId, events) {
             const container = document.getElementById(containerId);
@@ -266,7 +276,7 @@
 
 
                 const datumElement = document.createElement('p');
-                const date = new Date(event.datum);
+                const date = parseDateOnly(event.datum);
                 datumElement.textContent = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${event.zeit || ''}`;
                 datumElement.classList.add('event-date-time');
 
