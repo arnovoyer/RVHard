@@ -1,5 +1,6 @@
 DirectoryIndex index.html
 RewriteEngine On
+AddDefaultCharset UTF-8
 
 # index.html → /
 RewriteCond %{THE_REQUEST} \s/index\.html [NC]
