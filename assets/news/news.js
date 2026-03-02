@@ -54,6 +54,7 @@ function initNewsGalleries(root = document) {
         const closeBtn = lightbox.querySelector('.close-btn');
         const prevLightbox = lightbox.querySelector('.prev-btn');
         const nextLightbox = lightbox.querySelector('.next-btn');
+        let isLightboxOpen = false;
 
         slides.forEach((slide, index) => {
             slide.addEventListener('click', () => {
@@ -67,12 +68,20 @@ function initNewsGalleries(root = document) {
             const imgUrl = bg.slice(5, -2);
             lightboxImg.src = imgUrl;
             lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            if (!isLightboxOpen) {
+                document.documentElement.classList.add('lightbox-open');
+                document.body.classList.add('lightbox-open');
+                isLightboxOpen = true;
+            }
         }
 
         function closeLightbox() {
             lightbox.style.display = 'none';
-            document.body.style.overflow = '';
+            if (isLightboxOpen) {
+                document.documentElement.classList.remove('lightbox-open');
+                document.body.classList.remove('lightbox-open');
+                isLightboxOpen = false;
+            }
             lightbox.classList.remove('zoomed');
         }
 

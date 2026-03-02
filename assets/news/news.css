@@ -156,8 +156,8 @@ section.container {
 }
 
 #news-detail-container {
-  flex: 0 0 60%;
-  max-width: 60%;
+  width: 100%;
+  max-width: 800px;
 }
 
 .related-news-tags {
@@ -316,6 +316,13 @@ section.container {
   overflow: hidden;
 }
 
+html.lightbox-open,
+body.lightbox-open {
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 .lightbox img {
   max-width: 90%;
   max-height: 90%;
@@ -366,6 +373,10 @@ section.container {
 #news-detail-container h1:first-child,
 #news-detail-container h2:first-child {
   margin-top: 0.5rem;
+}
+
+#news-detail-container p{
+  margin-top: 15px;
 }
 
 .news-break {
