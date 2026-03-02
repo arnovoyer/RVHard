@@ -1,6 +1,24 @@
 {
   "items": [
     {
+      "id": 98,
+      "slug": "56-crosslaufserie-lustenau-2025-26",
+      "title": "Erfolgreiche 56. Crosslaufserie 2025/26",
+      "date": "2026-02-15",
+      "content": "Die 56. Crosslaufserie in Lustenau war ein voller Erfolg mit vielen spannenden Ergebnissen.",
+      "tags": [
+        "Vorarlberg",
+        "Triathlon",
+        "Rennen",
+        "Laufen",
+        "2025",
+        "2026",
+        "Crosslauf"
+      ],
+      "body": "",
+      "images": []
+    },
+    {
       "id": 97,
       "slug": "abradeln-2025",
       "title": "Abradeln 2025",
@@ -121,7 +139,7 @@
       "slug": "rennbericht-tschengla-bike-hc-2024",
       "title": "Rennbericht Tschengla Bike HC 2024",
       "date": "2024-06-29",
-      "content": "Am 20.06 fand in Lochau wieder das PfÃ¤nderrennen der Equipe Hondo statt ...",
+      "content": "Am 20.06 fand in Lochau wieder das Pfänderrennen der Equipe Hondo statt ...",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -136,9 +154,9 @@
     {
       "id": 89,
       "slug": "pfaenderrennen-2024",
-      "title": "PfÃ¤nderrennen 2024",
+      "title": "Pfänderrennen 2024",
       "date": "2024-06-20",
-      "content": "Am 20.06 fand in Lochau wieder das PfÃ¤nderrennen der Equipe Hondo statt ...",
+      "content": "Am 20.06 fand in Lochau wieder das Pfänderrennen der Equipe Hondo statt ...",
       "tags": [
         "Vorarlberg",
         "Rennrad",
@@ -152,11 +170,11 @@
     {
       "id": 88,
       "slug": "geglueckter-saisonauftakt",
-      "title": "GeglÃ¼ckter Saisonauftakt",
+      "title": "Geglückter Saisonauftakt",
       "date": "2024-05-06",
-      "content": "Jetzt ist auch die Ã¶sterreichische Nachwuchs-MTB-Saison erÃ¶ffnet.",
+      "content": "Jetzt ist auch die österreichische Nachwuchs-MTB-Saison eröffnet.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Nachwuchs",
         "Rennen",
         "MTB",
@@ -172,7 +190,7 @@
       "date": "2024-04-27",
       "content": "Am 27.04 fand heuer bei bestem Wetter das traditionelle anradeln statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Verein",
         "Anradeln",
         "Rennrad",
@@ -189,7 +207,7 @@
       "date": "2023-11-22",
       "content": "",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Verein",
         "Rennen",
         "Cyclocross",
@@ -203,9 +221,9 @@
       "slug": "2-rheindamm-cyclocross-mtb",
       "title": "2. Rheindamm Cyclocross / MTB",
       "date": "2023-11-22",
-      "content": "Am 9. Dezember geht das 2. Cyclocross im Rheinvorland Ã¼ber die BÃ¼hne.",
+      "content": "Am 9. Dezember geht das 2. Cyclocross im Rheinvorland über die Bühne.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Verein",
         "Rennen",
         "Cyclocross",
@@ -217,11 +235,11 @@
     {
       "id": 84,
       "slug": "top-ergebnis-des-rv-djs-bikeshop-simplon-hard-beim-3-laendermarathon",
-      "title": "Top Ergebnis des RV DJ's Bikeshop Simplon Hard beim 3 LÃ¤ndermarathon",
+      "title": "Top Ergebnis des RV DJ's Bikeshop Simplon Hard beim 3 Ländermarathon",
       "date": "2023-10-10",
-      "content": "Am Wochenende waren unzÃ¤hlige Athleten beim 3 LÃ¤ndermarathon am Start.",
+      "content": "Am Wochenende waren unzählige Athleten beim 3 Ländermarathon am Start.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Marathon",
         "Rennen",
         "Laufen",
@@ -233,11 +251,11 @@
     {
       "id": 83,
       "slug": "rennbericht-duerrenberg-rennen-und-ehrenberg-burgrennen",
-      "title": "Rennbericht DÃ¼rrenberg Rennen und Ehrenberg Burgrennen",
+      "title": "Rennbericht Dürrenberg Rennen und Ehrenberg Burgrennen",
       "date": "2023-09-10",
       "content": "Mitte September nahm ich an einem Rennen der anderen Art in Reutte teil.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "Andi",
@@ -249,14 +267,14 @@
     {
       "id": 82,
       "slug": "nachwuchs-oem-mtb-xco-2023",
-      "title": "Nachwuchs-Ã–M MTB XCO 2023",
+      "title": "Nachwuchs-ÖM MTB XCO 2023",
       "date": "2023-09-06",
-      "content": "Am vergangenen Wochenende fand in St. Johann in Tirol die heurige Ã–M statt.",
+      "content": "Am vergangenen Wochenende fand in St. Johann in Tirol die heurige ÖM statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
-        "Ã–M",
+        "ÖM",
         "Nachwuchs",
         "2023"
       ],
@@ -286,7 +304,7 @@
       "date": "2023-08-21",
       "content": "",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "HC",
@@ -300,7 +318,7 @@
       "slug": "rennbericht-cyclassics-hamburg-2023",
       "title": "Rennbericht Cyclassics Hamburg 2023",
       "date": "2023-08-20",
-      "content": "Die Cyclassics Hamburg am 20. August 2023 waren fÃ¼r mich ein erster Einstieg in die Jedermensch-Rennszene.",
+      "content": "Die Cyclassics Hamburg am 20. August 2023 waren für mich ein erster Einstieg in die Jedermensch-Rennszene.",
       "tags": [
         "Deutschland",
         "Rennrad",
@@ -314,7 +332,7 @@
     {
       "id": 78,
       "slug": "erfolgreiche-jugend-em-fuer-johanna-piringer",
-      "title": "Erfolgreiche Jugend-EM fÃ¼r Johanna Piringer",
+      "title": "Erfolgreiche Jugend-EM für Johanna Piringer",
       "date": "2023-08-16",
       "content": "Das Ziel von Johanna Piringer vor der EM war hochgesteckt: \"Nicht schlechter als letztes Jahr!\"",
       "tags": [
@@ -334,7 +352,7 @@
       "date": "2023-08-05",
       "content": "Nachdem ich mit meiner Leistung bei den letzten beiden Rennen (Pfronten MTB Marathon und M1) nicht zufrieden war ...",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "Ralf",
@@ -364,7 +382,7 @@
       "slug": "rennbericht-weltmeisterschaft-hamburg-2023",
       "title": "Rennbericht Weltmeisterschaft Hamburg 2023",
       "date": "2023-07-14",
-      "content": "Am 14.7.2023 war nun mein Saisonhighlight auf das ich mich 10 Monate gezielt vorbereitet habe. Ich wollte in meiner Bestform sein, um die mÃ¶glichst beste Platzierung zu erreichen.",
+      "content": "Am 14.7.2023 war nun mein Saisonhighlight auf das ich mich 10 Monate gezielt vorbereitet habe. Ich wollte in meiner Bestform sein, um die möglichst beste Platzierung zu erreichen.",
       "tags": [
         "Deutschland",
         "Triathlon",
@@ -398,7 +416,7 @@
       "date": "2023-07-01",
       "content": "Nach langer Zeit bin ich diese Woche wieder mal ins Brixental nach Kirchberg in Tirol gefahren umd am Kitzalpbike Festival teilzunehmen ...",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "HC",
@@ -413,7 +431,7 @@
       "slug": "rennbericht-tschengla-bike",
       "title": "Rennbericht Tschengla Bike",
       "date": "2023-06-18",
-      "content": "Am 18.6 ging der Vorarlberger Hillclimb Cup beim Tschengla Bike in BÃ¼rser Berg in die zweite Runde.",
+      "content": "Am 18.6 ging der Vorarlberger Hillclimb Cup beim Tschengla Bike in Bürser Berg in die zweite Runde.",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -447,7 +465,7 @@
       "slug": "bilder-von-andrea-p-online",
       "title": "Bilder von Andrea P. online",
       "date": "2023-06-13",
-      "content": "Unter folgendem Link kÃ¶nnt ihr die Bilder von Andrea / sunshinedrea6 anschauen und downloaden.",
+      "content": "Unter folgendem Link könnt ihr die Bilder von Andrea / sunshinedrea6 anschauen und downloaden.",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -464,7 +482,7 @@
       "slug": "kobel-hobel-2023",
       "title": "Kobel Hobel 2023",
       "date": "2023-05-20",
-      "content": "8,4km 540hm, das sind die Eckdaten des Rennens. 10 Teilnehmer standen fÃ¼r den RV DJÂ´s Bikeshop Simplon Hard am Donnerstag 18.05. am Start.",
+      "content": "8,4km 540hm, das sind die Eckdaten des Rennens. 10 Teilnehmer standen für den RV DJ's Bikeshop Simplon Hard am Donnerstag 18.05. am Start.",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -480,7 +498,7 @@
       "slug": "rennbericht-ralf-martin",
       "title": "Rennbericht Ralf Martin",
       "date": "2023-05-20",
-      "content": "Nachdem ich heuer schon beim Cycle Cross in FuÃŸach (2 AK), Leiblachlauf in Hergensweiler (1 AK) und Duathlon in Ruggel (Vizelandesmeister) gestartet bin ...",
+      "content": "Nachdem ich heuer schon beim Cycle Cross in Fußach (2 AK), Leiblachlauf in Hergensweiler (1 AK) und Duathlon in Ruggel (Vizelandesmeister) gestartet bin ...",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -497,7 +515,7 @@
       "slug": "ayc-scheffau-u13m",
       "title": "AYC Scheffau U13m",
       "date": "2023-05-15",
-      "content": "U13 Austrian Youngsters Cup. Momentan fÃ¼hrt der Sieg in der Ã¶sterreichischen U13 MTB-XCO Nachwuchs-Rennserie Ã¼ber Pius Piringer.",
+      "content": "U13 Austrian Youngsters Cup. Momentan führt der Sieg in der österreichischen U13 MTB-XCO Nachwuchs-Rennserie über Pius Piringer.",
       "tags": [
         "AYC",
         "MTB",
@@ -529,7 +547,7 @@
       "slug": "landesmeisterschaften-mtb-xco-2023-in-buch",
       "title": "Landesmeisterschaften MTB XCO 2023 in Buch",
       "date": "2023-05-07",
-      "content": "Alpencup Rennen Buch â€“ Landesmeisterschaften 2023   Am 6.5.2023 fanden in Buch die diesjÃ¤hrigen Landesmeisterschaften MTB XCO statt.",
+      "content": "Alpencup Rennen Buch mit Landesmeisterschaften 2023   Am 6.5.2023 fanden in Buch die diesjährigen Landesmeisterschaften MTB XCO statt.",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -546,9 +564,9 @@
       "slug": "bikeopening-2023-graz-stattegg",
       "title": "Bikeopening 2023 Graz- Stattegg",
       "date": "2023-04-30",
-      "content": "Vom 28.4. â€“ 1.5.2023 findet in Stattegg bei Graz das legendÃ¤re Bikeopening 2023 statt.",
+      "content": "Vom 28.4. – 1.5.2023 findet in Stattegg bei Graz das legendäre Bikeopening 2023 statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "2023"
@@ -563,7 +581,7 @@
       "date": "2023-04-27",
       "content": "Einen genauen Rennbericht findet ihr in Olegs Beitrag Vienna_Marathon_Oleg_2023 (1670kb)",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Laufen",
         "Rennen",
         "Marathon",
@@ -577,9 +595,9 @@
       "slug": "haiming-mountainbike-festival-2023",
       "title": "Haiming Mountainbike Festival 2023",
       "date": "2023-04-18",
-      "content": "Am Samstag, 15.4.2023 fand der erste Bewerb des diesjÃ¤hrigen Ã¶sterreichischen Nachwuchscup statt.",
+      "content": "Am Samstag, 15.4.2023 fand der erste Bewerb des diesjährigen österreichischen Nachwuchscup statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "2023"
@@ -606,7 +624,7 @@
     {
       "id": 60,
       "slug": "cic-on-swiss-bike-cup-graenichen-samstag",
-      "title": "CIC on Swiss Bike Cup â€“ GrÃ¤nichen - Samstag",
+      "title": "CIC on Swiss Bike Cup – Gränichen - Samstag",
       "date": "2023-03-18",
       "content": "Bei der ersten Station der schweizerischen Rennserie waren von unserem Verein am Samstag Johanna und Pius am Start.",
       "tags": [
@@ -637,11 +655,11 @@
     {
       "id": 58,
       "slug": "oem-2023-cyclocross-querfeldein",
-      "title": "Ã–M 2023 Cyclocross (Querfeldein)",
+      "title": "ÖM 2023 Cyclocross (Querfeldein)",
       "date": "2023-01-17",
-      "content": "Am Sonntag, 15.1.2023 fand bei Langenzersdorf um den Baggersee \"Seeschlacht\" die Ã–M im Querfeldein / Cyclocross statt.",
+      "content": "Am Sonntag, 15.1.2023 fand bei Langenzersdorf um den Baggersee \"Seeschlacht\" die ÖM im Querfeldein / Cyclocross statt.",
       "tags": [
-        "Ã–M",
+        "ÖM",
         "Cyclocross",
         "Nachwuchs",
         "Rennen",
@@ -655,7 +673,7 @@
       "slug": "sieg-beim-ayc-finale-in-koppl",
       "title": "Sieg beim AYC Finale in Koppl",
       "date": "2022-09-25",
-      "content": "m 24.9. fand in Koppl das Finale des diesjÃ¤hrigen Austria Youngsters Cup statt",
+      "content": "Am 24.9. fand in Koppl das Finale des diesjährigen Austria Youngsters Cup statt",
       "tags": [
         "AYC",
         "MTB",
@@ -719,7 +737,7 @@
       "slug": "halbzeit-bei-der-summer-bike-series-2022",
       "title": "Halbzeit bei der Summer Bike Series 2022",
       "date": "2022-08-04",
-      "content": "Ãœber 50 Starterinnen und Starter waren beim ersten Bergrennen der Summer Bike Series von RV DJÂ´s Bikeshop Simplon Hard dabei.",
+      "content": "Über 50 Starterinnen und Starter waren beim ersten Bergrennen der Summer Bike Series von RV DJ's Bikeshop Simplon Hard dabei.",
       "tags": [
         "Vorarlberg",
         "Rennrad",
@@ -735,7 +753,7 @@
       "slug": "zeitfahren-in-fussach",
       "title": "Zeitfahren in Fussach",
       "date": "2022-08-01",
-      "content": "Im Rahmen der Rennsportoffensive veranstaltet der RV DJÂ´s Bikeshop Simplon Hard zum dritten Mal die Summer Bike Series.",
+      "content": "Im Rahmen der Rennsportoffensive veranstaltet der RV DJ's Bikeshop Simplon Hard zum dritten Mal die Summer Bike Series.",
       "tags": [
         "Vorarlberg",
         "Rennrad",
@@ -751,7 +769,7 @@
       "slug": "kammgarn-kriterium-in-hard",
       "title": "Kammgarn Kriterium in Hard",
       "date": "2022-07-30",
-      "content": "Im Rahmen der Rennsportoffensive veranstaltet der RV DJÂ´s Bikeshop Simplon Hard zum dritten Mal die Summer Bike Series.",
+      "content": "Im Rahmen der Rennsportoffensive veranstaltet der RV DJ's Bikeshop Simplon Hard zum dritten Mal die Summer Bike Series.",
       "tags": [
         "Vorarlberg",
         "Rennrad",
@@ -767,7 +785,7 @@
       "slug": "everesting",
       "title": "Everesting",
       "date": "2022-07-27",
-      "content": "Pius kam auf einer Fahrt zu einem der letzten Rennen auf die Idee wie Manuel den Ã–tztaler Radmarathon zu fahren (227 KM und 5.500 HM).",
+      "content": "Pius kam auf einer Fahrt zu einem der letzten Rennen auf die Idee wie Manuel den Ötztaler Radmarathon zu fahren (227 KM und 5.500 HM).",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -781,14 +799,14 @@
     {
       "id": 49,
       "slug": "oem-mtb-xco-2022-hohenems",
-      "title": "Ã–M MTB XCO 2022 â€“ Hohenems",
+      "title": "ÖM MTB XCO 2022 – Hohenems",
       "date": "2022-07-25",
-      "content": "In einem dramatischen Rennen der U15 MÃ¤dchen konnte Johanna Piringer sich den Ã¶sterreichischen Titel im XCO Bewerb sichern.",
+      "content": "In einem dramatischen Rennen der U15 Mädchen konnte Johanna Piringer sich den österreichischen Titel im XCO Bewerb sichern.",
       "tags": [
         "Vorarlberg",
         "MTB",
         "Rennen",
-        "Ã–M",
+        "ÖM",
         "2022"
       ],
       "body": "",
@@ -797,9 +815,9 @@
     {
       "id": 48,
       "slug": "johanna-fuer-das-nationalteam-fuer-die-jugend-em-nominiert",
-      "title": "Johanna fÃ¼r das Nationalteam fÃ¼r die Jugend-EM nominiert",
+      "title": "Johanna für das Nationalteam für die Jugend-EM nominiert",
       "date": "2022-07-22",
-      "content": "Durch die starken Leistungen in der bisherigen Saison hat sich Johanna als eine von 2 MÃ¤dels aus den JahrgÃ¤ngen 2008 und 2009 als JahrgangsjÃ¼ngere fÃ¼r das Ã¶sterreichische Nationalteam qualifiziert.",
+      "content": "Durch die starken Leistungen in der bisherigen Saison hat sich Johanna als eine von 2 Mädchen aus den Jahrgängen 2008 und 2009 als Jahrgangsjüngere für das österreichische Nationalteam qualifiziert.",
       "tags": [
         "EM",
         "MTB",
@@ -815,7 +833,7 @@
       "slug": "starker-auftritt-beim-alpencup-in-mieming",
       "title": "Starker Auftritt beim Alpencup in Mieming",
       "date": "2022-07-20",
-      "content": "Beim Alpencuprennen am 9.4 in Mieming konnte der RV DJÂ´s Bikeshop Simplon Hard mit einer starken Mannschaftsleistung aufzeigen.",
+      "content": "Beim Alpencuprennen am 9.4 in Mieming konnte der RV DJ's Bikeshop Simplon Hard mit einer starken Mannschaftsleistung aufzeigen.",
       "tags": [
         "Tirol",
         "MTB",
@@ -829,9 +847,9 @@
     {
       "id": 46,
       "slug": "top-auftritt-beim-pfaenderrennen-2022",
-      "title": "Top Auftritt beim PfÃ¤nderrennen 2022",
+      "title": "Top Auftritt beim Pfänderrennen 2022",
       "date": "2022-07-01",
-      "content": "Mit 14 Fahrerinnen und Fahrern war der RV DJÂ´s Bikeshop Simplon Hard beim PfÃ¤nderrennen 2022 am Start",
+      "content": "Mit 14 Fahrerinnen und Fahrern war der RV DJ's Bikeshop Simplon Hard beim Pfänderrennen 2022 am Start",
       "tags": [
         "Vorarlberg",
         "Rennrad",
@@ -846,7 +864,7 @@
       "slug": "nightrace-landesmeisterschaften-mtb-im-rahmen-des-harder-nightraces",
       "title": "Nightrace: Landesmeisterschaften MTB im Rahmen des Harder Nightraces",
       "date": "2022-06-14",
-      "content": "Im Rahmen des traditionellen Nightraces des RV DJâ€˜s Bikeshop Simplon Hard wurden dieses Jahr die Landesmeisterschaften im MTB XCO ausgetragen.",
+      "content": "Im Rahmen des traditionellen Nightraces des RV DJ's Bikeshop Simplon Hard wurden dieses Jahr die Landesmeisterschaften im MTB XCO ausgetragen.",
       "tags": [
         "Vorarlberg",
         "MTB",
@@ -880,7 +898,7 @@
       "date": "2022-05-18",
       "content": "Am 14.05.2022 fand am Wilden Kaiser das 3. Rennwochenende des AYC statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "AYC",
@@ -892,11 +910,11 @@
     {
       "id": 42,
       "slug": "austrians-youngsters-cup-petzen-kaernten",
-      "title": "Austrians Youngsters Cup - Petzen / KÃ¤rnten",
+      "title": "Austrians Youngsters Cup - Petzen / Kärnten",
       "date": "2022-04-28",
-      "content": "Am 23. & 24.4.2022 fand in OstkÃ¤rnten ein Doppelbewerb des AYC statt.",
+      "content": "Am 23. & 24.4.2022 fand in Ostkärnten ein Doppelbewerb des AYC statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "MTB",
         "Rennen",
         "AYC",
@@ -908,9 +926,9 @@
     {
       "id": 41,
       "slug": "saisoneroeffnung-2022-orbea-bike-cup-arbon",
-      "title": "SaisonerÃ¶ffnung 2022 - Orbea Bike Cup Arbon",
+      "title": "Saisoneröffnung 2022 - Orbea Bike Cup Arbon",
       "date": "2022-04-28",
-      "content": "Am Karsamstag fand in Arbon das legendÃ¤re Osterhasenrennen statt.",
+      "content": "Am Karsamstag fand in Arbon das legendäre Osterhasenrennen statt.",
       "tags": [
         "Schweiz",
         "MTB",
@@ -925,7 +943,7 @@
       "slug": "erste-ausfahrten-und-ausblick-erste-saisonrennen",
       "title": "Erste Ausfahrten und Ausblick erste Saisonrennen",
       "date": "2022-03-14",
-      "content": "Der FrÃ¼hling zieht ins Land und die Sonne lacht. Johanna und Pius haben schon die ersten Ausfahrten in den Beinen.",
+      "content": "Der Frühling zieht ins Land und die Sonne lacht. Johanna und Pius haben schon die ersten Ausfahrten in den Beinen.",
       "tags": [
         "Vorarlberg",
         "Verein",
@@ -941,9 +959,9 @@
       "slug": "finale-ayc-2021",
       "title": "Finale AYC 2021",
       "date": "2021-10-06",
-      "content": "Am 26.9.2021 fand das  letzte Saisonrennen des Austria Youngsters Cup fÃ¼r Johanna in KÃ¼rnberg /NÃ– statt.",
+      "content": "Am 26.9.2021 fand das  letzte Saisonrennen des Austria Youngsters Cup für Johanna in Kürnberg /NÖ statt.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
         "MTB",
         "Nachwuchs",
@@ -958,7 +976,7 @@
       "slug": "rennbericht-gamp-2021",
       "title": "Rennbericht Gamp 2021",
       "date": "2021-09-29",
-      "content": "Am 12.9. durften sich mehr als 100 Fahrerinnen und Fahrer darÃ¼ber freuen, dass der legendÃ¤re Gamp Hillclimb nach einem Jahr Auszeit wieder stattfand!",
+      "content": "Am 12.9. durften sich mehr als 100 Fahrerinnen und Fahrer darüber freuen, dass der legendäre Gamp Hillclimb nach einem Jahr Auszeit wieder stattfand!",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1006,7 +1024,7 @@
       "slug": "ruggburg-charity-race-2021",
       "title": "Ruggburg Charity Race 2021",
       "date": "2021-09-15",
-      "content": "Am 11.09 erfolgte heuer die dritte Auflage des von Thomas Seeberger organisierten Ruggburg Charity Race zu Gunsten der Kinder-Krebs-Hilfe fÃ¼r Tirol und Vorarlberg.",
+      "content": "Am 11.09 erfolgte heuer die dritte Auflage des von Thomas Seeberger organisierten Ruggburg Charity Race zu Gunsten der Kinder-Krebs-Hilfe für Tirol und Vorarlberg.",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1024,7 +1042,7 @@
       "date": "2021-09-12",
       "content": "Beim AYC in Oberndorf in Tirol lieferte Pius ein starkes Rennen und konnte in einem packenden Fight in der Klasse U11m unter 24 Startern den 2. Platz erobern.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
         "MTB",
         "Nachwuchs",
@@ -1039,9 +1057,9 @@
       "slug": "austrias-youngsters-cup-koppl-salzburg",
       "title": "Austrias Youngsters Cup Koppl (Salzburg)",
       "date": "2021-09-06",
-      "content": "In der Klasse U11 konnte Pius zeigen, was er kann und musste den spÃ¤teren Sieger nur auf Grund eines Sturzes vorbeiziehen lassen.",
+      "content": "In der Klasse U11 konnte Pius zeigen, was er kann und musste den späteren Sieger nur auf Grund eines Sturzes vorbeiziehen lassen.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
         "MTB",
         "Nachwuchs",
@@ -1072,7 +1090,7 @@
       "slug": "rennbericht-ironbike-festival-2021",
       "title": "Rennbericht Ironbike Festival 2021",
       "date": "2021-08-16",
-      "content": "Nachdem ich die letzten beiden Jahre bedingt durch Nachwuchs und Pandemie nicht in Ischgl war fuhr ich letzen Donnerstag mit dem Kompletten Anhang (2 WettkampfrÃ¤der, Frau, Kinder und Aupair) ins Paznaun zum 26. Ischgl Ironbike.",
+      "content": "Nachdem ich die letzten beiden Jahre bedingt durch Nachwuchs und Pandemie nicht in Ischgl war fuhr ich letzen Donnerstag mit dem Kompletten Anhang (2 Wettkampfräder, Frau, Kinder und Aupair) ins Paznaun zum 26. Ischgl Ironbike.",
       "tags": [
         "Tirol",
         "Rennen",
@@ -1088,7 +1106,7 @@
       "slug": "landesmeisterschaften-beim-jannersee",
       "title": "Landesmeisterschaften beim Jannersee",
       "date": "2021-08-16",
-      "content": "Den Auftakt machten die Damen und Herren Ãœ50. Hier belegte Chiara Burtscher in der Jugend mit der schnellsten Schwimmzeit den 1. Platz und Overall den 5. Platz.",
+      "content": "Den Auftakt machten die Damen und Herren Ü50. Hier belegte Chiara Burtscher in der Jugend mit der schnellsten Schwimmzeit den 1. Platz und Overall den 5. Platz.",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1102,14 +1120,14 @@
     {
       "id": 29,
       "slug": "topplatzierungen-bei-den-oem-im-triathlon-in-kitzbuehel-fuer-die-harder-athletinnen-und-athleten",
-      "title": "Topplatzierungen bei den Ã–M im Triathlon in KitzbÃ¼hel fÃ¼r die Harder Athletinnen und Athleten.",
+      "title": "Topplatzierungen bei den ÖM im Triathlon in Kitzbühel für die Harder Athletinnen und Athleten.",
       "date": "2021-06-21",
-      "content": "Mit Spitzenplatzierungen konnten sich die Sportler des RV DJÂ´s Bikeshop Simplon Hard in die Ergebnislisten der Ã–M in KitzbÃ¼hel eintragen.",
+      "content": "Mit Spitzenplatzierungen konnten sich die Sportler des RV DJ's Bikeshop Simplon Hard in die Ergebnislisten der ÖM in Kitzbühel eintragen.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
         "Triathlon",
-        "Ã–M",
+        "ÖM",
         "2021"
       ],
       "body": "",
@@ -1120,7 +1138,7 @@
       "slug": "tolle-ergebnisse-beim-heimrennen-harder-mtb-race-und-nachwuchs-cross-duathlon",
       "title": "Tolle Ergebnisse beim Heimrennen Harder MTB Race und Nachwuchs-Cross-Duathlon",
       "date": "2021-06-21",
-      "content": "120 Athletinnen und Athleten beim ersten â€žNach-Corona-Rennenâ€œ 2021 in Hard.",
+      "content": "120 Athletinnen und Athleten beim ersten „Nach-Corona-Rennen“ 2021 in Hard.",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1134,13 +1152,13 @@
     {
       "id": 27,
       "slug": "oem-wochenende-in-graz-stattegg",
-      "title": "Ã–M Wochenende in Graz-Stattegg",
+      "title": "ÖM Wochenende in Graz-Stattegg",
       "date": "2021-06-06",
-      "content": "Nach dem Ã¼berraschend starken 2. Platz gestern im Eliminator-Bewerb konnte sich Johanna Piringer das 2. Jahr in Folge  den Vizemeistertitel in der Klasse U13w sichern.",
+      "content": "Nach dem überraschend starken 2. Platz gestern im Eliminator-Bewerb konnte sich Johanna Piringer das 2. Jahr in Folge  den Vizemeistertitel in der Klasse U13w sichern.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
-        "Ã–M",
+        "ÖM",
         "MTB",
         "2021"
       ],
@@ -1150,13 +1168,13 @@
     {
       "id": 26,
       "slug": "vize-oem-xc-eliminator",
-      "title": "Vize-Ã–M-XC-Eliminator",
+      "title": "Vize-ÖM-XC-Eliminator",
       "date": "2021-06-05",
-      "content": "Spitzenergebnis von Johanna Piringer bei den Ã–M im MTB-Eliminatorbewerb.",
+      "content": "Spitzenergebnis von Johanna Piringer bei den ÖM im MTB-Eliminatorbewerb.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
-        "Ã–M",
+        "ÖM",
         "MTB",
         "2021"
       ],
@@ -1182,9 +1200,9 @@
     {
       "id": 24,
       "slug": "saisonauftakt-fuer-die-rv-hard-jugend-beim-internationalen-mtb-rennen-in-scheffau-tirol",
-      "title": "Saisonauftakt fÃ¼r die RV-Hard Jugend beim internationalen MTB-Rennen in Scheffau / Tirol",
+      "title": "Saisonauftakt für die RV-Hard Jugend beim internationalen MTB-Rennen in Scheffau / Tirol",
       "date": "2021-05-22",
-      "content": "FÃ¼r den RV DJ's Bikeshop Simplon Hard war heuer Johanna Piringer als Solostarterin am Start des Cups.",
+      "content": "Für den RV DJ's Bikeshop Simplon Hard war heuer Johanna Piringer als Solostarterin am Start des Cups.",
       "tags": [
         "Tirol",
         "Rennen",
@@ -1200,9 +1218,9 @@
       "slug": "das-war-der-austrias-youngsters-cup-2020",
       "title": "Das war der Austrias-Youngsters-Cup 2020",
       "date": "2020-11-01",
-      "content": "FÃ¼r den RV DJ's Bikeshop Simplon Hard war heuer Johanna Piringer als Solostarterin am Start des Cups.",
+      "content": "Für den RV DJ's Bikeshop Simplon Hard war heuer Johanna Piringer als Solostarterin am Start des Cups.",
       "tags": [
-        "Ã–sterreich",
+        "Österreich",
         "Rennen",
         "Cup",
         "MTB",
@@ -1233,7 +1251,7 @@
       "slug": "vereinsrennserie-2020",
       "title": "Vereinsrennserie 2020",
       "date": "2020-10-01",
-      "content": "Vereinsrennserie!   Im heurigen Jahr war die MÃ¶glichkeit zur Rennteilnahme aus bekannten GrÃ¼nden stark eingeschrÃ¤nkt.",
+      "content": "Vereinsrennserie!   Im heurigen Jahr war die Möglichkeit zur Rennteilnahme aus bekannten Gründen stark eingeschränkt.",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1247,7 +1265,7 @@
     {
       "id": 20,
       "slug": "zanzenberg-rennen-2020-oder-the-same-procedure-as-every-year",
-      "title": "Zanzenberg-Rennen 2020, oder â€žThe same procedure as every year!â€œ",
+      "title": "Zanzenberg-Rennen 2020, oder „The same procedure as every year!“",
       "date": "2020-09-03",
       "content": "Am 29.08.2020 fand in Dornbirn wie jedes Jahr am Zanzenberg das Rennen des RV-Dornbirn statt.",
       "tags": [
@@ -1265,7 +1283,7 @@
       "slug": "die-legende-lebt-gamp-bike-beschling-19-auflage",
       "title": "Die Legende lebt! Gamp Bike, Beschling 19. Auflage",
       "date": "2019-09-12",
-      "content": "Seit 2001 heiÃŸt es Anfang September nochmal alle Motivation zusammenzukratzen und beim Gamp Bike in Beschling an den Start zu gehen.",
+      "content": "Seit 2001 heißt es Anfang September nochmal alle Motivation zusammenzukratzen und beim Gamp Bike in Beschling an den Start zu gehen.",
       "tags": [
         "Vorarlberg",
         "HC",
@@ -1279,9 +1297,9 @@
     {
       "id": 18,
       "slug": "altstaetten-finale-stevens-bikecup-2019",
-      "title": "AltstÃ¤tten: Finale Stevens Bikecup 2019",
+      "title": "Altstätten: Finale Stevens Bikecup 2019",
       "date": "2019-09-05",
-      "content": "Am vergangenen Samstagvormittag fand in AltstÃ¤tten (CH) bei bestem Bikewetter der letzte Bewerb der Saison im Stevens Bikecup statt. Unser Verein war in den Altersklassen U7, U9 und U11 vertreten.",
+      "content": "Am vergangenen Samstagvormittag fand in Altstätten (CH) bei bestem Bikewetter der letzte Bewerb der Saison im Stevens Bikecup statt. Unser Verein war in den Altersklassen U7, U9 und U11 vertreten.",
       "tags": [
         "Schweiz",
         "Rennen",
@@ -1297,7 +1315,7 @@
       "slug": "lea-riem-landesmeisterin-im-mountainbike-marathon",
       "title": "Lea Riem Landesmeisterin im Mountainbike Marathon",
       "date": "2019-07-31",
-      "content": "Im Rahmen des M3 Montafon Mountainbike Marathon wurden die diesjÃ¤hrigen Landesmeisterschaften ausgetragen. Der RV DjÂ´s Bikeshop Simplon Hard war mit vier Teilnehmern am Start.",
+      "content": "Im Rahmen des M3 Montafon Mountainbike Marathon wurden die diesjährigen Landesmeisterschaften ausgetragen. Der RV Dj's Bikeshop Simplon Hard war mit vier Teilnehmern am Start.",
       "tags": [
         "Vorarlberg",
         "Rennen",
@@ -1311,9 +1329,9 @@
     {
       "id": 16,
       "slug": "alpencup-mieming-oder-letzte-woche-frieren,-heute-hitzeschlacht",
-      "title": "Alpencup Mieming â€“ oder letzte Woche frieren, heute Hitzeschlacht!",
+      "title": "Alpencup Mieming – oder letzte Woche frieren, heute Hitzeschlacht!",
       "date": "2019-07-03",
-      "content": "Nachdem letzte Woche in der Schweiz in der Lenzerheide die Temperatur bei Dauerregen nicht Ã¼ber 9 Grad kam, zeigt sich an dem Wochenende ein ganz anderes Bild.",
+      "content": "Nachdem letzte Woche in der Schweiz in der Lenzerheide die Temperatur bei Dauerregen nicht über 9 Grad kam, zeigt sich an dem Wochenende ein ganz anderes Bild.",
       "tags": [
         "Tirol",
         "Rennen",
@@ -1329,7 +1347,7 @@
       "slug": "top-stimmung-beim-heimrennen-in-hard",
       "title": "Top Stimmung beim Heimrennen in Hard!",
       "date": "2019-06-24",
-      "content": "Top Stimmung beim Heimrennen in Hard! Beim traditionellen Nightrace in Hard konnte sich der RV-DJ's Bikeshop Simplon Hard Ã¼ber einen Besucher - und Teilnehmerrekord freuen.",
+      "content": "Top Stimmung beim Heimrennen in Hard! Beim traditionellen Nightrace in Hard konnte sich der RV-DJ's Bikeshop Simplon Hard über einen Besucher - und Teilnehmerrekord freuen.",
       "tags": [
         "Vorarlberg",
         "Nightrace",
@@ -1345,7 +1363,7 @@
       "slug": "tschengla-bike-2019",
       "title": "Tschengla Bike",
       "date": "2019-06-24",
-      "content": "Am Samstag den 16.6 fand in BÃ¼rserberg mit dem Tschengla Bike das zweite Rennen des diesjÃ¤hrigen Hillclimbcups statt.",
+      "content": "Am Samstag den 16.6 fand in Bürserberg mit dem Tschengla Bike das zweite Rennen des diesjährigen Hillclimbcups statt.",
       "tags": [
         "Vorarlberg",
         "HC",
@@ -1361,7 +1379,7 @@
       "slug": "landesmeisterschaften-xco-2019",
       "title": "Landesmeisterschaften XCO 2019",
       "date": "2019-06-03",
-      "content": "Die krankheitsbedingt etwas dezimierte Mannschaft des RV DJÂ´s Bikeshop Simplon Hard sicherte sich im Rahmen der Landesmeisterschaften 2019 in Hohenems drei Medaillen.",
+      "content": "Die krankheitsbedingt etwas dezimierte Mannschaft des RV DJ's Bikeshop Simplon Hard sicherte sich im Rahmen der Landesmeisterschaften 2019 in Hohenems drei Medaillen.",
       "tags": [
         "Vorarlberg",
         "XCO",
@@ -1377,7 +1395,7 @@
       "slug": "kobel-hobel-2019",
       "title": "Kobel Hobel 2019",
       "date": "2019-05-23",
-      "content": "Am Samstag den 11.5 begann fÃ¼r mich die Rennsaison 2019 ...",
+      "content": "Am Samstag den 11.5 begann für mich die Rennsaison 2019 ...",
       "tags": [
         "Vorarlberg",
         "HC",
@@ -1393,7 +1411,7 @@
       "slug": "italien-rr-trainingslager-2019",
       "title": "Italien RR Trainingslager 2019",
       "date": "2019-05-14",
-      "content": "Als frisches Mitglied im Verein und ausgerÃ¼stet mit dem feschsten Dress des RV Hard fuhren wir Richtung Rimini/Cattollica.",
+      "content": "Als frisches Mitglied im Verein und ausgerüstet mit dem feschsten Dress des RV Hard fuhren wir Richtung Rimini/Cattollica.",
       "tags": [
         "Italien",
         "Rennrad",
@@ -1409,7 +1427,7 @@
       "slug": "spannende-rennen-in-der-schweiz",
       "title": "Spannende Rennen in der Schweiz!",
       "date": "2019-05-09",
-      "content": "Auf Neuland wagten sich die AthletInnen des RV- DjÂ´s Bikeshop Simplon Hard beim zum Swiss Bikecup gehÃ¶renden Rennen in Buchs.",
+      "content": "Auf Neuland wagten sich die AthletInnen des RV- Dj's Bikeshop Simplon Hard beim zum Swiss Bikecup gehörenden Rennen in Buchs.",
       "tags": [
         "Schweiz",
         "Rennen",
@@ -1441,7 +1459,7 @@
       "slug": "bulls-nighthawk-zu-verkaufen",
       "title": "Bulls NightHawk zu verkaufen",
       "date": "2019-04-08",
-      "content": "RahmengrÃ¶ÃŸe: 52 Schaltung: Ultegra DI2 elektronisch Baujahr: Sommer 2016 Fahrleistung erst ca. 3000km â€“ somit fast Neuwertig",
+      "content": "Rahmengröße: 52 Schaltung: Ultegra DI2 elektronisch Baujahr: Sommer 2016 Fahrleistung erst ca. 3000km – somit fast Neuwertig",
       "tags": [
         "Vorarlberg",
         "Verkauf",
@@ -1457,7 +1475,7 @@
       "slug": "nightrace-2019",
       "title": "Nightrace 2019",
       "date": "2019-04-02",
-      "content": "Harder MTB Night Race 2019 7.6 und 8.6 ACHTUNG Teilnehmerlimit Ã¼berschritten. Anmeldungen nur noch in den Kategorien U7, U9, U11, U13 und U15 mÃ¶glich!",
+      "content": "Harder MTB Night Race 2019 7.6 und 8.6 ACHTUNG Teilnehmerlimit überschritten. Anmeldungen nur noch in den Kategorien U7, U9, U11, U13 und U15 möglich!",
       "tags": [
         "Vorarlberg",
         "Nightrace",
@@ -1473,7 +1491,7 @@
       "slug": "trainingssaison-2018-19",
       "title": "Trainingssaison 2018/19",
       "date": "2018-11-06",
-      "content": "Die neuen Trainingstermine fÃ¼r die Saison 2018/2019 sind ab sofort auf unserer Homepage unter Termine --> Trainingstermine zu finden. Euer Jugendwart Herbert Wurm",
+      "content": "Die neuen Trainingstermine für die Saison 2018/2019 sind ab sofort auf unserer Homepage unter Termine --> Trainingstermine zu finden. Euer Jugendwart Herbert Wurm",
       "tags": [
         "Training",
         "Herbert",
@@ -1487,7 +1505,7 @@
       "slug": "vorarlberger-mountainbike-cup-2018",
       "title": "Voralberger Mountainbike Cup 2018",
       "date": "2018-10-10",
-      "content": "Am vergangenen Wochenende ging auf der Alpe Furx der diesjÃ¤hrige Vorarlberger Mountainbike Cup zu Ende ...",
+      "content": "Am vergangenen Wochenende ging auf der Alpe Furx der diesjährige Vorarlberger Mountainbike Cup zu Ende ...",
       "tags": [
         "Vorarlberg",
         "Cup",
@@ -1503,7 +1521,7 @@
       "slug": "furx-2018",
       "title": "Furx 2018",
       "date": "2018-10-10",
-      "content": "Am vergangenen Sonntag den 7.10 fand in Sulz mit dem Furx Hillclimb wie Ã¼blich das Finale des Vorarlberger Mountainbike Cups statt.",
+      "content": "Am vergangenen Sonntag den 7.10 fand in Sulz mit dem Furx Hillclimb wie üblich das Finale des Vorarlberger Mountainbike Cups statt.",
       "tags": [
         "Vorarlberg",
         "HC",
@@ -1535,7 +1553,7 @@
       "slug": "arlberger-bike-classic-2018",
       "title": "Arlberger Bike Classic 2018",
       "date": "2018-10-10",
-      "content": "Obwohl ich vom B2Run in Berlin (da bin ich zusammen mit meinen Kollegen fÃ¼r die Firma gelaufen) am Donnerstag noch etwas kaputte Beine hatte ...",
+      "content": "Obwohl ich vom B2Run in Berlin (da bin ich zusammen mit meinen Kollegen für die Firma gelaufen) am Donnerstag noch etwas kaputte Beine hatte ...",
       "tags": [
         "Vorarlberg",
         "HC",
