@@ -17,6 +17,7 @@
 
     define('ROOT_DIR', dirname(__DIR__));
     define('DATA_FILE', ROOT_DIR . '/data/news/news-cms.json');
+    define('TERMINE_DATA_FILE', ROOT_DIR . '/data/termine/termine.json');
     define('NEWS_DIR', ROOT_DIR . '/news');
     define('LEGACY_SLUGS_FILE', ROOT_DIR . '/data/news/legacy-slugs.json');
     define('NEWS_IMAGE_DIR', ROOT_DIR . '/assets/img/news');
@@ -296,6 +297,94 @@
         }
 
         return file_put_contents(DATA_FILE, $json . PHP_EOL, LOCK_EX) !== false;
+    }
+
+    function normalize_termine_events(array $events): array
+    {
+        $normalized = [];
+
+        foreach ($events as $event) {
+            if (!is_array($event)) {
+                continue;
+            }
+
+            $spartenInput = $event['sparten'] ?? [];
+            if (is_string($spartenInput)) {
+                $spartenInput = explode(',', $spartenInput);
+            }
+
+            $sparten = [];
+            foreach ((array)$spartenInput as $sparte) {
+                $value = normalize_text((string)$sparte);
+                if ($value !== '') {
+                    $sparten[] = $value;
+                }
+            }
+
+            $entry = [
+                'datum' => normalize_text((string)($event['datum'] ?? '')),
+                'zeit' => normalize_text((string)($event['zeit'] ?? '')),
+                'titel' => normalize_text((string)($event['titel'] ?? '')),
+                'beschreibung' => normalize_text((string)($event['beschreibung'] ?? '')),
+                'link' => normalize_text((string)($event['link'] ?? '')),
+                'ort' => normalize_text((string)($event['ort'] ?? '')),
+                'sparten' => array_values(array_unique($sparten)),
+                'alter' => normalize_text((string)($event['alter'] ?? '')),
+            ];
+
+            $normalized[] = $entry;
+        }
+
+        usort($normalized, static function (array $a, array $b): int {
+            $aTs = strtotime((string)($a['datum'] ?? '')) ?: PHP_INT_MAX;
+            $bTs = strtotime((string)($b['datum'] ?? '')) ?: PHP_INT_MAX;
+
+            if ($aTs === $bTs) {
+                return strcmp((string)($a['titel'] ?? ''), (string)($b['titel'] ?? ''));
+            }
+
+            return $aTs <=> $bTs;
+        });
+
+        return array_values($normalized);
+    }
+
+    function load_termine_events(): array
+    {
+        if (!file_exists(TERMINE_DATA_FILE)) {
+            return [];
+        }
+
+        $json = file_get_contents(TERMINE_DATA_FILE);
+        $decoded = json_decode((string)$json, true);
+        if (!is_array($decoded)) {
+            return [];
+        }
+
+        $events = [];
+        if (isset($decoded['events']) && is_array($decoded['events'])) {
+            $events = $decoded['events'];
+        } elseif (array_is_list($decoded)) {
+            $events = $decoded;
+        }
+
+        return normalize_termine_events($events);
+    }
+
+    function save_termine_events(array $events): bool
+    {
+        $dir = dirname(TERMINE_DATA_FILE);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0775, true);
+        }
+
+        $payload = ['events' => normalize_termine_events($events)];
+        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (!is_string($json)) {
+            return false;
+        }
+
+        return file_put_contents(TERMINE_DATA_FILE, $json . PHP_EOL, LOCK_EX) !== false;
     }
 
     function slug_conflicts_with_existing_file(string $slug, string $currentSlug = ''): bool
@@ -594,6 +683,7 @@
             . "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n"
             . "  <title>{$title} | RV Hard</title>\n"
             . "  <meta name=\"description\" content=\"News und Rennberichte des RV Hard.\" />\n"
+            . "  <link rel=\"icon\" type=\"image/png\" href=\"/assets/img/logo/Logo-RVHard.png\" />\n"
         . "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n"
         . "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n"
         . "  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap\" media=\"print\" onload=\"this.media='all'\" />\n"
@@ -867,12 +957,62 @@
             }
         }
 
-        if (in_array($action, ['save', 'delete', 'generate_all'], true)) {
+        if (in_array($action, ['save', 'delete', 'generate_all', 'save_termin', 'delete_termin'], true)) {
             ensure_logged_in();
             if (!verify_csrf_token($csrf)) {
                 $error = 'Ungültige Anfrage (CSRF). Bitte Seite neu laden.';
             } else {
             $items = load_items();
+            $termineEvents = load_termine_events();
+
+            if ($action === 'save_termin') {
+                $editIndex = isset($_POST['termin_index']) ? (int)$_POST['termin_index'] : -1;
+                $record = [
+                    'datum' => normalize_text((string)($_POST['termin_datum'] ?? '')),
+                    'zeit' => normalize_text((string)($_POST['termin_zeit'] ?? '')),
+                    'titel' => normalize_text((string)($_POST['termin_titel'] ?? '')),
+                    'beschreibung' => normalize_text((string)($_POST['termin_beschreibung'] ?? '')),
+                    'link' => normalize_text((string)($_POST['termin_link'] ?? '')),
+                    'ort' => normalize_text((string)($_POST['termin_ort'] ?? '')),
+                    'sparten' => array_values(array_filter(array_map(
+                        static fn($value) => normalize_text((string)$value),
+                        explode(',', (string)($_POST['termin_sparten'] ?? ''))
+                    ), static fn($value) => $value !== '')),
+                    'alter' => normalize_text((string)($_POST['termin_alter'] ?? '')),
+                ];
+
+                if ($record['datum'] === '' || $record['titel'] === '') {
+                    $error = 'Bitte mindestens Datum und Titel für den Termin ausfüllen.';
+                } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $record['datum'])) {
+                    $error = 'Das Termin-Datum muss im Format YYYY-MM-DD gespeichert werden.';
+                } else {
+                    if ($editIndex >= 0 && isset($termineEvents[$editIndex])) {
+                        $termineEvents[$editIndex] = $record;
+                    } else {
+                        $termineEvents[] = $record;
+                    }
+
+                    if (!save_termine_events($termineEvents)) {
+                        $error = 'Speichern fehlgeschlagen: termine.json konnte nicht geschrieben werden.';
+                    } else {
+                        $notice = 'Termin wurde gespeichert.';
+                    }
+                }
+            }
+
+            if ($action === 'delete_termin') {
+                $deleteIndex = isset($_POST['termin_index']) ? (int)$_POST['termin_index'] : -1;
+                if ($deleteIndex < 0 || !isset($termineEvents[$deleteIndex])) {
+                    $error = 'Der Termin konnte nicht gefunden werden.';
+                } else {
+                    array_splice($termineEvents, $deleteIndex, 1);
+                    if (!save_termine_events($termineEvents)) {
+                        $error = 'Löschen fehlgeschlagen: termine.json konnte nicht geschrieben werden.';
+                    } else {
+                        $notice = 'Termin wurde gelöscht.';
+                    }
+                }
+            }
 
             if ($action === 'save') {
                 $id = (int)($_POST['id'] ?? 0);
@@ -1099,7 +1239,7 @@
 
     $editId = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
     $view = $loggedIn ? (string)($_GET['view'] ?? 'dashboard') : '';
-    if ($loggedIn && !in_array($view, ['dashboard', 'articles'], true)) {
+    if ($loggedIn && !in_array($view, ['dashboard', 'articles', 'termine'], true)) {
         $view = 'dashboard';
     }
     if ($loggedIn && $editId > 0) {
@@ -1114,6 +1254,13 @@
                 break;
             }
         }
+    }
+
+    $termineEvents = $loggedIn ? load_termine_events() : [];
+    $editTerminIndex = isset($_GET['edit_termin']) ? (int)$_GET['edit_termin'] : -1;
+    $editTermin = null;
+    if ($loggedIn && $editTerminIndex >= 0 && isset($termineEvents[$editTerminIndex])) {
+        $editTermin = $termineEvents[$editTerminIndex];
     }
 
     $csrfToken = get_csrf_token();
@@ -1217,6 +1364,7 @@
             <div class="top-nav">
             <a class="btn btn-muted" href="/cms/index.php">Dashboard</a>
             <a class="btn btn-muted" href="/cms/index.php?view=articles">Artikel verwalten</a>
+            <a class="btn btn-muted" href="/cms/index.php?view=termine">Termine verwalten</a>
             <form method="post" style="display:inline;">
                 <input type="hidden" name="action" value="logout" />
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
@@ -1252,10 +1400,94 @@
                 </form>
             </div>
             <div class="dash-box">
-                <h3>Platz für Erweiterungen</h3>
-                <p>Hier werden möglicherweise noch andere Bereiche wie Termine in Zukunft ergänzt.</p>
+                <h3>Termine verwalten</h3>
+                <p>Termine für die Seite <span class="mono">/termine.html</span> direkt im CMS bearbeiten.</p>
+                <div class="row" style="margin-top:10px;">
+                <a class="btn btn-primary" href="/cms/index.php?view=termine">Zu den Terminen</a>
+                </div>
             </div>
             </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($view === 'termine'): ?>
+        <div class="card">
+        <h2><?= $editTermin ? 'Termin bearbeiten' : 'Neuer Termin' ?></h2>
+        <p class="hint">Die Termine werden in <span class="mono">/data/termine/termine.json</span> gespeichert und nach Datum sortiert ausgegeben.</p>
+        <form method="post">
+            <input type="hidden" name="action" value="save_termin" />
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+            <input type="hidden" name="termin_index" value="<?= $editTermin ? (int)$editTerminIndex : -1 ?>" />
+
+            <div class="grid">
+            <div>
+                <label>Datum <span class="required-star">*</span></label>
+                <input type="date" name="termin_datum" required value="<?= htmlspecialchars((string)($editTermin['datum'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
+            </div>
+            <div>
+                <label>Uhrzeit</label>
+                <input type="text" name="termin_zeit" value="<?= htmlspecialchars((string)($editTermin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. 19:00 oder 13:00-18:00" />
+            </div>
+            <div class="full">
+                <label>Titel <span class="required-star">*</span></label>
+                <input type="text" name="termin_titel" required value="<?= htmlspecialchars((string)($editTermin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+            </div>
+            <div class="full">
+                <label>Beschreibung</label>
+                <textarea name="termin_beschreibung"><?= htmlspecialchars((string)($editTermin['beschreibung'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
+            </div>
+            <div class="full">
+                <label>Ort (mehrere mit ; trennen)</label>
+                <input type="text" name="termin_ort" value="<?= htmlspecialchars((string)($editTermin['ort'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+            </div>
+            <div>
+                <label>Link (optional)</label>
+                <input type="text" name="termin_link" value="<?= htmlspecialchars((string)($editTermin['link'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+            </div>
+            <div>
+                <label>Sparten (kommagetrennt)</label>
+                <input type="text" name="termin_sparten" value="<?= htmlspecialchars(implode(', ', (array)($editTermin['sparten'] ?? [])), ENT_QUOTES, 'UTF-8') ?>" placeholder="MTB, Rennrad, Triathlon" />
+            </div>
+            <div class="full">
+                <label>Altersklassen</label>
+                <input type="text" name="termin_alter" value="<?= htmlspecialchars((string)($editTermin['alter'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. Alle Altersklassen" />
+            </div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+            <button class="btn btn-primary" type="submit">Termin speichern</button>
+            <?php if ($editTermin): ?>
+            <a class="btn btn-muted" href="/cms/index.php?view=termine">Abbrechen</a>
+            <?php endif; ?>
+            </div>
+        </form>
+        </div>
+
+        <div class="card">
+        <h2>Alle Termine (<?= count($termineEvents) ?>)</h2>
+        <table>
+            <thead><tr><th>Datum</th><th>Titel</th><th>Uhrzeit</th><th>Aktion</th></tr></thead>
+            <tbody>
+            <?php foreach ($termineEvents as $index => $termin): ?>
+            <tr>
+                <td><?= htmlspecialchars((string)($termin['datum'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars((string)($termin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars((string)($termin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                <td>
+                <div class="row">
+                    <a class="btn btn-muted" href="/cms/index.php?view=termine&edit_termin=<?= (int)$index ?>">Bearbeiten</a>
+                    <form method="post" onsubmit="return confirm('Termin wirklich löschen?');" style="display:inline;">
+                    <input type="hidden" name="action" value="delete_termin" />
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                    <input type="hidden" name="termin_index" value="<?= (int)$index ?>" />
+                    <button class="btn btn-danger" type="submit">Löschen</button>
+                    </form>
+                </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
         </div>
         <?php endif; ?>
 

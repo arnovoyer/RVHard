@@ -1,0 +1,85 @@
+{
+  "events": [
+    {
+      "datum": "2026-02-27",
+      "zeit": "19:00",
+      "titel": "Jahreshauptversammlung Spannrahmen",
+      "beschreibung": "Jahreshauptversammlung des RV Hard. Vorstand wird entlastet. Alle Mitglieder sind herzlich eingeladen.",
+      "link": null,
+      "ort": "Spannrahmen, In der Wirke 2, Hard",
+      "sparten": [
+        "MTB",
+        "Rennrad",
+        "Triathlon"
+      ],
+      "alter": null
+    },
+    {
+      "datum": "2026-03-28",
+      "zeit": "0:00-23:59",
+      "titel": "Vereinsradwoche Senigallia",
+      "beschreibung": "Fünf Tage Radfahren in Italien - mit Hotel in Senigallia nahe am Meer und täglichen Rennrad- und MTB-Touren.",
+      "link": null,
+      "ort": "Hotel Bel Sit, Senigallia, Italien",
+      "sparten": [
+        "MTB",
+        "Rennrad",
+        "Triathlon"
+      ]
+    },
+    {
+      "datum": "2026-03-28",
+      "zeit": "13:00-18:00",
+      "titel": "Uferreinigung \"Seeputzate\"",
+      "beschreibung": "Gemeinsam reinigen wir das Harder Seeufer, um es für den Sommer vorzubereiten. Im Anschluss gibt es einen Hock im Feuerwehrhaus.",
+      "link": "https://hard.at/aktuelles/mach-mit-bei-der-seeputzate/",
+      "ort": "Bauhof, Hard",
+      "sparten": [
+        "MTB",
+        "Rennrad",
+        "Triathlon"
+      ],
+      "alter": "Alle Altersklassen"
+    },
+    {
+      "datum": "2026-04-11",
+      "zeit": "10:00-16:00",
+      "titel": "Anradeln 2026",
+      "beschreibung": "Gemeinsames Saison-Eröffnungsradeln für alle Mitglieder.",
+      "link": null,
+      "ort": "Start: Rostlaube, Hard",
+      "sparten": [
+        "MTB",
+        "Rennrad",
+        "Triathlon"
+      ],
+      "alter": "Alle Altersklassen"
+    },
+    {
+      "datum": "2026-09-05",
+      "zeit": "9:00-15:00",
+      "titel": "Summer Bike Series 2026",
+      "beschreibung": "Summer Bike Series 2026 mit Bergrennen in Buch, Kriterium am Kammgarn Areal und Zeitfahren in Fußach.",
+      "link": "/events/sbs/summer-bike-series-2026.html",
+      "ort": "Pfarrkirche St. Nikolaus, Wolfurt(Bergrennen); Kammgarn Areal, Hard(Kriterium); Camping Rohrspitz, Fußach(Zeitfahren)",
+      "sparten": [
+        "Rennrad"
+      ],
+      "alter": "Alle Altersklassen"
+    },
+    {
+      "datum": "2026-12-31",
+      "zeit": "14:00-18:00",
+      "titel": "Termin wird noch bekanntgegeben: Abradeln 2026",
+      "beschreibung": "Saisonabschluss-Radeln mit gemütlichem Ausklang.",
+      "link": null,
+      "ort": "Start: Rostlaube, Hard",
+      "sparten": [
+        "MTB",
+        "Rennrad",
+        "Triathlon"
+      ],
+      "alter": "Alle Altersklassen"
+    }
+  ]
+}
