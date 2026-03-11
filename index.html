@@ -28,11 +28,11 @@
         content="Training, Termine, News und Vereinsleben beim RV Hard - Mountainbike, Rennrad und Triathlon in Vorarlberg.">
     <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-home-1200x630.png">
     <meta name="twitter:image:alt" content="RV Hard - Radsport- und Triathlonverein in Hard">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="preload" as="image" href="/assets/img/hero/Anradeln-2024-Auftsellung-medium.webp"
+        imagesrcset="/assets/img/hero/Anradeln-2024-Auftsellung-small.webp 640w, /assets/img/hero/Anradeln-2024-Auftsellung-medium.webp 960w, /assets/img/hero/Anradeln-2024-Auftsellung.webp 1600w"
+        imagesizes="(max-width: 600px) 92vw, (max-width: 1200px) 50vw, 620px" fetchpriority="high">
     <link rel="preload" href="/assets/events/index.css" as="style" onload="this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" href="/assets/events/index.css">
@@ -44,16 +44,6 @@
         <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
     </noscript>
     <link rel="icon" type="image/png" href="/assets/img/logo/Logo-RVHard.png">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
-        onload="this.onload=null;this.rel='stylesheet'">
-
-    <noscript>
-        <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </noscript>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -326,11 +316,11 @@
     <main style="padding-top:0px">
         <div class="hero-verein-wrapper" data-aos="fade-up">
             <div class="hero-image img">
-                <img src="/assets/img/hero/Anradeln-2024-Auftsellung.webp" srcset="/assets/img/hero/Anradeln-2024-Auftsellung-small.webp 480w,
-                            /assets/img/hero/Anradeln-2024-Auftsellung-medium.webp 900w,
-                            /assets/img/hero/Anradeln-2024-Auftsellung.webp 1600w" sizes="(max-width: 600px) 100vw, 
-                            (max-width: 1200px) 80vw, 
-                            1600px" alt="Aufstellung Anradeln 2024" width="900" height="675" fetchpriority="high">
+                <img src="/assets/img/hero/Anradeln-2024-Auftsellung-medium.webp" srcset="/assets/img/hero/Anradeln-2024-Auftsellung-small.webp 640w,
+                            /assets/img/hero/Anradeln-2024-Auftsellung-medium.webp 960w,
+                            /assets/img/hero/Anradeln-2024-Auftsellung.webp 1600w" sizes="(max-width: 600px) 92vw,
+                            (max-width: 1200px) 50vw,
+                            620px" alt="Aufstellung Anradeln 2024" width="900" height="675" fetchpriority="high" decoding="async">
             </div>
             <section class="verein-vorstellung" style="margin-top:0px;">
                 <div data-aos="fade-up">
@@ -407,7 +397,7 @@
                     }
 
                     try {
-                        const response = await fetch(EVENTS_URL, { cache: 'no-store' });
+                        const response = await fetch(EVENTS_URL);
                         if (!response.ok) {
                             throw new Error('Termine konnten nicht geladen werden');
                         }
@@ -595,7 +585,7 @@
             <div class="news-content">
               <h3>${escapeHtml(article.title)}</h3>
               <p class="news-meta">
-                <i class="fa-regular fa-calendar-days"></i>
+                                <i class="fa-regular fa-calendar-days"></i>
                 <span class="news-date">${date}</span>${author ? ` | <span class="news-author">${escapeHtml(author)}</span>` : ''}
               </p>
               <p>${escapeHtml(article.content)}</p>
@@ -676,7 +666,7 @@
                     <img src="/assets/img/gemeinschaft/Triathlon4.webp" loading="lazy" decoding="async"
                         alt="Triathlon Sparte" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
                     <h3>Triathlon</h3>
-                    <p>Schwimmen, Radfahren, Laufen â€“ gemeinsam ans Ziel.</p>
+                    <p>Schwimmen, Radfahren, Laufen - gemeinsam ans Ziel.</p>
                 </div>
 
                 <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="300">
@@ -690,7 +680,7 @@
 
         <section class="cta-mitglied" data-aos="zoom-out-up">
             <h2>Werde Teil unserer Radsport-Familie</h2>
-            <p>Ob Rennrad, MTB oder Triathlon â€“ wir freuen uns auf dich!</p>
+            <p>Ob Rennrad, MTB oder Triathlon - wir freuen uns auf dich!</p>
             <a href="/verein/mitglied-werden.html" class="gelber-button" style="margin-top:10px">Jetzt Mitglied
                 werden</a>
         </section>
@@ -701,63 +691,63 @@
                 <div class="logos-slide">
                     <a href="https://www.alpla.com/de" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.becker-installationen.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/becker.webp" alt="Becker Installationen Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                            height="50" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.djs.bike" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.faigle.com/de" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.tierklinik-fuerst.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/fuerst.webp" alt="Tierklinik Fürst Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.generali.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/generali-medium.webp" alt="Generali Logo" width="907"
-                            height="100" loading="eager" decoding="async" />
+                            height="100" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://lang-schiller.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/lang und schiller.webp" alt="Lang & Schiller Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                            height="50" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://oeamtc.at" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.profimed.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="/">
                         <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
-                            height="150" loading="eager" decoding="async" />
+                            height="150" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.raiffeisen.at/de/privatkunden.html" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340" height="50"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://schaffer-dachbau.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/schffer.webp" alt="Dachbau Schaffer Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                            height="50" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://simplon.com/de" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417" height="300"
-                            loading="eager" decoding="async" />
+                            loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://www.vn.at/" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/vn.webp" alt="Vorarlberger Nachrichten Logo" width="340"
-                            height="50" loading="eager" decoding="async" />
+                            height="50" loading="eager" decoding="async" fetchpriority="low" />
                     </a>
                     <a href="https://vkw.at" target="_blank" rel="noopener noreferrer">
                         <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" loading="eager"
-                            decoding="async" />
+                            decoding="async" fetchpriority="low" />
                     </a>
                 </div>
             </div>
