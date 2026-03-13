@@ -1384,13 +1384,13 @@
                 <p>Aktuell gespeicherte News-Einträge.</p>
             </div>
             <div class="dash-box">
-                <h3>Schnellzugriff</h3>
+                <h3>Artikel verwalten</h3>
                 <p>Direkt zur Bearbeitung und Erstellung von Artikeln wechseln.</p>
                 <div class="row" style="margin-top:10px;">
                 <a class="btn btn-primary" href="/cms/index.php?view=articles">Zu den Artikeln</a>
                 </div>
             </div>
-            <div class="dash-box">
+            <!--<div class="dash-box">
                 <h3>HTML neu generieren</h3>
                 <p>Alle generierten News-Seiten auf einmal aktualisieren.</p>
                 <form method="post" style="margin-top:10px;">
@@ -1398,10 +1398,10 @@
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
                 <button class="btn btn-muted" type="submit">Alle als HTML generieren</button>
                 </form>
-            </div>
+            </div>-->
             <div class="dash-box">
                 <h3>Termine verwalten</h3>
-                <p>Termine für die Seite <span class="mono">/termine.html</span> direkt im CMS bearbeiten.</p>
+                <p>Termine direkt bearbeiten.</p>
                 <div class="row" style="margin-top:10px;">
                 <a class="btn btn-primary" href="/cms/index.php?view=termine">Zu den Terminen</a>
                 </div>
