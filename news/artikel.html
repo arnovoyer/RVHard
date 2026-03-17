@@ -156,48 +156,15 @@
         async function loadArticle() {
             const slug = articleSlugFromUrl();
             const titleEl = document.getElementById('news-title');
-            const dateEl = document.getElementById('news-date');
             const contentEl = document.getElementById('news-content');
 
             if (!slug) {
-                titleEl.textContent = 'Kein Artikel-Slug Ã¼bergeben';
-                contentEl.innerHTML = '<p>Bitte Ã¼ber einen gÃ¼ltigen News-Link Ã¶ffnen.</p>';
+                titleEl.textContent = 'Kein Artikel-Slug übergeben';
+                contentEl.innerHTML = '<p>Bitte über einen gültigen News-Link öffnen.</p>';
                 return;
             }
 
-            try {
-                const legacySlugs = await fetchLegacySlugs();
-                if (legacySlugs.has(slug)) {
-                    window.location.replace(`/news/${slug}.html`);
-                    return;
-                }
-
-                const news = await fetchNewsData();
-                const article = news.find(item => item.slug === slug);
-
-                if (!article) {
-                    titleEl.textContent = 'Artikel nicht gefunden';
-                    contentEl.innerHTML = '<p>Der angeforderte Artikel existiert nicht.</p>';
-                    return;
-                }
-
-                document.title = `${article.title} | RV Hard`;
-                titleEl.textContent = article.title;
-
-                const date = new Date(article.date);
-                dateEl.textContent = isNaN(date)
-                    ? article.date || ''
-                    : date.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
-
-                contentEl.innerHTML = `${renderImageSection(article)}${renderBody(article)}`;
-                if (typeof window.initNewsGalleries === 'function') {
-                    window.initNewsGalleries(contentEl);
-                }
-            } catch (error) {
-                console.error(error);
-                titleEl.textContent = 'Fehler beim Laden';
-                contentEl.innerHTML = '<p>Der Artikel konnte derzeit nicht geladen werden.</p>';
-            }
+            window.location.replace(`/news/${encodeURIComponent(slug)}.html`);
         }
 
         document.addEventListener('DOMContentLoaded', async () => {

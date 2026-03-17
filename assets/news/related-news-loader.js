@@ -17,29 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return [];
     }
 
-    function resolveArticleLink(item, legacySlugs) {
+    function resolveArticleLink(item) {
         const slug = String(item.slug || '').trim();
-        const fallback = `/news/artikel.html?slug=${encodeURIComponent(slug)}`;
         const external = typeof item.link === 'string' ? item.link.trim() : '';
 
-        if (slug && legacySlugs.has(slug)) return `/news/${slug}.html`;
-
+        if (slug) return `/news/${encodeURIComponent(slug)}.html`;
         if (external && !external.toLowerCase().startsWith('externer link')) {
             if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
         }
-        return fallback;
-    }
-
-    async function fetchLegacySlugs() {
-        try {
-            const response = await fetch('/data/news/legacy-slugs.json');
-            if (!response.ok) return new Set();
-            const payload = await response.json();
-            if (!Array.isArray(payload)) return new Set();
-            return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
-        } catch (_) {
-            return new Set();
-        }
+        return '/news.html';
     }
 
     Promise.all([
@@ -50,10 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!fallback.ok) throw new Error("news.json konnte nicht geladen werden");
                     return fallback.json();
                 });
-            }),
-        fetchLegacySlugs()
+            })
     ])
-        .then(([response, legacySlugs]) => {
+        .then(([response]) => {
             const newsItems = normalizeNewsPayload(response);
             const currentItem = newsItems.find(item => item.slug === currentSlug);
             if (!currentItem) {
@@ -102,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
             relatedItems.slice(0, 2).forEach(item => {
                 const div = document.createElement("div");
                 div.className = "related-news-item";
-                const href = resolveArticleLink(item, legacySlugs);
+                const href = resolveArticleLink(item);
                 const thumbStyle = item.image ? ` style="background-image: url('${item.image}');"` : '';
                 const teaser = String(item.content || '').trim();
                 const teaserText = teaser.length > 120 ? `${teaser.slice(0, 120)}…` : teaser;

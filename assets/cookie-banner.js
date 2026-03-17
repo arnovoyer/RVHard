@@ -218,11 +218,11 @@
     return document.getElementById("instagram-placeholder");
   }
 
-  function loadEmbedSocial() {
-    if (!document.getElementById("EmbedSocialHashtagScript")) {
+  function loadLightWidget() {
+    if (!document.getElementById("LightWidgetScript")) {
       const js = document.createElement("script");
-      js.id = "EmbedSocialHashtagScript";
-      js.src = "https://embedsocial.com/cdn/ht.js";
+      js.id = "LightWidgetScript";
+      js.src = "https://cdn.lightwidget.com/widgets/lightwidget.js";
       js.async = true;
       document.head.appendChild(js);
     }
@@ -236,17 +236,17 @@
     instagramPlaceholder.innerHTML = `
     <section class="instagram-feed" data-aos="zoom-in-up">
       <h2>Instagram Feed</h2>
-      <div class="embedsocial-hashtag" data-ref="84faf809d9dd90588189de7c6e46ff43c4ccf5de">
-        <a class="feed-powered-by-es feed-powered-by-es-slider-img es-widget-branding"
-           href="https://embedsocial.com/social-media-aggregator/" target="_blank">
-          <img src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp" alt="EmbedSocial">
-          <div class="es-widget-branding-text">Instagram widget</div>
-        </a>
-      </div>
+      <iframe
+        src="https://cdn.lightwidget.com/widgets/d08c6370ef92567aab891795993d46f2.html"
+        scrolling="no"
+        allowtransparency="true"
+        class="lightwidget-widget"
+        style="width:100%;border:0;overflow:hidden;">
+      </iframe>
     </section>
   `;
 
-    loadEmbedSocial();
+    loadLightWidget();
     if (window.AOS) AOS.refresh();
   }
 
