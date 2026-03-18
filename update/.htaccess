@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Allow direct access to maintenance assets/files
+RewriteCond %{REQUEST_URI} !^/update/
+
+# Return HTTP 503 for all requests during maintenance
+RewriteRule ^ - [R=503,L]
+
+# Show custom maintenance page for 503 responses
+ErrorDocument 503 /update/wartung.html
+
+# Tell crawlers this is temporary (1 hour)
+Header always set Retry-After "3600"

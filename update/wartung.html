@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Wartungsarbeiten</title>
+  <link rel="stylesheet" href="/assets/home-fonts.css">
+  <link rel="icon" type="image/png" href="/assets/img/logo/Logo-RVHard.png">
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --card: #ffffff;
+      --text: #222222;
+      --muted: #555555;
+      --accent: #ffc107;
+      --accent-dark: #e0a800;
+      --border: #e7e7e7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 8% 8%, rgba(255, 193, 7, 0.16) 0%, transparent 60%),
+        radial-gradient(900px 500px at 92% 92%, rgba(255, 193, 7, 0.11) 0%, transparent 65%),
+        var(--bg);
+      padding: 24px;
+    }
+
+    .card {
+      width: min(680px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 34px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .logo {
+      width: 96px;
+      height: auto;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+      line-height: 1.2;
+      color: #111;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 193, 7, 0.16);
+      color: #6b4f00;
+      border: 1px solid rgba(255, 193, 7, 0.55);
+      font-size: 0.86rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hinweis {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .hinweis strong {
+      color: #111;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 1.25rem;
+    }
+
+    .social-icons a {
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #1f2937;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+    }
+
+    .social-icons a:hover {
+      color: #111;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(245, 179, 1, 0.28);
+    }
+
+    .social-icons-left:hover {
+      transform: translateY(-2px) rotate(-8deg);
+    }
+
+    .social-icons-right:hover {
+      transform: translateY(-2px) rotate(8deg);
+    }
+
+    @media (max-width: 560px) {
+      .card {
+        padding: 26px 20px;
+      }
+
+      .logo {
+        width: 82px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" aria-labelledby="maintenance-title">
+    <img class="logo" src="/assets/img/logo/Logo-RVHard.png" alt="RV Hard Logo">
+    <div class="badge">Kurzfristige Wartung</div>
+    <h1 id="maintenance-title">Unsere Webseite ist gleich wieder da.</h1>
+    <p>Wir führen gerade Wartungsarbeiten durch, um die Seite für euch zu verbessern.</p>
+    <p>Bitte in wenigen Minuten erneut versuchen. Danke für euer Verständnis.</p>
+    <p class="hinweis"><strong>RV Hard</strong> - Mountainbike, Rennrad und Triathlon in Hard.</p>
+    <div class="social-icons" aria-label="Social Media Links">
+      <a class="social-icons-left" href="https://www.instagram.com/rv_hard/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      </a>
+      <a class="social-icons-right" href="https://www.facebook.com/radvereinhard/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

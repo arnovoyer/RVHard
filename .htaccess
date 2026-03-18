@@ -10,6 +10,12 @@ RewriteRule ^index\.html$ / [R=301,L]
 RewriteCond %{THE_REQUEST} \s/index [NC]
 RewriteRule ^index$ / [R=301,L]
 
+# News-Kanonisierung: /news und /news.html auf /news/news
+RewriteRule ^news/?$ /news/news [R=301,L]
+RewriteRule ^news/news/$ /news/news [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+news\.html(?:\s|\?) [NC]
+RewriteRule ^news\.html$ /news/news [R=301,L]
+
 # .html-Endung entfernen
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s(.+?)\.html [NC]
 RewriteRule ^ %1 [R=301,L]

@@ -1,5 +1,5 @@
 (function () {
-  if (window.location.pathname === "/datenschutz.html") return;
+  const isPrivacyPage = window.location.pathname === "/datenschutz.html";
 
   const placeholderCache = new Map();
   const CONSENT_COOKIE_NAME = "rvhard_cookie_consent";
@@ -281,7 +281,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     const choice = safeReadCookieChoice();
-    if (!choice.hasChoice) {
+    if (!choice.hasChoice && !isPrivacyPage) {
       createCookieBanner();
     } else {
       loadConsentContent(choice.external);

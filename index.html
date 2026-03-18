@@ -381,8 +381,8 @@
             <section id="instagram-placeholder"></section>
 
             <section id="home-news-container" class="news-container" data-aos="zoom-out-right">
-                <h2><a href="/news.html">Neueste Nachrichten</a></h2>
-                <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news.html">News-Seite</a>.</p>
+                <h2><a href="/news/news">Neueste Nachrichten</a></h2>
+                <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/news">News-Seite</a>.</p>
             </section>
 
             <script>
@@ -527,7 +527,7 @@
                         if (external && !external.toLowerCase().startsWith('externer link')) {
                             if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
                         }
-                        return '/news.html';
+                        return '/news/news';
                     }
 
                     async function loadLatestNews(container) {
@@ -552,7 +552,7 @@
                             const latest = news.slice(0, 2);
 
                             container.innerHTML = `
-                    <h2><a href="/news.html">Neueste Nachrichten</a></h2>
+                    <h2><a href="/news/news">Neueste Nachrichten</a></h2>
                 `;
 
                             latest.forEach(article => {

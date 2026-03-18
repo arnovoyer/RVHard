@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (external && !external.toLowerCase().startsWith('externer link')) {
             if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
         }
-        return '/news.html';
+        return '/news/news';
     }
 
     Promise.all([

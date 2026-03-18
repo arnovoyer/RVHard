@@ -1,4 +1,4 @@
-    <?php
+<?php
         $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ((int)($_SERVER['SERVER_PORT'] ?? 0) === 443);
         ini_set('session.use_strict_mode', '1');
         session_set_cookie_params([
@@ -550,6 +550,11 @@
             if ($child->nodeType === XML_ELEMENT_NODE) {
                 $tag = mb_strtolower($child->nodeName);
 
+                if ($tag === 'div') {
+                    convert_dom_node_tag($child, 'p');
+                    continue;
+                }
+
                 if (!array_key_exists($tag, $allowedTags)) {
                     unwrap_dom_node($child);
                     continue;
@@ -566,6 +571,31 @@
         }
     }
 
+    function convert_dom_node_tag(DOMNode $node, string $newTag): void
+    {
+        if (!$node instanceof DOMElement) {
+            return;
+        }
+
+        $doc = $node->ownerDocument;
+        if (!$doc) {
+            return;
+        }
+
+        $replacement = $doc->createElement($newTag);
+
+        while ($node->firstChild) {
+            $replacement->appendChild($node->firstChild);
+        }
+
+        $parent = $node->parentNode;
+        if (!$parent) {
+            return;
+        }
+
+        $parent->replaceChild($replacement, $node);
+    }
+
     function sanitize_dom_attributes(DOMNode $node, string $tag, array $allowedAttributes): void
     {
         if (!$node instanceof DOMElement) {
@@ -574,6 +604,9 @@
 
         $toRemove = [];
         foreach ($node->attributes as $attribute) {
+            if (!$attribute instanceof DOMAttr) {
+                continue;
+            }
             $name = mb_strtolower($attribute->name);
             if (str_starts_with($name, 'on') || !in_array($name, $allowedAttributes, true)) {
                 $toRemove[] = $attribute->name;
@@ -690,6 +723,8 @@
         . "  <noscript><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap\" /></noscript>\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/style.css\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/news/news.css\" />\n"
+            . "  <link rel=\"stylesheet\" href=\"/assets/share-button.css\" />\n"
+            . "  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css\" />\n"
         . "  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css\" />\n"
             . "</head>\n"
             . "<body>\n"
@@ -703,6 +738,7 @@
             . "          <div id=\"news-content\" class=\"news-content-detail\" data-aos=\"fade-up\">{$galleryHtml}{$bodyHtml}</div>\n"
             . "        </div>\n"
             . "        <div class=\"news-sidebar\" data-aos=\"fade-left\">\n"
+            . "          <aside id=\"share-widget\" class=\"share-widget\" data-aos=\"flip-up\"></aside>\n"
             . "          <aside id=\"related-news\" class=\"more-news\">\n"
             . "            <h2>Weitere Neuigkeiten</h2>\n"
             . "            <div class=\"related-news-list\"></div>\n"
@@ -718,6 +754,7 @@
             . "  <script src=\"/assets/nav.js\" defer></script>\n"
             . "  <script src=\"/assets/header-scroll.js\" defer></script>\n"
             . "  <script src=\"/assets/cookie-banner.js\" defer></script>\n"
+            . "  <script src=\"/assets/share-button.js\" defer></script>\n"
             . "  <script src=\"https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js\"></script>\n"
             . "  <script>\n"
             . "    document.addEventListener('DOMContentLoaded', async () => {\n"
@@ -729,6 +766,14 @@
             . "        }\n"
             . "        const footerRes = await fetch('/assets/footer.html');\n"
             . "        if (footerRes.ok) document.getElementById('site-footer').innerHTML = await footerRes.text();\n"
+            . "        const shareRes = await fetch('/assets/share-button.html');\n"
+            . "        if (shareRes.ok) {\n"
+            . "          const shareWidget = document.getElementById('share-widget');\n"
+            . "          if (shareWidget) {\n"
+            . "            shareWidget.innerHTML = await shareRes.text();\n"
+            . "            if (typeof window.initShareButtons === 'function') window.initShareButtons();\n"
+            . "          }\n"
+            . "        }\n"
             . "        if (typeof window.initNewsGalleries === 'function') window.initNewsGalleries(document);\n"
             . "        if (window.AOS && typeof window.AOS.init === 'function') {\n"
             . "          window.AOS.init({ duration: 1000, once: true, mirror: false });\n"
@@ -741,6 +786,21 @@
 
         $target = NEWS_DIR . '/' . $slug . '.html';
         return file_put_contents($target, $html, LOCK_EX) !== false;
+    }
+
+    function delete_article_html_by_slug(string $slug): bool
+    {
+        $slug = trim($slug);
+        if ($slug === '') {
+            return false;
+        }
+
+        $file = NEWS_DIR . '/' . $slug . '.html';
+        if (!is_file($file)) {
+            return false;
+        }
+
+        return @unlink($file);
     }
 
     function refresh_legacy_slugs(): void
@@ -1116,6 +1176,10 @@
                     $error = 'Speichern fehlgeschlagen: news-cms.json konnte nicht geschrieben werden.';
                 } else {
                     $htmlGenerated = generate_article_html($record);
+                    $previousSlug = trim((string)($existingRecord['slug'] ?? ''));
+                    if ($previousSlug !== '' && $previousSlug !== $record['slug']) {
+                        delete_article_html_by_slug($previousSlug);
+                    }
                     refresh_legacy_slugs();
                     if ($htmlGenerated) {
                         $notice = 'Artikel gespeichert und HTML-Datei erstellt.';
@@ -1164,15 +1228,7 @@
                 }
                 }
 
-                if ($removedSlug !== '') {
-                    $file = NEWS_DIR . '/' . $removedSlug . '.html';
-                    if (file_exists($file)) {
-                        $content = file_get_contents($file);
-                        if (is_string($content) && str_contains($content, GENERATOR_MARKER)) {
-                            @unlink($file);
-                        }
-                    }
-                }
+                delete_article_html_by_slug($removedSlug);
                 refresh_legacy_slugs();
                 $notice = 'Artikel gelöscht.';
                 }

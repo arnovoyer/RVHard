@@ -8,14 +8,14 @@
     <meta name="description" content="Aktuelle Nachrichten, Rennberichte und Vereinsupdates vom RV Hard aus den Bereichen Mountainbike, Rennrad und Triathlon.">
     <meta name="robots" content="index, follow">
     <meta name="author" content="RV Hard">
-    <link rel="canonical" href="https://rv-hard.at/news/">
+    <link rel="canonical" href="https://rv-hard.at/news/news">
     <meta property="og:locale" content="de_AT">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RV Hard">
     <meta property="og:title" content="News | Aktuelle Nachrichten vom RV Hard">
     <meta property="og:description"
         content="Aktuelle Nachrichten, Rennberichte und Vereinsupdates vom RV Hard aus den Bereichen Mountainbike, Rennrad und Triathlon.">
-    <meta property="og:url" content="https://rv-hard.at/news/">
+    <meta property="og:url" content="https://rv-hard.at/news/news">
     <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
     <meta property="og:image:alt" content="Logo des RV Hard">
     <meta name="twitter:card" content="summary_large_image">
@@ -189,7 +189,7 @@
             if (external && !external.toLowerCase().startsWith('externer link')) {
                 if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
             }
-            return '/news.html';
+            return '/news/news';
         }
 
         async function loadNews() {
