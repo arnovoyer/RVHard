@@ -1,5 +1,6 @@
 (function () {
-  const isPrivacyPage = window.location.pathname === "/datenschutz.html";
+  const currentPath = (window.location.pathname || "").toLowerCase().replace(/\/+$/, "");
+  const isPrivacyPage = currentPath === "/datenschutz" || currentPath === "/datenschutz.html";
 
   const placeholderCache = new Map();
   const CONSENT_COOKIE_NAME = "rvhard_cookie_consent";
@@ -133,10 +134,11 @@
         .save-pref { display:none; background:#f0f0f0; padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-family: 'Poppins', sans-serif; }
       </style>
 
-      <h3>Cookie-Informationen</h3>
+      <h3>Datenschutz-Einstellungen</h3>
       <p>
-        Wir verwenden technisch notwendige Cookies für den Betrieb der Website. 
-        Externe Inhalte (z.B. YouTube, RaceResult, Instagram/EmbedSocial) werden 
+        Wir verwenden technisch notwendige Cookies und lokale Speicherung im Browser (localStorage) fuer den Betrieb der Website. 
+        Dazu gehoert auch die Speicherung Ihrer Kontrastmodus-Einstellung.
+        Externe Inhalte (z.B. YouTube, RaceResult, Instagram/LightWidget) werden 
         erst nach Ihrer ausdrücklichen Einwilligung geladen. 
         Dabei können personenbezogene Daten an Drittanbieter übermittelt werden.
 
@@ -152,14 +154,14 @@
       <div id="cookie-detailed">
         <div class="cookie-checkbox">
           <input type="checkbox" checked disabled>
-          <strong>Notwendige Cookies</strong>
+          <strong>Notwendige Cookies und lokale Speicherung</strong>
         </div>
 
         <div class="cookie-checkbox">
           <input type="checkbox" id="chk-external">
           <strong>Externe Inhalte</strong>
           <div style="font-size:0.9rem;">
-            YouTube, RaceResult, Instagram / EmbedSocial.
+            YouTube, RaceResult, Instagram / LightWidget.
             Beim Laden können personenbezogene Daten übertragen werden. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
           </div>
         </div>
@@ -305,6 +307,7 @@
     if (!btn) return;
 
     e.preventDefault();
+    if (isPrivacyPage) return;
     createCookieBanner();
   });
 

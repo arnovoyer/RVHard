@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function applyStoredTheme() {
   const storedTheme = localStorage.getItem(THEME_KEY);
-  const fallbackTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const fallbackTheme = 'light';
   const theme = storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : fallbackTheme;
   document.documentElement.setAttribute('data-theme', theme);
 }
