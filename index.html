@@ -118,7 +118,7 @@
             .logos {
                 overflow: hidden;
                 padding: 60px 0;
-                background: #f9fafb;
+                background: var(--site-surface-soft, #f9fafb);
                 white-space: nowrap;
                 position: relative;
                 border-radius: 14px;
@@ -136,12 +136,12 @@
 
             .logos:before {
                 left: 0;
-                background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+                background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
             }
 
             .logos:after {
                 right: 0;
-                background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+                background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
             }
 
             .logos:hover .logos-slide {
@@ -180,12 +180,12 @@
 
                 .logos:before {
                     left: 0;
-                    background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+                    background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
                 }
 
                 .logos:after {
                     right: 0;
-                    background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+                    background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
                 }
             }
 
@@ -203,7 +203,7 @@
 
             .gemeinschaft .gemeinschaft-teaser {
                 font-size: 1.2rem;
-                color: #333;
+                color: var(--site-text, #333);
             }
 
             .fakten {
@@ -226,7 +226,7 @@
             }
 
             .fakt {
-                background: #f9f9f9;
+                background: var(--site-surface-soft, #f9f9f9);
                 padding: 2rem;
                 border-radius: 10px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -247,13 +247,13 @@
                 margin: 0;
                 font-size: 1.8rem;
                 font-weight: bold;
-                color: #111;
+                color: var(--site-heading, #111);
             }
 
             .fakt p {
                 margin: 0;
                 font-size: 1rem;
-                color: #555;
+                color: var(--site-text, #555);
             }
 
             .cta-mitglied {

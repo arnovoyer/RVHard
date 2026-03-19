@@ -358,6 +358,38 @@
     gap: 20px;
 }
 
+html[data-theme="dark"] .verein-vorstellung,
+html[data-theme="dark"] .event-card,
+html[data-theme="dark"] .news-item,
+html[data-theme="dark"] .fakt,
+html[data-theme="dark"] .instagram-embed iframe {
+    background-color: var(--site-surface-soft) !important;
+    border: 1px solid var(--site-border);
+}
+
+html[data-theme="dark"] .verein-vorstellung h1,
+html[data-theme="dark"] .event-card h3,
+html[data-theme="dark"] .news-content h3,
+html[data-theme="dark"] .news-item h3,
+html[data-theme="dark"] .event-name,
+html[data-theme="dark"] .event-list-name,
+html[data-theme="dark"] .instagram-feed h2 {
+    color: var(--site-heading) !important;
+}
+
+html[data-theme="dark"] .verein-vorstellung p,
+html[data-theme="dark"] .event-card p,
+html[data-theme="dark"] .event-card .event-date,
+html[data-theme="dark"] .news-item p,
+html[data-theme="dark"] .news-meta,
+html[data-theme="dark"] .event-list-date {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .modern-event-list li {
+    border-bottom-color: var(--site-border);
+}
+
 .social-feed,
 .sponsoren-dank {
     padding: 2rem;

@@ -4,6 +4,40 @@ body {
     overflow-x: hidden;
 }
 
+:root {
+    --site-bg: #f7f7f7;
+    --site-text: #222;
+    --site-heading: #111;
+    --site-muted: #555;
+    --site-surface: #ffffff;
+    --site-surface-soft: #f2f3f5;
+    --site-border: #e0e0e0;
+    --accent-yellow: #ffc107;
+    --accent-yellow-hover: #e0a800;
+}
+
+html[data-theme="dark"] {
+    --site-bg: #121417;
+    --site-text: #e7ebef;
+    --site-heading: #f3f5f7;
+    --site-muted: #c2c8cf;
+    --site-surface: #1b2027;
+    --site-surface-soft: #232a33;
+    --site-border: #313b49;
+    --accent-yellow: #ffc107;
+    --accent-yellow-hover: #ffd24a;
+    color-scheme: dark;
+}
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+    color: var(--site-heading) !important;
+}
+
 header {
     height: 70px;
     margin-bottom: 0;
@@ -22,10 +56,10 @@ body {
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 1.65;
-    color: #222;
+    color: var(--site-text);
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: var(--site-bg);
     line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -38,20 +72,20 @@ h1,
 h2,
 h3 {
     font-family: 'Poppins', sans-serif;
-    color: #111;
+    color: var(--site-heading);
     line-height: 1.2;
     margin-bottom: 1rem;
     margin-top: 2rem
 }
 
 a {
-    color: #ffc107;
+    color: var(--accent-yellow);
     text-decoration: none;
     transition: color 0.3s ease-in-out;
 }
 
 a:hover {
-    color: #e0a800;
+    color: var(--accent-yellow-hover);
 }
 
 @media (max-width: 768px) {
@@ -168,4 +202,100 @@ footer a {
 .social-icons-right:hover {
     transform: scale(1.1);
     transform: rotate(10deg)
+}
+
+html[data-theme="dark"] p,
+html[data-theme="dark"] li,
+html[data-theme="dark"] label,
+html[data-theme="dark"] .news-meta,
+html[data-theme="dark"] .event-name,
+html[data-theme="dark"] .event-date {
+    color: var(--site-text);
+}
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .news-card,
+html[data-theme="dark"] .event-card,
+html[data-theme="dark"] .fakt,
+html[data-theme="dark"] .news-item,
+html[data-theme="dark"] .gemeinschaft-item,
+html[data-theme="dark"] .verein-vorstellung {
+    background: var(--site-surface-soft) !important;
+    border: 1px solid var(--site-border);
+}
+
+/* Footer Theme Toggle Styling */
+footer .theme-toggle {
+    display: inline;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    margin: 0;
+    opacity: 1;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+footer .theme-toggle:hover {
+    color: var(--second-color, #ffc107);
+}
+
+footer .theme-toggle-icon {
+    font-size: 1rem;
+    letter-spacing: 0;
+    margin-right: 0.25rem;
+}
+
+footer .theme-toggle-label {
+    display: inline;
+    font-size: 0.9rem;
+}
+
+html[data-theme="dark"] footer .theme-toggle {
+    color: #b0b8c1;
+}
+
+html[data-theme="dark"] footer .theme-toggle:hover {
+    color: var(--accent-yellow);
+}
+
+html[data-theme="dark"] .fakt,
+html[data-theme="dark"] .news-item,
+html[data-theme="dark"] .logos,
+html[data-theme="dark"] .event-card,
+html[data-theme="dark"] .gemeinschaft-item {
+    background: var(--site-surface-soft);
+    border: 1px solid var(--site-border);
+}
+
+html[data-theme="dark"] .gemeinschaft-item {
+    background: var(--site-bg);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .fakt h3,
+html[data-theme="dark"] .news-content h3,
+html[data-theme="dark"] .gemeinschaft h2,
+html[data-theme="dark"] .fakten h2,
+html[data-theme="dark"] .cta-mitglied h2 {
+    color: var(--site-heading);
+}
+
+html[data-theme="dark"] .gemeinschaft .gemeinschaft-teaser,
+html[data-theme="dark"] .fakt p {
+    color: var(--site-text);
+}
+
+html[data-theme="dark"] .logos:before {
+    background: linear-gradient(to left, rgba(35, 42, 51, 0), var(--site-surface-soft));
+}
+
+html[data-theme="dark"] .logos:after {
+    background: linear-gradient(to right, rgba(35, 42, 51, 0), var(--site-surface-soft));
 }
