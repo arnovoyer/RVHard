@@ -1328,61 +1328,555 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>RV Hard CMS</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; color: #222; }
-        .wrap { max-width: 1180px; margin: 20px auto; padding: 0 16px; }
-        .card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.07); margin-bottom: 16px; }
-        h1, h2 { margin-top: 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        label { font-size: 12px; color: #666; display:block; margin-bottom:4px; }
-        input, textarea { width: 100%; box-sizing: border-box; padding: 9px; border: 1px solid #ccc; border-radius: 8px; }
-        textarea { min-height: 90px; }
+        :root {
+            --cms-bg: #eef2f7;
+            --cms-surface: rgba(255, 255, 255, 0.92);
+            --cms-surface-strong: #ffffff;
+            --cms-border: rgba(16, 24, 40, 0.10);
+            --cms-border-strong: rgba(16, 24, 40, 0.16);
+            --cms-text: #101828;
+            --cms-muted: #5b6472;
+            --cms-accent: #d5a300;
+            --cms-accent-strong: #b88200;
+            --cms-accent-soft: rgba(213, 163, 0, 0.12);
+            --cms-danger: #c03a32;
+            --cms-success: #1f7a4d;
+            --cms-shadow: 0 20px 60px rgba(16, 24, 40, 0.10);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { min-height: 100%; }
+
+        body {
+            margin: 0;
+            color: var(--cms-text);
+            background:
+                radial-gradient(circle at top left, rgba(213, 163, 0, 0.18), transparent 28%),
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 24%),
+                linear-gradient(180deg, #f7f9fc 0%, var(--cms-bg) 100%);
+            font-family: "Poppins", "Segoe UI", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color-scheme: light;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(16, 24, 40, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 24, 40, 0.02) 1px, transparent 1px);
+            background-size: 28px 28px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 65%);
+        }
+
+        a { color: inherit; }
+
+        .wrap {
+            width: min(1320px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding: 2rem 0 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cms-shell {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .cms-hero,
+        .card {
+            background: var(--cms-surface);
+            border: 1px solid var(--cms-border);
+            border-radius: 22px;
+            box-shadow: var(--cms-shadow);
+            backdrop-filter: blur(16px);
+        }
+
+        .cms-hero {
+            padding: 1.35rem 1.4rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cms-brand {
+            display: grid;
+            gap: 0.75rem;
+            max-width: 760px;
+        }
+
+        .cms-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            padding: 0.42rem 0.72rem;
+            border-radius: 999px;
+            background: rgba(16, 24, 40, 0.06);
+            color: var(--cms-muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .cms-hero h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 3vw, 2.55rem);
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+
+        .cms-hero p {
+            margin: 0;
+            color: var(--cms-muted);
+            font-size: 0.98rem;
+            max-width: 62ch;
+        }
+
+        .cms-meta {
+            display: flex;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+            margin-top: 0.25rem;
+        }
+
+        .cms-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.42rem 0.75rem;
+            border-radius: 999px;
+            background: var(--cms-accent-soft);
+            color: #5d4300;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: 0.82rem 1.08rem;
+            cursor: pointer;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+        .btn:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        summary:focus-visible,
+        button:focus-visible {
+            outline: 2px solid rgba(213, 163, 0, 0.45);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cms-accent) 0%, #f0bc28 100%);
+            color: #1a1608;
+            box-shadow: 0 12px 24px rgba(213, 163, 0, 0.24);
+        }
+
+        .btn-primary:hover { box-shadow: 0 16px 30px rgba(213, 163, 0, 0.30); }
+
+        .btn-muted {
+            border-color: var(--cms-border-strong);
+            background: rgba(255, 255, 255, 0.76);
+            color: var(--cms-text);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #d24d44 0%, var(--cms-danger) 100%);
+            color: #fff;
+            box-shadow: 0 12px 24px rgba(192, 58, 50, 0.20);
+        }
+
+        .btn-muted.is-active {
+            border-color: rgba(213, 163, 0, 0.42);
+            background: rgba(213, 163, 0, 0.12);
+            color: #352500;
+        }
+
+        .cms-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .cms-main,
+        .cms-sidebar {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .cms-sidebar {
+            position: sticky;
+            top: 1rem;
+        }
+
+        .card {
+            padding: 1.2rem;
+            margin: 0;
+        }
+
+        .card h1,
+        .card h2,
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-head h2,
+        .section-head h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: -0.03em;
+        }
+
+        .section-note {
+            margin: 0.25rem 0 0;
+            color: var(--cms-muted);
+            font-size: 0.92rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
         .full { grid-column: 1 / -1; }
-        .btn { border: 0; border-radius: 999px; padding: 10px 14px; cursor: pointer; font-weight: 700; }
-        .btn-primary { background: #ffc107; }
-        .btn-danger { background: #c62828; color: #fff; }
-        .btn-muted { background: #e7e7e7; }
-        .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; vertical-align: top; }
-        .notice { background:#e8f5e9; color:#1b5e20; padding:10px 12px; border-radius:8px; margin-bottom:10px; }
-        .error { background:#ffebee; color:#b71c1c; padding:10px 12px; border-radius:8px; margin-bottom:10px; }
-        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
-        .tag-dropdown { border:1px solid #ccc; border-radius:8px; background:#fff; }
-        .tag-dropdown > summary { list-style:none; cursor:pointer; padding:9px 12px; font-size:14px; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .dash-box,
+        .stat-box,
+        .help-box {
+            border: 1px solid var(--cms-border);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.78);
+            padding: 1rem;
+        }
+
+        .dash-kpi {
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin-bottom: 0.45rem;
+        }
+
+        .dash-box h3,
+        .stat-box h3,
+        .help-box h3 {
+            margin: 0 0 0.35rem 0;
+            font-size: 1rem;
+        }
+
+        .dash-box p,
+        .stat-box p,
+        .help-box p {
+            margin: 0;
+            color: var(--cms-muted);
+            font-size: 0.92rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .stat-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .quick-links {
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .quick-links .btn {
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        label {
+            font-size: 0.78rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--cms-muted);
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.92rem 1rem;
+            border: 1px solid rgba(16, 24, 40, 0.12);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--cms-text);
+            box-shadow: inset 0 1px 1px rgba(16, 24, 40, 0.03);
+        }
+
+        textarea { min-height: 110px; resize: vertical; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 18px;
+        }
+
+        thead th {
+            background: rgba(16, 24, 40, 0.04);
+            color: var(--cms-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.88rem 0.82rem;
+            border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+            vertical-align: top;
+        }
+
+        tbody tr:hover { background: rgba(213, 163, 0, 0.04); }
+
+        .notice,
+        .error {
+            padding: 0.9rem 1rem;
+            border-radius: 16px;
+            margin: 0;
+            border: 1px solid transparent;
+        }
+
+        .notice {
+            background: rgba(31, 122, 77, 0.10);
+            color: var(--cms-success);
+            border-color: rgba(31, 122, 77, 0.14);
+        }
+
+        .error {
+            background: rgba(192, 58, 50, 0.10);
+            color: var(--cms-danger);
+            border-color: rgba(192, 58, 50, 0.14);
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.82rem;
+        }
+
+        .tag-dropdown {
+            border: 1px solid rgba(16, 24, 40, 0.12);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.82);
+            overflow: hidden;
+        }
+
+        .tag-dropdown > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 0.9rem 1rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
         .tag-dropdown > summary::-webkit-details-marker { display:none; }
-        .tag-dropdown-panel { max-height:280px; overflow:auto; border-top:1px solid #eee; padding:10px; display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:8px 14px; }
-        .tag-col { min-width:0; }
-        .tag-col h4 { margin:0 0 8px 0; font-size:13px; color:#444; }
-        .tag-option { display:flex; align-items:center; gap:8px; font-size:14px; }
-        .tag-option input { width:auto; }
-        .editor-toolbar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px; }
-        .editor-toolbar button { border:1px solid #ccc; border-radius:8px; background:#fff; padding:5px 9px; cursor:pointer; transition:all .15s ease; }
-        .editor-toolbar button:hover { border-color:#999; }
-        .editor-toolbar button.active { background:#ffc107; border-color:#d9a100; color:#111; }
-        .images-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap:10px; margin:8px 0; }
-        .image-item { border:1px solid #e5e5e5; border-radius:8px; padding:8px; display:flex; gap:8px; align-items:flex-start; }
-        .image-item img { width:64px; height:64px; object-fit:cover; border-radius:6px; }
-        .hint { font-size:12px; color:#666; margin:6px 0 0 0; }
-        .required-star { color:#c62828; font-weight:700; }
-        .required-note { font-size:12px; color:#666; margin:0 0 10px 0; }
-        .auth-shell { min-height: calc(100vh - 120px); display:flex; align-items:center; justify-content:center; }
-        .auth-card { width:100%; max-width:460px; padding:24px; border-radius:14px; box-shadow: 0 12px 30px rgba(0,0,0,.08); }
-        .auth-title { margin:0 0 6px 0; }
-        .auth-subtitle { margin:0 0 16px 0; color:#666; font-size:14px; }
-        .top-nav { display:flex; gap:8px; flex-wrap:wrap; }
-        .dashboard-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; }
-        .dash-box { border:1px solid #ececec; border-radius:10px; padding:14px; background:#fcfcfc; }
-        .dash-box h3 { margin:0 0 8px 0; font-size:16px; }
-        .dash-box p { margin:0; color:#666; font-size:14px; }
-        .dash-kpi { font-size:28px; font-weight:700; line-height:1; margin-bottom:6px; }
-        @media (max-width: 900px) { .tag-dropdown-panel { grid-template-columns: 1fr; } }
-        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-        @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+        .tag-dropdown-panel {
+            max-height: 300px;
+            overflow: auto;
+            border-top: 1px solid rgba(16, 24, 40, 0.08);
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.85rem 1rem;
+        }
+
+        .tag-col { min-width: 0; }
+
+        .tag-col h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cms-muted);
+        }
+
+        .tag-option {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.92rem;
+            color: var(--cms-text);
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+
+        .tag-option input { width: auto; }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.65rem;
+        }
+
+        .editor-toolbar button {
+            border: 1px solid rgba(16, 24, 40, 0.12);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.45rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-weight: 700;
+        }
+
+        .editor-toolbar button:hover {
+            border-color: rgba(213, 163, 0, 0.42);
+            background: rgba(213, 163, 0, 0.08);
+        }
+
+        .editor-toolbar button.active {
+            background: rgba(213, 163, 0, 0.14);
+            border-color: rgba(213, 163, 0, 0.48);
+            color: #4b3600;
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.85rem;
+            margin: 0.6rem 0 0;
+        }
+
+        .image-item {
+            border: 1px solid rgba(16, 24, 40, 0.10);
+            border-radius: 16px;
+            padding: 0.75rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .image-item img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex: none;
+        }
+
+        .hint {
+            font-size: 0.86rem;
+            color: var(--cms-muted);
+            margin: 0.45rem 0 0;
+        }
+
+        .required-star { color: var(--cms-danger); font-weight: 700; }
+        .required-note { font-size: 0.86rem; color: var(--cms-muted); margin: 0 0 1rem 0; }
+
+        .auth-shell {
+            min-height: calc(100vh - 4rem);
+            display: grid;
+            place-items: center;
+            padding: 1rem 0 2rem;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 500px;
+            padding: 1.45rem;
+            border-radius: 26px;
+        }
+
+        .auth-title { margin: 0 0 0.4rem 0; }
+        .auth-subtitle { margin: 0 0 1.2rem 0; color: var(--cms-muted); font-size: 0.95rem; }
+
+        .login-field + .login-field { margin-top: 0.9rem; }
+
+        .empty-state {
+            padding: 1rem;
+            border: 1px dashed rgba(16, 24, 40, 0.16);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.55);
+            color: var(--cms-muted);
+        }
+
+        @media (max-width: 1080px) {
+            .cms-layout { grid-template-columns: 1fr; }
+            .cms-sidebar { position: static; }
+        }
+
+        @media (max-width: 900px) {
+            .grid,
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .tag-dropdown-panel { grid-template-columns: 1fr; }
+            .cms-hero { flex-direction: column; }
+            .top-nav { justify-content: flex-start; }
+        }
     </style>
     </head>
     <body>
-    <div class="wrap">
-    <h1>RV Hard CMS</h1>
+    <div class="wrap cms-shell">
 
     <?php if (!$config): ?>
         <div class="card error">
@@ -1397,310 +1891,407 @@
     <?php if (!$loggedIn): ?>
         <div class="auth-shell">
         <div class="card auth-card">
+            <div class="cms-eyebrow">RV Hard Admin</div>
             <h2 class="auth-title">Login</h2>
-            <p class="auth-subtitle">Melde dich an, um News zu erstellen und zu verwalten.</p>
+            <p class="auth-subtitle">Melde dich an, um News, Termine und Inhalte gesammelt zu verwalten.</p>
             <form method="post">
             <input type="hidden" name="action" value="login" />
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-            <label>Benutzername</label>
-            <input type="text" name="username" autocomplete="username" required />
-            <label>Passwort</label>
-            <input type="password" name="password" autocomplete="current-password" required />
-            <div class="row" style="margin-top:12px;">
+            <div class="login-field">
+                <label>Benutzername</label>
+                <input type="text" name="username" autocomplete="username" required />
+            </div>
+            <div class="login-field">
+                <label>Passwort</label>
+                <input type="password" name="password" autocomplete="current-password" required />
+            </div>
+            <div class="row" style="margin-top:1rem;">
                 <button class="btn btn-primary" type="submit">Einloggen</button>
             </div>
             </form>
         </div>
         </div>
     <?php else: ?>
-
-        <div class="card">
-        <div class="row" style="justify-content: space-between;">
-            <h2 style="margin:0;">CMS Dashboard</h2>
+        <div class="cms-hero">
+            <div class="cms-brand">
+                <div class="cms-eyebrow">RV Hard CMS</div>
+                <div>
+                    <h1>Inhalte schneller verwalten.</h1>
+                    <p>Ein aufgeräumtes Backend für News, Termine und Medien. Die Navigation ist bewusst reduziert, die Arbeitsbereiche sind klar getrennt.</p>
+                    <div class="cms-meta">
+                        <span class="cms-pill"><?= count($items) ?> Artikel</span>
+                        <span class="cms-pill"><?= count($termineEvents) ?> Termine</span>
+                        <span class="cms-pill">Sicherer Login</span>
+                    </div>
+                </div>
+            </div>
             <div class="top-nav">
-            <a class="btn btn-muted" href="/cms/index.php">Dashboard</a>
-            <a class="btn btn-muted" href="/cms/index.php?view=articles">Artikel verwalten</a>
-            <a class="btn btn-muted" href="/cms/index.php?view=termine">Termine verwalten</a>
-            <form method="post" style="display:inline;">
-                <input type="hidden" name="action" value="logout" />
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-                <button class="btn btn-muted" type="submit">Logout</button>
-            </form>
-            </div>
-        </div>
-        </div>
-
-        <?php if ($view === 'dashboard'): ?>
-        <div class="card">
-            <h2>Übersicht</h2>
-            <div class="dashboard-grid">
-            <div class="dash-box">
-                <div class="dash-kpi"><?= count($items) ?></div>
-                <h3>Artikel gesamt</h3>
-                <p>Aktuell gespeicherte News-Einträge.</p>
-            </div>
-            <div class="dash-box">
-                <h3>Artikel verwalten</h3>
-                <p>Direkt zur Bearbeitung und Erstellung von Artikeln wechseln.</p>
-                <div class="row" style="margin-top:10px;">
-                <a class="btn btn-primary" href="/cms/index.php?view=articles">Zu den Artikeln</a>
-                </div>
-            </div>
-            <!--<div class="dash-box">
-                <h3>HTML neu generieren</h3>
-                <p>Alle generierten News-Seiten auf einmal aktualisieren.</p>
-                <form method="post" style="margin-top:10px;">
-                <input type="hidden" name="action" value="generate_all" />
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-                <button class="btn btn-muted" type="submit">Alle als HTML generieren</button>
+                <a class="btn btn-muted <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php">Dashboard</a>
+                <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles">Artikel</a>
+                <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine">Termine</a>
+                <form method="post" style="display:inline; margin: 0;">
+                    <input type="hidden" name="action" value="logout" />
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                    <button class="btn btn-muted" type="submit">Logout</button>
                 </form>
-            </div>-->
-            <div class="dash-box">
-                <h3>Termine verwalten</h3>
-                <p>Termine direkt bearbeiten.</p>
-                <div class="row" style="margin-top:10px;">
-                <a class="btn btn-primary" href="/cms/index.php?view=termine">Zu den Terminen</a>
-                </div>
-            </div>
             </div>
         </div>
-        <?php endif; ?>
 
-        <?php if ($view === 'termine'): ?>
-        <div class="card">
-        <h2><?= $editTermin ? 'Termin bearbeiten' : 'Neuer Termin' ?></h2>
-        <p class="hint">Die Termine werden in <span class="mono">/data/termine/termine.json</span> gespeichert und nach Datum sortiert ausgegeben.</p>
-        <form method="post">
-            <input type="hidden" name="action" value="save_termin" />
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-            <input type="hidden" name="termin_index" value="<?= $editTermin ? (int)$editTerminIndex : -1 ?>" />
-
-            <div class="grid">
-            <div>
-                <label>Datum <span class="required-star">*</span></label>
-                <input type="date" name="termin_datum" required value="<?= htmlspecialchars((string)($editTermin['datum'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div>
-                <label>Uhrzeit</label>
-                <input type="text" name="termin_zeit" value="<?= htmlspecialchars((string)($editTermin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. 19:00 oder 13:00-18:00" />
-            </div>
-            <div class="full">
-                <label>Titel <span class="required-star">*</span></label>
-                <input type="text" name="termin_titel" required value="<?= htmlspecialchars((string)($editTermin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div class="full">
-                <label>Beschreibung</label>
-                <textarea name="termin_beschreibung"><?= htmlspecialchars((string)($editTermin['beschreibung'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-            </div>
-            <div class="full">
-                <label>Ort (mehrere mit ; trennen)</label>
-                <input type="text" name="termin_ort" value="<?= htmlspecialchars((string)($editTermin['ort'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div>
-                <label>Link (optional)</label>
-                <input type="text" name="termin_link" value="<?= htmlspecialchars((string)($editTermin['link'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div>
-                <label>Sparten (kommagetrennt)</label>
-                <input type="text" name="termin_sparten" value="<?= htmlspecialchars(implode(', ', (array)($editTermin['sparten'] ?? [])), ENT_QUOTES, 'UTF-8') ?>" placeholder="MTB, Rennrad, Triathlon" />
-            </div>
-            <div class="full">
-                <label>Altersklassen</label>
-                <input type="text" name="termin_alter" value="<?= htmlspecialchars((string)($editTermin['alter'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. Alle Altersklassen" />
-            </div>
-            </div>
-
-            <div class="row" style="margin-top:10px;">
-            <button class="btn btn-primary" type="submit">Termin speichern</button>
-            <?php if ($editTermin): ?>
-            <a class="btn btn-muted" href="/cms/index.php?view=termine">Abbrechen</a>
-            <?php endif; ?>
-            </div>
-        </form>
-        </div>
-
-        <div class="card">
-        <h2>Alle Termine (<?= count($termineEvents) ?>)</h2>
-        <table>
-            <thead><tr><th>Datum</th><th>Titel</th><th>Uhrzeit</th><th>Aktion</th></tr></thead>
-            <tbody>
-            <?php foreach ($termineEvents as $index => $termin): ?>
-            <tr>
-                <td><?= htmlspecialchars((string)($termin['datum'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars((string)($termin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars((string)($termin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
-                <td>
-                <div class="row">
-                    <a class="btn btn-muted" href="/cms/index.php?view=termine&edit_termin=<?= (int)$index ?>">Bearbeiten</a>
-                    <form method="post" onsubmit="return confirm('Termin wirklich löschen?');" style="display:inline;">
-                    <input type="hidden" name="action" value="delete_termin" />
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-                    <input type="hidden" name="termin_index" value="<?= (int)$index ?>" />
-                    <button class="btn btn-danger" type="submit">Löschen</button>
-                    </form>
-                </div>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-        </div>
-        <?php endif; ?>
-
-        <?php if ($view === 'articles'): ?>
-        <div class="card">
-        <h2><?= $editItem ? 'Artikel bearbeiten' : 'Neuer Artikel' ?></h2>
-        <p class="required-note"><span class="required-star">*</span> Pflichtfelder</p>
-        <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="save" />
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-            <input type="hidden" name="id" value="<?= (int)($editItem['id'] ?? 0) ?>" />
-
-            <div class="grid">
-            <div>
-                <label>Titel<span class="required-star">*</span> (Titel und slug sollten übereinstimmen oder ähnlich sein)</label>
-                <input type="text" name="title" required value="<?= htmlspecialchars((string)($editItem['title'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div>
-                <label>Slug<span class="required-star">*</span> (nur Kleinbuchstaben, Zahlen, Bindestriche & Unterstriche. Keine Sonderzeichen)</label>
-                <input type="text" name="slug" required value="<?= htmlspecialchars((string)($editItem['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div>
-                <label>Datum (DD-MM-YYYY) <span class="required-star">*</span></label>
-                <input type="date" name="date" required value="<?= htmlspecialchars((string)($editItem['date'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
-            </div>
-            <div class="full">
-                <label>Teaser <span class="required-star">*</span> (Kann auch der erste Satz vom Artikeltext sein)</label>
-                <textarea name="content" required><?= htmlspecialchars((string)($editItem['content'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-            </div>
-            <div class="full">
-                <label>Artikeltext <span class="required-star">*</span></label>
-                <div class="editor-toolbar" data-for="body-editor">
-                <button type="button" data-cmd="bold" title="Fett"><strong>B</strong></button>
-                <button type="button" data-cmd="italic" title="Kursiv"><em>I</em></button>
-                <button type="button" data-cmd="underline" title="Unterstrichen"><u>U</u></button>
-                <button type="button" data-cmd="formatBlock" data-value="H2" title="Überschrift">H2</button>
-                <button type="button" data-cmd="insertUnorderedList" title="Liste">• Liste</button>
-                <button type="button" data-cmd="createLink" title="Link">Link</button>
-                <button type="button" data-cmd="removeFormat" title="Formatierung entfernen">Tx</button>
-                </div>
-                <div id="body-editor-view" contenteditable="true" style="min-height:220px; border:1px solid #ccc; border-radius:8px; padding:10px; background:#fff;"></div>
-                <textarea id="body-editor" name="body" required style="display:none;"><?= htmlspecialchars((string)($editItem['body'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-                <p class="hint"><!--Der Editor speichert HTML. Änderungen sind direkt sichtbar.--></p>
-            </div>
-            <div class="full">
-                <label>Tags <span class="required-star">*</span> (Immer zumindest Jahr, Sparte und ein weiteres wählen. Optimal 5)</label>
-                <?php $selectedTags = array_map('strval', (array)($editItem['tags'] ?? [])); ?>
-                <details class="tag-dropdown" id="tag-dropdown">
-                <summary id="tag-dropdown-summary">Tags auswählen</summary>
-                <div class="tag-dropdown-panel">
-                    <div class="tag-col">
-                    <h4>Jahr</h4>
-                    <?php foreach ($yearTagOptions as $tagOption): ?>
-                        <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
-                        <label class="tag-option">
-                        <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
-                        <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
-                        </label>
-                    <?php endforeach; ?>
+        <div class="cms-layout">
+            <main class="cms-main">
+                <?php if ($view === 'dashboard'): ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Übersicht</h2>
+                            <p class="section-note">Die wichtigsten Inhalte auf einen Blick.</p>
+                        </div>
                     </div>
-                    <div class="tag-col">
-                    <h4>Sparte</h4>
-                    <?php foreach ($sparteAvailable as $tagOption): ?>
-                        <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
-                        <label class="tag-option">
-                        <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
-                        <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
-                        </label>
-                    <?php endforeach; ?>
+                    <div class="dashboard-grid">
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= count($items) ?></div>
+                            <h3>Artikel gesamt</h3>
+                            <p>Aktuell gespeicherte News-Einträge.</p>
+                        </div>
+                        <div class="dash-box">
+                            <h3>Artikel verwalten</h3>
+                            <p>Direkt zur Bearbeitung und Erstellung von Artikeln wechseln.</p>
+                            <div class="row" style="margin-top:0.95rem;">
+                                <a class="btn btn-primary" href="/cms/index.php?view=articles">Zu den Artikeln</a>
+                            </div>
+                        </div>
+                        <div class="dash-box">
+                            <h3>Termine verwalten</h3>
+                            <p>Termine direkt bearbeiten.</p>
+                            <div class="row" style="margin-top:0.95rem;">
+                                <a class="btn btn-primary" href="/cms/index.php?view=termine">Zu den Terminen</a>
+                            </div>
+                        </div>
+                        <div class="dash-box">
+                            <h3>Arbeitsweise</h3>
+                            <p>Links über die Navigation wählen, rechts mit den Arbeitsnotizen bleiben.</p>
+                        </div>
                     </div>
-                    <div class="tag-col">
-                    <h4>Weitere</h4>
-                    <?php foreach ($otherTagOptions as $tagOption): ?>
-                        <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
-                        <label class="tag-option">
-                        <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
-                        <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
-                        </label>
-                    <?php endforeach; ?>
-                    </div>
-                </div>
-                </details>
-                <label style="margin-top:8px;">Zusätzliche Tags (kommagetrennt, optional)</label>
-                <input type="text" name="tags_custom" value="" placeholder="z. B. Trainingscamp, Saisonstart" />
-            </div>
-            <div class="full">
-                <label>Bilder (falls vorhanden hier hochladen)</label>
-                <?php
-                $existingImages = [];
-                foreach ((array)($editItem['images'] ?? []) as $img) {
-                    if (is_array($img) && !empty($img['image'])) {
-                    $existingImages[] = (string)$img['image'];
-                    }
-                }
-                if (!$existingImages && !empty($editItem['image'])) {
-                    $existingImages[] = (string)$editItem['image'];
-                }
-                $existingImages = array_values(array_unique(array_filter($existingImages, static fn($img) => trim((string)$img) !== '')));
-                ?>
-                <?php if (!empty($existingImages)): ?>
-                <div class="images-grid">
-                    <?php foreach ($existingImages as $imagePath): ?>
-                    <label class="image-item">
-                        <input type="checkbox" name="keep_images[]" value="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?>" checked />
-                        <img src="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?>" alt="Bild" />
-                        <span class="mono" style="word-break:break-all;"><?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?></span>
-                    </label>
-                    <?php endforeach; ?>
-                </div>
-                <p class="hint">Haken entfernen, um ein Bild beim Speichern aus dem Artikel zu entfernen.</p>
+                </section>
                 <?php endif; ?>
-                <label style="margin-top:8px;"><!--Neue Bilder hochladen--></label>
-                <input type="file" name="images_upload[]" multiple accept=".jpg,.jpeg,.png,.webp,.gif,image/*" />
-                <p class="hint"><!--Upload wird automatisch als WebP gespeichert (wenn GD/WebP verfügbar ist).--></p>
-            </div>
-            </div>
 
-            <div class="row" style="margin-top:10px;">
-            <button class="btn btn-primary" type="submit">Speichern</button>
-            <?php if ($editItem): ?>
-                <a class="btn btn-muted" href="/cms/index.php?view=articles">Abbrechen</a>
-            <?php endif; ?>
-            </div>
-        </form>
-        </div>
+                <?php if ($view === 'termine'): ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2><?= $editTermin ? 'Termin bearbeiten' : 'Neuer Termin' ?></h2>
+                            <p class="section-note">Die Termine werden in <span class="mono">/data/termine/termine.json</span> gespeichert und nach Datum sortiert ausgegeben.</p>
+                        </div>
+                    </div>
+                    <form method="post">
+                        <input type="hidden" name="action" value="save_termin" />
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                        <input type="hidden" name="termin_index" value="<?= $editTermin ? (int)$editTerminIndex : -1 ?>" />
 
-        <div class="card">
-        <h2>Alle Artikel (<?= count($items) ?>)</h2>
-        <table>
-            <thead><tr><th>ID</th><th>Datum</th><th>Titel</th><th>Slug</th><th>Aktion</th></tr></thead>
-            <tbody>
-            <?php foreach ($items as $item): ?>
-            <tr>
-                <td><?= (int)$item['id'] ?></td>
-                <td><?= htmlspecialchars((string)$item['date'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars((string)$item['title'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td class="mono"><?= htmlspecialchars((string)$item['slug'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td>
-                <div class="row">
-                    <a class="btn btn-muted" href="/cms/index.php?view=articles&edit=<?= (int)$item['id'] ?>">Bearbeiten</a>
-                    <a class="btn btn-muted" target="_blank" href="/news/<?= rawurlencode((string)$item['slug']) ?>.html">Öffnen</a>
-                    <form method="post" onsubmit="return confirm('Artikel wirklich löschen?');" style="display:inline;">
-                    <input type="hidden" name="action" value="delete" />
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-                    <input type="hidden" name="id" value="<?= (int)$item['id'] ?>" />
-                    <button class="btn btn-danger" type="submit">Löschen</button>
+                        <div class="grid">
+                        <div>
+                            <label>Datum <span class="required-star">*</span></label>
+                            <input type="date" name="termin_datum" required value="<?= htmlspecialchars((string)($editTermin['datum'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div>
+                            <label>Uhrzeit</label>
+                            <input type="text" name="termin_zeit" value="<?= htmlspecialchars((string)($editTermin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. 19:00 oder 13:00-18:00" />
+                        </div>
+                        <div class="full">
+                            <label>Titel <span class="required-star">*</span></label>
+                            <input type="text" name="termin_titel" required value="<?= htmlspecialchars((string)($editTermin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div class="full">
+                            <label>Beschreibung</label>
+                            <textarea name="termin_beschreibung"><?= htmlspecialchars((string)($editTermin['beschreibung'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
+                        </div>
+                        <div class="full">
+                            <label>Ort (mehrere mit ; trennen)</label>
+                            <input type="text" name="termin_ort" value="<?= htmlspecialchars((string)($editTermin['ort'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div>
+                            <label>Link (optional)</label>
+                            <input type="text" name="termin_link" value="<?= htmlspecialchars((string)($editTermin['link'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div>
+                            <label>Sparten (kommagetrennt)</label>
+                            <input type="text" name="termin_sparten" value="<?= htmlspecialchars(implode(', ', (array)($editTermin['sparten'] ?? [])), ENT_QUOTES, 'UTF-8') ?>" placeholder="MTB, Rennrad, Triathlon" />
+                        </div>
+                        <div class="full">
+                            <label>Altersklassen</label>
+                            <input type="text" name="termin_alter" value="<?= htmlspecialchars((string)($editTermin['alter'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" placeholder="z. B. Alle Altersklassen" />
+                        </div>
+                        </div>
+
+                        <div class="row" style="margin-top:1rem;">
+                            <button class="btn btn-primary" type="submit">Termin speichern</button>
+                            <?php if ($editTermin): ?>
+                            <a class="btn btn-muted" href="/cms/index.php?view=termine">Abbrechen</a>
+                            <?php endif; ?>
+                        </div>
                     </form>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Alle Termine (<?= count($termineEvents) ?>)</h2>
+                            <p class="section-note">Sortiert nach Datum, mit schnellen Bearbeitungsaktionen.</p>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Datum</th><th>Titel</th><th>Uhrzeit</th><th>Aktion</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($termineEvents as $index => $termin): ?>
+                        <tr>
+                            <td><?= htmlspecialchars((string)($termin['datum'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars((string)($termin['titel'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars((string)($termin['zeit'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                            <div class="row">
+                                <a class="btn btn-muted" href="/cms/index.php?view=termine&edit_termin=<?= (int)$index ?>">Bearbeiten</a>
+                                <form method="post" onsubmit="return confirm('Termin wirklich löschen?');" style="display:inline; margin:0;">
+                                <input type="hidden" name="action" value="delete_termin" />
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                                <input type="hidden" name="termin_index" value="<?= (int)$index ?>" />
+                                <button class="btn btn-danger" type="submit">Löschen</button>
+                                </form>
+                            </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </section>
+                <?php endif; ?>
+
+                <?php if ($view === 'articles'): ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2><?= $editItem ? 'Artikel bearbeiten' : 'Neuer Artikel' ?></h2>
+                            <p class="section-note">Schreibe zuerst den Inhalt, dann Tags und Bilder. Der Editor speichert HTML direkt im Artikel.</p>
+                        </div>
+                    </div>
+                    <p class="required-note"><span class="required-star">*</span> Pflichtfelder</p>
+                    <form method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="save" />
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                        <input type="hidden" name="id" value="<?= (int)($editItem['id'] ?? 0) ?>" />
+
+                        <div class="grid">
+                        <div>
+                            <label>Titel<span class="required-star">*</span> (Titel und slug sollten übereinstimmen oder ähnlich sein)</label>
+                            <input type="text" name="title" required value="<?= htmlspecialchars((string)($editItem['title'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div>
+                            <label>Slug<span class="required-star">*</span> (nur Kleinbuchstaben, Zahlen, Bindestriche & Unterstriche. Keine Sonderzeichen)</label>
+                            <input type="text" name="slug" required value="<?= htmlspecialchars((string)($editItem['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div>
+                            <label>Datum (YYYY-MM-DD) <span class="required-star">*</span></label>
+                            <input type="date" name="date" required value="<?= htmlspecialchars((string)($editItem['date'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
+                        </div>
+                        <div class="full">
+                            <label>Teaser <span class="required-star">*</span> (Kann auch der erste Satz vom Artikeltext sein)</label>
+                            <textarea name="content" required><?= htmlspecialchars((string)($editItem['content'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
+                        </div>
+                        <div class="full">
+                            <label>Artikeltext <span class="required-star">*</span></label>
+                            <div class="editor-toolbar" data-for="body-editor">
+                            <button type="button" data-cmd="bold" title="Fett"><strong>B</strong></button>
+                            <button type="button" data-cmd="italic" title="Kursiv"><em>I</em></button>
+                            <button type="button" data-cmd="underline" title="Unterstrichen"><u>U</u></button>
+                            <button type="button" data-cmd="formatBlock" data-value="H2" title="Überschrift">H2</button>
+                            <button type="button" data-cmd="insertUnorderedList" title="Liste">• Liste</button>
+                            <button type="button" data-cmd="createLink" title="Link">Link</button>
+                            <button type="button" data-cmd="removeFormat" title="Formatierung entfernen">Tx</button>
+                            </div>
+                            <div id="body-editor-view" contenteditable="true" style="min-height:220px; border:1px solid rgba(16,24,40,.12); border-radius:16px; padding:12px 14px; background:#fff;"></div>
+                            <textarea id="body-editor" name="body" required style="display:none;"><?= htmlspecialchars((string)($editItem['body'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
+                            <p class="hint">Der Editor speichert HTML. Änderungen sind direkt sichtbar.</p>
+                        </div>
+                        <div class="full">
+                            <label>Tags <span class="required-star">*</span> (Immer zumindest Jahr, Sparte und ein weiteres wählen. Optimal 5)</label>
+                            <?php $selectedTags = array_map('strval', (array)($editItem['tags'] ?? [])); ?>
+                            <details class="tag-dropdown" id="tag-dropdown">
+                            <summary id="tag-dropdown-summary">Tags auswählen</summary>
+                            <div class="tag-dropdown-panel">
+                                <div class="tag-col">
+                                <h4>Jahr</h4>
+                                <?php foreach ($yearTagOptions as $tagOption): ?>
+                                    <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
+                                    <label class="tag-option">
+                                    <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
+                                    <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                                </div>
+                                <div class="tag-col">
+                                <h4>Sparte</h4>
+                                <?php foreach ($sparteAvailable as $tagOption): ?>
+                                    <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
+                                    <label class="tag-option">
+                                    <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
+                                    <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                                </div>
+                                <div class="tag-col">
+                                <h4>Weitere</h4>
+                                <?php foreach ($otherTagOptions as $tagOption): ?>
+                                    <?php $isSelected = in_array((string)$tagOption, $selectedTags, true); ?>
+                                    <label class="tag-option">
+                                    <input type="checkbox" name="tags[]" value="<?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?>" <?= $isSelected ? 'checked' : '' ?> />
+                                    <span><?= htmlspecialchars((string)$tagOption, ENT_QUOTES, 'UTF-8') ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                                </div>
+                            </div>
+                            </details>
+                            <label style="margin-top:8px;">Zusätzliche Tags (kommagetrennt, optional)</label>
+                            <input type="text" name="tags_custom" value="" placeholder="z. B. Trainingscamp, Saisonstart" />
+                        </div>
+                        <div class="full">
+                            <label>Bilder (falls vorhanden hier hochladen)</label>
+                            <?php
+                            $existingImages = [];
+                            foreach ((array)($editItem['images'] ?? []) as $img) {
+                                if (is_array($img) && !empty($img['image'])) {
+                                $existingImages[] = (string)$img['image'];
+                                }
+                            }
+                            if (!$existingImages && !empty($editItem['image'])) {
+                                $existingImages[] = (string)$editItem['image'];
+                            }
+                            $existingImages = array_values(array_unique(array_filter($existingImages, static fn($img) => trim((string)$img) !== '')));
+                            ?>
+                            <?php if (!empty($existingImages)): ?>
+                            <div class="images-grid">
+                                <?php foreach ($existingImages as $imagePath): ?>
+                                <label class="image-item">
+                                    <input type="checkbox" name="keep_images[]" value="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?>" checked />
+                                    <img src="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?>" alt="Bild" />
+                                    <span class="mono" style="word-break:break-all;"><?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8') ?></span>
+                                </label>
+                                <?php endforeach; ?>
+                            </div>
+                            <p class="hint">Haken entfernen, um ein Bild beim Speichern aus dem Artikel zu entfernen.</p>
+                            <?php endif; ?>
+                            <label style="margin-top:8px;">Neue Bilder hochladen</label>
+                            <input type="file" name="images_upload[]" multiple accept=".jpg,.jpeg,.png,.webp,.gif,image/*" />
+                            <p class="hint">Upload wird automatisch als WebP gespeichert, wenn GD/WebP verfügbar ist.</p>
+                        </div>
+                        </div>
+
+                        <div class="row" style="margin-top:1rem;">
+                            <button class="btn btn-primary" type="submit">Speichern</button>
+                            <?php if ($editItem): ?>
+                                <a class="btn btn-muted" href="/cms/index.php?view=articles">Abbrechen</a>
+                            <?php endif; ?>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Alle Artikel (<?= count($items) ?>)</h2>
+                            <p class="section-note">Kompakte Liste für schnelles Finden, Öffnen und Löschen.</p>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>ID</th><th>Datum</th><th>Titel</th><th>Slug</th><th>Aktion</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($items as $item): ?>
+                        <tr>
+                            <td><?= (int)$item['id'] ?></td>
+                            <td><?= htmlspecialchars((string)$item['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars((string)$item['title'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td class="mono"><?= htmlspecialchars((string)$item['slug'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                            <div class="row">
+                                <a class="btn btn-muted" href="/cms/index.php?view=articles&edit=<?= (int)$item['id'] ?>">Bearbeiten</a>
+                                <a class="btn btn-muted" target="_blank" href="/news/<?= rawurlencode((string)$item['slug']) ?>.html">Öffnen</a>
+                                <form method="post" onsubmit="return confirm('Artikel wirklich löschen?');" style="display:inline; margin:0;">
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                                <input type="hidden" name="id" value="<?= (int)$item['id'] ?>" />
+                                <button class="btn btn-danger" type="submit">Löschen</button>
+                                </form>
+                            </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </section>
+                <?php endif; ?>
+            </main>
+
+            <aside class="cms-sidebar">
+                <div class="card">
+                    <div class="section-head" style="margin-bottom:0.75rem;">
+                        <div>
+                            <h3>Schnellzugriff</h3>
+                            <p class="section-note">Direkte Wege zu den wichtigsten Bereichen.</p>
+                        </div>
+                    </div>
+                    <div class="quick-links">
+                        <a class="btn btn-muted <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php"><span>Dashboard</span><span>→</span></a>
+                        <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles"><span>Artikel</span><span>→</span></a>
+                        <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine"><span>Termine</span><span>→</span></a>
+                    </div>
                 </div>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+
+                <div class="card">
+                    <div class="section-head" style="margin-bottom:0.75rem;">
+                        <div>
+                            <h3>Status</h3>
+                            <p class="section-note">Kurzinfo zur aktuellen Arbeitssituation.</p>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-row">
+                                <span>Artikel</span>
+                                <span class="stat-value"><?= count($items) ?></span>
+                            </div>
+                            <p>Gespeicherte News-Einträge.</p>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-row">
+                                <span>Termine</span>
+                                <span class="stat-value"><?= count($termineEvents) ?></span>
+                            </div>
+                            <p>Pflege die Event-Liste separat und sauber.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-head" style="margin-bottom:0.75rem;">
+                        <div>
+                            <h3>Hinweise</h3>
+                            <p class="section-note">Praktische Orientierung beim Bearbeiten.</p>
+                        </div>
+                    </div>
+                    <div class="help-box">
+                        <p>Artikel sind am übersichtlichsten, wenn Titel, Slug und Teaser konsistent bleiben.</p>
+                    </div>
+                    <div style="height:0.75rem;"></div>
+                    <div class="help-box">
+                        <p>Bei Bildern lieber vorhandene Motive behalten und nur bei Bedarf austauschen.</p>
+                    </div>
+                    <div style="height:0.75rem;"></div>
+                    <div class="help-box">
+                        <p>Die Navigation links oben führt direkt zu den Hauptaufgaben, ohne unnötige Ablenkung.</p>
+                    </div>
+                </div>
+            </aside>
         </div>
-        <?php endif; ?>
-    <?php endif; ?>
     </div>
+    <?php endif; ?>
     <script>
     (function () {
         const summary = document.getElementById('tag-dropdown-summary');
