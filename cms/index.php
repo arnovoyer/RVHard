@@ -400,6 +400,43 @@
         return is_file($targetFile);
     }
 
+    function sanitize_news_slug(string $slug): string
+    {
+        $safeSlug = preg_replace('/[^a-z0-9\-]/', '-', strtolower($slug));
+        $safeSlug = trim((string)$safeSlug, '-');
+        return $safeSlug !== '' ? $safeSlug : 'news';
+    }
+
+    function next_news_image_index(array $images, string $slug): int
+    {
+        $safeSlug = sanitize_news_slug($slug);
+        $pattern = '/^' . preg_quote($safeSlug, '/') . '-(\d+)\.[^.]+$/i';
+        $maxIndex = 0;
+
+        foreach ($images as $image) {
+            $imagePath = '';
+            if (is_array($image) && !empty($image['image'])) {
+                $imagePath = trim((string)$image['image']);
+            } elseif (is_string($image)) {
+                $imagePath = trim($image);
+            }
+
+            if ($imagePath === '') {
+                continue;
+            }
+
+            $basename = basename((string)(parse_url($imagePath, PHP_URL_PATH) ?? $imagePath));
+            if (preg_match($pattern, $basename, $matches)) {
+                $index = (int)$matches[1];
+                if ($index > $maxIndex) {
+                    $maxIndex = $index;
+                }
+            }
+        }
+
+        return $maxIndex + 1;
+    }
+
     function get_next_id(array $items): int
     {
         $max = 0;
@@ -900,7 +937,7 @@
     return (bool)$result;
     }
 
-    function store_uploaded_image(?array $file, string $slug = 'news'): ?string
+    function store_uploaded_image(?array $file, string $slug = 'news', int $index = 1): ?string
     {
     if (!$file || !isset($file['error'])) {
         return null;
@@ -921,18 +958,15 @@
         return null;
     }
 
-    $safeSlug = preg_replace('/[^a-z0-9\-]/', '-', strtolower($slug));
-    $safeSlug = trim((string)$safeSlug, '-');
-    if ($safeSlug === '') {
-        $safeSlug = 'news';
-    }
+    $safeSlug = sanitize_news_slug($slug);
+    $index = max(1, $index);
 
-    $targetName = $safeSlug . '-' . date('Ymd-His') . '-' . bin2hex(random_bytes(3)) . '.webp';
+    $targetName = $safeSlug . '-' . $index . '.webp';
     $targetPath = NEWS_IMAGE_DIR . '/' . $targetName;
 
     $tmpPath = (string)$file['tmp_name'];
     if (!convert_upload_to_webp($tmpPath, $extension, $targetPath)) {
-        $targetName = $safeSlug . '-' . date('Ymd-His') . '-' . bin2hex(random_bytes(3)) . '.' . $extension;
+        $targetName = $safeSlug . '-' . $index . '.' . $extension;
         $targetPath = NEWS_IMAGE_DIR . '/' . $targetName;
         if (!move_uploaded_file($tmpPath, $targetPath)) {
         return null;
@@ -942,7 +976,7 @@
     return NEWS_IMAGE_PUBLIC_PATH . '/' . $targetName;
     }
 
-    function store_uploaded_images(?array $files, string $slug = 'news'): array
+    function store_uploaded_images(?array $files, string $slug = 'news', int $startIndex = 1): array
     {
     if (!$files || !isset($files['name']) || !is_array($files['name'])) {
         return [];
@@ -950,6 +984,7 @@
 
     $stored = [];
     $count = count($files['name']);
+    $currentIndex = max(1, $startIndex);
     for ($i = 0; $i < $count; $i++) {
         $single = [
         'name' => $files['name'][$i] ?? '',
@@ -958,9 +993,10 @@
         'error' => $files['error'][$i] ?? UPLOAD_ERR_NO_FILE,
         'size' => $files['size'][$i] ?? 0,
         ];
-        $path = store_uploaded_image($single, $slug);
+        $path = store_uploaded_image($single, $slug, $currentIndex);
         if ($path) {
         $stored[] = $path;
+        $currentIndex++;
         }
     }
 
@@ -1134,7 +1170,8 @@
                 }
                 }
 
-                $uploadedAdditional = store_uploaded_images($_FILES['images_upload'] ?? null, $slug);
+                $nextImageIndex = next_news_image_index($images, $slug);
+                $uploadedAdditional = store_uploaded_images($_FILES['images_upload'] ?? null, $slug, $nextImageIndex);
                 foreach ($uploadedAdditional as $uploadedPath) {
                 $images[] = ['image' => $uploadedPath];
                 }
@@ -2180,7 +2217,7 @@
                             <?php endif; ?>
                             <label style="margin-top:8px;">Neue Bilder hochladen</label>
                             <input type="file" name="images_upload[]" multiple accept=".jpg,.jpeg,.png,.webp,.gif,image/*" />
-                            <p class="hint">Upload wird automatisch als WebP gespeichert, wenn GD/WebP verfügbar ist.</p>
+                            <p class="hint">Uploads werden als slug-1, slug-2, slug-3 usw. gespeichert und wenn möglich automatisch als WebP konvertiert.</p>
                         </div>
                         </div>
 
