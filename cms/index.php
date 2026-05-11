@@ -387,6 +387,41 @@
         return file_put_contents(TERMINE_DATA_FILE, $json . PHP_EOL, LOCK_EX) !== false;
     }
 
+    function write_public_news_files(array $items): bool
+    {
+        $dir = dirname(DATA_FILE);
+        if (!is_dir($dir)) {
+            if (!mkdir($dir, 0775, true) && !is_dir($dir)) {
+                return false;
+            }
+        }
+
+        $normalized = normalize_items($items);
+
+        $publicList = [];
+        foreach ($normalized as $item) {
+            $publicList[] = [
+                'id' => (int)($item['id'] ?? 0),
+                'slug' => (string)($item['slug'] ?? ''),
+                'title' => (string)($item['title'] ?? ''),
+                'date' => (string)($item['date'] ?? ''),
+                'content' => (string)($item['content'] ?? ''),
+                'tags' => (array)($item['tags'] ?? []),
+                'image' => (string)($item['image'] ?? ''),
+            ];
+        }
+
+        $newsJsonPath = dirname(DATA_FILE) . '/news.json';
+        $newsLatestPath = dirname(DATA_FILE) . '/news-latest.json';
+
+        $writtenAll = file_put_contents($newsJsonPath, json_encode($publicList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL, LOCK_EX) !== false;
+
+        $latest = array_slice($publicList, 0, 6);
+        $writtenLatest = file_put_contents($newsLatestPath, json_encode($latest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL, LOCK_EX) !== false;
+
+        return $writtenAll && $writtenLatest;
+    }
+
     function slug_conflicts_with_existing_file(string $slug, string $currentSlug = ''): bool
     {
         $slug = strtolower(trim($slug));
@@ -1290,6 +1325,7 @@
                         delete_article_html_by_slug($previousSlug);
                     }
                     refresh_legacy_slugs();
+                    @write_public_news_files(load_items());
                     if ($htmlGenerated) {
                         $notice = 'Artikel gespeichert und HTML-Datei erstellt.';
                     } else {
@@ -1339,12 +1375,14 @@
 
                 delete_article_html_by_slug($removedSlug);
                 refresh_legacy_slugs();
+                @write_public_news_files(load_items());
                 $notice = 'Artikel gelöscht.';
                 }
             }
 
             if ($action === 'generate_all') {
                 $count = generate_all_articles($items);
+                @write_public_news_files(load_items());
                 $notice = "{$count} Artikel als HTML erstellt/aktualisiert.";
             }
             }
