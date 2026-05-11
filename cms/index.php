@@ -2063,13 +2063,8 @@
             <div class="cms-brand">
                 <div class="cms-eyebrow">RV Hard CMS</div>
                 <div>
-                    <h1>Inhalte schneller verwalten.</h1>
-                    <p>Ein aufgeräumtes Backend für News, Termine und Medien. Die Navigation ist bewusst reduziert, die Arbeitsbereiche sind klar getrennt.</p>
-                    <div class="cms-meta">
-                        <span class="cms-pill"><?= count($items) ?> Artikel</span>
-                        <span class="cms-pill"><?= count($termineEvents) ?> Termine</span>
-                        <span class="cms-pill">Sicherer Login</span>
-                    </div>
+                    <h1>Inhalte verwalten.</h1>
+                    <p>Backend für News, Termine und Medien.</p>
                 </div>
             </div>
             <div class="top-nav">
@@ -2395,44 +2390,21 @@
                     <div class="section-head" style="margin-bottom:0.75rem;">
                         <div>
                             <h3>Status</h3>
-                            <p class="section-note">Kurzinfo zur aktuellen Arbeitssituation.</p>
                         </div>
                     </div>
                     <div class="stats-grid">
                         <div class="stat-box">
                             <div class="stat-row">
-                                <span>Artikel</span>
+                                <span>News</span>
                                 <span class="stat-value"><?= count($items) ?></span>
                             </div>
-                            <p>Gespeicherte News-Einträge.</p>
                         </div>
                         <div class="stat-box">
                             <div class="stat-row">
                                 <span>Termine</span>
                                 <span class="stat-value"><?= count($termineEvents) ?></span>
                             </div>
-                            <p>Pflege die Event-Liste separat und sauber.</p>
                         </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="section-head" style="margin-bottom:0.75rem;">
-                        <div>
-                            <h3>Hinweise</h3>
-                            <p class="section-note">Praktische Orientierung beim Bearbeiten.</p>
-                        </div>
-                    </div>
-                    <div class="help-box">
-                        <p>Artikel sind am übersichtlichsten, wenn Titel, Slug und Teaser konsistent bleiben.</p>
-                    </div>
-                    <div style="height:0.75rem;"></div>
-                    <div class="help-box">
-                        <p>Bei Bildern lieber vorhandene Motive behalten und nur bei Bedarf austauschen.</p>
-                    </div>
-                    <div style="height:0.75rem;"></div>
-                    <div class="help-box">
-                        <p>Die Navigation links oben führt direkt zu den Hauptaufgaben, ohne unnötige Ablenkung.</p>
                     </div>
                 </div>
             </aside>
