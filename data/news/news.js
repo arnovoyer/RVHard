@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const newsContainer = document.getElementById('news-container');
 
-    fetch('data/news.json')
+    fetch('data/news.json', { cache: 'no-store' })
         .then(response => response.json())
         .then(news => {
             news.forEach(article => {

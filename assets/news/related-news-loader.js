@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     Promise.all([
-        fetch('/data/news/news-cms.json')
+        fetch('/data/news/news-cms.json', { cache: 'no-store' })
             .then(response => {
                 if (response.ok) return response.json();
-                return fetch('/data/news/news.json').then(fallback => {
+                return fetch('/data/news/news.json', { cache: 'no-store' }).then(fallback => {
                     if (!fallback.ok) throw new Error("news.json konnte nicht geladen werden");
                     return fallback.json();
                 });
