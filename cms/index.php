@@ -895,6 +895,76 @@
     return array_values(array_unique(array_filter($paths, static fn($p) => $p !== '')));
     }
 
+    function normalize_gd_image_orientation($image, string $sourcePath, string $sourceExtension)
+    {
+    $sourceExtension = strtolower($sourceExtension);
+    if (($sourceExtension !== 'jpg' && $sourceExtension !== 'jpeg') || !function_exists('exif_read_data')) {
+        return $image;
+    }
+
+    $exif = @exif_read_data($sourcePath);
+    if (!is_array($exif) || empty($exif['Orientation'])) {
+        return $image;
+    }
+
+    $orientation = (int)$exif['Orientation'];
+    switch ($orientation) {
+        case 2:
+            if (function_exists('imageflip')) {
+                @imageflip($image, IMG_FLIP_HORIZONTAL);
+            }
+            break;
+        case 3:
+            $rotated = @imagerotate($image, 180, 0);
+            if ($rotated !== false) {
+                imagedestroy($image);
+                $image = $rotated;
+            }
+            break;
+        case 4:
+            if (function_exists('imageflip')) {
+                @imageflip($image, IMG_FLIP_VERTICAL);
+            }
+            break;
+        case 5:
+            if (function_exists('imageflip')) {
+                @imageflip($image, IMG_FLIP_HORIZONTAL);
+            }
+            $rotated = @imagerotate($image, 270, 0);
+            if ($rotated !== false) {
+                imagedestroy($image);
+                $image = $rotated;
+            }
+            break;
+        case 6:
+            $rotated = @imagerotate($image, 270, 0);
+            if ($rotated !== false) {
+                imagedestroy($image);
+                $image = $rotated;
+            }
+            break;
+        case 7:
+            if (function_exists('imageflip')) {
+                @imageflip($image, IMG_FLIP_HORIZONTAL);
+            }
+            $rotated = @imagerotate($image, 90, 0);
+            if ($rotated !== false) {
+                imagedestroy($image);
+                $image = $rotated;
+            }
+            break;
+        case 8:
+            $rotated = @imagerotate($image, 90, 0);
+            if ($rotated !== false) {
+                imagedestroy($image);
+                $image = $rotated;
+            }
+            break;
+    }
+
+    return $image;
+    }
+
     function convert_upload_to_webp(string $tmpPath, string $sourceExtension, string $targetPath): bool
     {
     if (!function_exists('imagewebp')) {
@@ -925,6 +995,8 @@
     if (!$image) {
         return false;
     }
+
+    $image = normalize_gd_image_orientation($image, $tmpPath, $sourceExtension);
 
     if (function_exists('imagepalettetotruecolor')) {
         @imagepalettetotruecolor($image);
