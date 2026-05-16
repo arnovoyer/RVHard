@@ -88,8 +88,39 @@ a:hover {
     color: var(--accent-yellow-hover);
 }
 
-/* Medium Screens (700px - 1030px) */
-@media (min-width: 700px) and (max-width: 1030px) {
+/* Medium Screens (700px - 750px) */
+@media (min-width: 700px) and (max-width: 750px) {
+    main {
+        padding-top: 0px;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .news-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem 1rem;
+        width: 100%;
+    }
+
+    .gelber-button {
+        padding: 0.7rem 1.3rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Medium Screens (751px - 1030px) */
+@media (min-width: 751px) and (max-width: 1030px) {
     main {
         padding-top: 0px;
     }

@@ -335,17 +335,19 @@ ul {
         position: fixed;
         top: 70px;
         left: 0;
-        width: 100%;
-        max-width: 100%;
+        width: 100vw;
+        max-width: 100vw;
         height: calc(100vh - 70px);
         background: var(--bg-color);
         box-shadow: var(--shadow-1);
         z-index: 99;
         overflow-y: auto;
+        overflow-x: hidden;
         transform: translateX(100%);
         transition: transform 0.3s ease-out;
         display: flex;
-        opacity: 1
+        opacity: 1;
+        box-sizing: border-box;
     }
 
     .nav-main-menu.active {
