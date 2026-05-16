@@ -88,6 +88,37 @@ a:hover {
     color: var(--accent-yellow-hover);
 }
 
+/* Medium Screens (750px - 1199px) */
+@media (min-width: 750px) and (max-width: 1199px) {
+    main {
+        padding-top: 0px;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .news-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 1.5rem 1rem;
+        width: 100%;
+    }
+
+    .gelber-button {
+        padding: 0.7rem 1.3rem;
+        font-size: 0.9rem;
+    }
+}
+
 /* Tablet Screens (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
     main {

@@ -256,22 +256,20 @@
                 color: var(--site-text, #555);
             }
 
-            .cta-mitglied {
-                text-align: center;
-                padding: 2rem 1rem;
-                border-radius: 10px;
-                margin: 2rem 0;
-            }
+            /* Medium screens (750px - 1200px) */
+            @media (min-width: 750px) and (max-width: 1199px) {
+                .fakten-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    max-width: 600px;
+                }
 
-            section {
-                margin-top: 5rem;
-            }
+                .fakt h3 {
+                    font-size: 1.5rem;
+                }
 
-            .gemeinschaft-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                gap: 1.5rem;
-                margin-top: 2rem;
+                .fakt p {
+                    font-size: 0.95rem;
+                }
             }
 
             @media (max-width: 480px) {
