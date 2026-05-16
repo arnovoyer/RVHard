@@ -311,7 +311,7 @@ ul {
 
 }
 
-@media only screen and (max-width: 794px) {
+@media only screen and (max-width: 1030px) {
     body.no-scroll {
         overflow: hidden;
     }

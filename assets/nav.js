@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function isMobile() {
-        return window.innerWidth <= 794;
+        return window.innerWidth <= 1030;
     }
 
     dropdowns.forEach(dropdown => {
