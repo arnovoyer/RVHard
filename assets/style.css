@@ -88,6 +88,38 @@ a:hover {
     color: var(--accent-yellow-hover);
 }
 
+/* Tablet Screens (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    main {
+        padding-top: 0px;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .gelber-button {
+        padding: 0.7rem 1.3rem;
+        font-size: 0.9rem;
+    }
+
+    .news-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 1.5rem 1rem;
+        width: 100%;
+    }
+}
+
+/* Mobile Screens (max-width: 768px) */
 @media (max-width: 768px) {
     main {
         padding-top: 0px;
@@ -108,6 +140,23 @@ a:hover {
         justify-content: center;
         gap: 1.5rem;
     }
+
+    body {
+        font-size: 0.95rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .gelber-button {
+        padding: 0.65rem 1.2rem;
+        font-size: 0.9rem;
+    }
 }
 
 .container {
@@ -125,18 +174,20 @@ a:hover {
     gap: 0.4rem;
     background: linear-gradient(135deg, #ffc107, #f5b301);
     color: #1a1a1a;
-    padding: 0.65rem 1.2rem;
-    font-weight: 600;
+    padding: 0.75rem 1.4rem;
+    font-weight: 700;
     border-radius: 999px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-size: 0.95rem;
-    box-shadow: 0 6px 16px rgba(245, 179, 1, 0.35);
+    box-shadow: 0 8px 20px rgba(245, 179, 1, 0.4);
+    border: 2px solid transparent;
 }
 
 .gelber-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(245, 179, 1, 0.45);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 16px 32px rgba(245, 179, 1, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 a.gelber-button {
