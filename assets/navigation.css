@@ -117,6 +117,13 @@ ul {
     display: flex;
     height: auto;
     overflow: visible;
+    flex-direction: row;
+    position: static;
+    width: auto;
+    background: transparent;
+    box-shadow: none;
+    z-index: auto;
+    transform: none;
 }
 
 .nav-main-menu li {
@@ -331,27 +338,23 @@ ul {
     }
 
     .nav-main-menu {
+        display: none;
         flex-direction: column;
         position: fixed;
         top: 70px;
         left: 0;
-        width: 100vw;
-        max-width: 100vw;
+        width: 100%;
         height: calc(100vh - 70px);
         background: var(--bg-color);
         box-shadow: var(--shadow-1);
         z-index: 99;
         overflow-y: auto;
         overflow-x: hidden;
-        transform: translateX(100%);
-        transition: transform 0.3s ease-out;
-        display: flex;
-        opacity: 1;
         box-sizing: border-box;
     }
 
     .nav-main-menu.active {
-        transform: translateX(0);
+        display: flex;
     }
 
     .nav-main-menu li {
