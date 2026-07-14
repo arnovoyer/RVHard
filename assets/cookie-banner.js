@@ -68,9 +68,9 @@
       if (isMobile && type === "iframe" && mobileLink) {
         container.innerHTML = `
     <div class="rr-mobile-box">
-      <p>Die Ergebnisse werden auf Mobilgeräten in einem neuen Tab geöffnet.</p>
+      <p>Die Anmeldung wird auf Mobilgeräten in einem neuen Tab geöffnet.</p>
       <a href="${mobileLink}" target="_blank" rel="noopener" class="rr-btn">
-        Ergebnisse anzeigen
+        Anmeldung öffnen
       </a>
     </div>
   `;
