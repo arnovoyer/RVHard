@@ -42,55 +42,9 @@
   }
 
   function loadConsentContent(allowExternal = false) {
-    // --- ALTE VERSION (auskommentiert für spätere Wiederverwendung) ---
-    // function isMobileView() {
-    //   return window.innerWidth <= 768;
-    // }
-    // const isMobile = window.innerWidth <= 768;
-    //
-    //
-    // document.querySelectorAll(".consent-placeholder").forEach(container => {
-    //   if (!placeholderCache.has(container)) {
-    //     placeholderCache.set(container, container.innerHTML);
-    //   }
-    //
-    //   const type = container.dataset.type || "iframe";
-    //   const src = container.dataset.src;
-    //   const height = container.dataset.height || "400";
-    //   const mobileLink = container.dataset.mobileLink || src;
-    //
-    //
-    //   if (!allowExternal) {
-    //     container.innerHTML = placeholderCache.get(container);
-    //     return;
-    //   }
-    //
-    //
-    //   if (isMobile && type === "iframe" && mobileLink) {
-    //     container.innerHTML = `
-    // <div class="rr-mobile-box">
-    //   <p>Die Anmeldung wird auf Mobilgeräten in einem neuen Tab geöffnet.</p>
-    //   <a href="${mobileLink}" target="_blank" rel="noopener" class="rr-btn">
-    //     Anmeldung öffnen
-    //   </a>
-    // </div>
-    // `;
-    //     return;
-    //   }
-    //
-    //   container.classList.remove("rr-mobile-active");
-    //   container.innerHTML = "";
-    //   const iframe = document.createElement("iframe");
-    //   iframe.src = src;
-    //   iframe.width = "100%";
-    //   iframe.height = height;
-    //   iframe.frameBorder = "0";
-    //   iframe.allowFullscreen = true;
-    //   container.appendChild(iframe);
-    // });
-    // --- ENDE ALTE VERSION ---
-
-    // --- NEUE VERSION: Button/Link auf Mobile UND Desktop ---
+    function isMobileView() {
+      return window.innerWidth <= 768;
+    }
     const isMobile = window.innerWidth <= 768;
 
     document.querySelectorAll(".consent-placeholder").forEach(container => {
