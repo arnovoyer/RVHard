@@ -59,162 +59,135 @@
                 visibility: hidden;
                 pointer-events: none;
             }
-            .sbs2026-banner--hidden .sbs2026-banner__box {
-                transform: translateY(40px) scale(0.97);
+            .sbs2026-banner--hidden .sbs2026-banner__wrap {
+                transform: rotate(-2deg) scale(0.96);
                 opacity: 0;
             }
 
             .sbs2026-banner__backdrop {
                 position: absolute;
                 inset: 0;
-                background: rgba(15, 19, 25, 0.6);
-                backdrop-filter: blur(6px);
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .sbs2026-banner__wrap {
+                width: min(980px, 100%);
+                transform: rotate(-2deg);
+                transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+                opacity: 1;
+                will-change: transform;
             }
 
             .sbs2026-banner__box {
                 position: relative;
-                width: min(980px, 92vw);
                 max-height: 90vh;
                 overflow-y: auto;
-                margin: 5vh auto 0;
-                background: linear-gradient(145deg, #ffffff 0%, #fff7dc 100%);
-                border: 2px solid #ffc107;
-                border-radius: 24px;
-                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), 0 0 0 6px rgba(255, 193, 7, 0.12);
+                background: var(--site-surface);
+                color: var(--site-text);
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
                 padding: 2.5rem 2rem 2rem;
-                transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-
-            html[data-theme="dark"] .sbs2026-banner__box {
-                background: linear-gradient(145deg, #1b2027 0%, #2a2410 100%);
-                border-color: #ffc107;
-            }
-            html[data-theme="dark"] .sbs2026-banner__title,
-            html[data-theme="dark"] .sbs2026-banner__date,
-            html[data-theme="dark"] .sbs2026-card h3 {
-                color: #f3f5f7 !important;
-            }
-            html[data-theme="dark"] .sbs2026-card {
-                background: #2a2410;
-                border-color: #4a3a00;
-            }
-            html[data-theme="dark"] .sbs2026-card p,
-            html[data-theme="dark"] .sbs2026-card__desc,
-            html[data-theme="dark"] .sbs2026-banner__date {
-                color: #c2c8cf !important;
-            }
-            html[data-theme="dark"] .sbs2026-card__icon {
-                background: #4a3a00;
-            }
-            html[data-theme="dark"] .sbs2026-banner__close {
-                color: #ffc107;
-            }
-            html[data-theme="dark"] .sbs2026-banner__close:hover {
-                background: #ffc107;
-                color: #1b2027;
+                transform: rotate(2deg);
             }
 
             .sbs2026-banner__close {
                 position: absolute;
                 top: 1rem;
                 right: 1.2rem;
-                background: transparent;
-                border: none;
-                font-size: 2.2rem;
+                background: var(--site-surface-soft);
+                color: var(--site-muted);
+                border: 1px solid var(--site-border);
+                font-size: 1.4rem;
                 line-height: 1;
                 cursor: pointer;
-                color: #6b5b00;
-                padding: 0.25rem 0.5rem;
-                border-radius: 10px;
-                transition: background 0.2s ease, color 0.2s ease;
+                padding: 0.35rem 0.7rem;
+                border-radius: 8px;
+                transition: background 0.3s ease, color 0.3s ease;
                 font-family: inherit;
                 z-index: 2;
             }
             .sbs2026-banner__close:hover {
-                background: #ffdf70;
-                color: #2d2400;
+                background: var(--accent-yellow);
+                color: #111;
+                border-color: transparent;
             }
 
-            .sbs2026-banner__badge {
+            .sbs2026-banner__label {
                 display: inline-block;
-                background: linear-gradient(135deg, #ffc107, #f57c00);
-                color: #1a1a1a;
-                font-weight: 800;
-                font-size: 0.82rem;
-                letter-spacing: 0.02em;
-                padding: 0.5rem 1.1rem;
-                border-radius: 999px;
-                margin-bottom: 1rem;
+                color: var(--accent-yellow);
+                font-weight: 700;
+                font-size: 0.85rem;
+                letter-spacing: 0.05em;
                 text-transform: uppercase;
-                box-shadow: 0 6px 18px rgba(245, 124, 0, 0.35);
+                margin-bottom: 0.75rem;
             }
 
             .sbs2026-banner__title {
                 margin: 0 0 0.6rem 0 !important;
-                font-size: clamp(1.7rem, 4vw, 2.4rem);
-                font-weight: 800;
-                color: #2a2000 !important;
+                font-size: clamp(1.6rem, 4vw, 2.2rem);
+                font-weight: 700;
+                color: var(--site-heading) !important;
                 font-family: 'Poppins', sans-serif;
-                line-height: 1.1;
+                line-height: 1.15;
             }
 
             .sbs2026-banner__date {
-                margin: 0 0 1.8rem 0;
+                margin: 0 0 2rem 0;
                 font-size: 1rem;
-                font-weight: 600;
-                color: #6b5b00;
+                color: var(--site-muted);
+                font-weight: 500;
             }
 
             .sbs2026-banner__grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
+                gap: 1.5rem;
                 margin-bottom: 2rem;
             }
 
             .sbs2026-card {
-                background: #fff;
-                border: 1px solid rgba(255, 193, 7, 0.35);
-                border-radius: 16px;
-                padding: 1.2rem 1rem 1rem;
-                transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+                background: var(--site-surface);
+                border: 1px solid var(--site-border);
+                border-radius: 10px;
+                padding: 1.25rem 1rem 1rem;
+                transition: transform 0.35s ease, box-shadow 0.35s ease;
             }
             .sbs2026-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
-                border-color: #ffc107;
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             }
             .sbs2026-card__icon {
-                font-size: 2rem;
-                width: 52px;
-                height: 52px;
-                background: #ffdf70;
-                border-radius: 14px;
+                font-size: 1.7rem;
+                width: 44px;
+                height: 44px;
+                background: var(--site-surface-soft);
+                border-radius: 10px;
                 display: grid;
                 place-items: center;
-                margin-bottom: 0.8rem;
+                margin-bottom: 0.9rem;
             }
             .sbs2026-card h3 {
-                margin: 0 0 0.4rem 0 !important;
+                margin: 0 0 0.45rem 0 !important;
                 font-size: 1.02rem;
-                font-weight: 700;
-                color: #2a2000 !important;
-                line-height: 1.25;
+                font-weight: 600;
+                color: var(--site-heading) !important;
+                line-height: 1.3;
                 font-family: 'Poppins', sans-serif;
             }
             .sbs2026-card p {
                 margin: 0.1rem 0;
-                font-size: 0.82rem;
-                color: #6b5b00;
-                font-weight: 600;
+                font-size: 0.85rem;
+                color: var(--site-text);
             }
             .sbs2026-card__desc {
-                margin-top: 0.5rem !important;
-                font-weight: 500 !important;
-                color: #7a6a10 !important;
-                font-size: 0.78rem !important;
+                margin-top: 0.55rem !important;
+                color: var(--site-muted) !important;
+                font-size: 0.82rem !important;
             }
 
             .sbs2026-banner__actions {
@@ -224,32 +197,15 @@
                 gap: 0.8rem;
             }
 
-            .sbs2026-banner__cta {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.4rem;
-                background: linear-gradient(135deg, #ffc107, #f5b301);
-                color: #1a1a1a !important;
-                padding: 0.9rem 1.8rem;
-                font-weight: 800;
-                border-radius: 999px;
-                font-size: 1rem;
-                box-shadow: 0 10px 26px rgba(245, 179, 1, 0.45);
-                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-                text-decoration: none;
-            }
-            .sbs2026-banner__cta:hover {
-                transform: translateY(-3px) scale(1.04);
-                box-shadow: 0 16px 34px rgba(245, 179, 1, 0.55);
-                color: #1a1a1a !important;
-            }
-
             @media (max-width: 820px) {
+                .sbs2026-banner__wrap { transform: rotate(0deg); }
+                .sbs2026-banner__box { transform: rotate(0deg); }
+                .sbs2026-banner--hidden .sbs2026-banner__wrap { transform: translateY(40px) scale(0.96); }
                 .sbs2026-banner__grid {
                     grid-template-columns: 1fr;
+                    gap: 1rem;
                 }
                 .sbs2026-banner__box {
-                    margin-top: 2vh;
                     padding: 2rem 1.2rem 1.5rem;
                     max-height: 96vh;
                 }
@@ -962,7 +918,7 @@
             <div class="sbs2026-banner__backdrop"></div>
             <div class="sbs2026-banner__box">
                 <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
-                <div class="sbs2026-banner__badge">🏆 Landesmeisterschaften</div>
+                <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
                 <h2 class="sbs2026-banner__title">Summer Bike Series 2026</h2>
                 <p class="sbs2026-banner__date">📅 5. + 6. September 2026 · Hard und Umgebung</p>
                 <div class="sbs2026-banner__grid">
@@ -986,7 +942,7 @@
                     </div>
                 </div>
                 <div class="sbs2026-banner__actions">
-                    <a href="/events/sbs/summer-bike-series-2026.html" class="sbs2026-banner__cta">Mehr Infos & Anmeldung →</a>
+                    <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
                 </div>
             </div>
         </div>
