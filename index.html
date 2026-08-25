@@ -44,6 +44,139 @@
             <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
         </noscript>
         <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+        <style>
+            .sbs2026-banner {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                width: min(460px, 92vw);
+                background: linear-gradient(135deg, #ffffff 0%, #fff7dc 100%);
+                border: 2px solid #ffc107;
+                border-radius: 18px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 193, 7, 0.12);
+                transform: rotate(-1.5deg);
+                z-index: 9998;
+                padding: 1.75rem 1.5rem 1.5rem;
+                font-family: 'Poppins', sans-serif;
+                transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s linear 0.5s;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            html[data-theme="dark"] .sbs2026-banner {
+                background: linear-gradient(135deg, #1b2027 0%, #2a2410 100%);
+                border-color: #ffc107;
+            }
+            html[data-theme="dark"] .sbs2026-banner__title {
+                color: #f3f5f7 !important;
+            }
+            html[data-theme="dark"] .sbs2026-banner__subtitle {
+                color: #c2c8cf !important;
+            }
+            html[data-theme="dark"] .sbs2026-banner__icon {
+                background: #4a3a00;
+            }
+            html[data-theme="dark"] .sbs2026-banner__close {
+                color: #ffc107;
+            }
+            html[data-theme="dark"] .sbs2026-banner__close:hover {
+                background: #ffc107;
+                color: #1b2027;
+            }
+
+            .sbs2026-banner--hidden {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(40px) rotate(-1.5deg);
+            }
+
+            .sbs2026-banner__close {
+                position: absolute;
+                top: 0.6rem;
+                right: 0.8rem;
+                background: transparent;
+                border: none;
+                font-size: 1.8rem;
+                line-height: 1;
+                cursor: pointer;
+                color: #6b5b00;
+                padding: 0.2rem 0.4rem;
+                border-radius: 8px;
+                transition: background 0.2s ease, color 0.2s ease;
+                font-family: inherit;
+            }
+            .sbs2026-banner__close:hover {
+                background: #ffdf70;
+                color: #2d2400;
+            }
+
+            .sbs2026-banner__content {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .sbs2026-banner__icon {
+                font-size: 2.6rem;
+                flex-shrink: 0;
+                background: #ffdf70;
+                width: 62px;
+                height: 62px;
+                border-radius: 16px;
+                display: grid;
+                place-items: center;
+                box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3);
+            }
+
+            .sbs2026-banner__title {
+                margin: 0 0 0.3rem 0 !important;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #3a2e00 !important;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.2;
+            }
+
+            .sbs2026-banner__subtitle {
+                margin: 0 0 0.85rem 0;
+                font-size: 0.88rem;
+                color: #6b5b00;
+                line-height: 1.4;
+            }
+
+            .sbs2026-banner__cta {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                background: linear-gradient(135deg, #ffc107, #f5b301);
+                color: #1a1a1a !important;
+                padding: 0.55rem 1.1rem;
+                font-weight: 700;
+                border-radius: 999px;
+                font-size: 0.88rem;
+                box-shadow: 0 6px 14px rgba(245, 179, 1, 0.4);
+                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+                text-decoration: none;
+            }
+            .sbs2026-banner__cta:hover {
+                transform: translateY(-2px) scale(1.04);
+                box-shadow: 0 10px 20px rgba(245, 179, 1, 0.5);
+                color: #1a1a1a !important;
+            }
+
+            @media (max-width: 600px) {
+                .sbs2026-banner {
+                    bottom: 1rem;
+                    right: 1rem;
+                    left: 1rem;
+                    width: auto;
+                    transform: rotate(0deg);
+                }
+                .sbs2026-banner--hidden {
+                    transform: translateY(40px) rotate(0deg);
+                }
+            }
+        </style>
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
@@ -747,6 +880,18 @@
             </section>
         </main>
 
+        <div id="sbs2026-banner" class="sbs2026-banner sbs2026-banner--hidden" role="dialog" aria-label="Summer Bike Series 2026 Ankündigung">
+            <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
+            <div class="sbs2026-banner__content">
+                <div class="sbs2026-banner__icon">🚴</div>
+                <div>
+                    <h3 class="sbs2026-banner__title">Summer Bike Series 2026</h3>
+                    <p class="sbs2026-banner__subtitle">5. + 6. September · Kriterium, Zeitfahren & Bergrennen</p>
+                    <a href="/events/sbs/summer-bike-series-2026.html" class="sbs2026-banner__cta">Mehr erfahren →</a>
+                </div>
+            </div>
+        </div>
+
         <footer id="site-footer"></footer>
 
         <script src="/assets/navigation-loader.js" defer></script>
@@ -769,6 +914,54 @@
                 duration: 1000,
                 once: true,
             });
+        </script>
+        <script>
+            (function () {
+                var STORAGE_KEY = 'sbs2026_banner_closed';
+                var banner = document.getElementById('sbs2026-banner');
+                if (!banner) return;
+
+                try {
+                    if (localStorage.getItem(STORAGE_KEY)) return;
+                } catch (e) {}
+
+                var closeBtn = banner.querySelector('.sbs2026-banner__close');
+
+                function showBanner() {
+                    if (window.requestAnimationFrame) {
+                        requestAnimationFrame(function () {
+                            banner.classList.remove('sbs2026-banner--hidden');
+                        });
+                    } else {
+                        banner.classList.remove('sbs2026-banner--hidden');
+                    }
+                }
+
+                function hideBanner() {
+                    banner.classList.add('sbs2026-banner--hidden');
+                    try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+                }
+
+                closeBtn.addEventListener('click', hideBanner);
+
+                function tryShow() {
+                    if (document.getElementById('cookie-overlay')) {
+                        setTimeout(tryShow, 600);
+                    } else {
+                        showBanner();
+                    }
+                }
+
+                function startScheduler() {
+                    setTimeout(tryShow, 1800);
+                }
+
+                if (document.readyState === 'complete') {
+                    startScheduler();
+                } else {
+                    window.addEventListener('load', startScheduler);
+                }
+            })();
         </script>
     </body>
 
