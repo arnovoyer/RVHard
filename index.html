@@ -1,4 +1,4 @@
-﻿    <!DOCTYPE html>
+﻿﻿    <!DOCTYPE html>
     <html lang="de">
 
     <head>
@@ -53,6 +53,7 @@
                 transition: opacity 0.5s ease, visibility 0s linear 0.5s;
                 opacity: 1;
                 visibility: visible;
+                perspective: 1200px;
             }
             .sbs2026-banner--hidden {
                 opacity: 0;
@@ -60,7 +61,7 @@
                 pointer-events: none;
             }
             .sbs2026-banner--hidden .sbs2026-banner__wrap {
-                transform: rotate(-2deg) scale(0.96);
+                transform: rotate(-3deg) scale(0.94);
                 opacity: 0;
             }
 
@@ -77,22 +78,20 @@
 
             .sbs2026-banner__wrap {
                 width: min(980px, 100%);
-                transform: rotate(-2deg);
-                transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+                transform: rotate(-3deg);
+                transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
                 opacity: 1;
                 will-change: transform;
             }
 
             .sbs2026-banner__box {
                 position: relative;
-                max-height: 90vh;
-                overflow-y: auto;
                 background: var(--site-surface);
                 color: var(--site-text);
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-                padding: 2.5rem 2rem 2rem;
-                transform: rotate(2deg);
+                border-radius: 14px;
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+                padding: 2.75rem 2.25rem 2.25rem;
+                transform: rotate(3deg);
             }
 
             .sbs2026-banner__close {
@@ -102,10 +101,10 @@
                 background: var(--site-surface-soft);
                 color: var(--site-muted);
                 border: 1px solid var(--site-border);
-                font-size: 1.4rem;
+                font-size: 1.5rem;
                 line-height: 1;
                 cursor: pointer;
-                padding: 0.35rem 0.7rem;
+                padding: 0.4rem 0.75rem;
                 border-radius: 8px;
                 transition: background 0.3s ease, color 0.3s ease;
                 font-family: inherit;
@@ -128,8 +127,8 @@
             }
 
             .sbs2026-banner__title {
-                margin: 0 0 0.6rem 0 !important;
-                font-size: clamp(1.6rem, 4vw, 2.2rem);
+                margin: 0 0 0.5rem 0 !important;
+                font-size: clamp(1.6rem, 4vw, 2.25rem);
                 font-weight: 700;
                 color: var(--site-heading) !important;
                 font-family: 'Poppins', sans-serif;
@@ -137,7 +136,7 @@
             }
 
             .sbs2026-banner__date {
-                margin: 0 0 2rem 0;
+                margin: 0 0 1.75rem 0;
                 font-size: 1rem;
                 color: var(--site-muted);
                 font-weight: 500;
@@ -146,15 +145,15 @@
             .sbs2026-banner__grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
+                gap: 1.25rem;
                 margin-bottom: 2rem;
             }
 
             .sbs2026-card {
                 background: var(--site-surface);
                 border: 1px solid var(--site-border);
-                border-radius: 10px;
-                padding: 1.25rem 1rem 1rem;
+                border-radius: 12px;
+                padding: 1.2rem 1rem 1rem;
                 transition: transform 0.35s ease, box-shadow 0.35s ease;
             }
             .sbs2026-card:hover {
@@ -169,7 +168,7 @@
                 border-radius: 10px;
                 display: grid;
                 place-items: center;
-                margin-bottom: 0.9rem;
+                margin-bottom: 0.85rem;
             }
             .sbs2026-card h3 {
                 margin: 0 0 0.45rem 0 !important;
@@ -185,9 +184,9 @@
                 color: var(--site-text);
             }
             .sbs2026-card__desc {
-                margin-top: 0.55rem !important;
+                margin-top: 0.5rem !important;
                 color: var(--site-muted) !important;
-                font-size: 0.82rem !important;
+                font-size: 0.8rem !important;
             }
 
             .sbs2026-banner__actions {
@@ -197,17 +196,78 @@
                 gap: 0.8rem;
             }
 
-            @media (max-width: 820px) {
-                .sbs2026-banner__wrap { transform: rotate(0deg); }
-                .sbs2026-banner__box { transform: rotate(0deg); }
-                .sbs2026-banner--hidden .sbs2026-banner__wrap { transform: translateY(40px) scale(0.96); }
-                .sbs2026-banner__grid {
-                    grid-template-columns: 1fr;
-                    gap: 1rem;
+            /* --- K O M P A K T E   M O B I L - V E R S I O N --- */
+            @media (max-width: 720px) {
+                .sbs2026-banner__backdrop { padding: 0.6rem; }
+                .sbs2026-banner__wrap {
+                    transform: rotate(0deg);
+                    width: 100%;
+                }
+                .sbs2026-banner--hidden .sbs2026-banner__wrap {
+                    transform: translateY(40px) scale(0.96);
                 }
                 .sbs2026-banner__box {
-                    padding: 2rem 1.2rem 1.5rem;
-                    max-height: 96vh;
+                    transform: rotate(0deg);
+                    padding: 1.4rem 1.1rem 1.1rem;
+                    max-height: 92vh;
+                    border-radius: 12px;
+                    overflow-y: auto;
+                }
+                .sbs2026-banner__close {
+                    top: 0.7rem;
+                    right: 0.8rem;
+                    font-size: 1.3rem;
+                    padding: 0.3rem 0.55rem;
+                }
+                .sbs2026-banner__label {
+                    font-size: 0.72rem;
+                    margin-bottom: 0.4rem;
+                }
+                .sbs2026-banner__title {
+                    font-size: 1.35rem !important;
+                    margin-bottom: 0.3rem !important;
+                }
+                .sbs2026-banner__date {
+                    font-size: 0.82rem;
+                    margin-bottom: 1rem;
+                }
+                .sbs2026-banner__grid {
+                    grid-template-columns: 1fr;
+                    gap: 0.5rem;
+                    margin-bottom: 1.1rem;
+                }
+                .sbs2026-card {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.75rem;
+                    padding: 0.65rem 0.7rem;
+                    border-radius: 10px;
+                }
+                .sbs2026-card:hover {
+                    transform: none;
+                    box-shadow: none;
+                }
+                .sbs2026-card__icon {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                    font-size: 1.25rem;
+                    flex-shrink: 0;
+                    margin-bottom: 0;
+                }
+                .sbs2026-card > div:last-child { flex: 1; }
+                .sbs2026-card h3 {
+                    font-size: 0.92rem !important;
+                    margin-bottom: 0.2rem !important;
+                }
+                .sbs2026-card p {
+                    font-size: 0.75rem;
+                    line-height: 1.35;
+                }
+                .sbs2026-card__desc { display: none; }
+                .gelber-button {
+                    padding: 0.6rem 1.05rem !important;
+                    font-size: 0.85rem !important;
                 }
             }
         </style>
@@ -915,34 +975,43 @@
         </main>
 
         <div id="sbs2026-banner" class="sbs2026-banner sbs2026-banner--hidden" role="dialog" aria-modal="true" aria-label="Summer Bike Series 2026 Ankündigung">
-            <div class="sbs2026-banner__backdrop"></div>
-            <div class="sbs2026-banner__box">
-                <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
-                <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
-                <h2 class="sbs2026-banner__title">Summer Bike Series 2026</h2>
-                <p class="sbs2026-banner__date">📅 5. + 6. September 2026 · Hard und Umgebung</p>
-                <div class="sbs2026-banner__grid">
-                    <div class="sbs2026-card">
-                        <div class="sbs2026-card__icon">🏙️</div>
-                        <h3>Kammgarn Kriterium Hard</h3>
-                        <p>📅 Samstag, 05.09. · Start ab 10:00 Uhr</p>
-                        <p class="sbs2026-card__desc">Rundkurs Kammgarn-Areal · bis 30 Runden à 650 m</p>
+            <div class="sbs2026-banner__backdrop">
+                <div class="sbs2026-banner__wrap">
+                    <div class="sbs2026-banner__box">
+                        <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
+                        <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
+                        <h2 class="sbs2026-banner__title">Summer Bike Series 2026</h2>
+                        <p class="sbs2026-banner__date">📅 5. + 6. September 2026 · Hard und Umgebung</p>
+                        <div class="sbs2026-banner__grid">
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">🏙️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Kammgarn Kriterium Hard</h3>
+                                    <p>📅 Samstag, 05.09. · Start ab 10:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn-Areal · bis 30 Runden à 650 m</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⏱️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Einzelzeitfahren Rohrspitz – Fußach</h3>
+                                    <p>📅 Samstag, 05.09. · Start ab 17:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot!</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⛰️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Bergrennen Wolfurt – Buch</h3>
+                                    <p>📅 Sonntag, 06.09. · Start ab 10:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sbs2026-banner__actions">
+                            <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
+                        </div>
                     </div>
-                    <div class="sbs2026-card">
-                        <div class="sbs2026-card__icon">⏱️</div>
-                        <h3>Einzelzeitfahren Rohrspitz – Fußach</h3>
-                        <p>📅 Samstag, 05.09. · Start ab 17:00 Uhr</p>
-                        <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot!</p>
-                    </div>
-                    <div class="sbs2026-card">
-                        <div class="sbs2026-card__icon">⛰️</div>
-                        <h3>Bergrennen Wolfurt – Buch</h3>
-                        <p>📅 Sonntag, 06.09. · Start ab 10:00 Uhr</p>
-                        <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
-                    </div>
-                </div>
-                <div class="sbs2026-banner__actions">
-                    <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
                 </div>
             </div>
         </div>
