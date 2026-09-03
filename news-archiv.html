@@ -145,6 +145,17 @@
                 width: 100%;
             }
         }
+
+        /* ================= KORREKTUREN ================= */
+        /* 1. Genau 2 Spalten im News-Archiv (statt 3 aus assets/news/news.css) */
+        .news-container {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        @media (max-width: 768px) {
+            .news-container {
+                grid-template-columns: 1fr !important;
+            }
+        }
     </style>
 </head>
 
@@ -227,7 +238,7 @@
                 if (external && !external.toLowerCase().startsWith('externer link')) {
                     if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
                 }
-                return '/news/news';
+                return '/news/';
             }
 
             try {
@@ -248,7 +259,7 @@
                 const allTags = new Set();
                 news.forEach(n => n.tags?.forEach(t => allTags.add(t)));
 
-                const allowedTags = ['MTB', 'Triathlon', 'Rennrad', "Rennbericht", 'Rennen', "Nachwuchs", "HC", "Verein","LM","Cyclocross","AYC","Nightrace","SBS","ÖM"];
+                const allowedTags = ['MTB', 'Triathlon', 'Rennrad', 'Nightrace', 'SBS'];
 
                 [...allTags].sort().forEach(tag => {
                     if (!allowedTags.includes(tag)) return;
