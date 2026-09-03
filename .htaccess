@@ -1,61 +1,43 @@
-DirectoryIndex index.html
+DirectoryIndex index.html index.php
 RewriteEngine On
 AddDefaultCharset UTF-8
 
-# Deaktiviert automatischen Directory-Trailing-Slash Redirect für konfliktträchtige Namen.
-# Verhindert, dass /news automatisch zu /news/ (Ordner) umgeleitet wird,
-# bevor die RewriteRules die Datei /news.html auflösen können.
-<IfModule mod_dir.c>
-    DirectorySlash Off
-</IfModule>
-
-# ---------- KANONISIERUNG: index / index.html -> / ----------
+# ---------- 1. KANONISIERUNG: index / index.html -> / ----------
 RewriteCond %{THE_REQUEST} \s/index\.html [NC]
 RewriteRule ^index\.html$ / [R=301,L]
-RewriteCond %{THE_REQUEST} \s/index(?!\.) [NC]
+RewriteCond %{THE_REQUEST} \s/+index(?!\.) [NC]
 RewriteRule ^index$ / [R=301,L]
 
-# ---------- NEWS (NAMENSKONFLIKT: news.html vs /news-Ordner) ----------
-# ACHTUNG: Diese Regeln MÜSSEN vor der generischen ".html-Endung entfernen" stehen,
-# weil sonst der Ordner /news vor der Datei news.html erkannt wird.
-
-# 1. Externe Aufrufe mit .html -> umleiten auf schöne URL (301)
+# ---------- 2. NEWS: Alte / Falsche URLs auf kanonisch /news/ 301 umleiten ----------
+#    Die News-Seite liegt jetzt strukturell richtig als /news/index.html vor!
+#    Apache liefert sie automatisch als DirectoryIndex aus, wenn /news/ aufgerufen wird.
+#
+# a) Alte /news.html (im Root) -> /news/
 RewriteCond %{THE_REQUEST} \s/+news\.html(?:\s|\?) [NC]
-RewriteRule ^news\.html$ /news [R=301,L]
-
-# 2. Alte falsche /news/news Adressen (alle Varianten) -> 301 auf /news
+RewriteRule ^news\.html$ /news/ [R=301,L]
+#
+# b) Alte Duplikat-URLs /news/news* -> /news/ (Google hat das früher indexiert!)
 RewriteCond %{THE_REQUEST} \s/+news/news [NC]
-RewriteRule ^news/news(?:\.html)?/?$ /news [R=301,L]
+RewriteRule ^news/news(?:\.html)?/?$ /news/ [R=301,L]
 
-# 3. /news oder /news/ -> INTERN auf die Datei news.html zeigen (Ordner Konflikt-Lösung)
-RewriteRule ^news/?$ news.html [END]
-
-# ---------- GENERISCH: .html-Endung aus der URL entfernen ----------
-# Zuerst: Wenn jemand .html explizit aufruft, 301 auf URL ohne Endung
+# ---------- 3. GENERISCH: .html-Endung aus URLs entfernen (301) ----------
+#     Nur wenn KEIN News-Sonderfall (News wird oben schon behandelt)
+RewriteCond %{REQUEST_URI} !^/news\.html$ [NC]
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s(.+?)\.html(?:\s|\?) [NC]
 RewriteRule ^ %1 [R=301,L]
 
-# ---------- INTERN: URL ohne Endung -> passende .html-Datei suchen ----------
-# WICHTIG:
-# a) !-d -> KEIN vorhandenes Verzeichnis (außer wir haben es explizit behandelt wie /news)
-# b) !-f -> KEINE vorhandene echte Datei
-# c) %{REQUEST_FILENAME}.html -f -> die .html Variante muss existieren
+# ---------- 4. INTERN: Schöne URL -> passende .html-Datei suchen ----------
+#    NUR wenn: KEIN echter Ordner, KEINE echte Datei, .html EXISTIERT wirklich!
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/$1\.html -f
-RewriteRule ^(.*?)/?$ $1.html [END]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
+RewriteRule ^(.*?)/?$ %{REQUEST_URI}.html [L,NS]
 
-# Spezialfall: Pfad endet auf / (z.B. "/verein/") -> "/verein.html"
+# Alternativ: Pfad endet auf / (z.B. "/verein/") -> /verein.html im Root suchen
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/$1\.html -f
-RewriteRule ^(.*)/$ $1.html [END]
-
-# Sicherheit: Wenn /news/ MIT TRAILING SLASH als Ordner aufgerufen wurde,
-# die DirectoryIndex-Datei aber nicht existiert -> wieder auf /news umleiten.
-RewriteCond %{REQUEST_URI} ^/news/$
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^news/$ /news [R=301,L]
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.*)/$ /$1.html [L,NS]
 
 # Statisches Asset-Caching fuer bessere Wiederholungsaufrufe
 <IfModule mod_expires.c>
