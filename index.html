@@ -1,4 +1,4 @@
-﻿﻿﻿﻿    <!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿    <!DOCTYPE html>
     <html lang="de">
 
     <head>
@@ -142,6 +142,63 @@
                 font-weight: 500;
             }
 
+            .sbs2026-countdown {
+                margin: 0 0 2rem 0;
+                text-align: center;
+            }
+            .sbs2026-countdown__label {
+                margin: 0 0 0.75rem 0;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-heading);
+            }
+            .sbs2026-countdown__label strong {
+                color: var(--accent-yellow, #ffc107);
+            }
+            .sbs2026-countdown__grid {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+            }
+            .sbs2026-cd-unit {
+                min-width: 78px;
+                background: var(--site-surface, #fff);
+                border: 1px solid var(--site-border, #e5e5e5);
+                border-radius: 10px;
+                padding: 0.75rem 0.6rem 0.55rem;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            }
+            .sbs2026-cd-unit__num {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--accent-yellow, #ffc107);
+                font-family: 'Poppins', sans-serif;
+                line-height: 1;
+                display: block;
+            }
+            .sbs2026-cd-unit__label {
+                display: block;
+                margin-top: 0.45rem;
+                font-size: 0.7rem;
+                color: var(--site-muted, #555);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                font-weight: 600;
+            }
+            .sbs2026-countdown__done {
+                display: none;
+                margin-top: 0.5rem;
+                padding: 0.75rem 1rem;
+                background: rgba(255, 193, 7, 0.12);
+                border: 1px dashed var(--accent-yellow, #ffc107);
+                border-radius: 8px;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-heading);
+            }
+
             .sbs2026-banner__grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
@@ -196,6 +253,32 @@
                 gap: 0.8rem;
             }
 
+            .sbs2026-banner__sponsor {
+                margin-top: 1.85rem;
+                padding-top: 1.4rem;
+                border-top: 1px solid var(--site-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.9rem 1.1rem;
+            }
+            .sbs2026-banner__sponsor img {
+                height: 34px;
+                width: auto;
+                display: block;
+            }
+            .sbs2026-banner__sponsor span {
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-muted);
+                letter-spacing: 0.01em;
+            }
+            .sbs2026-banner__sponsor span strong {
+                color: var(--site-heading);
+                font-weight: 700;
+            }
+
             /* --- K O M P A K T E   M O B I L - V E R S I O N --- */
             @media (max-width: 720px) {
                 .sbs2026-banner__backdrop { padding: 0.6rem; }
@@ -231,6 +314,21 @@
                     font-size: 0.82rem;
                     margin-bottom: 1rem;
                 }
+                .sbs2026-countdown { margin-bottom: 1.15rem; }
+                .sbs2026-countdown__label { font-size: 0.78rem; margin-bottom: 0.55rem; }
+                .sbs2026-countdown__grid { gap: 0.35rem; }
+                .sbs2026-cd-unit {
+                    min-width: 58px;
+                    padding: 0.55rem 0.4rem 0.45rem;
+                    border-radius: 8px;
+                }
+                .sbs2026-cd-unit__num { font-size: 1.3rem; }
+                .sbs2026-cd-unit__label {
+                    font-size: 0.6rem;
+                    letter-spacing: 0.05em;
+                    margin-top: 0.3rem;
+                }
+                .sbs2026-countdown__done { font-size: 0.8rem; padding: 0.6rem 0.8rem; }
                 .sbs2026-banner__grid {
                     grid-template-columns: 1fr;
                     gap: 0.5rem;
@@ -268,6 +366,18 @@
                 .gelber-button {
                     padding: 0.6rem 1.05rem !important;
                     font-size: 0.85rem !important;
+                }
+                .sbs2026-banner__sponsor {
+                    margin-top: 1.15rem;
+                    padding-top: 0.9rem;
+                    gap: 0.55rem 0.75rem;
+                }
+                .sbs2026-banner__sponsor img {
+                    height: 26px;
+                }
+                .sbs2026-banner__sponsor span {
+                    font-size: 0.78rem;
+                    text-align: center;
                 }
             }
         </style>
@@ -576,7 +686,7 @@
 
                     <div class="event-card summer-series">
                         <div data-aos="fade-up-right">
-                            <h3>Summer Bike Series 2026</h3>
+                            <h3>Raiffeisen Summer Bike Series 2026</h3>
                             <div class="single-event">
                                 <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.09.2026</p>
                                 <p class="event-name">Kammgarn Kriterium Hard</p>
@@ -980,8 +1090,36 @@
                     <div class="sbs2026-banner__box">
                         <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
                         <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
-                        <h2 class="sbs2026-banner__title">Summer Bike Series 2026</h2>
+                        <h2 class="sbs2026-banner__title">Raiffeisen Summer Bike Series 2026</h2>
                         <p class="sbs2026-banner__date">📅 5. + 6. September 2026 · Hard und Umgebung</p>
+
+                        <div class="sbs2026-countdown" id="sbs2026-countdown">
+                            <p class="sbs2026-countdown__label">
+                                ⏳ Anmeldung schließt in <strong id="sbs2026-cd-label-num">–</strong>
+                            </p>
+                            <div class="sbs2026-countdown__grid">
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="days">00</span>
+                                    <span class="sbs2026-cd-unit__label">Tage</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="hours">00</span>
+                                    <span class="sbs2026-cd-unit__label">Stunden</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="minutes">00</span>
+                                    <span class="sbs2026-cd-unit__label">Minuten</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="seconds">00</span>
+                                    <span class="sbs2026-cd-unit__label">Sekunden</span>
+                                </div>
+                            </div>
+                            <div class="sbs2026-countdown__done" id="sbs2026-cd-done">
+                                🏁 Anmeldung ist geschlossen – Ergebnisse folgen in Kürze!
+                            </div>
+                        </div>
+
                         <div class="sbs2026-banner__grid">
                             <div class="sbs2026-card">
                                 <div class="sbs2026-card__icon">🏙️</div>
@@ -1010,6 +1148,10 @@
                         </div>
                         <div class="sbs2026-banner__actions">
                             <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
+                        </div>
+                        <div class="sbs2026-banner__sponsor">
+                            <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="lazy" decoding="async">
+                            <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
                         </div>
                     </div>
                 </div>
@@ -1084,6 +1226,60 @@
                     startScheduler();
                 } else {
                     window.addEventListener('load', startScheduler);
+                }
+
+                // --- C O U N T D O W N – Anmeldeschluss SBS 2026 ---
+                // ANMERKUNG: Ziel-Datum unten bei `TARGET_DATE` bei Bedarf ändern!
+                var TARGET_DATE = new Date('2026-09-05T09:00:00+02:00'); // Sa, 5. Sept 2026 · 09:00 MESZ
+
+                var cdEl = document.getElementById('sbs2026-countdown');
+                if (cdEl) {
+                    var cdDays = cdEl.querySelector('[data-sbs-cd="days"]');
+                    var cdHours = cdEl.querySelector('[data-sbs-cd="hours"]');
+                    var cdMinutes = cdEl.querySelector('[data-sbs-cd="minutes"]');
+                    var cdSeconds = cdEl.querySelector('[data-sbs-cd="seconds"]');
+                    var cdLabelNum = document.getElementById('sbs2026-cd-label-num');
+                    var cdDone = document.getElementById('sbs2026-cd-done');
+                    var cdGrid = cdEl.querySelector('.sbs2026-countdown__grid');
+                    var cdLabel = cdEl.querySelector('.sbs2026-countdown__label');
+
+                    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+                    function updateCountdown() {
+                        var now = new Date().getTime();
+                        var diff = TARGET_DATE.getTime() - now;
+
+                        if (diff <= 0) {
+                            if (cdGrid) cdGrid.style.display = 'none';
+                            if (cdLabel) cdLabel.style.display = 'none';
+                            if (cdDone) cdDone.style.display = 'block';
+                            return;
+                        }
+
+                        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        if (cdDays) cdDays.textContent = pad2(days);
+                        if (cdHours) cdHours.textContent = pad2(hours);
+                        if (cdMinutes) cdMinutes.textContent = pad2(minutes);
+                        if (cdSeconds) cdSeconds.textContent = pad2(seconds);
+
+                        if (cdLabelNum) {
+                            if (days > 0) {
+                                cdLabelNum.textContent =
+                                    days + (days === 1 ? ' Tag' : ' Tagen') +
+                                    ' ' + pad2(hours) + ':' + pad2(minutes) + 'h';
+                            } else {
+                                cdLabelNum.textContent =
+                                    pad2(hours) + ':' + pad2(minutes) + ':' + pad2(seconds);
+                            }
+                        }
+                    }
+
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
                 }
             })();
         </script>

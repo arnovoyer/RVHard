@@ -1,4 +1,4 @@
-﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -43,6 +43,113 @@
       border-radius: 12px;
       margin-bottom: 2rem;
     }
+
+    .sbs-sponsor-hero {
+      margin: 0.75rem auto 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.85rem 1.1rem;
+      padding: 0.9rem 1.3rem;
+      border-top: 1px solid var(--site-border, #eee);
+      border-bottom: 1px solid var(--site-border, #eee);
+      max-width: 640px;
+    }
+    .sbs-sponsor-hero img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+    .sbs-sponsor-hero span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--site-muted, #555);
+      letter-spacing: 0.01em;
+    }
+    .sbs-sponsor-hero span strong {
+      color: var(--site-heading, #111);
+      font-weight: 700;
+    }
+
+    .sponsoren-grid {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2.5rem 2rem;
+      align-items: end;
+      justify-items: center;
+    }
+
+    .sponsor-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+      max-width: 260px;
+    }
+    .sponsor-logo img {
+      max-height: 52px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .sponsor-logo h3 {
+      margin: 0 !important;
+      font-size: 0.95rem !important;
+      font-weight: 600;
+      color: #111 !important;
+      line-height: 1.3;
+    }
+    .sponsor-logo p {
+      margin: 0 !important;
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.45;
+    }
+
+    .sponsor-hauptsponsor {
+      margin: 0 auto 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      max-width: 520px;
+      text-align: center;
+    }
+    .sponsor-hauptsponsor img {
+      max-height: 68px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .sponsor-hauptsponsor h3 {
+      margin: 0 !important;
+      font-size: 1.1rem !important;
+      font-weight: 700;
+      color: #111 !important;
+    }
+    .sponsor-hauptsponsor p {
+      margin: 0 !important;
+      font-size: 0.92rem;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .sbs-sponsor-hero img { height: 30px; }
+      .sbs-sponsor-hero span { font-size: 0.85rem; }
+      .sbs-sponsor-hero { padding: 0.75rem 0.9rem; gap: 0.6rem 0.85rem; }
+      .sponsor-hauptsponsor { max-width: 100%; margin-bottom: 2rem; padding-bottom: 1.1rem; }
+      .sponsor-hauptsponsor img { max-height: 56px; }
+      .sponsoren-grid { gap: 2rem 1.25rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+      .sponsor-logo img { max-height: 42px; }
+    }
   </style>
 </head>
 
@@ -52,7 +159,11 @@
   </header>
 
   <main class="nightrace-container">
-    <h1 data-aos="zoom-in">Summer Bike Series 2026</h1>
+    <h1 data-aos="zoom-in">Raiffeisen Summer Bike Series 2026</h1>
+    <div class="sbs-sponsor-hero" data-aos="fade-in" data-aos-delay="120">
+      <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="eager" decoding="async">
+      <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
+    </div>
     <section class="anmeldung-section" data-aos="zoom-in">
       <h2>Aktuelle Information</h2>
       <p>Die Summer Bike Series findet auch 2026 mit den 3 traditionllen Bewerben statt. Dieses Jahr werden im Rahmen der Summer Bike Series ebenfalls die <strong>Landesmeisterschaften¹</strong> in den 3 Disziplinen ausgetragen. .</p>
@@ -185,6 +296,28 @@
     <section class="partner-sponsoren-section" data-aos="zoom-out">
       <h2>Sponsoren</h2>
       <p>Ein großes Dankeschön an alle Sponsoren, die diese Eventserie möglich machen.</p>
+
+      <div class="sponsor-hauptsponsor" style="margin-top: 1.75rem;">
+        <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="lazy" decoding="async">
+        <h3>Raiffeisen</h3>
+        <p>
+          Unterstützt den <strong>Vorarlberger Radsport</strong> als Hauptsponsor und ermöglicht
+          damit die Durchführung der Veranstaltung sowie der Landesmeisterschaften.
+        </p>
+      </div>
+
+      <div class="sponsoren-grid">
+
+        <!--
+          SPONSOREN-PLATZHALTER – weitere Sponsoren hier nach dem gleichen Muster einfügen:
+          <div class="sponsor-logo">
+            <img src="/assets/img/logo/...WEITERES_LOGO..." alt="Sponsor Name" loading="lazy" decoding="async">
+            <h3>Sponsor Name</h3>
+            <p>Kurzbeschreibung...</p>
+          </div>
+        -->
+
+      </div>
     </section>
 <p >¹,²: Die Landesmeisterschaft im Kriterium in der Kategorie Elite wird <strong>nicht</strong> im Rahmen der Summer Bike Series ausgetragen</p>
   </main>
