@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foto-Galerie | RV Hard</title>
+    <meta name="description" content="Foto-Galerie des RV Hard – Bilder zu allen Events (SBS, Nightrace, Triathlon, MTB, Cyclocross). Suche nach Startnummer, Name oder Event.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rv-hard.at/fotos/">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RV Hard">
+    <meta property="og:title" content="Foto-Galerie | RV Hard">
+    <meta property="og:description" content="Fotos zu allen RV Hard Events – suche nach deiner Startnummer oder deinem Namen.">
+    <meta property="og:url" content="https://rv-hard.at/fotos/">
+    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/fotos/assets/galerie.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+</head>
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main>
+        <section class="fg-container">
+
+            <div class="fg-section" data-aos="fade-up">
+                <h1><i class="fa-regular fa-images" style="color:#f5b301;"></i> Foto-Galerie RV Hard</h1>
+                <p class="lead">
+                    Alle Bilder unserer Events auf einen Blick. Suche ganz einfach nach deiner
+                    <strong style="color:#111;">Startnummer</strong>, deinem
+                    <strong style="color:#111;">Namen</strong> oder wähle unten eine Veranstaltung aus.
+                </p>
+
+                <div class="fg-search-row">
+                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Event, Ort, Name oder Nummer…" aria-label="Galerie durchsuchen">
+                    <select id="fg-filter-category" aria-label="Kategorie Filter">
+                        <option value="all">Alle Kategorien</option>
+                    </select>
+                </div>
+
+                <div id="fg-info" class="fg-results-info">
+                    <span>Lade Events…</span>
+                </div>
+
+                <div id="fg-events" class="fg-events-grid" style="margin-top:10px;">
+                    <div class="fg-empty"><strong>Foto-Galerie wird geladen…</strong></div>
+                </div>
+            </div>
+
+            <div class="fg-section" data-aos="fade-up" style="margin-top:0.5rem;">
+                <h2><i class="fa-regular fa-circle-question" style="color:#f5b301;"></i> So findest du deine Bilder</h2>
+                <ol style="padding-left:1.25rem;color:#444;line-height:1.8;">
+                    <li><strong>Wähle ein Event</strong> aus der Liste oben oder suche nach Event-Name / Ort.</li>
+                    <li><strong>Gib deine Startnummer ein</strong> (z.B. <code>42</code>) oder einen Teil deines Namens – die Galerie filtert in Echtzeit.</li>
+                    <li><strong>Klicke auf ein Bild</strong> – es öffnet sich die Lightbox mit Download-Button fürs Original.</li>
+                </ol>
+                <p style="margin-top:1rem;color:#555;font-size:0.9rem;">
+                    📷 <strong>Bild-Feedback / eigene Bilder hochladen?</strong> Schreibe uns einfach an
+                    <a href="/kontakt" style="color:#f5b301;font-weight:600;">Kontakt →</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="/assets/nav.js" defer></script>
+    <script src="/fotos/assets/galerie.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
+    <script>
+        window.addEventListener('load', () => {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 800, once: true, mirror: false });
+            }
+        });
+    </script>
+</body>
+</html>

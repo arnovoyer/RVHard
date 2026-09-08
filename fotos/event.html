@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foto-Galerie Event | RV Hard</title>
+    <meta name="description" content="Foto-Galerie eines RV Hard Events – suche nach deiner Startnummer und lade deine Bilder herunter.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rv-hard.at/fotos/event.html">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="RV Hard">
+    <meta property="og:title" content="Event-Fotogalerie | RV Hard">
+    <meta property="og:description" content="Bilder eines RV Hard Events – suche nach Startnummer oder Name.">
+    <meta property="og:url" content="https://rv-hard.at/fotos/event.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/fotos/assets/galerie.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+</head>
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main>
+        <section class="fg-container">
+
+            <!-- BREADCRUMB -->
+            <div class="fg-breadcrumb">
+                <a href="/"><i class="fa-solid fa-house"></i> Startseite</a>
+                <span class="sep">›</span>
+                <a href="/fotos/"><i class="fa-regular fa-images"></i> Foto-Galerie</a>
+                <span class="sep">›</span>
+                <span id="fg-event-name">Event wird geladen…</span>
+            </div>
+
+            <!-- HEADER / EVENT INFOS -->
+            <div class="fg-section" data-aos="fade-up">
+                <h1 id="fg-event-name" style="font-size:2rem;"><i class="fa-solid fa-camera-retro" style="color:#f5b301;"></i> Event wird geladen…</h1>
+                <p style="color:#777; margin: 0.25rem 0 0 0; font-size:0.92rem;">
+                    <span id="fg-event-date"></span><span id="fg-event-location"></span>
+                </p>
+                <div id="fg-event-head-meta" style="margin-top: 0.85rem; display:flex; flex-wrap:wrap; gap: 14px 20px; font-size:0.88rem; color:#555;"></div>
+
+                <div style="margin-top: 1rem;">
+                    <a href="/fotos/" class="fg-btn fg-btn--outline" style="margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-arrow-left"></i> Alle Events
+                    </a>
+                    <span id="fg-external-link"></span>
+                </div>
+
+                <!-- FILTER -->
+                <div class="fg-search-row" style="margin-top: 1.75rem;">
+                    <input type="text" id="fg-bib" inputmode="numeric" placeholder="🏁 Startnummer (z.B. 42)" aria-label="Filter nach Startnummer">
+                    <input type="text" id="fg-name" placeholder="👤 Name (z.B. Müller)" aria-label="Filter nach Name">
+                    <input type="search" id="fg-search-photo" placeholder="🔍 Volltextsuche (Titel, Kommentar, Tags…)" aria-label="Fotos durchsuchen">
+                </div>
+
+                <div id="fg-gallery-info" class="fg-results-info">
+                    <span>0 Bilder geladen…</span>
+                </div>
+
+                <!-- GALLERY -->
+                <div id="fg-gallery" class="fg-gallery">
+                    <div class="fg-empty"><strong>Galerie wird geladen…</strong></div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ============ LIGHTBOX ============ -->
+    <div id="fg-lightbox" class="fg-lightbox" role="dialog" aria-modal="true" aria-label="Bildbetrachter">
+        <div class="fg-lightbox__inner">
+            <div class="fg-lightbox__img-wrap">
+                <button class="fg-lightbox__close" aria-label="Schließen">✕</button>
+                <button class="fg-lightbox__nav fg-lightbox__nav--prev" aria-label="Vorheriges Bild">‹</button>
+                <button class="fg-lightbox__nav fg-lightbox__nav--next" aria-label="Nächstes Bild">›</button>
+                <img src="" alt="">
+            </div>
+            <aside class="fg-lightbox__info">
+                <h3>Bild</h3>
+            </aside>
+        </div>
+    </div>
+
+    <footer id="site-footer"></footer>
+
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="/assets/nav.js" defer></script>
+    <script src="/fotos/assets/galerie.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
+    <script>
+        window.addEventListener('load', () => {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 700, once: true, mirror: false });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+[
+  {
+    "_schemaVersion": "1.0",
+    "_readme": "=== RV HARD FOTO-GALERIE – EVENTS.JOSN ===\n\nEinfach neue Events als Objekte unterhalb von _schemaVersion einfügen (OJBekte mit Komma getrennt).\nWenn du _schemaVersion / _readme behältst: alles gut, sie werden in der UI ignoriert.\n\n==== GOOGLE DRIVE DIREKT-LINK ANLEITUNG ====\n1. Foto in Google Drive hochladen, Rechtsklick → Link freigeben → Zugriff: 'Jeder mit dem Link' (Ansehen)\n2. Kopiere die Share-URL, z.B.: https://drive.google.com/file/d/1ABC123def456GHI789/view?usp=sharing\n3. Nimm die DATEI-ID: 1ABC123def456GHI789\n4. Mache daraus einen DIREKT-LINK (direkt nutzbar als <img src>):\n   THUMBNAIL (klein, schnell): https://drive.google.com/thumbnail?id=DATEI_ID&sz=w800\n   ORIGINAL (groß, zum Download): https://drive.google.com/uc?export=view&id=DATEI_ID\n\n==== ONEDRIVE (MICROSOFT 365) DIREKT-LINK ANLEITUNG ====\n1. Foto in OneDrive hochladen, Rechtsklick → Einbetten → Generieren\n   ODER: Freigeben → Link kopieren\n2. EINFACHSTER WEG für <img src>:\n   - Gehe auf https://onedrive.live.com und öffne das Bild im Browser\n   - Rechtsklick auf das Bild → 'Bild-Adresse kopieren'\n   - ODER: Nutze das OneDrive Embed-Tool (erzeugt einen <iframe> URL -> diese URL kannst du auch als Bild nutzen? Nein, besser:)\n   - Empfohlen: Bilder in RV Hard /fotos/data/ hochladen und relativen Pfad verwenden (z.B. /fotos/data/sbs2026/01.jpg)\n\n==== STARTNUMMERN-SUCHE ====\nBei jedem Foto unter \"bibNumbers\": [nummer1, nummer2] eintragen (Array von Zahlen/Strings) –\ndie Galerie filtert dann vollautomatisch nach diesen Nummern!\n\n==== FOTO-OBJEKT SCHEMA ====\n{\n  \"src\":           \"ERFORDERLICH. Direkte URL zum Originalbild (Google Drive uc?export=view OR OneDrive Direktlink OR /fotos/data/xxx.jpg)\",\n  \"thumbnail\":     \"Optional. Kleinere Version des Bilds (schnellere Ladezeit). Google Drive thumbnail?id=xxx&sz=w800.\",\n  \"title\":         \"Optional. Kurzer Titel (wird im Overlay + Lightbox angezeigt)\",\n  \"comment\":       \"Optional. Längerer Kommentar (Lightbox-Info).\",\n  \"date\":          \"Optional. '2026-09-05' oder '2026-09-05T10:30:00+02:00'\",\n  \"photographer\":  \"Optional. Name des Fotografen / der Fotografin.\",\n  \"copyright\":     \"Optional. Copyright, z.B. '© RV Hard'\",\n  \"bibNumbers\":    \"ERFORDERLICH FÜR STARTNUMMER-SUCHE! Array mit Nummern, z.B. [42, 123, 8].\",\n  \"athletes\":      \"Optional. Array mit Namen, z.B. ['Max Müller', 'Anna Mayer'].\",\n  \"tags\":          \"Optional. Array mit Tags, z.B. ['Ziel', 'Gebirge', 'Finish']\"\n}"
+  },
+
+  {
+    "id": "sbs-2026",
+    "slug": "summer-bike-series-2026-fotos",
+    "name": "Summer Bike Series 2026 – Landesmeisterschaften",
+    "description": "Offizielle Fotos der Summer Bike Series 2026 am 5. + 6. September 2026 in Feldkirch. Suche nach deiner Startnummer, um alle Bilder von dir zu finden!",
+    "category": "SBS",
+    "date": "2026-09-05",
+    "location": "Feldkirch, Vorarlberg",
+    "organizer": "RV Hard",
+    "coverPhoto": "https://drive.google.com/thumbnail?id=1EXAMPLE_COVER_SBS2026_ABC123&sz=w1200",
+    "externalGalleryUrl": "https://photos.google.com/share/EXAMPLE_SBS2026_ALBUM",
+    "tags": ["Rennrad", "Landesmeisterschaft", "UCI"],
+    "photos": [
+      {
+        "src": "https://drive.google.com/uc?export=view&id=1EXAMPLE_SBS_001",
+        "thumbnail": "https://drive.google.com/thumbnail?id=1EXAMPLE_SBS_001&sz=w800",
+        "title": "Start – Hauptrennen Elite",
+        "comment": "Massenstart der Elite-Kategorie am Samstag Vormittag.",
+        "date": "2026-09-05T10:05:00+02:00",
+        "photographer": "Max Mustermann Fotografie",
+        "copyright": "© RV Hard 2026",
+        "bibNumbers": [7, 12, 42, 88, 101, 212],
+        "athletes": ["Max Müller", "David Huber", "Manuel Fritz"],
+        "tags": ["Start", "Massenstart", "Elite"]
+      },
+      {
+        "src": "https://drive.google.com/uc?export=view&id=1EXAMPLE_SBS_002",
+        "thumbnail": "https://drive.google.com/thumbnail?id=1EXAMPLE_SBS_002&sz=w800",
+        "title": "Bergankunft – Runde 3",
+        "comment": "Spitzengruppe passiert die Bergankunft nach Runde 3.",
+        "bibNumbers": [42, 12, 77, 212],
+        "athletes": ["Max Müller", "David Huber"],
+        "tags": ["Berg", "Spitzengruppe"]
+      },
+      {
+        "src": "https://drive.google.com/uc?export=view&id=1EXAMPLE_SBS_003",
+        "thumbnail": "https://drive.google.com/thumbnail?id=1EXAMPLE_SBS_003&sz=w800",
+        "title": "Zielsprint – #42 schlägt #12",
+        "comment": "Max Müller (#42) gewinnt den Zielsprint haarscharf vor David Huber (#12).",
+        "photographer": "Anna Beispiel",
+        "bibNumbers": [42, 12, 88],
+        "athletes": ["Max Müller", "David Huber", "Thomas Gruber"],
+        "tags": ["Ziel", "Sprint", "Zielsprint"]
+      },
+      {
+        "src": "https://drive.google.com/uc?export=view&id=1EXAMPLE_SBS_004",
+        "thumbnail": "https://drive.google.com/thumbnail?id=1EXAMPLE_SBS_004&sz=w800",
+        "title": "Nachwuchs U15 – Siegerehrung",
+        "bibNumbers": [5, 6, 9, 11],
+        "athletes": ["Jonas Mayer", "Lisa Wirth", "Paul Huber"],
+        "tags": ["Nachwuchs", "Siegerehrung"]
+      },
+      {
+        "src": "https://drive.google.com/uc?export=view&id=1EXAMPLE_SBS_005",
+        "thumbnail": "https://drive.google.com/thumbnail?id=1EXAMPLE_SBS_005&sz=w800",
+        "title": "MTB Cross Country – Sonntag",
+        "comment": "Beim zweiten Event-Wochenende-Tag: MTB Cross Country im Wald.",
+        "date": "2026-09-06T11:00:00+02:00",
+        "bibNumbers": [33, 67, 42, 99, 120],
+        "athletes": ["Max Müller", "Sarah Steiner"],
+        "tags": ["MTB", "Cross Country"]
+      }
+    ]
+  },
+
+  {
+    "id": "nightrace-2025",
+    "slug": "nightrace-2025-fotos",
+    "name": "4. Nightrace Feldkirch 2025",
+    "description": "Alle Fotos des 4. Nightrace Feldkirch am 18. Oktober 2025. Du kannst direkt nach deiner Startnummer suchen!",
+    "category": "Nightrace",
+    "date": "2025-10-18",
+    "location": "Feldkirch, Dornbirnerstr.",
+    "organizer": "RV Hard",
+    "coverPhoto": "https://via.placeholder.com/1200x800/111/ffc107?text=Nightrace+2025",
+    "tags": ["Rennrad", "Kriterium", "Nacht"],
+    "photos": [
+      {
+        "src": "https://via.placeholder.com/2000/111/ffc107?text=Nightrace+2025+01",
+        "thumbnail": "https://via.placeholder.com/800/111/ffc107?text=Nightrace+2025+01",
+        "title": "Eröffnungsrunde – Flutlicht pur",
+        "bibNumbers": [1, 2, 7, 14, 33, 99, 111],
+        "athletes": ["Lukas König", "Sarah Steiner"],
+        "tags": ["Start", "Flutlicht"]
+      },
+      {
+        "src": "https://via.placeholder.com/2000/111/ffc107?text=Nightrace+2025+02",
+        "thumbnail": "https://via.placeholder.com/800/111/ffc107?text=Nightrace+2025+02",
+        "title": "Kurvendurchgang Haupttribüne",
+        "bibNumbers": [14, 7, 22, 33, 42],
+        "athletes": ["Max Müller", "Lukas König"],
+        "tags": ["Kurve"]
+      },
+      {
+        "src": "https://via.placeholder.com/2000/111/ffc107?text=Nightrace+2025+03",
+        "thumbnail": "https://via.placeholder.com/800/111/ffc107?text=Nightrace+2025+03",
+        "title": "Siegerehrung Gesamtwertung",
+        "bibNumbers": [1, 14, 7],
+        "athletes": ["Lukas König", "Max Müller", "Markus Weber"],
+        "tags": ["Siegerehrung", "Podium"]
+      }
+    ]
+  },
+
+  {
+    "id": "triathlon-fussach-2026",
+    "slug": "triathlon-fussach-2026-fotos",
+    "name": "3. Fussach Triathlon 2026",
+    "description": "Beispiel-Eintrag mit relativen Pfaden – falls du Bilder direkt in das RV Hard-Repo hochlädst statt Google Drive/OneDrive.",
+    "category": "Triathlon",
+    "date": "2026-06-21",
+    "location": "Fussach, Bodensee",
+    "organizer": "RV Hard / Tri Team Bodensee",
+    "coverPhoto": "/fotos/data/tri-fussach-2026/cover.jpg",
+    "tags": ["Triathlon", "Bodensee"],
+    "photos": [
+      {
+        "src": "/fotos/data/tri-fussach-2026/01-swim-start.jpg",
+        "thumbnail": "/fotos/data/tri-fussach-2026/01-swim-start-thumb.jpg",
+        "title": "Schwimmstart – 1.5 km Freistil",
+        "bibNumbers": [17, 22, 33, 44, 55, 99],
+        "athletes": ["Anna Mayer", "Paul Huber", "Maria König"],
+        "tags": ["Schwimmen", "Start"]
+      },
+      {
+        "src": "/fotos/data/tri-fussach-2026/02-bike.jpg",
+        "thumbnail": "/fotos/data/tri-fussach-2026/02-bike-thumb.jpg",
+        "title": "Radfahren – 40 km im Seerundkurs",
+        "bibNumbers": [17, 44, 99],
+        "athletes": ["Anna Mayer", "Maria König"],
+        "tags": ["Radfahren"]
+      },
+      {
+        "src": "/fotos/data/tri-fussach-2026/03-run-finish.jpg",
+        "thumbnail": "/fotos/data/tri-fussach-2026/03-run-finish-thumb.jpg",
+        "title": "Ziel – Laufen 10 km",
+        "bibNumbers": [17],
+        "athletes": ["Anna Mayer"],
+        "tags": ["Laufen", "Ziel"]
+      }
+    ]
+  }
+]
