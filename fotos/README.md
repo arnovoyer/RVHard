@@ -1,157 +1,145 @@
-# 📸 SUMMER BIKE SERIES – FOTO-GALERIE (KOMPLETT-NEU V3)
+# 📸 SUMMER BIKE SERIES FOTO-GALERIE (V3.1 – EINFACH WIE FRÜHER!)
 
-## 🧩 Aufbau: 2 getrennte Bereiche
+## 🏔️ ECHTE SBS ORTE 2026 (3 Disziplinen pro Jahr!)
 
-| Bereich | URL | Wer darf hin? | Was passiert dort? |
+Pro SBS-Jahr gibt es **3 ECHTE Wettbewerbe** mit echten Namen:
+
+| Icon | Disziplin | Genauer Ort / Strecke | Ordner am PC + Server |
 |---|---|---|---|
-| **FRONTEND (Öffentlich)** | `/fotos/index.html` | **Jeder** | Alle SBS-Bilder ansehen, nach **Startnummer** suchen, Bilder herunterladen |
-| **BACKEND (Admin)** | `/fotos/admin/index.html` | **NUR DU mit Passwort!** | Bilder hochladen, **Startnummern taggen**, 1-Klick Upload auf RV Hard Server |
+| 🏔️ | **Bergrennen** | Wolfurt → Buch (Bregenzerwald) | `/fotos/data/sbs-2026-bergrennen-wolfurt-buch/` |
+| 🏁 | **Kriterium** | Kammgarn Areal, Hard (Stadtkurs) | `/fotos/data/sbs-2026-kriterium-kammgarn-hard/` |
+| ⏱️ | **Einzelzeitfahren** | Rohrspitz, Fußach (Bodensee-Ufer) | `/fotos/data/sbs-2026-ezf-rohrspitz-fussach/` |
 
 ---
 
-## ⚙️ ERSTMALIGE SERVER-INSTALLATION (MACHEN WIR GENAU 1 MAL!)
+## 🧩 Aufbau des Systems (2 getrennte Bereiche)
 
-### 🚨 GANZ WICHTIG: Passwort setzen!
-Öffne auf deinem PC die Datei:
-→ **`/fotos/admin/upload.php`** → **Zeile 9!**
+| Bereich | URL | Wer darf hin? | Aufgabe |
+|---|---|---|---|
+| 🌍 **FRONTEND (öffentlich)** | `rv-hard.at/fotos/` | **Jeder Besucher** | Galerie ansehen, nach Startnummer suchen, Bilder downloaden |
+| 🛠️ **BACKEND (Admin Tool)** | `rv-hard.at/fotos/admin/` | **Nur du (RV Hard)** | Bilder taggen, events.json herunterladen |
 
-```php
-$ADMIN_PASSWORD = 'rvhard-sbs-passwort-2026!';  /* ← HIER DEIN EIGENES ADMIN-PASSWORT EINTRAGEN! */
+---
+
+## 🚀 GANZER ABLauf SCHRITT FÜR SCHRITT (EINFACH WIE FRÜHER!)
+
+### 1️⃣ Bilder per FTP hochladen
+
+So wie früher, einfach per FileZilla/WinSCP:
+
+1. **Bilder am PC in die passenden Ordner kopieren** (Ordner sind schon auf deinem PC angelegt!):
+   ```
+   /fotos/data/sbs-2026-bergrennen-wolfurt-buch/      ← Alle Bergrennen-Bilder
+   /fotos/data/sbs-2026-kriterium-kammgarn-hard/      ← Alle Kriterium-Bilder
+   /fotos/data/sbs-2026-ezf-rohrspitz-fussach/         ← Alle EZF-Bilder
+   ```
+2. **Diese 3 Ordner per FTP auf den Server** nach `rv-hard.at/fotos/data/` hochladen
+3. **ODER:** Direkt per FTP Bilder aus Explorer auf Server in die Ordner ziehen!
+
+⚠️ **Wichtig:** Dateinamen am besten **kurz + ohne Leerzeichen**, z.B. `IMG_1234.jpg` oder `zielsprint-42.jpg`
+
+---
+
+### 2️⃣ Backend öffnen & Bilder taggen
+
+Öffne **`rv-hard.at/fotos/admin/`** (Passwort kann auf Wunsch per .htaccess hinzugefügt werden – aktuell einfach nur "obfuscated" weil URL nicht öffentlich bekannt ist).
+
+Dort:
+1. **SBS-Jahr** auswählen (2026 / 2025 / 2024)
+2. **Klicke die Disziplin an**, die du gerade bearbeiten willst:
+   - 🏔️ Bergrennen Wolfurt-Buch
+   - 🏁 Kriterium Kammgarn Hard
+   - ⏱️ EZF Rohrspitz Fußach
+3. **Bilder reinziehen:**
+   - Dateien aus dem lokalen Ordner markieren
+   - Oder per FTP **runtergeladene Bilder** (zur Vorschau) markieren
+   - Ins große graue Feld ziehen → Vorschau erscheint
+4. **STARTNUMMERN TAGGEN – 2 Möglichkeiten:**
+   - **🟡 MASSEN-TAGGING (Schnellste Variante – EMPFOHLEN!):**
+     1. Haken bei Bildern setzen (oder "Alle" Button)
+     2. In gelbe Leiste oben Nummern eingeben, z.B. `42, 12, 88` (KOMMA getrennt!)
+     3. Button **"auf Auswahl anwenden"** → Nummern sind bei allen Bildern gesetzt! ✅
+   - **Einzeln:** Bei jedem Bild im gelben Feld Nummern eintragen
+5. **Speichern:** Button **"events.json herunterladen"** klicken → Datei wird runtergeladen!
+
+---
+
+### 3️⃣ events.json auf den Server laden
+
+1. **FTP öffnen** (FileZilla/WinSCP)
+2. **Heruntergeladene** `events.json` nach:
+   ```
+   /fotos/data/events.json   (ersetzen!)
+   ```
+   hochladen (ja, Datei überschreiben!)
+3. **FERTIG!** 🎉
+
+---
+
+### 4️⃣ Testen im Frontend
+
+Öffne: **`rv-hard.at/fotos/`**
+1. Wähle oben im Filter: Jahr (2026) ODER Disziplin (z.B. Kriterium)
+2. Klicke auf die **Disziplin-Karte**
+3. Gib im Feld **🏁 Startnummer** `42` ein → **Filter funktioniert sofort!**
+4. Klick auf ein Bild → Lightbox → Download-Button
+
+---
+
+## 🧠 Wie funktioniert die Startnummer-Suche? (Ganz einfach!)
+
+| Schritt | Wer | Was |
+|---|---|---|
+| 1 | **Du (Admin)** | Jedes Bild bekommt Tags mit den sichtbaren Startnummern, z.B. `bibNumbers: [42, 12, 88]` |
+| 2 | **Besucher** | Gibt im Feld "Startnummer" die `42` ein |
+| 3 | **JavaScript** | Durchsucht ALLE Bilder nach `bibNumbers`, die `42` enthalten |
+| 4 | **Ergebnis** | Nur Bilder MIT der Nummer 42 werden angezeigt! |
+
+**Auch Teil-Suche:** Eingabe `4` → findet automatisch `#4`, `#14`, `#42`, `#144`, `#412` etc.
+
+---
+
+## 📂 Ordner-Struktur auf Server & PC
+
 ```
-→ **Ändere das Passwort auf DEINS!** (z.B. `MeinSuperSicheresSBSPasswort2026!`)
+/fotos/
+├── index.html                  ← Frontend Galerie (öffentlich)
+├── event.html                  ← Einzelne Disziplin-Seite (mit Nummernfilter)
+│
+├── admin/
+│   └── index.html              ← Backend (NUR DU!): Bilder taggen + JSON download
+│
+├── assets/
+│   ├── galerie.css             ← Styling (RV Hard Design)
+│   └── galerie.js              ← Logik (Filter + Nummernsuche)
+│
+├── data/
+│   ├── events.json             ← ALLE Events + Fotos + Startnummern (ZENTRAL!)
+│   │
+│   ├── sbs-2026-bergrennen-wolfurt-buch/    ← BERGRENNEN-BILDER (FTP)
+│   │   ├── IMG_1234.jpg
+│   │   ├── IMG_1235.jpg
+│   │   └── ...
+│   │
+│   ├── sbs-2026-kriterium-kammgarn-hard/    ← KRITERIUM-BILDER (FTP)
+│   │   ├── bild1.jpg
+│   │   └── ...
+│   │
+│   └── sbs-2026-ezf-rohrspitz-fussach/       ← EZF-BILDER (FTP)
+│       ├── ezf001.jpg
+│       └── ...
+│
+└── README.md                   ← Diese Anleitung
+```
 
 ---
 
-### Ordner + Dateien auf den Server laden (per FTP / FileZilla):
-
-1. **Ganzen `/fotos/` Ordner** auf den Server kopieren → er liegt jetzt unter `rv-hard.at/fotos/`
-2. **WICHTIG – Schreibrechte auf dem Server setzen (per FTP):**
-   - Ordner **`/fotos/data/`** → Rechte auf **`755`** (read/write/execute für Owner)
-   - Wenn es schon Bilder/Events gibt, später: Dateien → Rechte **`644`** (read/write Owner, read alle anderen)
-3. **Testen ob Backend geht:**
-   - Browser öffnen: **`https://rv-hard.at/fotos/admin/`**
-   - **Passwort** eingeben → Login-Test!
-
----
-
-## 👨‍💻 BACKEND BEDIENUNG (So lädst du SBS Bilder hoch!)
-
-### 📍 URL im Browser:
-→ **`https://rv-hard.at/fotos/admin/`**
-
----
-
-### Ablauf Schritt für Schritt:
-
-#### 1️⃣ SBS Jahr + Disziplin wählen
-Oben auf der Seite:
-1. **SBS Jahr** auswählen (z.B. `2026`)
-2. Darunter erscheinen **3 Karten** für die Disziplinen:
-   - 🏔️ **Bergrennen** (Schellenberg)
-   - ⏱️ **Einzelzeitfahren** (EZF)
-   - 🏁 **Kriterium** (Stadtkurs)
-3. **Klicke die Disziplin an**, die du jetzt bearbeiten möchtest!
-
----
-
-#### 2️⃣ Bilder hochladen (Drag & Drop)
-1. **Ziehe Bilder per Maus** in das große graue Feld ("Bilder hier reinziehen…")
-2. **ODER:** Klicke auf das Feld → Dateiauswahl → mehrere Bilder markieren → OK
-3. Bilder erscheinen sofort als kleine Karten mit Vorschau!
-
----
-
-#### 3️⃣ 🏁 STARTNUMMERN TAGGEN (WICHTIG! → Sonst findet später keiner Bilder!)
-Für jedes Bild **MÜSSEN** Startnummern eingetragen werden. Zwei Möglichkeiten:
-
-##### 🅰️ Einzeln (für wenige Bilder):
-- Gib bei jedem Bild direkt im **gelben Feld "Startnummern"** die Nummern ein:
-  ```
-  42, 12, 88
-  ```
-  → Mit **KOMMA getrennt!**
-
-##### 🅱️ **Massen-Tagging (MEGA SCHNELL – EMPFOHLEN!)**
-Perfekt, wenn du 50 Bilder hast, auf denen Gruppe A Nummern 1-20 hat:
-1. **Setze Haken** bei allen Bildern, bei denen die gleiche Nummer drauf ist
-   - Oder Klick: **"Alle Bilder auswählen"**
-2. In der **gelben "Massen-Tagging" Leiste** oben:
-   - Feld **🏁 Startnummern**: `42, 12, 88` (alle Nummern, die auf den ausgewählten Bildern sind!)
-   - Optional 👤 Fahrernamen, 📸 Fotograf
-3. Klick: **"Tags hinzufügen"** → ✅ Fertig! Nummern sind bei allen ausgewählten Bildern eingetragen!
-
----
-
-#### 4️⃣ 🚀 Auf den Server hochladen – 1 KLICK!
-Sobald alle Bilder Nummern haben:
-1. Scrolle runter zum **grünen Export-Bereich**
-2. Klick: **"Auf RV Hard Server hochladen"**
-3. Warte 5-30 Sekunden → Progress-Bar läuft hoch
-4. ✅ **Erledigt!** Die Bilder sind **sofort LIVE** auf `rv-hard.at/fotos/` sichtbar!
-
----
-
-## 👥 FRONTEND BEDIENUNG (Für Besucher / Fahrer / Zuschauer)
-
-### 📍 URL im Browser:
-→ **`https://rv-hard.at/fotos/`**
-
-### Funktionen:
-1. **Oben im Filter:**
-   - **SBS Jahr**: z.B. nur `SBS 2026` anzeigen
-   - **Disziplin**: z.B. nur `Bergrennen` anzeigen
-   - **Suchfeld**: Suche nach Ort / Nummer / Namen
-2. **Unterteilt nach SBS-Jahr** (2026 oben, 2025 darunter etc.)
-3. **Pro Disziplin eine Karte**: 🏔️ Bergrennen · ⏱️ EZF · 🏁 Kriterium
-4. **Klick auf Karte** → Öffnet die Galerie mit allen Bildern
-5. **Filter auf Galerie-Seite:**
-   - Feld **🏁 Startnummer** eingeben, z.B. `42`
-   - **SOFORT werden NUR noch Bilder mit #42 angezeigt!**
-6. **Klick auf Bild → Lightbox** mit:
-   - Download-Button für Original
-   - Anzeige von Nummern, Namen, Fotograf
-
----
-
-## 🆘 Häufige Probleme + Lösungen
+## 🆘 Troubleshooting
 
 | Problem | Lösung |
 |---|---|
-| **Login im Backend: Falsches Passwort** | Prüfe in `/fotos/admin/upload.php` Zeile 9 – Passwort 1:1 gleich schreiben! |
-| **Bilder werden nicht hochgeladen (Fehler 500)** | Ordner `/fotos/data/` braucht Schreibrechte! In FileZilla: Rechtsklick auf data/ → Dateirechte → `755` |
-| **Besucher sehen keine Bilder trotz Upload** | Browser-Cache leeren! (Strg + Umschalt + Entf) ODER events.json Schreibrechte 644 |
-| **Startnummer-Suche findet nix** | Hatten die Bilder im Backend auch wirklich **Nummern im gelben Feld** bekommen? |
-| **Galerie zeigt "Events werden geladen…" für immer** | Prüfe per FTP, ob `/fotos/data/events.json` wirklich da ist und lesbar (644)! |
-
----
-
-## 🧠 TECHNISCHE INFOS (Für später)
-
-### Ordner-Struktur auf Server:
-```
-/fotos/
-├── index.html                  ← Öffentliche Galerie (Frontend)
-├── event.html                  ← Galerie EINER Disziplin (mit Nummernfilter)
-├── README.md                   ← DIESE ANLEITUNG
-│
-├── admin/
-│   ├── index.html              ← ADMIN BEREICH (Passwort-geschützt!)
-│   └── upload.php              ← PHP Endpoint (Auth + Upload + Speichern)
-│
-├── assets/
-│   ├── galerie.css
-│   └── galerie.js
-│
-└── data/
-    ├── events.json             ← ALLE Events + Fotos + Nummern (wird von admin.php erzeugt!)
-    │
-    ├── sbs-2026-bergrennen/    ← Bilder Bergrennen
-    │   ├── 001-bibs-42-12.jpg
-    │   ├── 002-bibs-88.jpg
-    │   └── ...
-    │
-    ├── sbs-2026-ezf/           ← Bilder EZF
-    ├── sbs-2026-kriterium/     ← Bilder Kriterium
-    ├── sbs-2025-bergrennen/
-    └── ...
-```
+| **Nummernsuche findet nix** | Backend gecheckt: Haben die Bilder wirklich **gelbe Startnummern-Einträge**? events.json aktuell auf Server? |
+| **Bilder werden als "kaputt" angezeigt** | Bilder per FTP im richtigen Ordner? Dateinamen 1:1 gleich wie auf PC? |
+| **Galerie zeigt Lade-Symbol ewig** | events.json auf dem Server vorhanden? Rechte 644? |
+| **Browser zeigt alte Bilder** | Cache leeren! Strg + Umschalt + Entf. |
+| **Welche Events sind überhaupt da?** | Öffne `rv-hard.at/fotos/data/events.json` im Browser → alles anzeigbar! |

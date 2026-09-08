@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔒 SBS Admin – Bilder Upload & Taggen | RV Hard</title>
+    <title>🔒 SBS Admin – Bilder taggen & events.json erzeugen | RV Hard</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,39 +14,30 @@
     <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
     <style>
         body { padding-top: 70px; }
-        .fg-lock {
-            background: linear-gradient(135deg, #0f5132, #157347);
-            color: #fff;
-            padding: 1rem 1.25rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-        .fg-lock .l { display:flex; align-items:center; gap: 0.75rem; }
-        .fg-lock h2 { margin: 0; color:#fff; font-size: 1.15rem; font-weight: 700; }
-        .fg-lock button { background:#fff; color:#157347; border:none; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight:700; cursor:pointer; }
 
-        /* Login Screen */
-        .fg-login-wrap {
-            max-width: 480px; margin: 4rem auto;
-            padding: 2.5rem; background: #fff; border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            text-align: center;
+        /* Einfache Anleitung Box */
+        .fg-guide {
+            padding: 1.1rem 1.3rem; margin-bottom: 1.5rem;
+            background: #e7f1ff; color: #052c65;
+            border-left: 5px solid #0d6efd;
+            border-radius: 10px;
         }
-        .fg-login-wrap .icon {
-            width: 72px; height: 72px; margin: 0 auto 1rem;
+        .fg-guide ol { margin: 0.5rem 0 0 0; padding-left: 1.3rem; line-height: 1.75; }
+        .fg-guide ol code { background: #fff; padding: 2px 5px; border-radius: 4px; }
+
+        .fg-step { margin-bottom: 2rem; }
+        .fg-step__header {
+            display: flex; align-items: center; gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .fg-step__num {
+            width: 38px; height: 38px; flex: 0 0 38px;
             background: linear-gradient(135deg, #ffc107, #f5b301);
-            border-radius: 50%; color: #111; font-size: 2rem;
+            color: #111; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
         }
-        .fg-login-wrap h1 { margin: 0 0 0.35rem 0; font-size: 1.6rem; color:#111; font-weight:700; }
-        .fg-login-wrap p  { color:#666; margin: 0 0 1.5rem; }
-        .fg-login-wrap .fg-input { width: 100%; padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius:8px; font-size:1rem; font-family:'Poppins',sans-serif; box-sizing:border-box; margin-bottom: 1rem; }
-        .fg-login-wrap .fg-btn { width: 100%; padding: 0.85rem; font-size: 1rem; }
+        .fg-step__header h2 { margin: 0; font-size: 1.3rem; }
 
         .fg-grid-3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         @media (max-width: 800px) { .fg-grid-3 { grid-template-columns: 1fr; } }
@@ -57,9 +48,9 @@
         }
         .fg-event-pick:hover { border-color:#ffc107; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15); }
         .fg-event-pick.active { border-color: #f5b301; background: #fff8e1; box-shadow: inset 0 0 0 2px #f5b301; }
-        .fg-event-pick .cat { display:inline-block; padding: 2px 8px; background:#ffc107; color:#111; font-size: 0.7rem; border-radius: 999px; font-weight:700; letter-spacing:0.03em; margin-bottom: 0.4rem; text-transform: uppercase; }
+        .fg-event-pick .cat { display:inline-block; padding: 2px 8px; color:#fff; font-size: 0.7rem; border-radius: 999px; font-weight:700; margin-bottom: 0.4rem; letter-spacing: 0.03em; }
         .fg-event-pick h3 { margin: 0.15rem 0; font-size: 1rem; color:#111; }
-        .fg-event-pick small { color:#777; font-size:0.8rem; }
+        .fg-event-pick small { color:#777; font-size:0.8rem; display:block; margin-top:2px;}
         .fg-event-pick .count { margin-top: 0.5rem; font-size: 0.85rem; color:#555; font-weight:600; }
 
         /* Foto-Karte - VERBESSERT */
@@ -72,32 +63,21 @@
         .fg-photo-card__header { position: relative; background: #111; }
         .fg-photo-card__header img { width:100%; height: 180px; object-fit:cover; display:block; }
         .fg-photo-card__select { position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; cursor:pointer; accent-color: #f5b301; }
-        .fg-photo-card__status {
-            position: absolute; top: 8px; right: 8px;
-            padding: 3px 8px; border-radius: 6px;
-            font-size: 0.7rem; font-weight:700; color:#fff;
-        }
-        .status-uploaded { background: #157347; }
-        .status-pending  { background: #b78700; }
-        .status-error    { background: #b02a37; }
-        .fg-photo-card__body { padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .fg-photo-card__body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .fg-photo-card__body label { display:block; font-size:0.7rem; color:#666; letter-spacing:0.04em; font-weight:600; margin-bottom: 0.15rem; }
         .fg-photo-card__body input {
             width: 100%; padding: 0.4rem 0.55rem; border: 2px solid #e0e0e0; border-radius: 6px;
             font-size: 0.85rem; font-family:'Poppins', sans-serif; box-sizing: border-box;
         }
         .fg-photo-card__body input.bibs {
-            border-color: #ffd855;
-            background: #fffce6;
-            font-weight: 600;
-            font-size: 0.9rem;
+            border-color: #ffd855; background: #fffce6; font-weight: 600; font-size: 0.9rem;
         }
         .fg-photo-card__title {
             font-size: 0.8rem; color: #555; padding-bottom: 6px; border-bottom: 1px dashed #eee;
             word-break: break-all;
         }
 
-        /* Bulk Bar etwas umgestellt */
+        /* Bulk Bar */
         .fg-bulkbar {
             display: none;
             padding: 1rem 1.2rem;
@@ -109,571 +89,479 @@
             align-items: flex-end;
         }
         .fg-bulkbar.show { display: flex; }
-        .fg-bulkbar__title { flex: 1 1 100%; font-weight:700; color:#111; display:flex; gap:0.6rem; align-items:center; }
+        .fg-bulkbar__title { flex: 1 1 100%; font-weight:700; color:#111; display:flex; gap:0.6rem; align-items:center; flex-wrap: wrap; }
         .fg-bulkbar__title strong { color:#f5b301; font-size:1.05rem; }
-        .fg-bulkbar .field { flex: 1 1 180px; display:flex; flex-direction:column; gap:0.2rem; }
+        .fg-bulkbar__title .btns { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+        .fg-bulkbar .field { flex: 1 1 170px; display:flex; flex-direction:column; gap:0.2rem; }
         .fg-bulkbar .field label { font-size: 0.72rem; color:#666; font-weight: 600; }
         .fg-bulkbar .field input { padding: 0.55rem 0.7rem; border: 2px solid #ffd855; border-radius:6px; font-family:'Poppins'; font-size:0.9rem; background:#fffce6; }
 
-        /* Upload-Status */
-        .fg-upload-progress {
-            margin: 1rem 0 0; padding: 0.9rem 1.1rem; background: #f0f9ff;
-            border: 1px solid #b3d9ff; border-radius: 8px;
-            display: none; align-items: center; gap: 0.9rem;
+        /* Dropzone */
+        .fg-dropzone {
+            border: 3px dashed #cfcfcf; border-radius: 12px;
+            padding: 2.5rem 1.25rem; text-align: center;
+            background: #fafafa; transition: all .2s ease; cursor: pointer; color: #666;
         }
-        .fg-upload-progress.show { display: flex; }
-        .fg-upload-progress .prog {
-            flex: 1; height: 12px; background: #dbeafe; border-radius: 999px; overflow:hidden;
+        .fg-dropzone.dragover { border-color: #ffc107; background: #fff9e6; color: #111; transform: scale(1.01); }
+        .fg-dropzone i { font-size: 2.5rem; color: #ffc107; margin-bottom: 0.75rem; display:block; }
+        .fg-dropzone strong { font-size: 1.05rem; color: #111; display: block; margin-bottom: 0.25rem; }
+        .fg-dropzone small { color: #888; }
+
+        /* Foto Grid */
+        .fg-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 14px;
+            margin-top: 1rem;
         }
-        .fg-upload-progress .prog > div {
-            height: 100%; width: 0%;
-            background: linear-gradient(90deg, #198754, #0d6efd);
-            transition: width .2s ease;
+
+        /* Export */
+        .fg-export {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #0f5132, #157347);
+            color: #fff;
+            border-radius: 10px;
         }
-        .fg-upload-progress .txt { color: #084298; font-weight:700; font-size:0.85rem; }
+        .fg-export .fg-step__header h2 { color:#fff; }
+        .fg-export .fg-step__num { background:#fff;color:#157347; }
+        .fg-export p { color: rgba(255,255,255,0.9); margin: 0 0 1rem 0; }
+        .fg-export .fg-btn {
+            background: #fff;
+            color: #157347;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .fg-export small { color: rgba(255,255,255,0.75); display:block; margin-top: 0.75rem; font-size: 0.78rem; line-height:1.6; }
+
+        /* Erfolg */
+        .fg-success {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            background: #d1e7dd; color: #0f5132;
+            border: 2px solid #157347;
+            border-radius: 8px;
+        }
+        .fg-success.show { display: block; }
+        .fg-success h3 { margin: 0 0 0.5rem 0; color: #0f5132; }
+        .fg-success ol { margin: 0; padding-left: 1.25rem; line-height: 1.75; }
+
+        /* FTP Info Box */
+        .fg-ftp-info {
+            padding: 1.25rem; background: #fff3cd;
+            border: 2px dashed #ffc107; border-radius: 10px;
+            margin-bottom: 1.5rem; color: #7a5d00;
+        }
+        .fg-ftp-info h3 { margin: 0 0 0.5rem 0; color: #7a5d00; font-size: 1.05rem; }
+        .fg-ftp-info ul { margin: 0; padding-left: 1.25rem; line-height: 1.75; }
+        .fg-ftp-info code { background:#fff; padding: 2px 5px; border-radius:4px; }
+
+        @media (max-width: 600px) {
+            .fg-photo-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .fg-photo-card__header img { height: 140px; }
+        }
     </style>
 </head>
 <body>
-
-<!-- LOGIN SCREEN (falls nicht angemeldet) -->
-<div id="login-wrap" class="fg-login-wrap" style="display:none;">
-    <div class="icon"><i class="fa-solid fa-lock"></i></div>
-    <h1>SBS Admin-Bereich</h1>
-    <p>Bitte gib dein Admin-Passwort ein, um Bilder hochzuladen und zu taggen.</p>
-    <form id="login-form">
-        <input class="fg-input" type="password" name="pw" autocomplete="current-password" placeholder="🔒 Admin-Passwort" required>
-        <button type="submit" class="fg-btn">Anmelden →</button>
-    </form>
-    <p id="login-err" style="color:#b02a37; margin-top: 1rem; display:none;">❌ Falsches Passwort!</p>
-</div>
-
-<div id="app" style="display:none;">
-    <header>
-        <nav id="navigation-container"></nav>
-    </header>
+    <header><nav id="navigation-container"></nav></header>
 
     <main>
-        <section class="fg-container">
+    <section class="fg-container">
 
-            <!-- Lock Header -->
-            <div class="fg-lock">
-                <div class="l">
-                    <i class="fa-solid fa-user-shield" style="font-size: 1.3rem;"></i>
-                    <div>
-                        <h2>🔒 SBS Admin-Bereich (NUR FÜR RV HARD ADMINS!)</h2>
-                        <small>Passwortgeschützt. Bilder hochladen, Startnummern taggen, 1-Klick Server-Upload.</small>
+        <!-- EINFÜHRUNG: FTP HOCHLADEN WIE FRÜHER -->
+        <div class="fg-ftp-info">
+            <h3><i class="fa-solid fa-folder-open"></i> Schritt 0 (VOR dem Backend!): Bilder per FTP hochladen (EINFACH WIE FRÜHER)</h3>
+            <ul>
+                <li>Bilder am PC <strong>in den passenden Ordner</strong> kopieren (siehe unten)</li>
+                <li>Dann die 3 Ordner per FTP auf den Server in <code>/fotos/data/</code> hochladen</li>
+                <li>ODER: Bilder direkt per FTP in die richtigen Ordner auf dem Server kopieren</li>
+                <li>Erst <strong>danach</strong>: Backend hier öffnen → Bilder reinziehen → Taggen → Download events.json</li>
+            </ul>
+        </div>
+
+        <!-- FTP ORDNER Infos -->
+        <div class="fg-guide">
+            <strong><i class="fa-solid fa-folder-tree"></i> Passende Ordnerstruktur für SBS 2026 (pro Jahr gleich):</strong>
+            <ol>
+                <li><strong>Bergrennen:</strong> <code>/fotos/data/sbs-2026-bergrennen-wolfurt-buch/</code></li>
+                <li><strong>Kriterium:</strong> <code>/fotos/data/sbs-2026-kriterium-kammgarn-hard/</code></li>
+                <li><strong>EZF:</strong> <code>/fotos/data/sbs-2026-ezf-rohrspitz-fussach/</code></li>
+            </ol>
+        </div>
+
+        <!-- 1. EVENT WÄHLEN -->
+        <div class="fg-section fg-step">
+            <div class="fg-step__header">
+                <div class="fg-step__num">1</div>
+                <h2>Welche SBS-Disziplin möchtest du jetzt bearbeiten?</h2>
+            </div>
+            <div style="padding: 0.75rem 1rem 1rem; background: #f7f7f7; border-radius: 8px; margin-bottom: 1rem;">
+                <label class="fg-label" for="year-select">SBS Jahr auswählen</label>
+                <select class="fg-input" id="year-select" style="max-width:240px;">
+                    <option value="2026" selected>2026 (aktuell)</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                </select>
+            </div>
+            <div id="discipline-grid" class="fg-grid-3"></div>
+        </div>
+
+        <!-- 2. BILDER REINZIEHEN -->
+        <div class="fg-section fg-step">
+            <div class="fg-step__header">
+                <div class="fg-step__num">2</div>
+                <h2>Bilder per Drag & Drop hier reinziehen (vom FTP / PC-Ordner!)</h2>
+            </div>
+            <label for="file-input">
+                <div id="dropzone" class="fg-dropzone">
+                    <i class="fa-solid fa-file-image"></i>
+                    <strong>Bilder hier reinziehen oder klicken zum Auswählen</strong>
+                    <small>Am besten: GANZEN FTP-Ordner per Explorer auswählen → alle Bilder markieren → reinziehen!</small>
+                </div>
+            </label>
+            <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+
+            <!-- Bulk Bar -->
+            <div id="bulkbar" class="fg-bulkbar">
+                <div class="fg-bulkbar__title">
+                    <i class="fa-solid fa-layer-group"></i> Massen-Tagging aktiv:
+                    <strong><span id="sel-count">0</span> Bilder ausgewählt</strong>
+                    <div class="btns">
+                        <button class="fg-btn fg-btn--outline" id="select-all"><i class="fa-regular fa-square-check"></i> Alle</button>
+                        <button class="fg-btn fg-btn--outline" id="select-none"><i class="fa-regular fa-square"></i> Keine</button>
                     </div>
                 </div>
-                <div>
-                    <a href="/fotos/" class="fg-btn fg-btn--outline" style="background:rgba(255,255,255,0.15);color:#fff;border-color:#fff;margin-right:0.5rem;">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Zuröffentlichen Galerie
-                    </a>
-                    <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</button>
+                <div class="field">
+                    <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG</span></label>
+                    <input type="text" id="bulk-bib" placeholder="42, 12, 88, 333" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label>👤 Fahrer*innen-Namen (optional)</label>
+                    <input type="text" id="bulk-names" placeholder="Max Müller, Anna Mayer" autocomplete="off">
+                </div>
+                <div class="field" style="flex:0 0 auto;">
+                    <label>&nbsp;</label>
+                    <button class="fg-btn" id="bulk-apply" style="padding:0.6rem 1.2rem;">
+                        <i class="fa-solid fa-tags"></i> auf Auswahl anwenden
+                    </button>
                 </div>
             </div>
 
-            <!-- STEP 1: EVENT WAHLEN -->
-            <div class="fg-section fg-step">
-                <div class="fg-step__header">
-                    <div class="fg-step__num">1</div>
-                    <h2>Welches SBS-Disziplin bearbeitest du gerade?</h2>
-                </div>
-                <div style="padding: 0.75rem 1rem 1rem; background: #f7f7f7; border-radius: 8px; margin-bottom: 1rem;">
-                    <label class="fg-label" for="year-select">SBS Jahr auswählen</label>
-                    <select class="fg-input" id="year-select" style="max-width:240px;">
-                        <option value="2026" selected>2026 (aktuell)</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-                <div id="discipline-grid" class="fg-grid-3">
-                    <!-- wird via JS befüllt -->
-                </div>
+            <div id="photo-grid" class="fg-photo-grid"></div>
+            <div id="empty-msg" class="fg-empty" style="margin-top:1rem;">
+                <strong>Keine Bilder geladen.</strong><br>Bilder aus dem FTP-Ordner hier reinziehen!
             </div>
+        </div>
 
-            <!-- STEP 2: BILDER HOCHLADEN & TAGGEN -->
-            <div class="fg-section fg-step">
-                <div class="fg-step__header">
-                    <div class="fg-step__num">2</div>
-                    <h2>Bilder hochladen & <span style="color:#f5b301;">Startnummern taggen</span></h2>
-                </div>
-                <p class="lead" style="margin-bottom: 1rem;">
-                    💡 <strong>Tipp:</strong> Lade zuerst alle Bilder hoch, wähle dann Gruppen aus und verwende die
-                    <strong>gelbe Bulk-Tagging Leiste</strong>, um Startnummern auf <strong>Mengen Bilder gleichzeitig</strong> anzuwenden!
-                </p>
-
-                <label for="file-input">
-                    <div id="dropzone" class="fg-dropzone">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <strong>SBS Bilder hier reinziehen oder klicken zum Auswählen</strong>
-                        <small>JPG, PNG, WebP – Mehrfachauswahl möglich</small>
-                    </div>
-                </label>
-                <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
-
-                <!-- Bulk Tagging -->
-                <div id="bulkbar" class="fg-bulkbar">
-                    <div class="fg-bulkbar__title">
-                        <i class="fa-solid fa-layer-group"></i> Massen-Tagging aktiv:
-                        <strong><span id="sel-count">0</span> Bilder ausgewählt</strong>
-                        <div style="margin-left:auto; display:flex; gap: 8px;">
-                            <button class="fg-btn fg-btn--outline" id="select-all"><i class="fa-regular fa-square-check"></i> Alle Bilder auswählen</button>
-                            <button class="fg-btn fg-btn--outline" id="select-none"><i class="fa-regular fa-square"></i> Auswahl aufheben</button>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label><i class="fa-solid fa-flag-checkered" style="color:#f5b301;"></i> 🏁 Startnummern (KOMMA getrennt!)</label>
-                        <input type="text" id="bulk-bib" placeholder="z.B. 42, 12, 88, 333" autocomplete="off">
-                    </div>
-                    <div class="field">
-                        <label><i class="fa-regular fa-user" style="color:#0d6efd;"></i> Fahrer*innen-Namen (optional)</label>
-                        <input type="text" id="bulk-names" placeholder="Max Müller, Anna Mayer" autocomplete="off">
-                    </div>
-                    <div class="field">
-                        <label><i class="fa-solid fa-camera-retro"></i> Fotograf (optional)</label>
-                        <input type="text" id="bulk-phot" placeholder="RV Hard" value="RV Hard" autocomplete="off">
-                    </div>
-                    <div class="field" style="flex:0 0 auto;">
-                        <label>&nbsp;</label>
-                        <button class="fg-btn" id="bulk-apply" style="padding: 0.6rem 1.2rem;">
-                            <i class="fa-solid fa-tags"></i> Tags hinzufügen
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Grid -->
-                <div id="photo-grid" class="fg-photo-grid"></div>
-                <div id="empty-msg" class="fg-empty" style="margin-top: 1rem;">
-                    <strong>Keine Bilder geladen.</strong><br>Zieh Bilder in das Feld oben oder klicke zum Auswählen!
-                </div>
+        <!-- 3. EVENTS.JSON RUNTERLADEN -->
+        <div class="fg-export fg-step">
+            <div class="fg-step__header">
+                <div class="fg-step__num">3</div>
+                <h2 style="margin:0;color:#fff;">events.json herunterladen</h2>
             </div>
+            <p style="margin-top:0.5rem;">
+                Klicke auf den Button. Es wird eine <strong>fertige events.json</strong> heruntergeladen.
+                Ersetze danach per FTP die Datei auf dem Server: <code>/fotos/data/events.json</code> — FERTIG!
+            </p>
+            <button id="export-btn" class="fg-btn" disabled>
+                <i class="fa-solid fa-file-arrow-down"></i> events.json herunterladen
+            </button>
+            <small>
+                ⚠️ <strong>Hinweis:</strong> Die Bilder müssen bereits per FTP in den jeweiligen Ordern liegen!
+                Die events.json <strong>referenziert nur die Dateinamen</strong> aus den Ordnern und speichert dazu die Startnummern-Tags.
+            </small>
 
-            <!-- STEP 3: AUF SERVER HOCHLADEN -->
-            <div class="fg-export fg-step">
-                <div class="fg-step__header">
-                    <div class="fg-step__num" style="background:#fff;color:#157347;">3</div>
-                    <h2 style="margin:0; color:#fff;">Alles auf den RV Hard Server laden!</h2>
-                </div>
-                <p style="color:rgba(255,255,255,0.92); margin: 0.5rem 0 1rem;">
-                    Klicke auf den Button. Es werden: <strong>(1)</strong> alle Bilder in den richtigen
-                    <code>/fotos/data/sbs-JAHR-DISZIPLIN/</code> Ordner geladen,
-                    <strong>(2)</strong> die <code>events.json</code> gespeichert,
-                    <strong>(3)</strong> die Galerie ist sofort öffentlich sichtbar!
-                </p>
-                <button id="export-btn" class="fg-btn" disabled>
-                    <i class="fa-solid fa-rocket"></i>
-                    <span id="export-text">Auf RV Hard Server hochladen</span>
-                </button>
-                <small style="color: rgba(255,255,255,0.78); display:block; margin-top: 0.75rem; line-height: 1.5;">
-                    ⚠️ <strong>Wichtig:</strong> Bevor du loslegst, prüfe bitte: Ist für jedes Bild mindestens <strong>eine Startnummer</strong> eingetragen?
-                    Du kannst jederzeit erneut auf den Button klicken – es werden nur neue Bilder hochgeladen!
-                </small>
-
-                <div id="progress-wrap" class="fg-upload-progress">
-                    <div class="prog"><div id="prog-bar"></div></div>
-                    <div class="txt" id="prog-text">0 % – Starte…</div>
-                </div>
-                <div id="success-msg" class="fg-success" style="background: #fff3cd !important; color: #7a5d00 !important; border-color: #ffc107 !important;">
-                    <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> Erledigt! Die Bilder sind jetzt LIVE!</h3>
-                    <ol style="color:#333;">
-                        <li>Öffne die öffentliche Galerie:
-                            <a style="color:#155724;font-weight:700;" href="/fotos/" target="_blank"><strong>→ rv-hard.at/fotos/</strong></a>
-                        </li>
-                        <li>Wähle die Disziplin aus und gib eine Startnummer ein, um die Funktion zu testen!</li>
-                    </ol>
-                </div>
+            <div id="success-msg" class="fg-success" style="background:#fff3cd !important; color:#7a5d00 !important; border-color:#ffc107 !important;">
+                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> Fertig! Jetzt per FTP auf den Server laden:</h3>
+                <ol style="color:#333;">
+                    <li>Öffne FileZilla/WinSCP und verbinde mit <strong>rv-hard.at</strong></li>
+                    <li>Lade die heruntergeladene Datei <code>events.json</code> nach:
+                        <code style="background:#fff;">/fotos/data/events.json</code> <strong>(ersetzen!)</strong>
+                    </li>
+                    <li>✅ <strong>FERTIG!</strong> Galerie auf <a style="color:#0f5132;font-weight:700;" href="/fotos/" target="_blank">rv-hard.at/fotos/</a> öffnen – die SBS-Bilder sind jetzt mit Nummernsuche sichtbar!</li>
+                </ol>
             </div>
+        </div>
 
-        </section>
+    </section>
     </main>
 
     <footer id="site-footer"></footer>
-</div>
 
-<script>
-/* ========= GLOBALS ========= */
-const API = '/fotos/admin/upload.php';
-let photos = [];          /* { id, file, dataUrl, bibs:[], athletes:[], phot:'', remoteUrl:null, status:'pending'|'uploaded'|'error', filename } */
-let events = [];          /* vorhandene Events */
-let currentEventId = '';  /* aktiv ausgewähltes Disziplin */
-let idCounter = 0;
+    <script>
+        /* ===== INIT NAV + FOOTER ===== */
+        (async () => {
+            try {
+                const r = await fetch('/assets/navigationneu.html');
+                if (r.ok) document.getElementById('navigation-container').innerHTML = await r.text();
+                if (typeof initNavigationMenu === 'function') initNavigationMenu();
+            } catch(e) {}
+            try {
+                const r = await fetch('/assets/footer.html');
+                if (r.ok) document.getElementById('site-footer').innerHTML = await r.text();
+            } catch(e) {}
+        })();
 
-/* ========= LOGIN / LOGIC ========= */
-const $loginWrap = document.getElementById('login-wrap');
-const $app = document.getElementById('app');
+        /* ===== DATEN: 3 DISZIPLINEN PRO JAHR ===== */
+        const DISCS = [
+            { key: 'bergrennen-wolfurt-buch', name: 'Bergrennen Wolfurt → Buch', short: 'Bergrennen Wolfurt-Buch', cat: 'BERGRENNEN', color: '#198754', icon: 'fa-mountain-sun',
+              location: 'Wolfurt → Buch', distance: '12,8 km · 690 Hm', desc: 'Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!' },
+            { key: 'kriterium-kammgarn-hard', name: 'Kriterium Kammgarn Hard', short: 'Kriterium Kammgarn Hard', cat: 'KRITERIUM', color: '#dc3545', icon: 'fa-flag-checkered',
+              location: 'Kammgarn Areal, Hard', distance: '50 Runden · 75 km', desc: 'Stadtkurs Kriterium in Hard am Kammgarn-Gelände. Suche nach deiner Startnummer!' },
+            { key: 'ezf-rohrspitz-fussach', name: 'Einzelzeitfahren Rohrspitz Fußach', short: 'EZF Rohrspitz Fußach', cat: 'EZF', color: '#0d6efd', icon: 'fa-stopwatch',
+              location: 'Rohrspitz, Fußach (Bodensee)', distance: '9,2 km · 45 Hm', desc: 'Einzelzeitfahren entlang des Bodensees in Fußach. Suche nach deiner Startnummer!' }
+        ];
 
-async function api(action, data, isJson=false) {
-    const url = `${API}?action=${encodeURIComponent(action)}`;
-    const opts = { method: 'POST', credentials: 'same-origin' };
-    if (isJson) {
-        opts.headers = { 'Content-Type': 'application/json' };
-        opts.body = JSON.stringify(data);
-    } else if (data instanceof FormData) {
-        opts.body = data;
-    } else {
-        opts.body = new URLSearchParams(data);
-    }
-    const r = await fetch(url, opts);
-    const txt = await r.text();
-    let j; try { j = JSON.parse(txt); } catch { j = { ok:false, error:'Server Antwort: ' + txt }; }
-    if (!r.ok && action !== 'login') {
-        if (r.status === 401) showLogin();
-    }
-    return j;
-}
+        let currentEventId = '';
+        let uploadedPhotos = []; /* [{ id, file, filename, dataUrl, bibNumbers, athletes, photographer, title, _selected }] */
+        let idCounter = 0;
 
-async function checkAuth() {
-    const j = await api('get_events', {});
-    if (j && j.ok) { events = j.events || []; showApp(); renderEvents(); return true; }
-    return false;
-}
-function showApp() { $loginWrap.style.display = 'none'; $app.style.display = 'block'; }
-function showLogin() { $app.style.display='none'; $loginWrap.style.display='block'; document.getElementById('login-form').pw.value=''; document.getElementById('login-err').style.display='none'; }
+        /* ===== EVENT WAHL ===== */
+        const $yearSel = document.getElementById('year-select');
+        const $grid = document.getElementById('discipline-grid');
 
-document.getElementById('login-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const pw = e.target.pw.value;
-    const j = await api('login', { password: pw });
-    if (j && j.ok) { checkAuth(); }
-    else { document.getElementById('login-err').style.display='block'; }
-});
-document.getElementById('logout-btn').addEventListener('click', async () => {
-    await fetch(API + '?action=_logout_none', { method:'POST', credentials:'same-origin'}).catch(()=>{});
-    document.cookie = 'PHPSESSID=; Max-Age=0; path=/';
-    location.reload();
-});
+        function eventIdFor(year, key) { return `sbs-${year}-${key}`; }
+        function folderFor(year, key) { return `sbs-${year}-${key}`; }
 
-/* ========= NAV + FOOTER (nach Login anzeigen) ========= */
-(async () => {
-    try {
-        const r = await fetch('/assets/navigationneu.html');
-        if (r.ok) document.getElementById('navigation-container').innerHTML = await r.text();
-        if (typeof initNavigationMenu === 'function') initNavigationMenu();
-    } catch(e) {}
-    try {
-        const r = await fetch('/assets/footer.html');
-        if (r.ok) document.getElementById('site-footer').innerHTML = await r.text();
-    } catch(e) {}
-})();
-
-/* ========= EVENTS WAHL (JAHR + DISZIPLIN) ========= */
-const DISCIPLINES = [
-    { key: 'bergrennen', shortName: 'Bergrennen', icon: 'fa-mountain-sun', cat: 'BERGRENNEN',
-        defaultName: 'Bergrennen Schellenberg', defaultLocation: 'Feldkirch – Schellenberg', defaultDistance: '14,8 km · 712 Hm',
-        desc: 'Bergrennen der SBS – Suche nach deiner Startnummer!' },
-    { key: 'ezf', shortName: 'Einzelzeitfahren', icon: 'fa-stopwatch', cat: 'EZF',
-        defaultName: 'Einzelzeitfahren Gisingen', defaultLocation: 'Gisingen (Dornbirn)', defaultDistance: '8,4 km · 80 Hm',
-        desc: 'Einzelzeitfahren (EZF) – Suche nach deiner Startnummer!' },
-    { key: 'kriterium', shortName: 'Kriterium', icon: 'fa-flag-checkered', cat: 'STADT-KRITERIUM',
-        defaultName: 'Kriterium Feldkirch Stadtkurs', defaultLocation: 'Marktplatz Feldkirch', defaultDistance: '45 Runden · 76,5 km',
-        desc: 'Kriterium auf dem Stadtkurs – Suche nach deiner Startnummer!' }
-];
-
-const $yearSelect = document.getElementById('year-select');
-const $discGrid = document.getElementById('discipline-grid');
-
-$yearSelect.addEventListener('change', renderEvents);
-
-function ensureDisciplineEvents() {
-    const year = $yearSelect.value;
-    DISCIPLINES.forEach(d => {
-        const id = `sbs-${year}-${d.key}`;
-        if (!events.find(e => e.id === id)) {
-            events.unshift({
-                id,
-                parentId: `sbs-${year}`,
-                slug: `summer-bike-series-${year}-${d.key}`,
-                name: `SBS ${year} – ${d.defaultName}`,
-                shortName: d.shortName,
-                description: d.desc,
-                category: 'SBS', subtype: d.key,
-                date: `${year}-09-06`,
-                location: d.defaultLocation,
-                organizer: 'RV Hard',
-                distance: d.defaultDistance,
-                coverPhoto: '',
-                tags: ['SBS', year, d.shortName],
-                photos: []
-            });
-        }
-    });
-}
-
-function renderEvents() {
-    ensureDisciplineEvents();
-    const year = $yearSelect.value;
-    const yearEvents = events.filter(e => String(e.parentId) === `sbs-${year}`);
-
-    $discGrid.innerHTML = DISCIPLINES.map(d => {
-        const id = `sbs-${year}-${d.key}`;
-        const ev = yearEvents.find(e => e.id === id) || { id, photos:[] };
-        const photosN = Array.isArray(ev.photos) ? ev.photos.length : 0;
-        const active = (ev.id === currentEventId) ? 'active' : '';
-        return `
-            <div class="fg-event-pick ${active}" data-id="${ev.id}">
-                <span class="cat">${d.cat}</span>
-                <h3><i class="fa-solid ${d.icon}" style="color:#f5b301;"></i> ${d.shortName} ${year}</h3>
-                <small>${ev.location || d.defaultLocation}</small>
-                <div class="count"><i class="fa-regular fa-image"></i> ${photosN} Bilder gespeichert</div>
-            </div>`;
-    }).join('');
-
-    $discGrid.querySelectorAll('.fg-event-pick').forEach(el => {
-        el.addEventListener('click', () => {
-            currentEventId = el.getAttribute('data-id');
-            /* Vorhandene Fotos des Events ins Editor-Array laden */
-            const ev = events.find(e => e.id === currentEventId);
-            if (ev && Array.isArray(ev.photos) && ev.photos.length && !photos.some(p => p._fromServer)) {
-                ev.photos.forEach(p => {
-                    photos.push({
-                        id: `p${++idCounter}`, _fromServer: true,
-                        dataUrl: p.thumbnail || p.src, remoteUrl: p.src, filename: (p.src.split('/').pop() || 'server.jpg'),
-                        title: p.title || '', bibNumbers: p.bibNumbers || [], athletes: p.athletes || [],
-                        photographer: p.photographer || '', tags: p.tags || [], comment: p.comment || '',
-                        status: 'uploaded'
-                    });
+        function renderEvents() {
+            const year = $yearSel.value;
+            $grid.innerHTML = DISCS.map(d => {
+                const id = eventIdFor(year, d.key);
+                const active = (id === currentEventId) ? 'active' : '';
+                const folder = folderFor(year, d.key);
+                return `
+                    <div class="fg-event-pick ${active}" data-id="${id}" data-key="${d.key}">
+                        <span class="cat" style="background:${d.color};">${d.cat}</span>
+                        <h3><i class="fa-solid ${d.icon}" style="color:#f5b301;"></i> ${d.short}</h3>
+                        <small>${d.location}</small>
+                        <small style="color:#0d6efd; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${folder}</small>
+                        <div class="count"><i class="fa-regular fa-image"></i> ${uploadedPhotos.filter(p => p._event === id).length} Bilder geladen</div>
+                    </div>
+                `;
+            }).join('');
+            $grid.querySelectorAll('.fg-event-pick').forEach(el => {
+                el.addEventListener('click', () => {
+                    currentEventId = el.getAttribute('data-id');
+                    renderEvents();
+                    document.getElementById('export-btn').disabled = uploadedPhotos.filter(p => p._event === currentEventId).length === 0;
                 });
-            }
-            renderEvents(); renderPhotos();
-            /* Titel aktualisieren */
-            const t = document.querySelector('#app h1') || document.querySelector('h1');
-            if (t) t.textContent = ev.name;
-        });
-    });
-
-    /* Keine Auswahl -> automatisch erste Disziplin wählen */
-    if (!currentEventId) {
-        const first = $discGrid.querySelector('.fg-event-pick');
-        if (first) first.click();
-    }
-}
-
-/* ========== BILDER HOCHLADEN ========== */
-const $drop = document.getElementById('dropzone');
-const $fileInput = document.getElementById('file-input');
-['dragenter','dragover'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.add('dragover'); }));
-['dragleave','drop'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.remove('dragover'); }));
-$drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files].filter(f => f.type.startsWith('image/'))));
-$fileInput.addEventListener('change', e => addFiles([...e.target.files].filter(f => f.type.startsWith('image/'))));
-
-function addFiles(files) {
-    if (!currentEventId) { alert('Bitte zuerst SBS-Disziplin auswählen!'); return; }
-    files.forEach(file => {
-        const r = new FileReader();
-        r.onload = ev => {
-            photos.unshift({
-                id: `p${++idCounter}`, file,
-                dataUrl: ev.target.result,
-                filename: `img-${Date.now()}-${Math.random().toString(36).slice(2,6)}.${(file.name.split('.').pop()||'jpg').toLowerCase()}`,
-                title: file.name.replace(/\.[^.]+$/, ''),
-                bibNumbers: [], athletes: [], photographer: 'RV Hard', tags: [], comment: '',
-                status: 'pending', _selected: true
             });
-            renderPhotos();
-        };
-        r.readAsDataURL(file);
-    });
-    $fileInput.value = '';
-}
+            if (!currentEventId) $grid.querySelector('.fg-event-pick')?.click();
+        }
+        $yearSel.addEventListener('change', renderEvents);
+        renderEvents();
 
-/* ========== BILDER RENDERN ========== */
-const $grid = document.getElementById('photo-grid');
-const $empty = document.getElementById('empty-msg');
-const $bulk = document.getElementById('bulkbar');
-const $selCount = document.getElementById('sel-count');
+        /* ===== BILDER HOCHLADEN / REINZIEHEN ===== */
+        const $drop = document.getElementById('dropzone');
+        const $fileInput = document.getElementById('file-input');
+        ['dragenter','dragover'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.add('dragover'); }));
+        ['dragleave','drop'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.remove('dragover'); }));
+        $drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files].filter(f => f.type.startsWith('image/'))));
+        $fileInput.addEventListener('change', e => addFiles([...e.target.files].filter(f => f.type.startsWith('image/'))));
 
-function parseBibs(s) {
-    return String(s||'').split(/[\s,\/;]+/).map(x => x.replace(/^#/,'').trim()).filter(Boolean)
-        .map(x => isNaN(Number(x)) ? x : Number(x));
-}
-function parseList(s) {
-    return String(s||'').split(/[,;]+/).map(x => x.trim()).filter(Boolean);
-}
+        function addFiles(files) {
+            if (!currentEventId) { alert('Bitte zuerst SBS-Jahr + Disziplin (Bergrennen/Kriterium/EZF) auswählen!'); return; }
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    uploadedPhotos.push({
+                        id: `p${++idCounter}`, _event: currentEventId,
+                        file, dataUrl: ev.target.result, filename: file.name,
+                        title: file.name.replace(/\.[^.]+$/, ''),
+                        bibNumbers: [], athletes: [], photographer: 'RV Hard', _selected: true
+                    });
+                    renderPhotos();
+                };
+                reader.readAsDataURL(file);
+            });
+            $fileInput.value = '';
+        }
 
-function renderPhotos() {
-    $empty.style.display = photos.length ? 'none' : 'block';
-    $grid.innerHTML = photos.map((p, idx) => {
-        const sel = p._selected ? 'selected' : '';
-        const statusLabel = { uploaded:'✓ Gespeichert', pending:'Hochladen', error:'Fehler' }[p.status] || '?';
-        const statusClass = 'status-' + p.status;
-        const bibStr = Array.isArray(p.bibNumbers) ? p.bibNumbers.join(', ') : '';
-        const athStr = Array.isArray(p.athletes) ? p.athletes.join(', ') : '';
-        return `
-        <div class="fg-photo-card ${sel}" data-id="${p.id}">
-            <div class="fg-photo-card__header">
-                <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''}>
-                <span class="fg-photo-card__status ${statusClass}">${statusLabel}</span>
-                <img src="${p.dataUrl}" alt="${p.title||''}">
-            </div>
-            <div class="fg-photo-card__body">
-                <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${idx+1}. ${p.title}</div>
+        /* ===== RENDER: PHOTO GRID ===== */
+        const $pg = document.getElementById('photo-grid');
+        const $empty = document.getElementById('empty-msg');
+        const $bulk = document.getElementById('bulkbar');
+        const $selCount = document.getElementById('sel-count');
+        const $exportBtn = document.getElementById('export-btn');
 
-                <div>
-                    <label>🏁 STARTNUMMERN (KOMMA getrennt!) – <span style="color:#f5b301;">ERFORDERLICH FÜR SUCHE!</span></label>
-                    <input type="text" class="bibs js-bib" placeholder="z.B. 42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
-                </div>
+        function parseBibs(s) {
+            return String(s||'').split(/[\s,\/;]+/).map(x => x.replace(/^#/,'').trim()).filter(Boolean)
+                .map(x => isNaN(Number(x)) ? x : Number(x));
+        }
+        function parseList(s) { return String(s||'').split(/[,;]+/).map(x => x.trim()).filter(Boolean); }
 
-                <div>
-                    <label>👤 Fahrer*innen (KOMMA getrennt, optional)</label>
-                    <input type="text" class="js-name" placeholder="Max Müller, Anna Huber" value="${athStr}" data-id="${p.id}" autocomplete="off">
-                </div>
+        function renderPhotos() {
+            const list = uploadedPhotos.filter(p => p._event === currentEventId);
+            $empty.style.display = list.length ? 'none' : 'block';
+            $pg.innerHTML = list.map(p => {
+                const bibStr = (p.bibNumbers||[]).join(', ');
+                const athStr = (p.athletes||[]).join(', ');
+                const sel = p._selected ? 'selected' : '';
+                return `
+                    <div class="fg-photo-card ${sel}" data-id="${p.id}">
+                        <div class="fg-photo-card__header">
+                            <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''}>
+                            <img src="${p.dataUrl}" alt="${p.title||''}" loading="lazy">
+                        </div>
+                        <div class="fg-photo-card__body">
+                            <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
 
-                <div>
-                    <label>📸 Titel / Beschreibung (optional)</label>
-                    <input type="text" class="js-title" placeholder="Bildtitel" value="${p.title||''}" data-id="${p.id}">
-                </div>
-            </div>
-        </div>`;
-    }).join('');
+                            <div>
+                                <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG FÜR SUCHE</span></label>
+                                <input type="text" class="bibs js-bib" placeholder="42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
+                            </div>
+                            <div>
+                                <label>👤 Namen (optional)</label>
+                                <input type="text" class="js-name" placeholder="Max Müller" value="${athStr}" data-id="${p.id}">
+                            </div>
+                            <div>
+                                <label>📸 Titel / Kommentar (optional)</label>
+                                <input type="text" class="js-title" placeholder="Zielsprint" value="${p.title||''}" data-id="${p.id}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
-    $grid.querySelectorAll('.fg-photo-card__select').forEach(cb => {
-        cb.addEventListener('change', e => {
-            const id = e.target.closest('.fg-photo-card').getAttribute('data-id');
-            const p = photos.find(x => x.id === id);
-            if (p) { p._selected = !!cb.checked; cb.closest('.fg-photo-card').classList.toggle('selected', p._selected); }
+            $pg.querySelectorAll('.fg-photo-card__select').forEach(cb => {
+                cb.addEventListener('change', e => {
+                    const id = e.target.closest('.fg-photo-card').getAttribute('data-id');
+                    const p = uploadedPhotos.find(x => x.id === id);
+                    if (p) { p._selected = !!cb.checked; e.target.closest('.fg-photo-card').classList.toggle('selected', p._selected); }
+                    updateBulk();
+                });
+            });
+            $pg.querySelectorAll('.js-bib').forEach(i => i.addEventListener('change', e => {
+                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+                if (p) p.bibNumbers = parseBibs(e.target.value);
+            }));
+            $pg.querySelectorAll('.js-name').forEach(i => i.addEventListener('change', e => {
+                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+                if (p) p.athletes = parseList(e.target.value);
+            }));
+            $pg.querySelectorAll('.js-title').forEach(i => i.addEventListener('change', e => {
+                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+                if (p) p.title = e.target.value;
+            }));
+
             updateBulk();
-        });
-    });
-    $grid.querySelectorAll('.js-bib').forEach(i => i.addEventListener('change', e => {
-        const p = photos.find(x => x.id === e.target.getAttribute('data-id'));
-        if (p) { p.bibNumbers = parseBibs(e.target.value); if (p.bibNumbers.length && p.status === 'pending') {/* ok */} }
-    }));
-    $grid.querySelectorAll('.js-name').forEach(i => i.addEventListener('change', e => {
-        const p = photos.find(x => x.id === e.target.getAttribute('data-id'));
-        if (p) p.athletes = parseList(e.target.value);
-    }));
-    $grid.querySelectorAll('.js-title').forEach(i => i.addEventListener('change', e => {
-        const p = photos.find(x => x.id === e.target.getAttribute('data-id'));
-        if (p) p.title = e.target.value;
-    }));
+            $exportBtn.disabled = list.length === 0;
 
-    updateBulk();
-    document.getElementById('export-btn').disabled = !(currentEventId && photos.length);
-}
-
-function updateBulk() {
-    const n = photos.filter(p => p._selected).length;
-    $selCount.textContent = n;
-    $bulk.classList.toggle('show', n > 0);
-}
-
-document.getElementById('select-all').addEventListener('click', () => {
-    photos.forEach(p => p._selected = true);
-    renderPhotos();
-});
-document.getElementById('select-none').addEventListener('click', () => {
-    photos.forEach(p => p._selected = false);
-    renderPhotos();
-});
-
-document.getElementById('bulk-apply').addEventListener('click', () => {
-    const bib = document.getElementById('bulk-bib').value;
-    const names = document.getElementById('bulk-names').value;
-    const phot = document.getElementById('bulk-phot').value;
-    let n = 0;
-    photos.forEach(p => {
-        if (!p._selected) return;
-        if (bib) {
-            const pb = parseBibs(bib);
-            p.bibNumbers = Array.from(new Set([...(p.bibNumbers||[]), ...pb]));
+            /* Update Event-Karten Zähler */
+            renderEvents();
         }
-        if (names) p.athletes = Array.from(new Set([...(p.athletes||[]), ...parseList(names)]));
-        if (phot) p.photographer = phot;
-        n++;
-    });
-    ['bulk-bib','bulk-names','bulk-phot'].forEach(id => document.getElementById(id).value = id === 'bulk-phot' ? 'RV Hard' : '');
-    renderPhotos();
-    alert(`✅ Massen-Tagging fertig! Startnummern auf ${n} Bilder angewendet.`);
-});
 
-/* ========== UPLOAD ZUR SERVER (1 KLICK!) ========== */
-const $btn = document.getElementById('export-btn');
-const $progressWrap = document.getElementById('progress-wrap');
-const $progBar = document.getElementById('prog-bar');
-const $progTxt = document.getElementById('prog-text');
-const $ok = document.getElementById('success-msg');
-
-$btn.addEventListener('click', async () => {
-    if (!currentEventId) return alert('Bitte Disziplin wählen!');
-    $btn.disabled = true;
-    $ok.classList.remove('show');
-    $progressWrap.classList.add('show');
-    $progBar.style.width = '0%';
-
-    try {
-        const ev = events.find(e => e.id === currentEventId);
-        if (!ev) throw new Error('Event nicht gefunden!');
-
-        /* 1) Jedes Foto einzeln hochladen */
-        const pending = photos.filter(p => p.status !== 'uploaded');
-        const total = pending.length + 1;
-        let done = 0;
-        for (const p of pending) {
-            const fd = new FormData();
-            fd.append('eventId', currentEventId);
-            fd.append('filename', p.filename);
-            fd.append('file', p.file || dataURLtoFile(p.dataUrl, p.filename));
-            const j = await api('upload_image', fd);
-            if (j && j.ok) {
-                p.remoteUrl = j.url;
-                p.status = 'uploaded';
-            } else {
-                p.status = 'error';
-                console.warn('Upload fehlgeschlagen:', p.filename, j);
-            }
-            done++;
-            $progBar.style.width = Math.round(done/total*100) + '%';
-            $progTxt.textContent = `${Math.round(done/total*100)} % – Bild ${done}/${pending.length}…`;
+        function updateBulk() {
+            const n = uploadedPhotos.filter(p => p._selected && p._event === currentEventId).length;
+            $selCount.textContent = n;
+            $bulk.classList.toggle('show', n > 0);
+        }
+        document.getElementById('select-all').addEventListener('click', () => {
+            uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = true);
             renderPhotos();
-        }
+        });
+        document.getElementById('select-none').addEventListener('click', () => {
+            uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = false);
+            renderPhotos();
+        });
+        document.getElementById('bulk-apply').addEventListener('click', () => {
+            const bib = document.getElementById('bulk-bib').value;
+            const names = document.getElementById('bulk-names').value;
+            let n = 0;
+            uploadedPhotos.forEach(p => {
+                if (!(p._selected && p._event === currentEventId)) return;
+                if (bib) {
+                    const pb = parseBibs(bib);
+                    p.bibNumbers = Array.from(new Set([...(p.bibNumbers||[]), ...pb]));
+                }
+                if (names) p.athletes = Array.from(new Set([...(p.athletes||[]), ...parseList(names)]));
+                n++;
+            });
+            document.getElementById('bulk-bib').value = '';
+            document.getElementById('bulk-names').value = '';
+            renderPhotos();
+            alert(`✅ Massen-Tagging fertig auf ${n} Bilder!`);
+        });
 
-        /* 2) Event in events.json speichern (Foto-Objekte bauen) */
-        ev.photos = photos.map(p => ({
-            src: p.remoteUrl || p.dataUrl,
-            thumbnail: p.remoteUrl || p.dataUrl,
-            title: p.title || p.filename,
-            bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers),
-            athletes: Array.isArray(p.athletes) ? p.athletes : [],
-            photographer: p.photographer || 'RV Hard',
-            comment: p.comment || '',
-            tags: Array.from(new Set([...(ev.tags||[]), ...(p.tags||[])]))
-        }));
-        ev.coverPhoto = ev.photos[0]?.src || ev.coverPhoto;
+        /* ===== EXPORT: events.json DOWNLOAD ===== */
+        $exportBtn.addEventListener('click', async () => {
+            /* 1) Alte events.json vom Server laden (für alle anderen Events) */
+            let allEvents = [];
+            try {
+                const r = await fetch('/fotos/data/events.json?v=' + Date.now());
+                if (r.ok) {
+                    const j = await r.json();
+                    if (Array.isArray(j)) allEvents = j.filter(x => !x._schemaVersion);
+                }
+            } catch(e) { console.warn('Keine alte events.json gefunden, neu erstellt.'); }
 
-        /* Events speichern */
-        const j = await api('save_events', { events: events.filter(e => !e._schemaVersion) }, true);
-        if (!j || !j.ok) throw new Error(j?.error || 'Events speichern fehlgeschlagen!');
-        done++;
-        $progBar.style.width = '100%';
-        $progTxt.textContent = '100 % – FERTIG!';
+            /* 2) Aktuelle Disziplin bearbeiten / neu erstellen */
+            const year = $yearSel.value;
+            const discKey = (DISCS.find(d => eventIdFor(year, d.key) === currentEventId)).key;
+            const disc = DISCS.find(d => d.key === discKey);
+            const folder = folderFor(year, discKey);
 
-        setTimeout(() => {
-            $progressWrap.classList.remove('show');
-            $ok.classList.add('show');
-            $ok.scrollIntoView({ behavior:'smooth', block:'center' });
-        }, 500);
+            const photosJson = uploadedPhotos
+                .filter(p => p._event === currentEventId)
+                .map((p, i) => ({
+                    src: `/fotos/data/${folder}/${p.filename}`,
+                    thumbnail: `/fotos/data/${folder}/${p.filename}`,
+                    title: p.title || p.filename,
+                    date: `${year}-09-06`,
+                    photographer: p.photographer || 'RV Hard',
+                    copyright: `© RV Hard ${year}`,
+                    bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers),
+                    athletes: Array.isArray(p.athletes) ? p.athletes : [],
+                    tags: [ 'SBS', year, disc.short ]
+                }));
 
-    } catch (err) {
-        alert('❌ Fehler: ' + err.message);
-    } finally {
-        $btn.disabled = false;
-    }
-});
+            const thisEvent = {
+                id: currentEventId,
+                parentId: `sbs-${year}`,
+                slug: currentEventId,
+                name: `SBS ${year} – ${disc.name}`,
+                shortName: disc.short,
+                description: disc.desc,
+                category: 'SBS',
+                subtype: discKey.startsWith('bergrennen') ? 'bergrennen' : discKey.startsWith('kriterium') ? 'kriterium' : 'ezf',
+                date: `${year}-09-06`,
+                location: disc.location,
+                organizer: 'RV Hard',
+                distance: disc.distance,
+                folder,
+                coverPhoto: photosJson[0]?.src || `/fotos/data/${folder}/cover.jpg`,
+                tags: [ 'SBS', year, disc.short, disc.location.split(',')[0] ],
+                photos: photosJson
+            };
 
-function dataURLtoFile(dataurl, filename) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--) u8arr[n] = bstr.charCodeAt(n);
-    return new File([u8arr], filename, {type: mime});
-}
+            /* Merge: aktuelles Event ersetzen ODER hinzufügen */
+            const others = allEvents.filter(e => e.id !== currentEventId);
+            /* Sortierung: aktuelle Events zuerst, ältere danach */
+            const merged = [thisEvent, ...others].sort((a,b) => {
+                const ay = String(a.parentId || '').replace('sbs-','');
+                const by = String(b.parentId || '').replace('sbs-','');
+                return by.localeCompare(ay);
+            });
 
-/* ========= START ========== */
-(async function init() {
-    const ok = await checkAuth();
-    if (!ok) showLogin();
-})();
-</script>
+            /* Meta vorne anfügen */
+            const output = [{
+                _schemaVersion: '3.1',
+                _readme: `=== SBS GALERIE ===\nBearbeitet: ${new Date().toISOString()}\n\nFTP Upload: Bilder in /fotos/data/${folder}/ + diese events.json ersetzen!`
+            }, ...merged];
+
+            /* Download */
+            const json = JSON.stringify(output, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'events.json';
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+            document.getElementById('success-msg').classList.add('show');
+            document.getElementById('success-msg').scrollIntoView({ behavior:'smooth', block:'center' });
+        });
+    </script>
 </body>
 </html>
