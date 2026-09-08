@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foto-Galerie | RV Hard</title>
-    <meta name="description" content="Foto-Galerie des RV Hard – Bilder zu allen Events (SBS, Nightrace, Triathlon, MTB, Cyclocross). Suche nach Startnummer, Name oder Event.">
+    <title>Summer Bike Series – Foto-Galerie | RV Hard</title>
+    <meta name="description" content="Summer Bike Series Foto-Galerie – alle Bilder der SBS Events. Suche nach deiner Startnummer, deinem Namen und lade deine Fotos herunter.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rv-hard.at/fotos/">
     <meta property="og:locale" content="de_AT">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RV Hard">
-    <meta property="og:title" content="Foto-Galerie | RV Hard">
-    <meta property="og:description" content="Fotos zu allen RV Hard Events – suche nach deiner Startnummer oder deinem Namen.">
+    <meta property="og:title" content="Summer Bike Series – Foto-Galerie | RV Hard">
+    <meta property="og:description" content="SBS Fotos – suche nach deiner Startnummer und lade deine Bilder herunter.">
     <meta property="og:url" content="https://rv-hard.at/fotos/">
     <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,40 +36,89 @@
         <section class="fg-container">
 
             <div class="fg-section" data-aos="fade-up">
-                <h1><i class="fa-regular fa-images" style="color:#f5b301;"></i> Foto-Galerie RV Hard</h1>
-                <p class="lead">
-                    Alle Bilder unserer Events auf einen Blick. Suche ganz einfach nach deiner
-                    <strong style="color:#111;">Startnummer</strong>, deinem
-                    <strong style="color:#111;">Namen</strong> oder wähle unten eine Veranstaltung aus.
+                <h1 style="display:flex; align-items:center; gap: 0.75rem; flex-wrap: wrap;">
+                    <span style="background: linear-gradient(135deg, #ffc107, #f5b301); color: #111; padding: 0.35rem 0.75rem; border-radius: 12px; font-size: 1.25rem;">
+                        SBS
+                    </span>
+                    <span>Summer Bike Series – Foto-Galerie</span>
+                </h1>
+
+                <p class="lead" style="margin-top: 0.75rem;">
+                    Alle Bilder der <strong style="color:#111;">Summer Bike Series</strong> auf einen Blick.
+                    Gib einfach deine <strong style="color:#f5b301; font-size:1.05rem;">Startnummer</strong> ein – du findest sofort alle Fotos von dir!
                 </p>
 
-                <div class="fg-search-row">
-                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Event, Ort, Name oder Nummer…" aria-label="Galerie durchsuchen">
-                    <select id="fg-filter-category" aria-label="Kategorie Filter">
-                        <option value="all">Alle Kategorien</option>
+                <div style="display:flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem;">
+                    <a href="/fotos/admin/index.html" class="fg-btn" style="background: linear-gradient(135deg, #198754, #157347); color: #fff;">
+                        <i class="fa-solid fa-lock"></i> Admin: Bilder hochladen & taggen
+                    </a>
+                    <a href="#so-funktionierts" class="fg-btn fg-btn--outline">
+                        <i class="fa-regular fa-lightbulb"></i> So funktioniert die Nummernsuche
+                    </a>
+                </div>
+
+                <div class="fg-search-row" style="margin-top: 1.5rem;">
+                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Name, Startnummer…" aria-label="SBS Events durchsuchen" style="min-width: 260px;">
+                    <select id="fg-filter-year" aria-label="SBS Jahr Filter">
+                        <option value="all">Alle SBS Jahre</option>
+                    </select>
+                    <select id="fg-filter-discipline" aria-label="Disziplin Filter">
+                        <option value="all">Alle Disziplinen</option>
+                        <option value="bergrennen">🏔️ Bergrennen</option>
+                        <option value="ezf">⏱️ Einzelzeitfahren (EZF)</option>
+                        <option value="kriterium">🏁 Kriterium Stadtkurs</option>
                     </select>
                 </div>
 
                 <div id="fg-info" class="fg-results-info">
-                    <span>Lade Events…</span>
+                    <span>Lade SBS Events…</span>
                 </div>
 
                 <div id="fg-events" class="fg-events-grid" style="margin-top:10px;">
-                    <div class="fg-empty"><strong>Foto-Galerie wird geladen…</strong></div>
+                    <div class="fg-empty"><strong>SBS Foto-Galerie wird geladen…</strong></div>
                 </div>
             </div>
 
-            <div class="fg-section" data-aos="fade-up" style="margin-top:0.5rem;">
-                <h2><i class="fa-regular fa-circle-question" style="color:#f5b301;"></i> So findest du deine Bilder</h2>
-                <ol style="padding-left:1.25rem;color:#444;line-height:1.8;">
-                    <li><strong>Wähle ein Event</strong> aus der Liste oben oder suche nach Event-Name / Ort.</li>
-                    <li><strong>Gib deine Startnummer ein</strong> (z.B. <code>42</code>) oder einen Teil deines Namens – die Galerie filtert in Echtzeit.</li>
-                    <li><strong>Klicke auf ein Bild</strong> – es öffnet sich die Lightbox mit Download-Button fürs Original.</li>
-                </ol>
-                <p style="margin-top:1rem;color:#555;font-size:0.9rem;">
-                    📷 <strong>Bild-Feedback / eigene Bilder hochladen?</strong> Schreibe uns einfach an
-                    <a href="/kontakt" style="color:#f5b301;font-weight:600;">Kontakt →</a>
-                </p>
+            <div id="so-funktionierts" class="fg-section" data-aos="fade-up" style="margin-top:0.5rem;">
+                <h2><i class="fa-regular fa-circle-question" style="color:#f5b301;"></i> So findest du DEINE Bilder</h2>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="padding:1rem; background: #fff9e6; border-radius: 8px; border-left: 4px solid #ffc107;">
+                        <h3 style="margin:0 0 0.4rem 0; font-size:1rem;">1. Event wählen</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#444;">
+                            Klicke oben auf eine <strong>Summer Bike Series</strong>-Karte (z.B. 2026 Landesmeisterschaft).
+                        </p>
+                    </div>
+                    <div style="padding:1rem; background: #fff9e6; border-radius: 8px; border-left: 4px solid #ffc107;">
+                        <h3 style="margin:0 0 0.4rem 0; font-size:1rem;">2. Startnummer eingeben 🏁</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#444;">
+                            Gib im Feld <strong>"Startnummer"</strong> deine Nummer ein, z.B. <code>42</code> –
+                            <strong>fertig!</strong> Die Galerie filtert sofort, es werden nur Bilder mit
+                            <span style="background:#ffc107; padding: 1px 6px; border-radius: 3px; font-weight:600;">#42</span> angezeigt.
+                        </p>
+                    </div>
+                    <div style="padding:1rem; background: #fff9e6; border-radius: 8px; border-left: 4px solid #ffc107;">
+                        <h3 style="margin:0 0 0.4rem 0; font-size:1rem;">3. Bild öffnen + downloaden</h3>
+                        <p style="margin:0; font-size:0.9rem; color:#444;">
+                            Klick auf ein Bild → es öffnet sich die große Ansicht mit
+                            <strong>Download-Button</strong> fürs Original in voller Auflösung.
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1.25rem; background: #f0f9ff; border: 1px solid #b3d9ff; border-radius: 8px;">
+                    <h3 style="margin:0 0 0.5rem 0; font-size: 1.05rem; color: #0056b3;"><i class="fa-solid fa-lightbulb"></i> Wie die Startnummer-Suche technisch funktioniert</h3>
+                    <ol style="margin:0; padding-left: 1.25rem; color:#333; font-size:0.92rem; line-height: 1.75;">
+                        <li>Jedes SBS Foto erhält beim Hochladen sogenannte <code>bibNumbers</code> (Deutsch: Startnummern-Tags).</li>
+                        <li>Beispiel: Auf einem Foto sind die Fahrer mit den Nummern 42, 12 und 88 → Foto bekommt Tag: <code>bibNumbers: [42, 12, 88]</code></li>
+                        <li>Gibst du im Suchfeld nun <strong>"42"</strong> ein, vergleicht die Galerie sofort alle Fotos und zeigt nur jene, bei denen <strong>"42" in den bibNumbers steht</strong>.</li>
+                        <li>Es wird auch Teil-Suche unterstützt: Gibst du <strong>"4"</strong> ein, findest du auch #42, #14, #412 etc.</li>
+                    </ol>
+                </div>
+
+                <div style="margin-top: 1rem; color:#555; font-size:0.9rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                    📷 <strong>Bist du Fotograf*in oder hast du SBS Bilder gesammelt?</strong>
+                    <br>Lade sie einfach mit unserem <a href="/fotos/sbs-upload.html" style="color:#f5b301;font-weight:600;">SBS Upload-Tool →</a> hoch, tagge die Startnummern und erzeuge auf Knopfdruck das fertige Paket zum Hochladen auf den Server!
+                </div>
             </div>
         </section>
     </main>

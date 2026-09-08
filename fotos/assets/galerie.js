@@ -71,19 +71,26 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 
     /* Filter Zustand */
     const searchInput = document.getElementById('fg-search');
-    const filterCategory = document.getElementById('fg-filter-category');
+    const filterYear = document.getElementById('fg-filter-year');
+    const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     const state = {
         search: (searchInput && searchInput.value) ? searchInput.value.toLowerCase() : '',
-        category: (filterCategory && filterCategory.value) || 'all'
+        year: (filterYear && filterYear.value) || 'all',
+        discipline: (filterDiscipline && filterDiscipline.value) || 'all'
     };
 
-    /* Filter anwenden */
-    const filtered = events.filter(ev => {
-        if (state.category !== 'all' && String(ev.category ?? '') !== state.category) return false;
+    /* Filter anwenden: nur SBS Events, keine _readme Objekte */
+    const sbsEvents = events.filter(ev => !ev._schemaVersion && (!ev.category || ev.category === 'SBS'));
+    const filtered = sbsEvents.filter(ev => {
+        if (state.year !== 'all') {
+            const evYear = String(ev.parentId || '').replace('sbs-', '');
+            if (evYear !== state.year) return false;
+        }
+        if (state.discipline !== 'all' && String(ev.subtype || '') !== state.discipline) return false;
         if (!state.search) return true;
         const hay = [
-            ev.name, ev.location, ev.description, ev.category,
+            ev.name, ev.shortName, ev.location, ev.description, ev.distance,
             (ev.organizer || ''),
             ...(ev.tags || []),
             String(ev.date || '')
@@ -94,53 +101,88 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     /* Info */
     const info = document.getElementById('fg-info');
     if (info) {
-        const total = events.length;
-        info.innerHTML = `Insgesamt <strong>${total}</strong> Foto-Events – aktuell angezeigt: <strong>${filtered.length}</strong>`;
+        const total = sbsEvents.length;
+        const bibCount = () => {
+            const s = new Set();
+            filtered.forEach(e => (e.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => s.add(String(b)))));
+            return s.size;
+        };
+        const photoCount = filtered.reduce((n, e) => n + ((e.photos && e.photos.length) || 0), 0);
+        info.innerHTML = `Insgesamt <strong>${total}</strong> SBS-Events – angezeigt: <strong>${filtered.length}</strong> · <i class="fa-regular fa-image"></i> ${photoCount} Bilder · <i class="fa-solid fa-person-running"></i> ${bibCount()} TN-Nummern`;
     }
 
     if (!filtered.length) {
-        container.innerHTML = `<div class="fg-empty"><strong>Keine Events gefunden.</strong><br>Versuche es mit einem anderen Suchbegriff oder Filter.</div>`;
+        container.innerHTML = `<div class="fg-empty"><strong>Keine SBS-Events gefunden.</strong><br>Versuche es mit einem anderen Jahr, Disziplin oder Suchbegriff.</div>`;
         return;
     }
 
-    /* Cards rendern */
-    container.innerHTML = filtered.map(ev => {
-        const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
-        const cover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '').trim();
-        const date = fgFormatDate(ev.date);
-        const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
-        const uniqueBibs = new Set();
-        (ev.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => uniqueBibs.add(String(b))));
-        const bibCount = uniqueBibs.size;
+    /* Gruppieren nach Jahr */
+    const byYear = {};
+    filtered.forEach(ev => {
+        const yr = String(ev.parentId || ev.id || '').match(/20\d{2}/)?.[0] || 'Archiv';
+        if (!byYear[yr]) byYear[yr] = [];
+        byYear[yr].push(ev);
+    });
 
-        const badges = [];
-        if (ev.category) badges.push(`<span class="fg-event-card__badge">${fgEscapeHtml(ev.category)}</span>`);
+    const disciplineIcon = {
+        bergrennen: 'fa-mountain-sun',
+        ezf: 'fa-stopwatch',
+        kriterium: 'fa-flag-checkered'
+    };
+    const disciplineBadge = {
+        bergrennen: { label: 'Bergrennen', bg: '#198754' },
+        ezf: { label: 'EZF', bg: '#0d6efd' },
+        kriterium: { label: 'Kriterium', bg: '#dc3545' }
+    };
 
-        return `
-            <a class="fg-event-card" href="${link}" data-aos="fade-up">
-                <div class="fg-event-card__cover" ${cover ? `style="background-image:url('${fgEscapeHtml(cover)}')"` : ''}>
-                    ${badges.join('')}
-                    <div class="fg-event-card__count">
-                        <i class="fa-regular fa-image"></i> ${count} ${count === 1 ? 'Bild' : 'Bilder'}
-                        ${bibCount ? ` · <i class="fa-solid fa-person-running"></i> ${bibCount} TN` : ''}
-                    </div>
-                </div>
-                <div class="fg-event-card__body">
-                    <h3>${fgEscapeHtml(ev.name)}</h3>
-                    <div class="fg-event-card__meta">
-                        ${date ? `<span><i class="fa-regular fa-calendar"></i> ${fgEscapeHtml(date)}</span>` : ''}
-                        ${ev.location ? `<span><i class="fa-solid fa-location-dot"></i> ${fgEscapeHtml(ev.location)}</span>` : ''}
-                        ${ev.organizer ? `<span><i class="fa-regular fa-building"></i> ${fgEscapeHtml(ev.organizer)}</span>` : ''}
-                    </div>
-                    ${ev.description ? `<p class="fg-event-card__desc">${fgEscapeHtml(ev.description)}</p>` : ''}
-                    <div class="fg-event-card__footer">
-                        <span class="fg-btn fg-btn--outline">Galerie öffnen →</span>
-                    </div>
-                </div>
-            </a>
-        `;
-    }).join('');
+    const html = [];
+    Object.keys(byYear).sort((a,b) => (b > a ? 1 : -1)).forEach(year => {
+        html.push(`<div style="grid-column: 1/-1; margin: 1.5rem 0 0.5rem;">
+            <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                <span style="background:#111; color:#ffc107; padding:0.25rem 0.85rem; border-radius: 8px; font-weight: 800;">SBS ${year}</span>
+                <span style="font-size:0.9rem; color:#777; font-weight: 500;">${byYear[year].length} Disziplinen</span>
+            </h2>
+            <hr style="border:none; border-top: 2px dashed #eee; margin:0.5rem 0 0;">
+        </div>`);
 
+        byYear[year].forEach(ev => {
+            const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
+            const cover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '').trim();
+            const date = fgFormatDate(ev.date);
+            const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
+            const uniqueBibs = new Set();
+            (ev.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => uniqueBibs.add(String(b))));
+            const badge = ev.subtype ? disciplineBadge[ev.subtype] : { label:'SBS', bg:'#ffc107' };
+            const icon = disciplineIcon[ev.subtype || ''] || 'fa-bicycle';
+            html.push(`
+                <a class="fg-event-card" href="${link}" data-aos="fade-up">
+                    <div class="fg-event-card__cover" ${cover ? `style="background-image:url('${fgEscapeHtml(cover)}')"` : ''}>
+                        <span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>
+                        <div class="fg-event-card__count">
+                            <i class="fa-regular fa-image"></i> ${count}
+                            ${uniqueBibs.size ? ` · <i class="fa-solid fa-person-running"></i> ${uniqueBibs.size}` : ''}
+                        </div>
+                    </div>
+                    <div class="fg-event-card__body">
+                        <h3><i class="fa-solid ${icon}" style="color:#f5b301;"></i> ${fgEscapeHtml(ev.shortName || ev.name)}</h3>
+                        <div class="fg-event-card__meta">
+                            ${date ? `<span><i class="fa-regular fa-calendar"></i> ${fgEscapeHtml(date)}</span>` : ''}
+                            ${ev.location ? `<span><i class="fa-solid fa-location-dot"></i> ${fgEscapeHtml(ev.location)}</span>` : ''}
+                            ${ev.distance ? `<span><i class="fa-solid fa-route"></i> ${fgEscapeHtml(ev.distance)}</span>` : ''}
+                        </div>
+                        ${ev.description ? `<p class="fg-event-card__desc">${fgEscapeHtml(ev.description)}</p>` : ''}
+                        <div class="fg-event-card__footer">
+                            <span class="fg-btn fg-btn--outline">
+                                <i class="fa-solid fa-magnifying-glass"></i> Startnummer suchen →
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            `);
+        });
+    });
+
+    container.innerHTML = html.join('');
     if (typeof AOS !== 'undefined') AOS.refreshHard();
 }
 
@@ -149,23 +191,28 @@ async function fgInitEventsOverview() {
     if (!container) return;
 
     const searchInput = document.getElementById('fg-search');
-    const filterCategory = document.getElementById('fg-filter-category');
+    const filterYear = document.getElementById('fg-filter-year');
+    const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     try {
         const events = await fgLoadEvents();
-        /* Kategorien in Filter füllen */
-        if (filterCategory) {
-            const cats = [...new Set(events.map(e => String(e.category || '')).filter(Boolean))].sort();
-            cats.forEach(cat => {
-                const opt = document.createElement('option');
-                opt.value = cat;
-                opt.textContent = cat;
-                filterCategory.appendChild(opt);
+        const sbsEvents = events.filter(e => !e._schemaVersion && (!e.category || e.category === 'SBS'));
+
+        /* Jahres-Filter befüllen */
+        if (filterYear) {
+            const years = [...new Set(sbsEvents.map(e => String(e.parentId || e.id || '').match(/20\d{2}/)?.[0]).filter(Boolean))]
+                .sort((a,b) => (b > a ? 1 : -1));
+            years.forEach(y => {
+                const o = document.createElement('option');
+                o.value = y; o.textContent = `SBS ${y}`;
+                filterYear.appendChild(o);
             });
         }
+
         const render = () => fgRenderEventsOverview(events, 'fg-events');
         if (searchInput) searchInput.addEventListener('input', render);
-        if (filterCategory) filterCategory.addEventListener('change', render);
+        if (filterYear) filterYear.addEventListener('change', render);
+        if (filterDiscipline) filterDiscipline.addEventListener('change', render);
         render();
     } catch (err) {
         container.innerHTML = `<div class="fg-error"><strong>Fehler:</strong> ${fgEscapeHtml(err.message)}</div>`;

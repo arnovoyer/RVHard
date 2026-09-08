@@ -1,163 +1,157 @@
-# 📸 RV Hard Foto-Galerie – Kurzanleitung
+# 📸 SUMMER BIKE SERIES – FOTO-GALERIE (KOMPLETT-NEU V3)
 
-## 📂 Ordner-Struktur
+## 🧩 Aufbau: 2 getrennte Bereiche
 
+| Bereich | URL | Wer darf hin? | Was passiert dort? |
+|---|---|---|---|
+| **FRONTEND (Öffentlich)** | `/fotos/index.html` | **Jeder** | Alle SBS-Bilder ansehen, nach **Startnummer** suchen, Bilder herunterladen |
+| **BACKEND (Admin)** | `/fotos/admin/index.html` | **NUR DU mit Passwort!** | Bilder hochladen, **Startnummern taggen**, 1-Klick Upload auf RV Hard Server |
+
+---
+
+## ⚙️ ERSTMALIGE SERVER-INSTALLATION (MACHEN WIR GENAU 1 MAL!)
+
+### 🚨 GANZ WICHTIG: Passwort setzen!
+Öffne auf deinem PC die Datei:
+→ **`/fotos/admin/upload.php`** → **Zeile 9!**
+
+```php
+$ADMIN_PASSWORD = 'rvhard-sbs-passwort-2026!';  /* ← HIER DEIN EIGENES ADMIN-PASSWORT EINTRAGEN! */
+```
+→ **Ändere das Passwort auf DEINS!** (z.B. `MeinSuperSicheresSBSPasswort2026!`)
+
+---
+
+### Ordner + Dateien auf den Server laden (per FTP / FileZilla):
+
+1. **Ganzen `/fotos/` Ordner** auf den Server kopieren → er liegt jetzt unter `rv-hard.at/fotos/`
+2. **WICHTIG – Schreibrechte auf dem Server setzen (per FTP):**
+   - Ordner **`/fotos/data/`** → Rechte auf **`755`** (read/write/execute für Owner)
+   - Wenn es schon Bilder/Events gibt, später: Dateien → Rechte **`644`** (read/write Owner, read alle anderen)
+3. **Testen ob Backend geht:**
+   - Browser öffnen: **`https://rv-hard.at/fotos/admin/`**
+   - **Passwort** eingeben → Login-Test!
+
+---
+
+## 👨‍💻 BACKEND BEDIENUNG (So lädst du SBS Bilder hoch!)
+
+### 📍 URL im Browser:
+→ **`https://rv-hard.at/fotos/admin/`**
+
+---
+
+### Ablauf Schritt für Schritt:
+
+#### 1️⃣ SBS Jahr + Disziplin wählen
+Oben auf der Seite:
+1. **SBS Jahr** auswählen (z.B. `2026`)
+2. Darunter erscheinen **3 Karten** für die Disziplinen:
+   - 🏔️ **Bergrennen** (Schellenberg)
+   - ⏱️ **Einzelzeitfahren** (EZF)
+   - 🏁 **Kriterium** (Stadtkurs)
+3. **Klicke die Disziplin an**, die du jetzt bearbeiten möchtest!
+
+---
+
+#### 2️⃣ Bilder hochladen (Drag & Drop)
+1. **Ziehe Bilder per Maus** in das große graue Feld ("Bilder hier reinziehen…")
+2. **ODER:** Klicke auf das Feld → Dateiauswahl → mehrere Bilder markieren → OK
+3. Bilder erscheinen sofort als kleine Karten mit Vorschau!
+
+---
+
+#### 3️⃣ 🏁 STARTNUMMERN TAGGEN (WICHTIG! → Sonst findet später keiner Bilder!)
+Für jedes Bild **MÜSSEN** Startnummern eingetragen werden. Zwei Möglichkeiten:
+
+##### 🅰️ Einzeln (für wenige Bilder):
+- Gib bei jedem Bild direkt im **gelben Feld "Startnummern"** die Nummern ein:
+  ```
+  42, 12, 88
+  ```
+  → Mit **KOMMA getrennt!**
+
+##### 🅱️ **Massen-Tagging (MEGA SCHNELL – EMPFOHLEN!)**
+Perfekt, wenn du 50 Bilder hast, auf denen Gruppe A Nummern 1-20 hat:
+1. **Setze Haken** bei allen Bildern, bei denen die gleiche Nummer drauf ist
+   - Oder Klick: **"Alle Bilder auswählen"**
+2. In der **gelben "Massen-Tagging" Leiste** oben:
+   - Feld **🏁 Startnummern**: `42, 12, 88` (alle Nummern, die auf den ausgewählten Bildern sind!)
+   - Optional 👤 Fahrernamen, 📸 Fotograf
+3. Klick: **"Tags hinzufügen"** → ✅ Fertig! Nummern sind bei allen ausgewählten Bildern eingetragen!
+
+---
+
+#### 4️⃣ 🚀 Auf den Server hochladen – 1 KLICK!
+Sobald alle Bilder Nummern haben:
+1. Scrolle runter zum **grünen Export-Bereich**
+2. Klick: **"Auf RV Hard Server hochladen"**
+3. Warte 5-30 Sekunden → Progress-Bar läuft hoch
+4. ✅ **Erledigt!** Die Bilder sind **sofort LIVE** auf `rv-hard.at/fotos/` sichtbar!
+
+---
+
+## 👥 FRONTEND BEDIENUNG (Für Besucher / Fahrer / Zuschauer)
+
+### 📍 URL im Browser:
+→ **`https://rv-hard.at/fotos/`**
+
+### Funktionen:
+1. **Oben im Filter:**
+   - **SBS Jahr**: z.B. nur `SBS 2026` anzeigen
+   - **Disziplin**: z.B. nur `Bergrennen` anzeigen
+   - **Suchfeld**: Suche nach Ort / Nummer / Namen
+2. **Unterteilt nach SBS-Jahr** (2026 oben, 2025 darunter etc.)
+3. **Pro Disziplin eine Karte**: 🏔️ Bergrennen · ⏱️ EZF · 🏁 Kriterium
+4. **Klick auf Karte** → Öffnet die Galerie mit allen Bildern
+5. **Filter auf Galerie-Seite:**
+   - Feld **🏁 Startnummer** eingeben, z.B. `42`
+   - **SOFORT werden NUR noch Bilder mit #42 angezeigt!**
+6. **Klick auf Bild → Lightbox** mit:
+   - Download-Button für Original
+   - Anzeige von Nummern, Namen, Fotograf
+
+---
+
+## 🆘 Häufige Probleme + Lösungen
+
+| Problem | Lösung |
+|---|---|
+| **Login im Backend: Falsches Passwort** | Prüfe in `/fotos/admin/upload.php` Zeile 9 – Passwort 1:1 gleich schreiben! |
+| **Bilder werden nicht hochgeladen (Fehler 500)** | Ordner `/fotos/data/` braucht Schreibrechte! In FileZilla: Rechtsklick auf data/ → Dateirechte → `755` |
+| **Besucher sehen keine Bilder trotz Upload** | Browser-Cache leeren! (Strg + Umschalt + Entf) ODER events.json Schreibrechte 644 |
+| **Startnummer-Suche findet nix** | Hatten die Bilder im Backend auch wirklich **Nummern im gelben Feld** bekommen? |
+| **Galerie zeigt "Events werden geladen…" für immer** | Prüfe per FTP, ob `/fotos/data/events.json` wirklich da ist und lesbar (644)! |
+
+---
+
+## 🧠 TECHNISCHE INFOS (Für später)
+
+### Ordner-Struktur auf Server:
 ```
 /fotos/
-├── index.html                      ← EVENTS-ÜBERSICHT (Startseite Galerie)
-├── event.html                      ← SINGLE EVENT (Bilder-Ansicht mit Filter)
-├── README.md                       ← DIESE ANLEITUNG
+├── index.html                  ← Öffentliche Galerie (Frontend)
+├── event.html                  ← Galerie EINER Disziplin (mit Nummernfilter)
+├── README.md                   ← DIESE ANLEITUNG
+│
+├── admin/
+│   ├── index.html              ← ADMIN BEREICH (Passwort-geschützt!)
+│   └── upload.php              ← PHP Endpoint (Auth + Upload + Speichern)
+│
 ├── assets/
-│   ├── galerie.css                 ← Styling (RV Hard Design-System)
-│   └── galerie.js                  ← Logik (Laden, Filter, Suche, Lightbox)
+│   ├── galerie.css
+│   └── galerie.js
+│
 └── data/
-    └── events.json                 ← ALLE EVENTS + BILDER (zentrale Konfiguration!)
+    ├── events.json             ← ALLE Events + Fotos + Nummern (wird von admin.php erzeugt!)
+    │
+    ├── sbs-2026-bergrennen/    ← Bilder Bergrennen
+    │   ├── 001-bibs-42-12.jpg
+    │   ├── 002-bibs-88.jpg
+    │   └── ...
+    │
+    ├── sbs-2026-ezf/           ← Bilder EZF
+    ├── sbs-2026-kriterium/     ← Bilder Kriterium
+    ├── sbs-2025-bergrennen/
+    └── ...
 ```
-
----
-
-## 🚀 Schritt-für-Schritt: Neues Event + Bilder hinzufügen
-
-### 1. Bilder in Google Drive / OneDrive hochladen
-
-#### Option A: Google Drive (EMPFOHLEN – am einfachsten!)
-1. **Neuer Ordner** in Google Drive anlegen (z.B. `SBS 2026 Fotos`)
-2. Alle Bilder **reinkopieren**
-3. Ordner freigeben:
-   - Rechtsklick → `Freigeben` → `Zugriff auf Link ändern`
-   - ⚠️ WICHTIG: **"Jeder mit dem Link" → Rolle "Ansehen"** (sonst sieht die Galerie nichts!)
-4. **Für jedes einzelne Bild → Direkt-Link erstellen:**
-   - Bild in Google Drive öffnen → Adresszeile kopieren, z.B.:
-     ```
-     https://drive.google.com/file/d/1ABC123defXYZ789/view?usp=drive_link
-     ```
-   - **Datei-ID extrahieren:** `1ABC123defXYZ789` (der Teil zwischen `/d/` und `/view`)
-   - Daraus 2 URLs machen:
-     ```
-     THUMBNAIL (schnell!): https://drive.google.com/thumbnail?id=DATEI_ID&sz=w800
-     ORIGINAL  (Download): https://drive.google.com/uc?export=view&id=DATEI_ID
-     ```
-
-#### Option B: OneDrive (Microsoft 365)
-1. Bilder in OneDrive Ordner hochladen
-2. Für jedes Bild:
-   - Rechtsklick → `Einbetten` → Link generieren → Adresse kopieren
-   - **ODER:** Bild im Browser öffnen, **Rechtsklick aufs Bild → "Bild-Adresse kopieren"** → diese URL direkt nutzen als `src` + `thumbnail`
-3. ⚠️ OneDrive-Links verfallen manchmal nach Monaten – lieber Google Drive nehmen!
-
-#### Option C: Bilder direkt ins RV Hard Repo hochladen (am stabilsten!)
-1. Unter `/fotos/data/` neuen Ordner anlegen, z.B. `/fotos/data/sbs2026/`
-2. Bilder + Thumbnails dorthin kopieren (Ordner später auf Server laden)
-3. Relative Pfade in `events.json` verwenden:
-   ```json
-   "src": "/fotos/data/sbs2026/01-start.jpg",
-   "thumbnail": "/fotos/data/sbs2026/01-start-thumb.jpg"
-   ```
-
----
-
-### 2. Event + Bilder in `events.json` eintragen
-
-Öffne [/fotos/data/events.json](data/events.json).
-
-#### 🎯 EVENT OBJEKT (Template zum Kopieren):
-Füge **NEUES Event** **nach dem letzten Event-Objekt** ein (vergiss das Komma davor nicht!):
-
-```json
-,
-{
-  "id": "MEIN-EVENT-2026",
-  "slug": "mein-event-2026-fotos",
-  "name": "Name des Events 2026",
-  "description": "Kurzbeschreibung – erscheint auf der Event-Übersicht.",
-  "category": "SBS",
-  "date": "2026-09-05",
-  "location": "Feldkirch, Vorarlberg",
-  "organizer": "RV Hard",
-  "coverPhoto": "https://drive.google.com/thumbnail?id=COVER_DATEI_ID&sz=w1200",
-  "externalGalleryUrl": "https://photos.google.com/share/DEIN_ALBUM_LINK",
-  "tags": ["Rennrad", "Landesmeisterschaft"],
-  "photos": [
-
-    {
-      "src": "https://drive.google.com/uc?export=view&id=BILD_1_ID",
-      "thumbnail": "https://drive.google.com/thumbnail?id=BILD_1_ID&sz=w800",
-      "title": "Kurzer Titel (optional)",
-      "comment": "Längerer Kommentar – was ist auf dem Bild zu sehen? (optional)",
-      "date": "2026-09-05T10:30:00+02:00",
-      "photographer": "Max Mustermann Fotografie",
-      "copyright": "© RV Hard 2026",
-
-      "bibNumbers": [42, 7, 123, 99],
-
-      "athletes": ["Max Müller", "Anna Mayer", "David Huber"],
-      "tags": ["Start", "Zielsprint"]
-    },
-
-    {
-      "src": "https://drive.google.com/uc?export=view&id=BILD_2_ID",
-      "thumbnail": "https://drive.google.com/thumbnail?id=BILD_2_ID&sz=w800",
-      "bibNumbers": [42, 12],
-      "athletes": ["Max Müller", "David Huber"]
-    }
-
-  ]
-}
-```
-
-#### 🚨 WICHTIG: `bibNumbers` = DIE STARTNUMMER-SUCHE!
-Füge **unbedingt** bei JEDEM Foto das Array `bibNumbers` mit allen Startnummern ein, die auf dem Bild zu sehen sind! **Nur dann findet die Suchfunktion die Bilder zu einer Nummer.**
-
-```
-✅ RICHTIG:  "bibNumbers": [42, 7, 99]
-❌ FALSCH:  "bibNumbers": "#42 #7 #99"    (Array mit Zahlen/Strings, kein String!)
-```
-
----
-
-### 3. Testen
-
-1. Lade **`/fotos/`** Ordner auf den Webserver hoch (FTP/SFTP/WebDAV – wie restliche RV Hard Seite)
-2. Öffne im Browser:
-   - `https://rv-hard.at/fotos/` → **Events-Übersicht** – 3 Beispiel-Events + dein neues Event sollten sichtbar sein
-   - Klick auf Event → **Single Ansicht**
-   - Gib **Startnummer** ein (z.B. `42`) → **Filter funktioniert sofort!**
-   - Klick auf Bild → **Lightbox öffnet sich**, Download-Button da
-
----
-
-## 🔑 Wichtige Felder auf einen Blick
-
-| Feld | Wo? | Pflicht? | Erklärung |
-|---|---|---|---|
-| `id` | Event | ✅ | Eindeutige ID (z.B. `sbs-2026`) |
-| `category` | Event | ✅ | Für Filter: `SBS`, `Nightrace`, `Triathlon`, `MTB`, `Rennrad`, `Cyclocross`, `Verein` |
-| `date` | Event | ✅ | `YYYY-MM-DD` (z.B. `2026-09-05`) |
-| `coverPhoto` | Event | ⭐ | Bild auf Events-Übersicht |
-| `src` | Foto | ✅ | **Original-Bild URL** (Download) |
-| `thumbnail` | Foto | ⭐ | **Kleine Version** (schnellere Ladezeit!) |
-| **`bibNumbers`** | Foto | 🏆⭐ | **Array mit Startnummern – ERMÖGLICHT SUCHE!** |
-| `athletes` | Foto | ⭐ | Array mit Namen (`["Max Müller", "Anna Mayer"]`) |
-
----
-
-## 🆘 Häufige Probleme
-
-### ❌ Bilder werden nicht angezeigt?
-- ✅ Google Drive Freigabe: **"Jeder mit dem Link" → Ansehen** (sonst 403-Fehler!)
-- ✅ URL getestet: Kopiere `src`-URL in Browser-Adresszeile – öffnet sich das Bild?
-- ✅ `src` vs `thumbnail`: bei Google Drive: `uc?export=view` für Original, `thumbnail?id=` für klein
-
-### ❌ Suche nach Startnummer findet nichts?
-- ✅ `bibNumbers` ist **Array**: `"bibNumbers": [42, 7]` und **kein String!**
-- ✅ Nummer als Zahl ODER String funktioniert (`[42]` oder `["42"]`)
-
-### ❌ Galerie Seite "Event nicht gefunden"?
-- ✅ URL Parameter `?id=EVENT_ID` stimmt mit `id` in JSON überein?
-- ✅ Keine Tippfehler (Case-Sensitive!)
-
----
-
-## 🎉 Fertig!
-
-Deine Foto-Galerie ist betriebsbereit. **Viel Spaß beim Hochladen und Finden der Bilder!** 🚀
