@@ -296,26 +296,10 @@
     <main>
     <section class="fg-container">
 
-        <!-- EINFÜHRUNG: DIREKTER UPLOAD OHNE FTP! -->
-        <div class="fg-ftp-info">
-            <h3><i class="fa-solid fa-cloud-arrow-up"></i> 🚀 So funktioniert's – OHNE FTP! (GENAU SO, WIE DU ES WOLLTEST)</h3>
-            <ul>
-                <li>→ <strong>Schritt 1:</strong> SBS-Jahr + Disziplin (Bergrennen/Kriterium/EZF) auswählen</li>
-                <li>→ <strong>Schritt 2:</strong> Bilder hier ins graue Feld ziehen oder klicken zum Auswählen</li>
-                <li>→ <strong>Schritt 3:</strong> Bild anklicken → Lightbox öffnet sich → <strong>Startnummern</strong> eintragen, <code>Speichern &amp; Weiter</code></li>
-                <li>→ <strong>Schritt 4:</strong> Button <span style="background:#ffc107;color:#111;padding:2px 7px;border-radius:4px;font-weight:700;">🚀 Auf Server speichern &amp; veröffentlichen</span> drücken</li>
-                <li>→ ✅ <strong>FERTIG!</strong> Bilder + events.json werden automatisch hochgeladen. Galerie sofort öffentlich sichtbar!</li>
-            </ul>
-        </div>
-
-        <!-- ORDNER INFO: Wo landet was am Server? -->
-        <div class="fg-guide">
-            <strong><i class="fa-solid fa-folder-tree"></i> Die Bilder werden automatisch in diese Server-Ordner geladen (pro SBS-Jahr gleich):</strong>
-            <ol>
-                <li><strong>Bergrennen:</strong> <code>/fotos/data/sbs-2026-bergrennen-wolfurt-buch/</code></li>
-                <li><strong>Kriterium:</strong> <code>/fotos/data/sbs-2026-kriterium-kammgarn-hard/</code></li>
-                <li><strong>EZF:</strong> <code>/fotos/data/sbs-2026-ezf-rohrspitz-fussach/</code></li>
-            </ol>
+        <!-- KURZER HINWEIS -->
+        <div class="fg-ftp-info" style="padding: 0.8rem 1rem; background: #fff3cd; border: 1px dashed #ffc107; border-radius: 8px; color: #7a5d00; margin-bottom: 1.2rem;">
+            <i class="fa-solid fa-circle-info" style="color:#f5b301;"></i>
+            <strong>So geht's:</strong> Disziplin wählen → Bilder reinziehen → klicken zum Bearbeiten → veröffentlichen.
         </div>
 
         <!-- 1. EVENT WÄHLEN -->
@@ -353,7 +337,7 @@
             <!-- Bulk Bar -->
             <div id="bulkbar" class="fg-bulkbar">
                 <div class="fg-bulkbar__title">
-                    <i class="fa-solid fa-layer-group"></i> Massen-Tagging aktiv:
+                    <i class="fa-solid fa-layer-group"></i> Massen-Tagging:
                     <strong><span id="sel-count">0</span> Bilder ausgewählt</strong>
                     <div class="btns">
                         <button class="fg-btn fg-btn--outline" id="select-all"><i class="fa-regular fa-square-check"></i> Alle</button>
@@ -361,50 +345,40 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG</span></label>
+                    <label>🏁 STARTNUMMERN (Komma getrennt!)</label>
                     <input type="text" id="bulk-bib" placeholder="42, 12, 88, 333" autocomplete="off">
-                </div>
-                <div class="field">
-                    <label>👤 Fahrer*innen-Namen (optional)</label>
-                    <input type="text" id="bulk-names" placeholder="Max Müller, Anna Mayer" autocomplete="off">
                 </div>
                 <div class="field" style="flex:0 0 auto;">
                     <label>&nbsp;</label>
                     <button class="fg-btn" id="bulk-apply" style="padding:0.6rem 1.2rem;">
-                        <i class="fa-solid fa-tags"></i> auf Auswahl anwenden
+                        <i class="fa-solid fa-tags"></i> Anwenden
                     </button>
                 </div>
             </div>
 
             <div id="photo-grid" class="fg-photo-grid"></div>
             <div id="empty-msg" class="fg-empty" style="margin-top:1rem;">
-                <strong>Keine Bilder geladen.</strong><br>Bilder aus dem FTP-Ordner hier reinziehen!
+                <strong>Keine Bilder geladen.</strong><br>Bilder hier reinziehen!
             </div>
         </div>
 
-        <!-- 3. AUF SERVER SPEICHERN & VERÖFFENTLICHEN -->
+        <!-- 3. VERÖFFENTLICHEN -->
         <div class="fg-publish fg-step">
             <div class="fg-step__header">
                 <div class="fg-step__num">3</div>
-                <h2 style="margin:0;color:#fff;">Speichern & veröffentlichen (KEIN FTP nötig!)</h2>
+                <h2 style="margin:0;color:#fff;">Veröffentlichen</h2>
             </div>
 
             <div class="server-status" id="server-status">
                 <div class="dot" id="server-dot"></div>
-                <div id="server-msg">Überprüfe Server-Verbindung…</div>
+                <div id="server-msg">Prüfe Server…</div>
             </div>
 
-            <p style="margin-top:0.5rem;">
-                Klicke auf den Button unten: Bilder werden direkt auf den Server geladen und automatisch in der Galerie sichtbar.
-                Kein FTP, kein Download von Dateien – alles in einem Schritt!
-            </p>
             <button id="publish-btn" class="fg-btn" disabled>
-                <i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Auf Server speichern & veröffentlichen
+                <i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Auf Server speichern &amp; veröffentlichen
             </button>
             <small>
-                ⚠️ <strong>Hinweis:</strong> Die Bilder werden automatisch in den richtigen Ordner auf dem Server gespeichert:
-                <code style="background:rgba(255,255,255,0.15);padding:2px 5px;border-radius:4px;">/fotos/data/[disziplin-ordner]/</code><br>
-                Die <code>events.json</code> wird direkt am Server aktualisiert und zusammengeführt (alte Archiveinträge bleiben erhalten!).
+                Bilder + events.json gehen direkt auf den Server und sind sofort öffentlich sichtbar.
             </small>
 
             <div class="progress-wrap" id="progress-wrap">
@@ -413,11 +387,10 @@
             <div class="progress-text" id="progress-text" style="display:none;"></div>
 
             <div id="success-msg" class="fg-success" style="margin-top:1rem; background:#fff3cd !important; color:#7a5d00 !important; border-color:#ffc107 !important; display:none;">
-                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> ✅ ERFOLG! Alles veröffentlicht!</h3>
+                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> ✅ Fertig!</h3>
                 <ol style="color:#333;">
-                    <li>Bilder sind auf dem Server gespeichert</li>
-                    <li><code style="background:#fff;">events.json</code> wurde aktualisiert</li>
-                    <li>Öffne jetzt die <a style="color:#0f5132;font-weight:700;" id="success-link" href="/fotos/" target="_blank">öffentliche SBS Galerie →</a> – alles sofort sichtbar!</li>
+                    <li>Bilder gespeichert</li>
+                    <li>Galerie ist jetzt öffentlich sichtbar: <a id="success-link" style="color:#0f5132;font-weight:700;" href="/fotos/" target="_blank">rv-hard.at/fotos/ →</a></li>
                 </ol>
             </div>
         </div>
@@ -457,44 +430,21 @@
             </div>
             <div class="admin-lb__sidebar">
                 <h3><i class="fa-solid fa-tags" style="color:#f5b301;"></i> Bild bearbeiten</h3>
-                <div class="nav">
-                    <button class="admin-lb__btn" id="lb-jump-first"><i class="fa-solid fa-angles-left"></i> Anfang</button>
-                    <button class="admin-lb__btn" id="lb-jump-last"><i class="fa-solid fa-angles-right"></i> Ende</button>
-                </div>
-
                 <div>
-                    <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG FÜR SUCHE</span></label>
+                    <label>🏁 STARTNUMMERN (Komma getrennt!)</label>
                     <input type="text" id="lb-bib" class="bibs" placeholder="42, 12, 88" autocomplete="off">
-                    <div class="hint">
-                        Z.B. <code>42, 12, 88</code> oder <code>#333, 7</code> – mehrere Nummern pro Bild möglich (alle Fahrer die drauf sind!).
-                    </div>
                 </div>
 
-                <div>
-                    <label>👤 Fahrer*innen-Namen (optional)</label>
-                    <input type="text" id="lb-names" placeholder="Max Müller, Anna Mayer">
-                </div>
-
-                <div>
-                    <label>📸 Titel / Moment (optional)</label>
-                    <input type="text" id="lb-title" placeholder="Zielsprint / Steigung / Siegerehrung">
-                </div>
-
-                <div>
-                    <label>📝 Kommentar (optional)</label>
-                    <textarea id="lb-notes" placeholder="Notizen zu diesem Bild…"></textarea>
-                </div>
-
-                <div style="display:flex; gap:8px; padding-top:8px; border-top: 1px solid #eee;">
+                <div style="display:flex; gap:8px; padding-top:4px;">
                     <button class="admin-lb__btn" id="lb-copy-bib" style="flex:1;">
-                        <i class="fa-solid fa-copy"></i> Nummern kopieren
+                        <i class="fa-solid fa-copy"></i> Kopieren
                     </button>
                     <button class="admin-lb__btn primary" id="lb-save-sidebar" style="flex:2;">
-                        <i class="fa-solid fa-floppy-disk"></i> Speichern & Nächstes
+                        <i class="fa-solid fa-floppy-disk"></i> Speichern &amp; Weiter
                     </button>
                 </div>
-                <div class="hint" style="margin-top:0; padding-top:4px; border-top: 1px dashed #eee;">
-                    💡 <strong>Tipp:</strong> Pfeiltasten ← → zum Blättern, ESC zum Schließen, Strg+S zum Speichern & Weiter!
+                <div class="hint" style="margin-top:0;">
+                    💡 ← → blättern · ESC schließen · Strg+S speichern
                 </div>
             </div>
         </div>
@@ -629,12 +579,11 @@
         $empty.style.display = list.length ? 'none' : 'block';
         $pg.innerHTML = list.map(p => {
             const bibStr = (p.bibNumbers||[]).join(', ');
-            const athStr = (p.athletes||[]).join(', ');
             const sel = p._selected ? 'selected' : '';
             const hasBibs = (p.bibNumbers||[]).length > 0;
             return `
                 <div class="fg-photo-card ${sel}" data-id="${p.id}">
-                    <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="Klick: groß öffnen + Startnummern bearbeiten" data-id="${p.id}">
+                    <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="Klick: öffnen + bearbeiten" data-id="${p.id}">
                         <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
                         <img src="${p.dataUrl}" alt="${p.title||''}" loading="lazy" style="pointer-events:none; width:100%;">
                         ${hasBibs ? `
@@ -648,16 +597,8 @@
                     <div class="fg-photo-card__body">
                         <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
                         <div>
-                            <label>🏁 STARTNUMMERN – <span style="color:#f5b301;">WICHTIG</span></label>
+                            <label>🏁 STARTNUMMERN</label>
                             <input type="text" class="bibs js-bib" placeholder="42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
-                        </div>
-                        <div>
-                            <label>👤 Namen (optional)</label>
-                            <input type="text" class="js-name" placeholder="Max Müller" value="${athStr}" data-id="${p.id}">
-                        </div>
-                        <div>
-                            <label>📸 Titel (optional)</label>
-                            <input type="text" class="js-title" placeholder="Zielsprint" value="${p.title||''}" data-id="${p.id}">
                         </div>
                     </div>
                 </div>
@@ -688,14 +629,6 @@
             if (p) p.bibNumbers = parseBibs(e.target.value);
             renderPhotos();
         }));
-        $pg.querySelectorAll('.js-name').forEach(i => i.addEventListener('change', e => {
-            const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
-            if (p) p.athletes = parseList(e.target.value);
-        }));
-        $pg.querySelectorAll('.js-title').forEach(i => i.addEventListener('change', e => {
-            const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
-            if (p) p.title = e.target.value;
-        }));
 
         updateBulk();
         updatePublishBtn();
@@ -720,7 +653,6 @@
     });
     document.getElementById('bulk-apply').addEventListener('click', () => {
         const bib = document.getElementById('bulk-bib').value;
-        const names = document.getElementById('bulk-names').value;
         let n = 0;
         uploadedPhotos.forEach(p => {
             if (!(p._selected && p._event === currentEventId)) return;
@@ -728,13 +660,11 @@
                 const pb = parseBibs(bib);
                 p.bibNumbers = Array.from(new Set([...(p.bibNumbers||[]), ...pb]));
             }
-            if (names) p.athletes = Array.from(new Set([...(p.athletes||[]), ...parseList(names)]));
             n++;
         });
         document.getElementById('bulk-bib').value = '';
-        document.getElementById('bulk-names').value = '';
         renderPhotos();
-        alert(`✅ Massen-Tagging fertig auf ${n} Bilder!`);
+        alert(`✅ ${n} Bilder aktualisiert!`);
     });
 
     /* ================================================================
@@ -745,9 +675,6 @@
     const $lbFilename = document.getElementById('lb-filename');
     const $lbPosition = document.getElementById('lb-position');
     const $lbBib = document.getElementById('lb-bib');
-    const $lbNames = document.getElementById('lb-names');
-    const $lbTitle = document.getElementById('lb-title');
-    const $lbNotes = document.getElementById('lb-notes');
 
     function lbOpenById(photoId) {
         lbCurrentList = getCurrentPhotoList();
@@ -770,18 +697,12 @@
         $lbFilename.textContent = p.filename;
         $lbPosition.textContent = `(${lbCurrentIndex + 1}/${lbCurrentList.length})`;
         $lbBib.value = (p.bibNumbers||[]).join(', ');
-        $lbNames.value = (p.athletes||[]).join(', ');
-        $lbTitle.value = p.title || '';
-        $lbNotes.value = p.notes || '';
         setTimeout(() => $lbBib.focus(), 80);
     }
     function lbSaveCurrent() {
         const p = lbCurrentList[lbCurrentIndex];
         if (!p) return;
         p.bibNumbers = parseBibs($lbBib.value);
-        p.athletes   = parseList($lbNames.value);
-        p.title      = $lbTitle.value;
-        p.notes      = $lbNotes.value;
     }
     function lbNext() {
         if (lbCurrentIndex < lbCurrentList.length - 1) {
@@ -817,10 +738,8 @@
     document.getElementById('lb-prev-top').addEventListener('click', () => { lbSaveCurrent(); lbPrev(); });
     document.getElementById('lb-save-top').addEventListener('click', lbSaveAndNext);
     document.getElementById('lb-save-sidebar').addEventListener('click', lbSaveAndNext);
-    document.getElementById('lb-jump-first').addEventListener('click', () => { lbSaveCurrent(); lbCurrentIndex = 0; lbRender(); });
-    document.getElementById('lb-jump-last').addEventListener('click', () => { lbSaveCurrent(); lbCurrentIndex = lbCurrentList.length - 1; lbRender(); });
     document.getElementById('lb-copy-bib').addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText($lbBib.value); alert('📋 Startnummern in Zwischenablage kopiert!'); } catch(e){ alert('Kopieren nicht möglich – manuell markieren.'); }
+        try { await navigator.clipboard.writeText($lbBib.value); } catch(e){}
     });
     $lb.addEventListener('click', e => { if (e.target === $lb) { lbSaveCurrent(); lbClose(); renderPhotos(); } });
 
@@ -851,33 +770,33 @@
             const r = await fetch('/fotos/admin/upload.php?action=ping&_=' + Date.now(), { method: 'GET' });
             if (!r.ok) throw new Error('HTTP ' + r.status);
             const j = await r.json();
-            if (!j.ok) throw new Error(j.msg || 'Unbekannter Fehler');
+            if (!j.ok) throw new Error(j.msg || 'Fehler');
             if (j.data_writable) {
-                setServerStatus('ok', `✅ Server bereit! Bilder-Ordner beschreibbar · Max Upload: ${j.max_upload || 'unbekannt'} · events.json: ${j.events_exists ? 'vorhanden' : 'wird neu erstellt'}`);
+                setServerStatus('ok', `✅ Server bereit`);
             } else {
-                setServerStatus('warn', `⚠️ Server erreichbar, aber Daten-Ordner NICHT beschreibbar. Bitte Ordner <code>/fotos/data/</code> mit FTP auf CHMOD 755 setzen!`);
+                setServerStatus('warn', `⚠️ Ordner <code>/fotos/data/</code> nicht beschreibbar – bitte CHMOD 755 setzen!`);
             }
         } catch(err) {
-            setServerStatus('err', `❌ Server nicht erreichbar oder PHP deaktiviert. Prüfe: <code>/fotos/admin/upload.php</code> auf dem Server + PHP ist aktiviert! (Lokal kann der Ping fehlen – auf echtem Server funktioniert's)`);
+            setServerStatus('err', `❌ Upload-Endpoint nicht erreichbar (PHP? Rechte?)`);
         }
     }
     setTimeout(pingServer, 300);
 
     $publishBtn.addEventListener('click', async () => {
         const list = getCurrentPhotoList();
-        if (list.length === 0) return alert('Keine Bilder zum Hochladen!');
+        if (list.length === 0) return alert('Keine Bilder!');
         const year = $yearSel.value;
         const discObj = DISCS.find(d => eventIdFor(year, d.key) === currentEventId);
         if (!discObj) return alert('Unbekannte Disziplin!');
         const folder = folderFor(year, discObj.key);
 
-        const nochOhneNummern = list.filter(p => !p.bibNumbers || p.bibNumbers.length === 0).length;
-        if (nochOhneNummern > 0) {
-            const jn = confirm(`⚠️ ${nochOhneNummern} von ${list.length} Bildern haben KEINE Startnummern!\n\nTrotzdem veröffentlichen? (Nummernsuche wird später für diese fehlen)`);
+        const ohne = list.filter(p => !p.bibNumbers || p.bibNumbers.length === 0).length;
+        if (ohne > 0) {
+            const jn = confirm(`${ohne} Bilder ohne Startnummern! Trotzdem veröffentlichen?`);
             if (!jn) return;
         }
 
-        /* 1) FormData bauen: Bilder + Metadaten */
+        /* 1) FormData */
         const fd = new FormData();
         fd.append('action', 'publish');
         const photosMeta = list.map(p => ({
@@ -886,16 +805,10 @@
             title: p.title || p.filename,
             date: `${year}-09-06`,
             photographer: p.photographer || 'RV Hard',
-            bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers),
-            athletes: Array.isArray(p.athletes) ? p.athletes : [],
-            notes: p.notes || ''
+            bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers)
         }));
         fd.append('metadata', JSON.stringify({
-            eventId: currentEventId,
-            folder,
-            year,
-            discKey: discObj.key,
-            photos: photosMeta
+            eventId: currentEventId, folder, year, discKey: discObj.key, photos: photosMeta
         }));
         list.forEach(p => { if (p.file) fd.append('images[]', p.file, p.filename); });
 
@@ -929,15 +842,13 @@
                 xhr.onabort = () => reject(new Error('Upload abgebrochen!'));
                 xhr.send(fd);
             }).then(j => {
-                if (!j.ok) throw new Error(j.msg || 'Unbekannter Fehler vom Server');
-                /* ERFOLG! */
+                if (!j.ok) throw new Error(j.msg || 'Fehler');
                 $pb.style.width = '100%';
-                $pt.textContent = `✅ Fertig! ${j.photos_saved_count} Bilder gespeichert · ${j.photos_json_count} Fotos in events.json eingetragen · Ordner: ${j.target_folder || ''}`;
+                $pt.textContent = `✅ ${j.photos_saved_count} Bilder, ${j.photos_json_count} Einträge – Ordner ${j.target_folder || ''}`;
                 const sucMsg = document.getElementById('success-msg');
                 sucMsg.style.display = 'block';
                 if (j.preview_url) document.getElementById('success-link').href = j.preview_url;
-                sucMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                $publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> Nochmals veröffentlichen`;
+                $publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> Nochmal veröffentlichen`;
                 $publishBtn.disabled = false;
                 setTimeout(pingServer, 500);
             }).catch(err => { throw err; });
@@ -946,7 +857,7 @@
             $pb.style.width = '0%';
             $pt.textContent = '❌ Fehler: ' + (err.message || String(err));
             $pt.style.color = '#ffd855';
-            alert('❌ Upload FEHLGESCHLAGEN!\n\n' + (err.message || String(err)) + '\n\nPrüfe: /fotos/data/ Ordner CHMOD 755, upload.php vorhanden, PHP aktiv');
+            alert('❌ Upload fehlgeschlagen!\n' + (err.message || String(err)));
             $publishBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Erneut versuchen`;
             $publishBtn.disabled = false;
             setTimeout(pingServer, 300);
