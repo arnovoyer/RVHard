@@ -157,6 +157,133 @@
         .fg-ftp-info ul { margin: 0; padding-left: 1.25rem; line-height: 1.75; }
         .fg-ftp-info code { background:#fff; padding: 2px 5px; border-radius:4px; }
 
+        /* ===== ADMIN LIGHTBOX (große Ansicht + Bearbeiten) ===== */
+        .admin-lb {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.92);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 1rem;
+        }
+        .admin-lb.show { display: flex; }
+        .admin-lb__topbar {
+            position: absolute; top: 0; left: 0; right: 0;
+            display:flex; justify-content: space-between; align-items: center;
+            padding: 0.8rem 1.2rem; color: #fff;
+            background: rgba(0,0,0,0.4);
+        }
+        .admin-lb__topbar .title {
+            font-weight: 600; font-size: 0.95rem;
+            max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .admin-lb__topbar .title small { color: #aaa; margin-left: 0.5rem;}
+        .admin-lb__topbar__actions { display:flex; gap: 8px; }
+        .admin-lb__btn {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 0.5rem 0.9rem; border-radius: 6px; cursor:pointer;
+            font-family:'Poppins',sans-serif; font-size: 0.85rem;
+            transition: all .15s ease;
+        }
+        .admin-lb__btn:hover { background: rgba(255,193,7,0.25); border-color: #ffc107; color:#ffc107;}
+        .admin-lb__btn.primary { background: #ffc107; color:#111; border-color:#ffc107; font-weight: 700;}
+        .admin-lb__btn.primary:hover { background:#f5b301; color:#000;}
+
+        .admin-lb__body {
+            display:flex; gap: 1.2rem; max-width: 1600px; width:100%;
+            max-height: calc(100vh - 160px); align-items: stretch;
+        }
+        .admin-lb__imgwrap {
+            flex: 1 1 auto; display: flex; align-items: center; justify-content: center;
+            background: #000; border-radius: 10px; overflow: hidden;
+            min-height: 400px;
+        }
+        .admin-lb__imgwrap img { max-width: 100%; max-height: calc(100vh - 160px); object-fit: contain; }
+        .admin-lb__sidebar {
+            flex: 0 0 360px; background: #fff; border-radius: 10px;
+            padding: 1.2rem; overflow-y: auto;
+            display:flex; flex-direction: column; gap: 14px;
+        }
+        .admin-lb__sidebar h3 { margin:0 0 0.3rem; font-size: 1.05rem; color: #111;}
+        .admin-lb__sidebar .nav {
+            display:flex; justify-content: space-between; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid #eee;
+        }
+        .admin-lb__sidebar label { display:block; font-size:0.75rem; color:#666; letter-spacing:0.03em; font-weight:700; margin-bottom: 0.2rem;}
+        .admin-lb__sidebar input, .admin-lb__sidebar textarea {
+            width:100%; padding:0.5rem 0.7rem; border: 2px solid #e0e0e0; border-radius: 6px;
+            font-family:'Poppins',sans-serif; font-size:0.9rem; box-sizing:border-box;
+        }
+        .admin-lb__sidebar textarea { min-height: 70px; resize: vertical; }
+        .admin-lb__sidebar input.bibs {
+            border-color: #ffd855; background: #fffce6; font-weight: 600;
+        }
+        .admin-lb__sidebar .hint { font-size: 0.75rem; color: #888; line-height: 1.5;}
+
+        .admin-lb__navbtn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.55); border: 2px solid rgba(255,255,255,0.3);
+            color: #fff; width: 48px; height: 48px;
+            border-radius: 50%; font-size: 1.3rem; cursor: pointer;
+            display:flex; align-items: center; justify-content: center;
+            transition: all .15s ease; z-index: 10000;
+        }
+        .admin-lb__navbtn:hover { background: #ffc107; color:#111; border-color:#ffc107; }
+        .admin-lb__navbtn.prev { left: 1.5rem;}
+        .admin-lb__navbtn.next { right: 1.5rem;}
+
+        /* ===== UPLOAD / PUBLISH STATUS BOX ===== */
+        .fg-publish {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #0f5132, #157347);
+            color: #fff;
+            border-radius: 10px;
+        }
+        .fg-publish .fg-step__header h2 { color:#fff; }
+        .fg-publish .fg-step__num { background:#fff;color:#157347; }
+        .fg-publish p { color: rgba(255,255,255,0.9); margin: 0 0 1rem 0; }
+        .fg-publish .fg-btn {
+            background: #ffc107;
+            color: #111;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .fg-publish .fg-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+        .fg-publish small { color: rgba(255,255,255,0.78); display:block; margin-top: 0.75rem; font-size: 0.78rem; line-height:1.6; }
+        .fg-publish .server-status {
+            padding: 0.7rem 0.9rem; background: rgba(255,255,255,0.1);
+            border-radius: 7px; margin-bottom: 1rem;
+            display:flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+        .fg-publish .server-status .dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            flex: 0 0 12px;
+        }
+        .fg-publish .server-status .dot.ok { background: #198754; box-shadow: 0 0 0 3px rgba(25,135,84,0.4); }
+        .fg-publish .server-status .dot.err { background: #dc3545; }
+        .fg-publish .server-status .dot.warn { background: #ffc107; }
+
+        .progress-wrap {
+            width:100%; background: rgba(255,255,255,0.15);
+            border-radius: 999px; overflow: hidden;
+            height: 14px; margin-top: 1rem; display: none;
+        }
+        .progress-wrap.show { display: block; }
+        .progress-bar {
+            height: 100%; background: linear-gradient(90deg, #ffc107, #f5b301);
+            width: 0%; transition: width .3s ease;
+        }
+        .progress-text { font-size: 0.8rem; margin-top: 0.4rem; color: rgba(255,255,255,0.85);}
+
+        @media (max-width: 900px) {
+            .admin-lb__body { flex-direction: column; }
+            .admin-lb__sidebar { flex: 0 0 auto; width:100%; max-height: 45vh; }
+            .admin-lb__imgwrap { min-height: 220px; }
+            .admin-lb__navbtn { width: 40px; height: 40px; font-size: 1rem; top: auto; bottom: 140px;}
+            .admin-lb__navbtn.prev { left: 0.6rem;}
+            .admin-lb__navbtn.next { right: 0.6rem;}
+        }
+
         @media (max-width: 600px) {
             .fg-photo-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
             .fg-photo-card__header img { height: 140px; }
@@ -169,20 +296,21 @@
     <main>
     <section class="fg-container">
 
-        <!-- EINFÜHRUNG: FTP HOCHLADEN WIE FRÜHER -->
+        <!-- EINFÜHRUNG: DIREKTER UPLOAD OHNE FTP! -->
         <div class="fg-ftp-info">
-            <h3><i class="fa-solid fa-folder-open"></i> Schritt 0 (VOR dem Backend!): Bilder per FTP hochladen (EINFACH WIE FRÜHER)</h3>
+            <h3><i class="fa-solid fa-cloud-arrow-up"></i> 🚀 So funktioniert's – OHNE FTP! (GENAU SO, WIE DU ES WOLLTEST)</h3>
             <ul>
-                <li>Bilder am PC <strong>in den passenden Ordner</strong> kopieren (siehe unten)</li>
-                <li>Dann die 3 Ordner per FTP auf den Server in <code>/fotos/data/</code> hochladen</li>
-                <li>ODER: Bilder direkt per FTP in die richtigen Ordner auf dem Server kopieren</li>
-                <li>Erst <strong>danach</strong>: Backend hier öffnen → Bilder reinziehen → Taggen → Download events.json</li>
+                <li>→ <strong>Schritt 1:</strong> SBS-Jahr + Disziplin (Bergrennen/Kriterium/EZF) auswählen</li>
+                <li>→ <strong>Schritt 2:</strong> Bilder hier ins graue Feld ziehen oder klicken zum Auswählen</li>
+                <li>→ <strong>Schritt 3:</strong> Bild anklicken → Lightbox öffnet sich → <strong>Startnummern</strong> eintragen, <code>Speichern &amp; Weiter</code></li>
+                <li>→ <strong>Schritt 4:</strong> Button <span style="background:#ffc107;color:#111;padding:2px 7px;border-radius:4px;font-weight:700;">🚀 Auf Server speichern &amp; veröffentlichen</span> drücken</li>
+                <li>→ ✅ <strong>FERTIG!</strong> Bilder + events.json werden automatisch hochgeladen. Galerie sofort öffentlich sichtbar!</li>
             </ul>
         </div>
 
-        <!-- FTP ORDNER Infos -->
+        <!-- ORDNER INFO: Wo landet was am Server? -->
         <div class="fg-guide">
-            <strong><i class="fa-solid fa-folder-tree"></i> Passende Ordnerstruktur für SBS 2026 (pro Jahr gleich):</strong>
+            <strong><i class="fa-solid fa-folder-tree"></i> Die Bilder werden automatisch in diese Server-Ordner geladen (pro SBS-Jahr gleich):</strong>
             <ol>
                 <li><strong>Bergrennen:</strong> <code>/fotos/data/sbs-2026-bergrennen-wolfurt-buch/</code></li>
                 <li><strong>Kriterium:</strong> <code>/fotos/data/sbs-2026-kriterium-kammgarn-hard/</code></li>
@@ -254,32 +382,42 @@
             </div>
         </div>
 
-        <!-- 3. EVENTS.JSON RUNTERLADEN -->
-        <div class="fg-export fg-step">
+        <!-- 3. AUF SERVER SPEICHERN & VERÖFFENTLICHEN -->
+        <div class="fg-publish fg-step">
             <div class="fg-step__header">
                 <div class="fg-step__num">3</div>
-                <h2 style="margin:0;color:#fff;">events.json herunterladen</h2>
+                <h2 style="margin:0;color:#fff;">Speichern & veröffentlichen (KEIN FTP nötig!)</h2>
             </div>
+
+            <div class="server-status" id="server-status">
+                <div class="dot" id="server-dot"></div>
+                <div id="server-msg">Überprüfe Server-Verbindung…</div>
+            </div>
+
             <p style="margin-top:0.5rem;">
-                Klicke auf den Button. Es wird eine <strong>fertige events.json</strong> heruntergeladen.
-                Ersetze danach per FTP die Datei auf dem Server: <code>/fotos/data/events.json</code> — FERTIG!
+                Klicke auf den Button unten: Bilder werden direkt auf den Server geladen und automatisch in der Galerie sichtbar.
+                Kein FTP, kein Download von Dateien – alles in einem Schritt!
             </p>
-            <button id="export-btn" class="fg-btn" disabled>
-                <i class="fa-solid fa-file-arrow-down"></i> events.json herunterladen
+            <button id="publish-btn" class="fg-btn" disabled>
+                <i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Auf Server speichern & veröffentlichen
             </button>
             <small>
-                ⚠️ <strong>Hinweis:</strong> Die Bilder müssen bereits per FTP in den jeweiligen Ordern liegen!
-                Die events.json <strong>referenziert nur die Dateinamen</strong> aus den Ordnern und speichert dazu die Startnummern-Tags.
+                ⚠️ <strong>Hinweis:</strong> Die Bilder werden automatisch in den richtigen Ordner auf dem Server gespeichert:
+                <code style="background:rgba(255,255,255,0.15);padding:2px 5px;border-radius:4px;">/fotos/data/[disziplin-ordner]/</code><br>
+                Die <code>events.json</code> wird direkt am Server aktualisiert und zusammengeführt (alte Archiveinträge bleiben erhalten!).
             </small>
 
-            <div id="success-msg" class="fg-success" style="background:#fff3cd !important; color:#7a5d00 !important; border-color:#ffc107 !important;">
-                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> Fertig! Jetzt per FTP auf den Server laden:</h3>
+            <div class="progress-wrap" id="progress-wrap">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progress-text" style="display:none;"></div>
+
+            <div id="success-msg" class="fg-success" style="margin-top:1rem; background:#fff3cd !important; color:#7a5d00 !important; border-color:#ffc107 !important; display:none;">
+                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> ✅ ERFOLG! Alles veröffentlicht!</h3>
                 <ol style="color:#333;">
-                    <li>Öffne FileZilla/WinSCP und verbinde mit <strong>rv-hard.at</strong></li>
-                    <li>Lade die heruntergeladene Datei <code>events.json</code> nach:
-                        <code style="background:#fff;">/fotos/data/events.json</code> <strong>(ersetzen!)</strong>
-                    </li>
-                    <li>✅ <strong>FERTIG!</strong> Galerie auf <a style="color:#0f5132;font-weight:700;" href="/fotos/" target="_blank">rv-hard.at/fotos/</a> öffnen – die SBS-Bilder sind jetzt mit Nummernsuche sichtbar!</li>
+                    <li>Bilder sind auf dem Server gespeichert</li>
+                    <li><code style="background:#fff;">events.json</code> wurde aktualisiert</li>
+                    <li>Öffne jetzt die <a style="color:#0f5132;font-weight:700;" id="success-link" href="/fotos/" target="_blank">öffentliche SBS Galerie →</a> – alles sofort sichtbar!</li>
                 </ol>
             </div>
         </div>
@@ -287,281 +425,534 @@
     </section>
     </main>
 
+    <!-- ===== ADMIN LIGHTBOX (große Bildansicht) ===== -->
+    <div id="admin-lightbox" class="admin-lb" role="dialog" aria-modal="true">
+        <div class="admin-lb__topbar">
+            <div class="title">
+                <i class="fa-solid fa-image" style="color:#ffc107;"></i>
+                <span id="lb-filename">Bildname</span>
+                <small id="lb-position"></small>
+            </div>
+            <div class="admin-lb__topbar__actions">
+                <button class="admin-lb__btn" id="lb-prev-top"><i class="fa-solid fa-arrow-left"></i> Zurück</button>
+                <button class="admin-lb__btn primary" id="lb-save-top">
+                    <i class="fa-solid fa-floppy-disk"></i> Speichern & Weiter
+                </button>
+                <button class="admin-lb__btn" id="lb-close" title="Schließen (ESC)">
+                    <i class="fa-solid fa-xmark"></i> Schließen
+                </button>
+            </div>
+        </div>
+
+        <button class="admin-lb__navbtn prev" id="lb-prev" title="Vorheriges (←)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="admin-lb__navbtn next" id="lb-next" title="Nächstes (→)">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <div class="admin-lb__body">
+            <div class="admin-lb__imgwrap">
+                <img id="lb-img" src="" alt="Vorschau">
+            </div>
+            <div class="admin-lb__sidebar">
+                <h3><i class="fa-solid fa-tags" style="color:#f5b301;"></i> Bild bearbeiten</h3>
+                <div class="nav">
+                    <button class="admin-lb__btn" id="lb-jump-first"><i class="fa-solid fa-angles-left"></i> Anfang</button>
+                    <button class="admin-lb__btn" id="lb-jump-last"><i class="fa-solid fa-angles-right"></i> Ende</button>
+                </div>
+
+                <div>
+                    <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG FÜR SUCHE</span></label>
+                    <input type="text" id="lb-bib" class="bibs" placeholder="42, 12, 88" autocomplete="off">
+                    <div class="hint">
+                        Z.B. <code>42, 12, 88</code> oder <code>#333, 7</code> – mehrere Nummern pro Bild möglich (alle Fahrer die drauf sind!).
+                    </div>
+                </div>
+
+                <div>
+                    <label>👤 Fahrer*innen-Namen (optional)</label>
+                    <input type="text" id="lb-names" placeholder="Max Müller, Anna Mayer">
+                </div>
+
+                <div>
+                    <label>📸 Titel / Moment (optional)</label>
+                    <input type="text" id="lb-title" placeholder="Zielsprint / Steigung / Siegerehrung">
+                </div>
+
+                <div>
+                    <label>📝 Kommentar (optional)</label>
+                    <textarea id="lb-notes" placeholder="Notizen zu diesem Bild…"></textarea>
+                </div>
+
+                <div style="display:flex; gap:8px; padding-top:8px; border-top: 1px solid #eee;">
+                    <button class="admin-lb__btn" id="lb-copy-bib" style="flex:1;">
+                        <i class="fa-solid fa-copy"></i> Nummern kopieren
+                    </button>
+                    <button class="admin-lb__btn primary" id="lb-save-sidebar" style="flex:2;">
+                        <i class="fa-solid fa-floppy-disk"></i> Speichern & Nächstes
+                    </button>
+                </div>
+                <div class="hint" style="margin-top:0; padding-top:4px; border-top: 1px dashed #eee;">
+                    💡 <strong>Tipp:</strong> Pfeiltasten ← → zum Blättern, ESC zum Schließen, Strg+S zum Speichern & Weiter!
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer id="site-footer"></footer>
 
     <script>
-        /* ===== INIT NAV + FOOTER ===== */
-        (async () => {
-            try {
-                const r = await fetch('/assets/navigationneu.html');
-                if (r.ok) document.getElementById('navigation-container').innerHTML = await r.text();
-                if (typeof initNavigationMenu === 'function') initNavigationMenu();
-            } catch(e) {}
-            try {
-                const r = await fetch('/assets/footer.html');
-                if (r.ok) document.getElementById('site-footer').innerHTML = await r.text();
-            } catch(e) {}
-        })();
+    /* ============================================================
+     *  SBS GALERIE ADMIN – V3.2
+     *  Upload im Tab → Startnummern → Publish-Button → automatisch!
+     *  (Alter V3.1 Code mit FTP / JSON-Download siehe unten ausgeklammert)
+     * ============================================================ */
 
-        /* ===== DATEN: 3 DISZIPLINEN PRO JAHR ===== */
-        const DISCS = [
-            { key: 'bergrennen-wolfurt-buch', name: 'Bergrennen Wolfurt → Buch', short: 'Bergrennen Wolfurt-Buch', cat: 'BERGRENNEN', color: '#198754', icon: 'fa-mountain-sun',
-              location: 'Wolfurt → Buch', distance: '12,8 km · 690 Hm', desc: 'Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!' },
-            { key: 'kriterium-kammgarn-hard', name: 'Kriterium Kammgarn Hard', short: 'Kriterium Kammgarn Hard', cat: 'KRITERIUM', color: '#dc3545', icon: 'fa-flag-checkered',
-              location: 'Kammgarn Areal, Hard', distance: '50 Runden · 75 km', desc: 'Stadtkurs Kriterium in Hard am Kammgarn-Gelände. Suche nach deiner Startnummer!' },
-            { key: 'ezf-rohrspitz-fussach', name: 'Einzelzeitfahren Rohrspitz Fußach', short: 'EZF Rohrspitz Fußach', cat: 'EZF', color: '#0d6efd', icon: 'fa-stopwatch',
-              location: 'Rohrspitz, Fußach (Bodensee)', distance: '9,2 km · 45 Hm', desc: 'Einzelzeitfahren entlang des Bodensees in Fußach. Suche nach deiner Startnummer!' }
-        ];
+    /* ========== [ARCHIVIERT V3.1] ALT: JSON-DOWNLOAD + FTP UPLOAD
+     *          Nicht mehr benötigt – jetzt alles über upload.php!
+     * ------------------------------------------------------------------
+     *  $exportBtn.addEventListener('click', async () => { ... });
+     *  Ablauf alt: Browser → events.json runterladen → FTP uploaden
+     *  Ablauf neu: Publish Button → upload.php macht alles automatisch
+     * ------------------------------------------------------------------
+     *  (Kompletter alter Code in project_memory / Git history)
+     * ========== [ENDE ARCHIVIERT V3.1] */
 
-        let currentEventId = '';
-        let uploadedPhotos = []; /* [{ id, file, filename, dataUrl, bibNumbers, athletes, photographer, title, _selected }] */
-        let idCounter = 0;
+    /* ===== INIT NAV + FOOTER ===== */
+    (async () => {
+        try {
+            const r = await fetch('/assets/navigationneu.html');
+            if (r.ok) document.getElementById('navigation-container').innerHTML = await r.text();
+            if (typeof initNavigationMenu === 'function') initNavigationMenu();
+        } catch(e) {}
+        try {
+            const r = await fetch('/assets/footer.html');
+            if (r.ok) document.getElementById('site-footer').innerHTML = await r.text();
+        } catch(e) {}
+    })();
 
-        /* ===== EVENT WAHL ===== */
-        const $yearSel = document.getElementById('year-select');
-        const $grid = document.getElementById('discipline-grid');
+    /* ===== DATEN: 3 DISZIPLINEN PRO JAHR ===== */
+    const DISCS = [
+        { key: 'bergrennen-wolfurt-buch', name: 'Bergrennen Wolfurt → Buch', short: 'Bergrennen Wolfurt-Buch', cat: 'BERGRENNEN', color: '#198754', icon: 'fa-mountain-sun',
+          location: 'Wolfurt → Buch', distance: '12,8 km · 690 Hm', desc: 'Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!' },
+        { key: 'kriterium-kammgarn-hard', name: 'Kriterium Kammgarn Hard', short: 'Kriterium Kammgarn Hard', cat: 'KRITERIUM', color: '#dc3545', icon: 'fa-flag-checkered',
+          location: 'Kammgarn Areal, Hard', distance: '50 Runden · 75 km', desc: 'Stadtkurs Kriterium in Hard am Kammgarn-Gelände. Suche nach deiner Startnummer!' },
+        { key: 'ezf-rohrspitz-fussach', name: 'Einzelzeitfahren Rohrspitz Fußach', short: 'EZF Rohrspitz Fußach', cat: 'EZF', color: '#0d6efd', icon: 'fa-stopwatch',
+          location: 'Rohrspitz, Fußach (Bodensee)', distance: '9,2 km · 45 Hm', desc: 'Einzelzeitfahren entlang des Bodensees in Fußach. Suche nach deiner Startnummer!' }
+    ];
 
-        function eventIdFor(year, key) { return `sbs-${year}-${key}`; }
-        function folderFor(year, key) { return `sbs-${year}-${key}`; }
+    let currentEventId = '';
+    let uploadedPhotos = []; /* [{ id, file, filename, dataUrl, bibNumbers, athletes, photographer, title, notes, _selected }] */
+    let idCounter = 0;
+    let lbCurrentIndex = -1;   /* Position in aktuell gefilterter Liste */
+    let lbCurrentList = [];   /* Aktuell gefilterte photo-Objekte */
 
-        function renderEvents() {
-            const year = $yearSel.value;
-            $grid.innerHTML = DISCS.map(d => {
-                const id = eventIdFor(year, d.key);
-                const active = (id === currentEventId) ? 'active' : '';
-                const folder = folderFor(year, d.key);
-                return `
-                    <div class="fg-event-pick ${active}" data-id="${id}" data-key="${d.key}">
-                        <span class="cat" style="background:${d.color};">${d.cat}</span>
-                        <h3><i class="fa-solid ${d.icon}" style="color:#f5b301;"></i> ${d.short}</h3>
-                        <small>${d.location}</small>
-                        <small style="color:#0d6efd; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${folder}</small>
-                        <div class="count"><i class="fa-regular fa-image"></i> ${uploadedPhotos.filter(p => p._event === id).length} Bilder geladen</div>
-                    </div>
-                `;
-            }).join('');
-            $grid.querySelectorAll('.fg-event-pick').forEach(el => {
-                el.addEventListener('click', () => {
-                    currentEventId = el.getAttribute('data-id');
-                    renderEvents();
-                    document.getElementById('export-btn').disabled = uploadedPhotos.filter(p => p._event === currentEventId).length === 0;
+    /* ===== EVENT WAHL ===== */
+    const $yearSel = document.getElementById('year-select');
+    const $grid = document.getElementById('discipline-grid');
+
+    function eventIdFor(year, key) { return `sbs-${year}-${key}`; }
+    function folderFor(year, key) { return `sbs-${year}-${key}`; }
+
+    function renderEvents() {
+        const year = $yearSel.value;
+        $grid.innerHTML = DISCS.map(d => {
+            const id = eventIdFor(year, d.key);
+            const active = (id === currentEventId) ? 'active' : '';
+            const folder = folderFor(year, d.key);
+            return `
+                <div class="fg-event-pick ${active}" data-id="${id}" data-key="${d.key}">
+                    <span class="cat" style="background:${d.color};">${d.cat}</span>
+                    <h3><i class="fa-solid ${d.icon}" style="color:#f5b301;"></i> ${d.short}</h3>
+                    <small>${d.location}</small>
+                    <small style="color:#0d6efd; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${folder}</small>
+                    <div class="count"><i class="fa-regular fa-image"></i> ${uploadedPhotos.filter(p => p._event === id).length} Bilder geladen</div>
+                </div>
+            `;
+        }).join('');
+        $grid.querySelectorAll('.fg-event-pick').forEach(el => {
+            el.addEventListener('click', () => {
+                currentEventId = el.getAttribute('data-id');
+                renderEvents();
+                updatePublishBtn();
+            });
+        });
+        if (!currentEventId) $grid.querySelector('.fg-event-pick')?.click();
+    }
+    $yearSel.addEventListener('change', renderEvents);
+    renderEvents();
+
+    /* ===== BILDER HOCHLADEN / REINZIEHEN ===== */
+    const $drop = document.getElementById('dropzone');
+    const $fileInput = document.getElementById('file-input');
+    ['dragenter','dragover'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.add('dragover'); }));
+    ['dragleave','drop'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.remove('dragover'); }));
+    $drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files].filter(f => f.type.startsWith('image/'))));
+    $fileInput.addEventListener('change', e => addFiles([...e.target.files].filter(f => f.type.startsWith('image/'))));
+
+    function addFiles(files) {
+        if (!currentEventId) { alert('Bitte zuerst SBS-Jahr + Disziplin (Bergrennen/Kriterium/EZF) auswählen!'); return; }
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                uploadedPhotos.push({
+                    id: `p${++idCounter}`, _event: currentEventId,
+                    file, dataUrl: ev.target.result, filename: file.name,
+                    title: file.name.replace(/\.[^.]+$/, ''),
+                    bibNumbers: [], athletes: [], photographer: 'RV Hard', notes: '', _selected: true
                 });
-            });
-            if (!currentEventId) $grid.querySelector('.fg-event-pick')?.click();
-        }
-        $yearSel.addEventListener('change', renderEvents);
-        renderEvents();
-
-        /* ===== BILDER HOCHLADEN / REINZIEHEN ===== */
-        const $drop = document.getElementById('dropzone');
-        const $fileInput = document.getElementById('file-input');
-        ['dragenter','dragover'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.add('dragover'); }));
-        ['dragleave','drop'].forEach(ev => $drop.addEventListener(ev, e => { e.preventDefault(); $drop.classList.remove('dragover'); }));
-        $drop.addEventListener('drop', e => addFiles([...e.dataTransfer.files].filter(f => f.type.startsWith('image/'))));
-        $fileInput.addEventListener('change', e => addFiles([...e.target.files].filter(f => f.type.startsWith('image/'))));
-
-        function addFiles(files) {
-            if (!currentEventId) { alert('Bitte zuerst SBS-Jahr + Disziplin (Bergrennen/Kriterium/EZF) auswählen!'); return; }
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    uploadedPhotos.push({
-                        id: `p${++idCounter}`, _event: currentEventId,
-                        file, dataUrl: ev.target.result, filename: file.name,
-                        title: file.name.replace(/\.[^.]+$/, ''),
-                        bibNumbers: [], athletes: [], photographer: 'RV Hard', _selected: true
-                    });
-                    renderPhotos();
-                };
-                reader.readAsDataURL(file);
-            });
-            $fileInput.value = '';
-        }
-
-        /* ===== RENDER: PHOTO GRID ===== */
-        const $pg = document.getElementById('photo-grid');
-        const $empty = document.getElementById('empty-msg');
-        const $bulk = document.getElementById('bulkbar');
-        const $selCount = document.getElementById('sel-count');
-        const $exportBtn = document.getElementById('export-btn');
-
-        function parseBibs(s) {
-            return String(s||'').split(/[\s,\/;]+/).map(x => x.replace(/^#/,'').trim()).filter(Boolean)
-                .map(x => isNaN(Number(x)) ? x : Number(x));
-        }
-        function parseList(s) { return String(s||'').split(/[,;]+/).map(x => x.trim()).filter(Boolean); }
-
-        function renderPhotos() {
-            const list = uploadedPhotos.filter(p => p._event === currentEventId);
-            $empty.style.display = list.length ? 'none' : 'block';
-            $pg.innerHTML = list.map(p => {
-                const bibStr = (p.bibNumbers||[]).join(', ');
-                const athStr = (p.athletes||[]).join(', ');
-                const sel = p._selected ? 'selected' : '';
-                return `
-                    <div class="fg-photo-card ${sel}" data-id="${p.id}">
-                        <div class="fg-photo-card__header">
-                            <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''}>
-                            <img src="${p.dataUrl}" alt="${p.title||''}" loading="lazy">
-                        </div>
-                        <div class="fg-photo-card__body">
-                            <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
-
-                            <div>
-                                <label>🏁 STARTNUMMERN (Komma getrennt!) – <span style="color:#f5b301;">WICHTIG FÜR SUCHE</span></label>
-                                <input type="text" class="bibs js-bib" placeholder="42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
-                            </div>
-                            <div>
-                                <label>👤 Namen (optional)</label>
-                                <input type="text" class="js-name" placeholder="Max Müller" value="${athStr}" data-id="${p.id}">
-                            </div>
-                            <div>
-                                <label>📸 Titel / Kommentar (optional)</label>
-                                <input type="text" class="js-title" placeholder="Zielsprint" value="${p.title||''}" data-id="${p.id}">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            $pg.querySelectorAll('.fg-photo-card__select').forEach(cb => {
-                cb.addEventListener('change', e => {
-                    const id = e.target.closest('.fg-photo-card').getAttribute('data-id');
-                    const p = uploadedPhotos.find(x => x.id === id);
-                    if (p) { p._selected = !!cb.checked; e.target.closest('.fg-photo-card').classList.toggle('selected', p._selected); }
-                    updateBulk();
-                });
-            });
-            $pg.querySelectorAll('.js-bib').forEach(i => i.addEventListener('change', e => {
-                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
-                if (p) p.bibNumbers = parseBibs(e.target.value);
-            }));
-            $pg.querySelectorAll('.js-name').forEach(i => i.addEventListener('change', e => {
-                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
-                if (p) p.athletes = parseList(e.target.value);
-            }));
-            $pg.querySelectorAll('.js-title').forEach(i => i.addEventListener('change', e => {
-                const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
-                if (p) p.title = e.target.value;
-            }));
-
-            updateBulk();
-            $exportBtn.disabled = list.length === 0;
-
-            /* Update Event-Karten Zähler */
-            renderEvents();
-        }
-
-        function updateBulk() {
-            const n = uploadedPhotos.filter(p => p._selected && p._event === currentEventId).length;
-            $selCount.textContent = n;
-            $bulk.classList.toggle('show', n > 0);
-        }
-        document.getElementById('select-all').addEventListener('click', () => {
-            uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = true);
-            renderPhotos();
-        });
-        document.getElementById('select-none').addEventListener('click', () => {
-            uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = false);
-            renderPhotos();
-        });
-        document.getElementById('bulk-apply').addEventListener('click', () => {
-            const bib = document.getElementById('bulk-bib').value;
-            const names = document.getElementById('bulk-names').value;
-            let n = 0;
-            uploadedPhotos.forEach(p => {
-                if (!(p._selected && p._event === currentEventId)) return;
-                if (bib) {
-                    const pb = parseBibs(bib);
-                    p.bibNumbers = Array.from(new Set([...(p.bibNumbers||[]), ...pb]));
-                }
-                if (names) p.athletes = Array.from(new Set([...(p.athletes||[]), ...parseList(names)]));
-                n++;
-            });
-            document.getElementById('bulk-bib').value = '';
-            document.getElementById('bulk-names').value = '';
-            renderPhotos();
-            alert(`✅ Massen-Tagging fertig auf ${n} Bilder!`);
-        });
-
-        /* ===== EXPORT: events.json DOWNLOAD ===== */
-        $exportBtn.addEventListener('click', async () => {
-            /* 1) Alte events.json vom Server laden (für alle anderen Events) */
-            let allEvents = [];
-            try {
-                const r = await fetch('/fotos/data/events.json?v=' + Date.now());
-                if (r.ok) {
-                    const j = await r.json();
-                    if (Array.isArray(j)) allEvents = j.filter(x => !x._schemaVersion);
-                }
-            } catch(e) { console.warn('Keine alte events.json gefunden, neu erstellt.'); }
-
-            /* 2) Aktuelle Disziplin bearbeiten / neu erstellen */
-            const year = $yearSel.value;
-            const discKey = (DISCS.find(d => eventIdFor(year, d.key) === currentEventId)).key;
-            const disc = DISCS.find(d => d.key === discKey);
-            const folder = folderFor(year, discKey);
-
-            const photosJson = uploadedPhotos
-                .filter(p => p._event === currentEventId)
-                .map((p, i) => ({
-                    src: `/fotos/data/${folder}/${p.filename}`,
-                    thumbnail: `/fotos/data/${folder}/${p.filename}`,
-                    title: p.title || p.filename,
-                    date: `${year}-09-06`,
-                    photographer: p.photographer || 'RV Hard',
-                    copyright: `© RV Hard ${year}`,
-                    bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers),
-                    athletes: Array.isArray(p.athletes) ? p.athletes : [],
-                    tags: [ 'SBS', year, disc.short ]
-                }));
-
-            const thisEvent = {
-                id: currentEventId,
-                parentId: `sbs-${year}`,
-                slug: currentEventId,
-                name: `SBS ${year} – ${disc.name}`,
-                shortName: disc.short,
-                description: disc.desc,
-                category: 'SBS',
-                subtype: discKey.startsWith('bergrennen') ? 'bergrennen' : discKey.startsWith('kriterium') ? 'kriterium' : 'ezf',
-                date: `${year}-09-06`,
-                location: disc.location,
-                organizer: 'RV Hard',
-                distance: disc.distance,
-                folder,
-                coverPhoto: photosJson[0]?.src || `/fotos/data/${folder}/cover.jpg`,
-                tags: [ 'SBS', year, disc.short, disc.location.split(',')[0] ],
-                photos: photosJson
+                renderPhotos();
             };
-
-            /* Merge: aktuelles Event ersetzen ODER hinzufügen */
-            const others = allEvents.filter(e => e.id !== currentEventId);
-            /* Sortierung: aktuelle Events zuerst, ältere danach */
-            const merged = [thisEvent, ...others].sort((a,b) => {
-                const ay = String(a.parentId || '').replace('sbs-','');
-                const by = String(b.parentId || '').replace('sbs-','');
-                return by.localeCompare(ay);
-            });
-
-            /* Meta vorne anfügen */
-            const output = [{
-                _schemaVersion: '3.1',
-                _readme: `=== SBS GALERIE ===\nBearbeitet: ${new Date().toISOString()}\n\nFTP Upload: Bilder in /fotos/data/${folder}/ + diese events.json ersetzen!`
-            }, ...merged];
-
-            /* Download */
-            const json = JSON.stringify(output, null, 2);
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'events.json';
-            document.body.appendChild(a); a.click(); a.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 5000);
-
-            document.getElementById('success-msg').classList.add('show');
-            document.getElementById('success-msg').scrollIntoView({ behavior:'smooth', block:'center' });
+            reader.readAsDataURL(file);
         });
+        $fileInput.value = '';
+    }
+
+    /* ===== RENDER: PHOTO GRID ===== */
+    const $pg = document.getElementById('photo-grid');
+    const $empty = document.getElementById('empty-msg');
+    const $bulk = document.getElementById('bulkbar');
+    const $selCount = document.getElementById('sel-count');
+    const $publishBtn = document.getElementById('publish-btn');
+
+    function parseBibs(s) {
+        return String(s||'').split(/[\s,\/;]+/).map(x => x.replace(/^#/,'').trim()).filter(Boolean)
+            .map(x => isNaN(Number(x)) ? x : Number(x));
+    }
+    function parseList(s) { return String(s||'').split(/[,;]+/).map(x => x.trim()).filter(Boolean); }
+
+    function getCurrentPhotoList() { return uploadedPhotos.filter(p => p._event === currentEventId); }
+
+    function renderPhotos() {
+        const list = getCurrentPhotoList();
+        $empty.style.display = list.length ? 'none' : 'block';
+        $pg.innerHTML = list.map(p => {
+            const bibStr = (p.bibNumbers||[]).join(', ');
+            const athStr = (p.athletes||[]).join(', ');
+            const sel = p._selected ? 'selected' : '';
+            const hasBibs = (p.bibNumbers||[]).length > 0;
+            return `
+                <div class="fg-photo-card ${sel}" data-id="${p.id}">
+                    <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="Klick: groß öffnen + Startnummern bearbeiten" data-id="${p.id}">
+                        <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
+                        <img src="${p.dataUrl}" alt="${p.title||''}" loading="lazy" style="pointer-events:none; width:100%;">
+                        ${hasBibs ? `
+                            <div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">
+                                🏁 #${bibStr}
+                            </div>` : ''}
+                        <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:600;">
+                            <i class="fa-solid fa-expand"></i> öffnen
+                        </div>
+                    </div>
+                    <div class="fg-photo-card__body">
+                        <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
+                        <div>
+                            <label>🏁 STARTNUMMERN – <span style="color:#f5b301;">WICHTIG</span></label>
+                            <input type="text" class="bibs js-bib" placeholder="42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
+                        </div>
+                        <div>
+                            <label>👤 Namen (optional)</label>
+                            <input type="text" class="js-name" placeholder="Max Müller" value="${athStr}" data-id="${p.id}">
+                        </div>
+                        <div>
+                            <label>📸 Titel (optional)</label>
+                            <input type="text" class="js-title" placeholder="Zielsprint" value="${p.title||''}" data-id="${p.id}">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        /* Checkbox selection */
+        $pg.querySelectorAll('.fg-photo-card__select').forEach(cb => {
+            cb.addEventListener('change', e => {
+                const id = e.target.closest('.fg-photo-card').getAttribute('data-id');
+                const p = uploadedPhotos.find(x => x.id === id);
+                if (p) { p._selected = !!cb.checked; e.target.closest('.fg-photo-card').classList.toggle('selected', p._selected); }
+                updateBulk();
+            });
+        });
+
+        /* Lightbox öffnen bei Klick auf Header */
+        $pg.querySelectorAll('.js-lb-open').forEach(el => {
+            el.addEventListener('click', e => {
+                e.preventDefault(); e.stopPropagation();
+                lbOpenById(el.getAttribute('data-id'));
+            });
+        });
+
+        /* Feld-Änderungen (Inline) */
+        $pg.querySelectorAll('.js-bib').forEach(i => i.addEventListener('change', e => {
+            const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+            if (p) p.bibNumbers = parseBibs(e.target.value);
+            renderPhotos();
+        }));
+        $pg.querySelectorAll('.js-name').forEach(i => i.addEventListener('change', e => {
+            const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+            if (p) p.athletes = parseList(e.target.value);
+        }));
+        $pg.querySelectorAll('.js-title').forEach(i => i.addEventListener('change', e => {
+            const p = uploadedPhotos.find(x => x.id === e.target.getAttribute('data-id'));
+            if (p) p.title = e.target.value;
+        }));
+
+        updateBulk();
+        updatePublishBtn();
+        renderEvents();
+    }
+
+    function updateBulk() {
+        const n = uploadedPhotos.filter(p => p._selected && p._event === currentEventId).length;
+        $selCount.textContent = n;
+        $bulk.classList.toggle('show', n > 0);
+    }
+    function updatePublishBtn() {
+        $publishBtn.disabled = getCurrentPhotoList().length === 0;
+    }
+    document.getElementById('select-all').addEventListener('click', () => {
+        uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = true);
+        renderPhotos();
+    });
+    document.getElementById('select-none').addEventListener('click', () => {
+        uploadedPhotos.filter(p => p._event === currentEventId).forEach(p => p._selected = false);
+        renderPhotos();
+    });
+    document.getElementById('bulk-apply').addEventListener('click', () => {
+        const bib = document.getElementById('bulk-bib').value;
+        const names = document.getElementById('bulk-names').value;
+        let n = 0;
+        uploadedPhotos.forEach(p => {
+            if (!(p._selected && p._event === currentEventId)) return;
+            if (bib) {
+                const pb = parseBibs(bib);
+                p.bibNumbers = Array.from(new Set([...(p.bibNumbers||[]), ...pb]));
+            }
+            if (names) p.athletes = Array.from(new Set([...(p.athletes||[]), ...parseList(names)]));
+            n++;
+        });
+        document.getElementById('bulk-bib').value = '';
+        document.getElementById('bulk-names').value = '';
+        renderPhotos();
+        alert(`✅ Massen-Tagging fertig auf ${n} Bilder!`);
+    });
+
+    /* ================================================================
+     *  LIGHTBOX (große Bildansicht + Bearbeiten)
+     * ================================================================ */
+    const $lb = document.getElementById('admin-lightbox');
+    const $lbImg = document.getElementById('lb-img');
+    const $lbFilename = document.getElementById('lb-filename');
+    const $lbPosition = document.getElementById('lb-position');
+    const $lbBib = document.getElementById('lb-bib');
+    const $lbNames = document.getElementById('lb-names');
+    const $lbTitle = document.getElementById('lb-title');
+    const $lbNotes = document.getElementById('lb-notes');
+
+    function lbOpenById(photoId) {
+        lbCurrentList = getCurrentPhotoList();
+        const idx = lbCurrentList.findIndex(p => p.id === photoId);
+        if (idx === -1) return;
+        lbCurrentIndex = idx;
+        lbRender();
+        $lb.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    function lbClose() {
+        $lb.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+    function lbRender() {
+        if (lbCurrentIndex < 0 || lbCurrentIndex >= lbCurrentList.length) return;
+        const p = lbCurrentList[lbCurrentIndex];
+        $lbImg.src = p.dataUrl;
+        $lbImg.alt = p.filename;
+        $lbFilename.textContent = p.filename;
+        $lbPosition.textContent = `(${lbCurrentIndex + 1}/${lbCurrentList.length})`;
+        $lbBib.value = (p.bibNumbers||[]).join(', ');
+        $lbNames.value = (p.athletes||[]).join(', ');
+        $lbTitle.value = p.title || '';
+        $lbNotes.value = p.notes || '';
+        setTimeout(() => $lbBib.focus(), 80);
+    }
+    function lbSaveCurrent() {
+        const p = lbCurrentList[lbCurrentIndex];
+        if (!p) return;
+        p.bibNumbers = parseBibs($lbBib.value);
+        p.athletes   = parseList($lbNames.value);
+        p.title      = $lbTitle.value;
+        p.notes      = $lbNotes.value;
+    }
+    function lbNext() {
+        if (lbCurrentIndex < lbCurrentList.length - 1) {
+            lbSaveCurrent();
+            lbCurrentIndex++;
+            lbRender();
+            renderPhotos();
+        }
+    }
+    function lbPrev() {
+        if (lbCurrentIndex > 0) {
+            lbSaveCurrent();
+            lbCurrentIndex--;
+            lbRender();
+            renderPhotos();
+        }
+    }
+    function lbSaveAndNext() {
+        lbSaveCurrent();
+        if (lbCurrentIndex < lbCurrentList.length - 1) {
+            lbCurrentIndex++;
+            lbRender();
+        } else {
+            lbClose();
+            renderPhotos();
+            alert(`✅ Alle ${lbCurrentList.length} Bilder gespeichert!`);
+        }
+    }
+
+    document.getElementById('lb-close').addEventListener('click', () => { lbSaveCurrent(); lbClose(); renderPhotos(); });
+    document.getElementById('lb-prev').addEventListener('click', lbPrev);
+    document.getElementById('lb-next').addEventListener('click', lbNext);
+    document.getElementById('lb-prev-top').addEventListener('click', () => { lbSaveCurrent(); lbPrev(); });
+    document.getElementById('lb-save-top').addEventListener('click', lbSaveAndNext);
+    document.getElementById('lb-save-sidebar').addEventListener('click', lbSaveAndNext);
+    document.getElementById('lb-jump-first').addEventListener('click', () => { lbSaveCurrent(); lbCurrentIndex = 0; lbRender(); });
+    document.getElementById('lb-jump-last').addEventListener('click', () => { lbSaveCurrent(); lbCurrentIndex = lbCurrentList.length - 1; lbRender(); });
+    document.getElementById('lb-copy-bib').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText($lbBib.value); alert('📋 Startnummern in Zwischenablage kopiert!'); } catch(e){ alert('Kopieren nicht möglich – manuell markieren.'); }
+    });
+    $lb.addEventListener('click', e => { if (e.target === $lb) { lbSaveCurrent(); lbClose(); renderPhotos(); } });
+
+    /* Tastatur-Shortcuts für Lightbox */
+    document.addEventListener('keydown', e => {
+        if (!$lb.classList.contains('show')) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); lbSaveAndNext(); }
+            return;
+        }
+        if (e.key === 'Escape') { lbSaveCurrent(); lbClose(); renderPhotos(); }
+        if (e.key === 'ArrowRight') lbNext();
+        if (e.key === 'ArrowLeft') lbPrev();
+        if (e.key === 's' || e.key === 'S') lbSaveAndNext();
+    });
+
+    /* ================================================================
+     *  SERVER PING + AUTO-PUBLISH (Upload Button)
+     * ================================================================ */
+    function setServerStatus(cls, msg) {
+        const dot = document.getElementById('server-dot');
+        const txt = document.getElementById('server-msg');
+        dot.className = 'dot ' + cls;
+        txt.innerHTML = msg;
+    }
+    async function pingServer() {
+        try {
+            const r = await fetch('/fotos/admin/upload.php?action=ping&_=' + Date.now(), { method: 'GET' });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            const j = await r.json();
+            if (!j.ok) throw new Error(j.msg || 'Unbekannter Fehler');
+            if (j.data_writable) {
+                setServerStatus('ok', `✅ Server bereit! Bilder-Ordner beschreibbar · Max Upload: ${j.max_upload || 'unbekannt'} · events.json: ${j.events_exists ? 'vorhanden' : 'wird neu erstellt'}`);
+            } else {
+                setServerStatus('warn', `⚠️ Server erreichbar, aber Daten-Ordner NICHT beschreibbar. Bitte Ordner <code>/fotos/data/</code> mit FTP auf CHMOD 755 setzen!`);
+            }
+        } catch(err) {
+            setServerStatus('err', `❌ Server nicht erreichbar oder PHP deaktiviert. Prüfe: <code>/fotos/admin/upload.php</code> auf dem Server + PHP ist aktiviert! (Lokal kann der Ping fehlen – auf echtem Server funktioniert's)`);
+        }
+    }
+    setTimeout(pingServer, 300);
+
+    $publishBtn.addEventListener('click', async () => {
+        const list = getCurrentPhotoList();
+        if (list.length === 0) return alert('Keine Bilder zum Hochladen!');
+        const year = $yearSel.value;
+        const discObj = DISCS.find(d => eventIdFor(year, d.key) === currentEventId);
+        if (!discObj) return alert('Unbekannte Disziplin!');
+        const folder = folderFor(year, discObj.key);
+
+        const nochOhneNummern = list.filter(p => !p.bibNumbers || p.bibNumbers.length === 0).length;
+        if (nochOhneNummern > 0) {
+            const jn = confirm(`⚠️ ${nochOhneNummern} von ${list.length} Bildern haben KEINE Startnummern!\n\nTrotzdem veröffentlichen? (Nummernsuche wird später für diese fehlen)`);
+            if (!jn) return;
+        }
+
+        /* 1) FormData bauen: Bilder + Metadaten */
+        const fd = new FormData();
+        fd.append('action', 'publish');
+        const photosMeta = list.map(p => ({
+            id: p.id,
+            originalName: p.filename,
+            title: p.title || p.filename,
+            date: `${year}-09-06`,
+            photographer: p.photographer || 'RV Hard',
+            bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers),
+            athletes: Array.isArray(p.athletes) ? p.athletes : [],
+            notes: p.notes || ''
+        }));
+        fd.append('metadata', JSON.stringify({
+            eventId: currentEventId,
+            folder,
+            year,
+            discKey: discObj.key,
+            photos: photosMeta
+        }));
+        list.forEach(p => { if (p.file) fd.append('images[]', p.file, p.filename); });
+
+        /* 2) UI sperren + Progress */
+        $publishBtn.disabled = true;
+        $publishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wird hochgeladen…`;
+        document.getElementById('progress-wrap').classList.add('show');
+        const $pb = document.getElementById('progress-bar');
+        const $pt = document.getElementById('progress-text');
+        $pt.style.display = 'block';
+        document.getElementById('success-msg').style.display = 'none';
+
+        try {
+            await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/fotos/admin/upload.php', true);
+                xhr.upload.onprogress = e => {
+                    if (e.lengthComputable) {
+                        const pct = Math.round((e.loaded / e.total) * 100);
+                        $pb.style.width = pct + '%';
+                        $pt.textContent = `📤 ${pct}% hochgeladen (${(e.loaded/1024/1024).toFixed(1)} von ${(e.total/1024/1024).toFixed(1)} MB)…`;
+                    }
+                };
+                xhr.onload = () => {
+                    try {
+                        const j = JSON.parse(xhr.responseText);
+                        resolve(j);
+                    } catch(err) { reject(new Error('Ungültige Antwort vom Server: ' + xhr.responseText.slice(0, 300))); }
+                };
+                xhr.onerror = () => reject(new Error('Netzwerkfehler während Upload!'));
+                xhr.onabort = () => reject(new Error('Upload abgebrochen!'));
+                xhr.send(fd);
+            }).then(j => {
+                if (!j.ok) throw new Error(j.msg || 'Unbekannter Fehler vom Server');
+                /* ERFOLG! */
+                $pb.style.width = '100%';
+                $pt.textContent = `✅ Fertig! ${j.photos_saved_count} Bilder gespeichert · ${j.photos_json_count} Fotos in events.json eingetragen · Ordner: ${j.target_folder || ''}`;
+                const sucMsg = document.getElementById('success-msg');
+                sucMsg.style.display = 'block';
+                if (j.preview_url) document.getElementById('success-link').href = j.preview_url;
+                sucMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                $publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> Nochmals veröffentlichen`;
+                $publishBtn.disabled = false;
+                setTimeout(pingServer, 500);
+            }).catch(err => { throw err; });
+        } catch(err) {
+            console.error(err);
+            $pb.style.width = '0%';
+            $pt.textContent = '❌ Fehler: ' + (err.message || String(err));
+            $pt.style.color = '#ffd855';
+            alert('❌ Upload FEHLGESCHLAGEN!\n\n' + (err.message || String(err)) + '\n\nPrüfe: /fotos/data/ Ordner CHMOD 755, upload.php vorhanden, PHP aktiv');
+            $publishBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Erneut versuchen`;
+            $publishBtn.disabled = false;
+            setTimeout(pingServer, 300);
+        }
+    });
+
     </script>
 </body>
 </html>
