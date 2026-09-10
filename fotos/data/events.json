@@ -1,10 +1,8 @@
 [
   {
-    "_schemaVersion": "3.1",
-    "_readme": "=== SBS GALERIE - ECHTE ORTE! ===\n\nPRO SBS-Jahr 3 ECHTE Disziplinen:\n  * Bergrennen Wolfurt - Buch\n  * Kriterium Kammgarn Hard\n  * Einzelzeitfahren Rohrspitz Fussach\n\n=== HOCHLADEN (EINFACH WIE FRÜHER!) ===\n1. Bilder PER FTP direkt in den richtigen Ordner unter /fotos/data/ kopieren:\n     /fotos/data/sbs-2026-bergrennen-wolfurt-buch/   (z.B. bild1.jpg)\n     /fotos/data/sbs-2026-kriterium-kammgarn-hard/\n     /fotos/data/sbs-2026-ezf-rohrspitz-fussach/\n2. Backend /fotos/admin/ öffnen\n3. Bilder aus diesen Ordnern reinziehen (ODER direkt FTP Upload ohne Backend)\n4. Startnummern taggen\n5. Download: nur events.json runterladen + auf Server /fotos/data/events.json ersetzen\nFERTIG!\n\n=== STARTNUMMERN ===\nbibNumbers: [nummer1, nummer2] => Besucher gibt Nummer ein -> SUCHE!\n"
+    "_schemaVersion": "3.2",
+    "_readme": "SBS Galerie V3.2 - Auto Publish via upload.php"
   },
-
-  /* ======= SBS 2026 ======= */
   {
     "id": "sbs-2026-bergrennen-wolfurt-buch",
     "parentId": "sbs-2026",
@@ -19,7 +17,7 @@
     "organizer": "RV Hard",
     "distance": "12,8 km · 690 Hm",
     "folder": "sbs-2026-bergrennen-wolfurt-buch",
-    "coverPhoto": "/fotos/data/sbs-2026-bergrennen-wolfurt-buch/cover.jpg",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20in%20austrian%20mountains%2C%20forest%2C%20alpine%20road&image_size=landscape_16_9",
     "tags": ["SBS", "2026", "Bergrennen", "Wolfurt", "Buch"],
     "photos": []
   },
@@ -37,7 +35,7 @@
     "organizer": "RV Hard",
     "distance": "50 Runden · 75 km",
     "folder": "sbs-2026-kriterium-kammgarn-hard",
-    "coverPhoto": "/fotos/data/sbs-2026-kriterium-kammgarn-hard/cover.jpg",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion%20yellow%20jersey&image_size=landscape_16_9",
     "tags": ["SBS", "2026", "Kriterium", "Hard", "Kammgarn"],
     "photos": []
   },
@@ -47,7 +45,7 @@
     "slug": "sbs-2026-ezf-rohrspitz-fussach",
     "name": "SBS 2026 – Einzelzeitfahren Rohrspitz, Fußach",
     "shortName": "EZF Rohrspitz Fußach",
-    "description": "Einzelzeitfahren (EZF) entlang des Bodensees in Fußach am Rohrspitz. Suche nach deiner Startnummer!",
+    "description": "Einzelzeitfahren entlang des Bodensees in Fußach. Suche nach deiner Startnummer!",
     "category": "SBS",
     "subtype": "ezf",
     "date": "2026-09-05",
@@ -55,26 +53,24 @@
     "organizer": "RV Hard",
     "distance": "9,2 km · 45 Hm",
     "folder": "sbs-2026-ezf-rohrspitz-fussach",
-    "coverPhoto": "/fotos/data/sbs-2026-ezf-rohrspitz-fussach/cover.jpg",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20racing%20along%20lake%20shore%20bodensee%2C%20sunset%2C%20aerodynamic%20helmet&image_size=landscape_16_9",
     "tags": ["SBS", "2026", "EZF", "Fußach", "Rohrspitz", "Bodensee"],
     "photos": []
   },
-
-  /* ======= SBS 2025 (Archiv - gleiche Orte) ======= */
   {
     "id": "sbs-2025-bergrennen-wolfurt-buch",
     "parentId": "sbs-2025",
     "slug": "sbs-2025-bergrennen-wolfurt-buch",
     "name": "SBS 2025 – Bergrennen Wolfurt → Buch",
     "shortName": "Bergrennen Wolfurt-Buch",
-    "description": "Archiv 2025 - Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!",
+    "description": "Archiv 2025 - Bergrennen Wolfurt nach Buch.",
     "category": "SBS",
     "subtype": "bergrennen",
     "date": "2025-09-06",
     "location": "Wolfurt → Buch",
     "organizer": "RV Hard",
     "folder": "sbs-2025-bergrennen-wolfurt-buch",
-    "coverPhoto": "https://via.placeholder.com/1600/eee/333?text=SBS+2025+Bergrennen",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=vintage%20road%20bicycle%20race%20photo%20sepia%20alpine%20uphill&image_size=landscape_16_9",
     "tags": ["SBS", "2025", "Archiv"],
     "photos": []
   },
@@ -89,8 +85,9 @@
     "subtype": "kriterium",
     "date": "2025-09-07",
     "location": "Kammgarn, Hard",
+    "organizer": "RV Hard",
     "folder": "sbs-2025-kriterium-kammgarn-hard",
-    "coverPhoto": "https://via.placeholder.com/1600/ddd/333?text=SBS+2025+Kriterium",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=blurred%20vintage%20city%20criterium%20bicycle%20race%20film%20photo&image_size=landscape_16_9",
     "tags": ["SBS", "2025", "Archiv"],
     "photos": []
   },
@@ -105,8 +102,9 @@
     "subtype": "ezf",
     "date": "2025-09-05",
     "location": "Rohrspitz, Fußach",
+    "organizer": "RV Hard",
     "folder": "sbs-2025-ezf-rohrspitz-fussach",
-    "coverPhoto": "https://via.placeholder.com/1600/ccc/333?text=SBS+2025+EZF",
+    "coverPhoto": "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20silhouette%20lake%20vintage%20black%20and%20white%20photo&image_size=landscape_16_9",
     "tags": ["SBS", "2025", "Archiv"],
     "photos": []
   }

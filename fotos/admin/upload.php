@@ -118,10 +118,18 @@ if ($action === 'publish') {
         }
     }
 
-    /* 3) Alte events.json laden */
+    /* 3) Alte events.json laden (MIT FALLBACK falls Kommentare drin sind!) */
     $allEvents = [];
     if (file_exists(EVENTS_FILE) && filesize(EVENTS_FILE) > 0) {
-        $decoded = json_decode(file_get_contents(EVENTS_FILE), true);
+        $raw = file_get_contents(EVENTS_FILE);
+        $decoded = json_decode($raw, true);
+        /* Fallback: Kommentare entfernen falls JSON ungueltig war! */
+        if (!is_array($decoded) && $raw) {
+            $cleaned = preg_replace('!/\*.*?\*/!s', '', $raw);
+            $cleaned = preg_replace('/^\s*\/\/.*$/m', '', $cleaned);
+            $cleaned = preg_replace('/,\s*([\]}])/m', '$1', $cleaned);
+            $decoded = json_decode(trim($cleaned), true);
+        }
         if (is_array($decoded)) {
             $allEvents = array_filter($decoded, function($e) {
                 return is_array($e) && !isset($e['_schemaVersion']);
@@ -138,7 +146,8 @@ if ($action === 'publish') {
             'location' => 'Wolfurt → Buch (Bregenzerwald)',
             'distance' => '12,8 km · 690 Hm',
             'desc'  => 'Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!',
-            'subtype' => 'bergrennen'
+            'subtype' => 'bergrennen',
+            'coverDefault' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20austrian%20alps%20forest%20road&image_size=landscape_16_9'
         ],
         'kriterium-kammgarn-hard' => [
             'short' => 'Kriterium Kammgarn Hard',
@@ -146,7 +155,8 @@ if ($action === 'publish') {
             'location' => 'Kammgarn Areal, Hard',
             'distance' => '50 Runden · 75 km',
             'desc'  => 'Stadtkurs Kriterium in Hard am Kammgarn Gelände. Suche nach deiner Startnummer!',
-            'subtype' => 'kriterium'
+            'subtype' => 'kriterium',
+            'coverDefault' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion&image_size=landscape_16_9'
         ],
         'ezf-rohrspitz-fussach' => [
             'short' => 'EZF Rohrspitz Fußach',
@@ -154,7 +164,8 @@ if ($action === 'publish') {
             'location' => 'Rohrspitz, Fußach (Bodensee)',
             'distance' => '9,2 km · 45 Hm',
             'desc'  => 'Einzelzeitfahren (EZF) entlang des Bodensees in Fußach am Rohrspitz. Suche nach deiner Startnummer!',
-            'subtype' => 'ezf'
+            'subtype' => 'ezf',
+            'coverDefault' => 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20lake%20shore%20bodensee%20sunset%20aerodynamic&image_size=landscape_16_9'
         ]
     ];
     $disc = $discDefs[$discKey] ?? $discDefs['bergrennen-wolfurt-buch'];
@@ -200,7 +211,7 @@ if ($action === 'publish') {
         'organizer'   => 'RV Hard',
         'distance'    => $disc['distance'],
         'folder'      => $folder,
-        'coverPhoto'  => $photosJson[0]['src'] ?? '/fotos/data/' . $folder . '/cover.jpg',
+        'coverPhoto'  => $photosJson[0]['src'] ?? $disc['coverDefault'],
         'tags'        => ['SBS', (string)$year, $disc['short'], explode(',', $disc['location'])[0]],
         'photos'      => $photosJson
     ];
@@ -217,13 +228,10 @@ if ($action === 'publish') {
     });
 
     $metaBlock = [[
-        '_schemaVersion' => '3.2',
-        '_readme'  => "=== SBS GALERIE (AUTO-PUBLISH) ===\n"
-                   . "Bearbeitet: " . date('c') . "\n"
-                   . "Veröffentlicht über /fotos/admin/ Publish-Button\n"
-                   . "Bilder lagen in Ordner: /fotos/data/" . $folder . "/\n"
-                   . "Upload-Methode: Browser → upload.php (KEIN FTP nötig!)",
-        '_lastModifiedBy' => 'admin-publish-tool'
+        '_schemaVersion'  => '3.2',
+        '_readme'         => 'SBS Galerie V3.2 - auto-publish via admin/upload.php',
+        '_lastModified'   => date('c'),
+        '_lastFolder'     => $folder
     ]];
     $output = array_merge($metaBlock, $merged);
 

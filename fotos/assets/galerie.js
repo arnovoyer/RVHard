@@ -5,10 +5,30 @@ const FG_DATA_URL = '/fotos/data/events.json';
 /* --------------- HILFSFUNKTIONEN --------------- */
 
 async function fgLoadEvents() {
-    const res = await fetch(FG_DATA_URL + '?v=' + Date.now());
-    if (!res.ok) throw new Error(`Events-JSON konnte nicht geladen werden (Status ${res.status}).`);
-    const json = await res.json();
-    return Array.isArray(json) ? json : (json.events || []);
+    try {
+        const res = await fetch(FG_DATA_URL + '?v=' + Date.now());
+        if (!res.ok) throw new Error(`Events-JSON konnte nicht geladen werden (Status ${res.status}).`);
+        const txt = await res.text();
+        let json;
+        try {
+            json = JSON.parse(txt);
+        } catch (parseErr) {
+            /* Fallback: Kommentare rausfiltern (manche Editoren fügen /* Kommentare hinzu) */
+            try {
+                const cleaned = txt
+                    .replace(/\/\*[\s\S]*?\*\//g, '')
+                    .replace(/^\s*\/\/.*$/gm, '')
+                    .replace(/,\s*([\]}])/g, '$1');
+                json = JSON.parse(cleaned);
+            } catch (retryErr) {
+                throw new Error(`events.json ist UNGÜLTIG! Überprüfe die Datei auf Kommentare, fehlende Kommata oder Tippfehler. Original-Fehler: ${parseErr.message}`);
+            }
+        }
+        return Array.isArray(json) ? json : (json.events || []);
+    } catch (e) {
+        console.error('[fgLoadEvents] FATAL:', e);
+        throw e;
+    }
 }
 
 function fgEscapeHtml(str) {
@@ -189,19 +209,33 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 async function fgInitEventsOverview() {
     const container = document.getElementById('fg-events');
     if (!container) return;
+    const info = document.getElementById('fg-info');
 
     const searchInput = document.getElementById('fg-search');
     const filterYear = document.getElementById('fg-filter-year');
     const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     try {
+        if (info) info.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Lade SBS Events…`;
         const events = await fgLoadEvents();
         const sbsEvents = events.filter(e => !e._schemaVersion && (!e.category || e.category === 'SBS'));
 
+        /* Fallback: Cover Photo auf gültiges Bild prüfen (404 = Platzhalter) */
+        const fallbackCover = (subtype) => {
+            if (subtype === 'bergrennen') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20austrian%20mountains&image_size=landscape_16_9';
+            if (subtype === 'kriterium') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion&image_size=landscape_16_9';
+            return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20lake%20shore%20sunset&image_size=landscape_16_9';
+        };
+        sbsEvents.forEach(e => {
+            if (!e.coverPhoto || /\/cover\.jpg(\?|$)/.test(String(e.coverPhoto)) || String(e.coverPhoto).startsWith('https://via.placeholder')) {
+                e.coverPhoto = fallbackCover(e.subtype);
+            }
+        });
+
         /* Jahres-Filter befüllen */
-        if (filterYear) {
-            const years = [...new Set(sbsEvents.map(e => String(e.parentId || e.id || '').match(/20\d{2}/)?.[0]).filter(Boolean))]
-                .sort((a,b) => (b > a ? 1 : -1));
+        if (filterYear && filterYear.children.length <= 1) {
+            const years = [...new Set(sbsEvents.map(e => (String(e.parentId || e.id || '').match(/20\d{2}/) || [])[0]).filter(Boolean))]
+                .sort((a,b) => String(b).localeCompare(String(a)));
             years.forEach(y => {
                 const o = document.createElement('option');
                 o.value = y; o.textContent = `SBS ${y}`;
@@ -215,7 +249,16 @@ async function fgInitEventsOverview() {
         if (filterDiscipline) filterDiscipline.addEventListener('change', render);
         render();
     } catch (err) {
-        container.innerHTML = `<div class="fg-error"><strong>Fehler:</strong> ${fgEscapeHtml(err.message)}</div>`;
+        console.error('Fehler Galerie Init:', err);
+        if (info) info.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Fehler: ${fgEscapeHtml(err.message)}</span>`;
+        container.innerHTML = `<div class="fg-error" style="padding:1rem;border-radius:8px;background:#fef0f0;border:1px solid #f5c2c7;color:#842029;">
+            <h3 style="margin:0 0 0.4rem 0;color:#842029;"><i class="fa-solid fa-circle-exclamation"></i> Galerie konnte nicht geladen werden</h3>
+            <p style="margin:0 0 0.8rem 0;">${fgEscapeHtml(err.message)}</p>
+            <p style="margin:0;font-size:0.9rem;color:#666;">
+                ⚠️ Meistens Ursachen: a) <code>events.json</code> enthält Kommentare (ungültig!) — b) Datei fehlt oder hat falsche Rechte (644!) —
+                c) Browser-Cache mit alter ungültiger Version: STRG+F5 / ⌘+⇧+R drücken!
+            </p>
+        </div>`;
     }
 }
 
@@ -483,8 +526,15 @@ function _fgRenderLightboxItem() {
 ================================================= */
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await Promise.all([fgLoadNavigation(), fgLoadFooter()]);
+    try { await Promise.all([fgLoadNavigation(), fgLoadFooter()]); }
+    catch(e) { console.warn('Nav/Foot Load fehlgeschlagen (Galerie läuft trotzdem):', e); }
 
-    if (document.getElementById('fg-events')) fgInitEventsOverview();
-    if (document.getElementById('fg-event-content')) fgInitEventPage();
+    try {
+        if (document.getElementById('fg-events')) await fgInitEventsOverview();
+        if (document.getElementById('fg-event-content')) await fgInitEventPage();
+    } catch (e) {
+        console.error('GALERIE FATALER INIT FEHLER:', e);
+        const info = document.getElementById('fg-info');
+        if (info) info.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler: ${fgEscapeHtml(e.message)}</span>`;
+    }
 });
