@@ -768,7 +768,7 @@
     function lbRender() {
         if (lbCurrentIndex < 0 || lbCurrentIndex >= lbCurrentList.length) return;
         const p = lbCurrentList[lbCurrentIndex];
-        $lbImg.src = p.dataUrl;
+        $lbImg.src = p.previewUrl;
         $lbImg.alt = p.filename;
         $lbFilename.textContent = p.filename;
         $lbPosition.textContent = `(${lbCurrentIndex + 1}/${lbCurrentList.length})`;
@@ -777,56 +777,65 @@
     }
     function lbSaveCurrent() {
         const p = lbCurrentList[lbCurrentIndex];
-        if (!p) return;
+        if (!p) return null;
         p.bibNumbers = parseBibs($lbBib.value);
+        return p;
     }
     function lbNext() {
         if (lbCurrentIndex < lbCurrentList.length - 1) {
-            lbSaveCurrent();
+            const saved = lbSaveCurrent();
+            if (saved) updatePhotoCard(saved.id);
             lbCurrentIndex++;
             lbRender();
-            renderPhotos();
         }
     }
     function lbPrev() {
         if (lbCurrentIndex > 0) {
-            lbSaveCurrent();
+            const saved = lbSaveCurrent();
+            if (saved) updatePhotoCard(saved.id);
             lbCurrentIndex--;
             lbRender();
-            renderPhotos();
         }
     }
     function lbSaveAndNext() {
-        lbSaveCurrent();
+        const saved = lbSaveCurrent();
+        if (saved) updatePhotoCard(saved.id);
         if (lbCurrentIndex < lbCurrentList.length - 1) {
             lbCurrentIndex++;
             lbRender();
         } else {
             lbClose();
-            renderPhotos();
+            updateBulk(); renderEvents();
             alert(`✅ Alle ${lbCurrentList.length} Bilder gespeichert!`);
         }
     }
 
-    document.getElementById('lb-close').addEventListener('click', () => { lbSaveCurrent(); lbClose(); renderPhotos(); });
+    document.getElementById('lb-close').addEventListener('click', () => {
+        const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id);
+        lbClose(); updateBulk(); renderEvents();
+    });
     document.getElementById('lb-prev').addEventListener('click', lbPrev);
     document.getElementById('lb-next').addEventListener('click', lbNext);
-    document.getElementById('lb-prev-top').addEventListener('click', () => { lbSaveCurrent(); lbPrev(); });
+    document.getElementById('lb-prev-top').addEventListener('click', () => { const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id); lbPrev(); });
     document.getElementById('lb-save-top').addEventListener('click', lbSaveAndNext);
     document.getElementById('lb-save-sidebar').addEventListener('click', lbSaveAndNext);
     document.getElementById('lb-copy-bib').addEventListener('click', async () => {
         try { await navigator.clipboard.writeText($lbBib.value); } catch(e){}
     });
-    $lb.addEventListener('click', e => { if (e.target === $lb) { lbSaveCurrent(); lbClose(); renderPhotos(); } });
+    $lb.addEventListener('click', e => {
+        if (e.target !== $lb) return;
+        const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id);
+        lbClose(); updateBulk(); renderEvents();
+    });
 
-    /* Tastatur-Shortcuts für Lightbox */
+    /* Tastatur-Shortcuts */
     document.addEventListener('keydown', e => {
         if (!$lb.classList.contains('show')) return;
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
             if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); lbSaveAndNext(); }
             return;
         }
-        if (e.key === 'Escape') { lbSaveCurrent(); lbClose(); renderPhotos(); }
+        if (e.key === 'Escape') { const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id); lbClose(); updateBulk(); renderEvents(); }
         if (e.key === 'ArrowRight') lbNext();
         if (e.key === 'ArrowLeft') lbPrev();
         if (e.key === 's' || e.key === 'S') lbSaveAndNext();
