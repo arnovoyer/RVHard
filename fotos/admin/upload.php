@@ -183,17 +183,9 @@ if ($action === 'publish') {
         if (!$src) continue;
 
         $bibNumbers = is_array($pm['bibNumbers'] ?? null) ? $pm['bibNumbers'] : [];
-        $athletes   = is_array($pm['athletes']   ?? null) ? $pm['athletes']   : [];
         $photosJson[] = [
             'src'         => $src,
-            'thumbnail'   => $src,
-            'title'       => $pm['title'] ?? basename($src),
-            'date'        => $pm['date'] ?? $year . '-09-06',
-            'photographer'=> $pm['photographer'] ?? 'RV Hard',
-            'copyright'   => '© RV Hard ' . $year,
-            'bibNumbers'  => array_values($bibNumbers),
-            'athletes'    => array_values($athletes),
-            'tags'        => ['SBS', (string)$year, $disc['short']]
+            'bibNumbers'  => array_values($bibNumbers)
         ];
     }
 

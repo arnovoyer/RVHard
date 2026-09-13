@@ -309,11 +309,9 @@
                 <h2>Welche SBS-Disziplin möchtest du jetzt bearbeiten?</h2>
             </div>
             <div style="padding: 0.75rem 1rem 1rem; background: #f7f7f7; border-radius: 8px; margin-bottom: 1rem;">
-                <label class="fg-label" for="year-select">SBS Jahr auswählen</label>
+                <label class="fg-label" for="year-select">SBS Jahr</label>
                 <select class="fg-input" id="year-select" style="max-width:240px;">
-                    <option value="2026" selected>2026 (aktuell)</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
+                    <option value="2026" selected>2026</option>
                 </select>
             </div>
             <div id="discipline-grid" class="fg-grid-3"></div>
@@ -493,7 +491,7 @@
     ];
 
     let currentEventId = '';
-    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, photographer, title, _selected }] */
+    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, _selected }] */
     let _objectUrls = new Set(); /* Tracking für URL.revokeObjectURL (Memory Leak verhindern!) */
     let idCounter = 0;
     let lbCurrentIndex = -1;
@@ -564,8 +562,7 @@
                 uploadedPhotos.push({
                     id: `p${++idCounter}`, _event: currentEventId,
                     file, previewUrl: url, filename: file.name,
-                    title: file.name.replace(/\.[^.]+$/, ''),
-                    bibNumbers: [], photographer: 'RV Hard', _selected: true
+                    bibNumbers: [], _selected: true
                 });
                 added++;
             } catch(e) { console.warn('Bild konnte nicht geladen werden:', file.name, e); }
@@ -887,9 +884,6 @@
         const photosMeta = list.map(p => ({
             id: p.id,
             originalName: p.filename,
-            title: p.title || p.filename,
-            date: `${year}-09-06`,
-            photographer: p.photographer || 'RV Hard',
             bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers)
         }));
         fd.append('metadata', JSON.stringify({
