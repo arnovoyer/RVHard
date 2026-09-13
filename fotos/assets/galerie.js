@@ -275,14 +275,8 @@ function fgPhotoMatchesBib(photo, bibQuery) {
     if (!bibQuery) return true;
     const q = String(bibQuery).toLowerCase().trim();
     if (!q) return true;
-    /* Suche in Startnummern (exakt oder Teilstring) */
     const bibs = (photo.bibNumbers || []).map(b => String(b).toLowerCase());
-    const hitsBib = bibs.some(b => b === q || b.includes(q));
-    /* Suche in Namen */
-    const athletes = (photo.athletes || []).join('|').toLowerCase();
-    /* Suche in Tags/Kommentar */
-    const other = [photo.title, photo.comment, ...(photo.tags || [])].join('|').toLowerCase();
-    return hitsBib || athletes.includes(q) || other.includes(q);
+    return bibs.some(b => b === q || b.includes(q));
 }
 
 function fgRenderEventPage(event) {
@@ -319,8 +313,6 @@ function fgRenderEventPage(event) {
 
     /* Filter-Controls */
     const bibInput = document.getElementById('fg-bib');
-    const nameInput = document.getElementById('fg-name');
-    const searchInput = document.getElementById('fg-search-photo');
 
     const photos = Array.isArray(event.photos) ? event.photos : [];
     const allBibs = new Set();
@@ -328,45 +320,21 @@ function fgRenderEventPage(event) {
 
     /* Query-Parameter vorbelegen */
     const qBib = fgQueryParam('bib');
-    const qName = fgQueryParam('name');
     if (qBib && bibInput) bibInput.value = qBib;
-    if (qName && nameInput) nameInput.value = qName;
 
     function renderGallery() {
         const bib = (bibInput ? bibInput.value : '').trim();
-        const name = (nameInput ? nameInput.value : '').toLowerCase().trim();
-        const general = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
-        const filtered = photos.filter(p => {
-            if (bib) {
-                const q = bib.toLowerCase();
-                const bibs = (p.bibNumbers || []).map(b => String(b).toLowerCase());
-                const hitBib = bibs.some(b => b === q || b.includes(q));
-                if (!hitBib) return false;
-            }
-            if (name) {
-                const athletes = (p.athletes || []).join('|').toLowerCase();
-                if (!athletes.includes(name)) return false;
-            }
-            if (general) {
-                const hay = [
-                    p.title, p.comment,
-                    ...(p.tags || []), ...(p.athletes || []),
-                    ...(p.bibNumbers || []).map(String)
-                ].join('|').toLowerCase();
-                if (!hay.includes(general)) return false;
-            }
-            return true;
-        });
+        const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib));
 
         document.getElementById('fg-gallery-info').innerHTML =
-            `Galerie enthält <strong>${photos.length}</strong> Bilder – Filter anzeigen: <strong>${filtered.length}</strong>`;
+            `Galerie enthält <strong>${photos.length}</strong> Bilder – angezeigt: <strong>${filtered.length}</strong>`;
 
         const gallery = document.getElementById('fg-gallery');
         if (!filtered.length) {
             gallery.innerHTML = `<div class="fg-empty">
                 <strong>Keine Treffer.</strong>
-                <br>Tipp: Starte mit <em>Teil der Startnummer</em> (z.B. 42 oder "R") oder Namensteil.
+                <br>Tipp: Gib einen Teil der Startnummer ein, z.B. <code>42</code> oder auch nur <code>4</code>.
             </div>`;
             return;
         }
@@ -375,7 +343,6 @@ function fgRenderEventPage(event) {
             const src = fgEscapeHtml(p.src);
             const thumb = p.thumbnail ? fgEscapeHtml(p.thumbnail) : src;
             const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
-            const titleEl = p.title ? `<span style="flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fgEscapeHtml(p.title)}</span>` : '';
 
             return `
                 <figure class="fg-photo"
@@ -384,9 +351,9 @@ function fgRenderEventPage(event) {
                         data-photos-src="${fgEscapeHtml(JSON.stringify(filtered.map(pp => pp)))}"
                         role="button"
                         aria-label="Bild vergrößern">
-                    <img src="${thumb}" alt="${fgEscapeHtml(p.title || p.comment || 'Foto')}" loading="lazy">
+                    <img src="${thumb}" alt="Foto" loading="lazy">
                     <figcaption class="fg-photo__overlay">
-                        ${bibs}${titleEl}
+                        ${bibs}
                     </figcaption>
                 </figure>
             `;
@@ -406,16 +373,15 @@ function fgRenderEventPage(event) {
         });
     }
 
-    [bibInput, nameInput, searchInput].forEach(el => {
-        if (el) el.addEventListener('input', () => {
+    if (bibInput) {
+        bibInput.addEventListener('input', () => {
             renderGallery();
             const params = new URLSearchParams(window.location.search);
-            if (bibInput) { if (bibInput.value.trim()) params.set('bib', bibInput.value.trim()); else params.delete('bib'); }
-            if (nameInput) { if (nameInput.value.trim()) params.set('name', nameInput.value.trim()); else params.delete('name'); }
+            if (bibInput.value.trim()) params.set('bib', bibInput.value.trim()); else params.delete('bib');
             const s = params.toString();
             history.replaceState(null, '', `${location.pathname}${s ? '?' + s : ''}${location.hash}`);
         });
-    });
+    }
 
     renderGallery();
 }
@@ -493,23 +459,13 @@ function _fgRenderLightboxItem() {
 
     const img = lb.querySelector('.fg-lightbox__img-wrap img');
     img.src = p.src;
-    img.alt = p.title || '';
+    img.alt = `Bild ${index + 1}`;
 
     const info = lb.querySelector('.fg-lightbox__info');
     const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
-    const tags = (p.tags || []).map(t => `<span class="fg-tag">${fgEscapeHtml(t)}</span>`).join('');
-    const athletes = (p.athletes && p.athletes.length) ? p.athletes.join(', ') : '';
-    const date = fgFormatDate(p.date);
-    const photographer = p.photographer || p.copyright || '';
 
     info.innerHTML = `
-        <h3>${fgEscapeHtml(p.title || `Bild ${index + 1} / ${photos.length}`)}</h3>
-        ${p.comment ? `<div class="fg-lightbox__row"><label>Kommentar</label><span>${fgEscapeHtml(p.comment)}</span></div>` : ''}
-        ${athletes ? `<div class="fg-lightbox__row"><label>Teilnehmer*in</label><span>${fgEscapeHtml(athletes)}</span></div>` : ''}
-        ${date ? `<div class="fg-lightbox__row"><label>Aufgenommen</label><span>${fgEscapeHtml(date)}</span></div>` : ''}
-        ${photographer ? `<div class="fg-lightbox__row"><label>Fotograf*in / Quelle</label><span>${fgEscapeHtml(photographer)}</span></div>` : ''}
-        ${(bibs || tags) ? `<div class="fg-lightbox__row"><label>Tags / Startnummern</label>
-            <div class="fg-lightbox__tags">${bibs}${tags}</div></div>` : ''}
+        ${bibs ? `<div class="fg-lightbox__row"><label>🏁 Startnummer(n)</label><div class="fg-lightbox__tags">${bibs}</div></div>` : ''}
         <div class="fg-lightbox__actions">
             <a class="fg-btn" href="${fgEscapeHtml(p.src)}" target="_blank" rel="noopener" download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
