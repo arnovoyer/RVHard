@@ -225,7 +225,9 @@ if ($action === 'publish') {
         'organizer'   => 'RV Hard',
         'distance'    => $disc['distance'],
         'folder'      => $folder,
-        'coverPhoto'  => $photosJson[0]['src'] ?? $disc['coverDefault'],
+        /* User Wunsch: KEINE KI Images!
+           Cover: ERSTES echtes Foto falls vorhanden, sonst NULL (lassen wir im JS nachträglich sanitizen) */
+        'coverPhoto'  => $photosJson[0]['src'] ?? null,
         'tags'        => ['SBS', (string)$year, $disc['short'], explode(',', $disc['location'])[0]],
         'photos'      => $photosJson
     ];
@@ -241,11 +243,108 @@ if ($action === 'publish') {
         return strnatcmp($by, $ay);
     });
 
+    /* 🔥 GLOBAL SANITIZER: ALLE Events, AUCH ALTE ARCHIV-Events — NUR VALIDE /fotos/data Src Pfade! */
+    /* Ursache: Alte Publish-Versionen haben file:// / C: / blob: in events.json gespeichert → Security-Crash.
+       Jetzt wird jedes Bild in JEDEM Event beim Publish automatisch geprüft und ggf. entfernt. */
+    $totalDeletedBadPhotos = 0;
+    $totalFixedCover = 0;
+    /* PHP 7.4 kompatible Helper (statt str_starts_with/str_ends_with — nur PHP 8+) */
+    $startsWith = function(string $hay, string $need): bool {
+        return $need === '' || strpos($hay, $need) === 0;
+    };
+    $endsWith = function(string $hay, string $need): bool {
+        $len = strlen($need);
+        return $len === 0 || substr($hay, -$len) === $need;
+    };
+    $sanitizeSrc = function($src) use (&$totalFixedCover, $startsWith, $endsWith) {
+        if (!is_string($src) || trim($src) === '') return false;
+        $s = trim($src);
+        /* Step 1: Backticks entfernen! Diese machen URLs zu "lokalem Pfad" und Security-Crash!
+           Beispiel: `https://example.com/img.jpg`  →  https://example.com/img.jpg */
+        $before = $s;
+        $s = trim($s, "` \t\n\r\0\x0B\"'");
+        if ($startsWith($s, '`') || $endsWith($s, '`')) {
+            $s = trim($s, "`\"'"); $totalFixedCover++;
+        }
+        if ($startsWith($s, '`') || $endsWith($s, '`')) {
+            $s = preg_replace('#^`+|`+$#', '', $s);
+            $totalFixedCover++;
+        }
+        if ($s !== $before) $totalFixedCover++;
+        /* Blockierte unsichere Protokolle & Windows-Pfade (GLOBAL!) */
+        if (stripos($s, 'file://') === 0) return false;
+        if (stripos($s, 'blob:') === 0) return false;
+        if (preg_match('#^[A-Za-z]:[\\\\/]#', $s)) return false;
+        if (preg_match('#^/[A-Za-z]:#', $s)) return false;
+        if (stripos($s, 'data:image') === 0) return false;
+        /* Externe Domains blockieren außer RV Hard. User will KEINE KI URLs mehr! Also coresg-normal auch blocken! */
+        if (preg_match('#^https?://#i', $s)) {
+            if (strpos($s, 'rv-hard.at') !== false) return $s;
+            return false; /* User Wunsch: KEINE KI Images (coresg-normal) mehr! */
+        }
+        /* Nur Server-interne Pfade in /fotos/data erlauben */
+        $s = str_replace('\\', '/', $s);
+        if ($startsWith($s, '/fotos/data/')) return $s;
+        if ($startsWith($s, 'fotos/data/')) return '/' . ltrim($s, '/');
+        /* Alles andere ist kaputt (z.B. Windows Pfade ohne Protokoll) */
+        return false;
+    };
+    foreach ($merged as &$_evRef) {
+        if (!is_array($_evRef)) continue;
+        /* 🔥 AUCH coverPhoto SANITIZEN! (Genau DAS war bei Kriterium/EZF das Problem!) */
+        if (!empty($_evRef['coverPhoto'])) {
+            $before = $_evRef['coverPhoto'];
+            $fixedCover = $sanitizeSrc($_evRef['coverPhoto']);
+            if ($fixedCover === false || $fixedCover !== $before) {
+                /* User Wunsch: KEINE KI Images! Fallback = ERSTES Foto im photos[] Array ODER leer! */
+                $st = strtolower($_evRef['subtype'] ?? '');
+                $fb = null;
+                if (!empty($_evRef['photos'][0]['src'])) {
+                    $firstClean = $sanitizeSrc($_evRef['photos'][0]['src']);
+                    if ($firstClean !== false) $fb = $firstClean;
+                }
+                if ($fixedCover === false) {
+                    $totalFixedCover++;
+                }
+                $fixedCover = $fb; /* leer lassen, falls KEIN Foto vorhanden! KEIN KI FALLBACK! */
+            }
+            if ($fixedCover !== $_evRef['coverPhoto']) $totalFixedCover++;
+            $_evRef['coverPhoto'] = $fixedCover; /* Kann jetzt NULL sein → egal, JS übernimmt Fallback */
+        }
+        /* Fotos Array sanitizen (wie bisher) */
+        if (empty($_evRef['photos']) || !is_array($_evRef['photos'])) continue;
+        $cleanPhotos = [];
+        foreach ($_evRef['photos'] as $_ph) {
+            if (!is_array($_ph)) continue;
+            $cleanSrc = $sanitizeSrc($_ph['src'] ?? '');
+            if ($cleanSrc === false) {
+                $totalDeletedBadPhotos++; /* Lokalen Pfad / kaputt gefunden → löschen! */
+                continue;
+            }
+            $_ph['src'] = $cleanSrc;
+            if (!empty($_ph['thumbnail'])) {
+                $clTh = $sanitizeSrc($_ph['thumbnail']);
+                if ($clTh === false) unset($_ph['thumbnail']); else $_ph['thumbnail'] = $clTh;
+            }
+            $cleanPhotos[] = $_ph;
+        }
+        $_evRef['photos'] = array_values($cleanPhotos);
+    }
+    unset($_evRef); /* Referenz aufheben (Sicherheit) */
+
+    if ($totalDeletedBadPhotos > 0) {
+        $warnings[] = "🧹 Automatisch $totalDeletedBadPhotos alte Fotos mit LOKALEM PFAD (file:///C: etc.) aus events.json ENTFERNT — neu hochladen & publ. falls benötigt!";
+    }
+    if ($totalFixedCover > 0) {
+        $warnings[] = "🔧 Automatisch $totalFixedCover Cover repariert (falsche Zeichen entfernt, KEINE KI-Bilder mehr genutzt! NUR echte hochgeladene Bilder als Cover!)";
+    }
+
     $metaBlock = [[
         '_schemaVersion'  => '3.2',
         '_readme'         => 'SBS Galerie V3.2 - auto-publish via admin/upload.php',
         '_lastModified'   => date('c'),
-        '_lastFolder'     => $folder
+        '_lastFolder'     => $folder,
+        '_badPhotosRemoved' => $totalDeletedBadPhotos
     ]];
     $output = array_merge($metaBlock, $merged);
 

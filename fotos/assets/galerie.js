@@ -199,6 +199,12 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
         kriterium: { label: 'Kriterium', bg: '#dc3545' }
     };
 
+    const fallbackCover = (subtype) => {
+        if (subtype === 'bergrennen') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20austrian%20mountains&image_size=landscape_16_9';
+        if (subtype === 'kriterium') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion&image_size=landscape_16_9';
+        return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20lake%20shore%20sunset&image_size=landscape_16_9';
+    };
+
     const html = [];
     Object.keys(byYear).sort((a,b) => (b > a ? 1 : -1)).forEach(year => {
         html.push(`<div style="grid-column: 1/-1; margin: 1.5rem 0 0.5rem;">
@@ -211,7 +217,9 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 
         byYear[year].forEach(ev => {
             const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
-            const cover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '').trim();
+            const rawCover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '');
+            /* 🔥 WICHTIG: Cover zuerst SANITIZEN (Backticks entfernen!) — sonst Security-Fehler "file:// nicht erlaubt" */
+            const safeCover = fgSanitizePhotoSrc(rawCover, fallbackCover(ev.subtype));
             const date = fgFormatDate(ev.date);
             const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
             const uniqueBibs = new Set();
@@ -220,7 +228,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
             const icon = disciplineIcon[ev.subtype || ''] || 'fa-bicycle';
             html.push(`
                 <a class="fg-event-card" href="${link}" data-aos="fade-up">
-                    <div class="fg-event-card__cover" ${cover ? `style="background-image:url('${fgEscapeHtml(cover)}')"` : ''}>
+                    <div class="fg-event-card__cover" style="background-image:url('${fgEscapeHtml(safeCover)}')">
                         <span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>
                         <div class="fg-event-card__count">
                             <i class="fa-regular fa-image"></i> ${count}
@@ -318,8 +326,12 @@ function fgFindEventById(events, id) {
 /* Foto-URL auf GÜLTIGKEIT & SICHERHEIT prüfen: Keine lokalen Pfade erlauben! */
 function fgSanitizePhotoSrc(src, fallback = null) {
     if (!src || typeof src !== 'string') return fallback;
-    const s = src.trim();
+    let s = src.trim();
     if (!s) return fallback;
+
+    /* Step 1: Leading/Trailing BACKTICKS entfernen! (`` ` `` Zeichen)
+       Die machen URLs zu lokalem Pfad und erzeugen Security-Fehler "file:// nicht erlaubt"! */
+    s = s.replace(/^[`\s"'“”‘’]+|[`\s"'“”‘’]+$/g, '');
 
     /* 🔴 Blockierte gefährliche Protokolle / Windows-Pfade */
     if (/^file:/i.test(s))      return fallback;
@@ -328,10 +340,11 @@ function fgSanitizePhotoSrc(src, fallback = null) {
     if (/^\/[A-Za-z]:/.test(s))    return fallback;   /* /C:/ (Unix Form) */
     if (/^data:image/i.test(s))    return fallback;   /* Kein Base64 Chaos */
 
-    /* Externe HTTP(S) URLs: Erlaubt, aber nur bekannte Herkunft */
+    /* Externe HTTP(S) URLs: USER WILL KEINE KI IMAGES! → NUR rv-hard.at erlaubt!
+       ↳ coresg-normal.trae.ai = KI Placeholder → GESPERRT! (User Wunsch!) */
     if (/^https?:\/\//i.test(s)) {
-        if (s.includes('rv-hard.at') || s.includes('coresg-normal.trae.ai')) return s;
-        return fallback; /* Fremde Domains blockieren */
+        if (s.includes('rv-hard.at') || s.includes('rv-hard.arnovoyer.com')) return s;
+        return fallback; /* Fremde Domains + KI URLs = blockieren! */
     }
 
     /* Relativer Server-Pfad → NUR erlaubt wenn er in /fotos/data/ anfängt! */
@@ -359,6 +372,27 @@ function fgRenderEventPage(event) {
 
     const date = fgFormatDate(event.date);
     document.title = `${event.name} | Foto-Galerie | RV Hard`;
+
+    /* 🔥 SECURITY og:image Meta Tag SETZEN! Genau DIESER erzeugt den "file:// nicht erlaubt" Fehler!
+       Das eventuelle OG:IMAGE Meta Tag im HTML HEAD wird jetzt SANITIZED & neu gesetzt! */
+    (function setSafeMetaTags() {
+        const rawCover = event.coverPhoto || (event.photos && event.photos[0] && event.photos[0].src) || '';
+        const safeCover = fgSanitizePhotoSrc(rawCover, null);
+        const setMeta = (property, content) => {
+            if (!content) return;
+            const escapedContent = String(content).replace(/"/g, '&quot;');
+            let el = document.querySelector(`meta[property="${property}"]`);
+            if (!el) {
+                el = document.createElement('meta');
+                el.setAttribute('property', property);
+                document.head.appendChild(el);
+            }
+            el.setAttribute('content', escapedContent);
+        };
+        if (safeCover) setMeta('og:image', location.origin + safeCover);
+        setMeta('og:title', event.name || 'Event Galerie');
+        setMeta('og:description', (event.location ? event.location + ' · ' : '') + (event.date ? event.date : ''));
+    })();
 
     document.getElementById('fg-event-name').textContent = event.name;
     document.getElementById('fg-event-date').textContent = date;

@@ -904,18 +904,39 @@
             if (!jn) return;
         }
 
-        /* 1) FormData */
+        /* 🔥 Prüfung: Fehlen File-Objekte (also wurden Bilder nicht neu gezogen nach Reload?) */
+        const withoutFile = list.filter(p => !p.file || typeof p.file.arrayBuffer !== 'function').length;
+        if (withoutFile > 0) {
+            const jn = confirm(
+                `⚠️ ${withoutFile}/${list.length} Bilder haben KEINE Originaldaten mehr!\n\n` +
+                `Das passiert wenn:\n` +
+                `  → Du die Seite NEU GELADEN hast, nachdem Bilder gezogen wurden\n` +
+                `  → Bilder waren nur Vorschau aus einem alten Publish.\n\n` +
+                `TROTZDEM FORTFAHREN?\n` +
+                `(Bilder mit Startnummern aus alten Publikationen bleiben erhalten! Neue Bilder müssen unbedingt neu gezogen werden!)`
+            );
+            if (!jn) return;
+        }
+
+        /* 1) FormData — STRUKTUR FIX: NIE src oder previewUrl mitschicken! */
         const fd = new FormData();
         fd.append('action', 'publish');
-        const photosMeta = list.map(p => ({
-            id: p.id,
-            originalName: p.filename,
-            bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers)
-        }));
+        const photosMeta = list.map(p => {
+            /* 🔴 SICHERHEIT: Wir senden NUR DIE 3 FELDER!
+               Keine src, keine previews, keine blob URLs! NUR id + Dateiname + Nummern! */
+            return {
+                id: p.id,
+                originalName: String(p.filename || p.originalName || 'img.jpg').trim(),
+                bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers)
+            };
+        });
         fd.append('metadata', JSON.stringify({
             eventId: currentEventId, folder, year, discKey: discObj.key, photos: photosMeta
         }));
-        list.forEach(p => { if (p.file) fd.append('images[]', p.file, p.filename); });
+        const countBefore = fd.getAll('images[]').length;
+        list.forEach(p => { if (p.file && typeof p.file.arrayBuffer === 'function') fd.append('images[]', p.file, p.filename); });
+        const countAfter = fd.getAll('images[]').length - countBefore;
+        console.log(`[Publish] Sending ${countAfter} files for ${list.length} photo entries (${withoutFile} merged-only)`);
 
         /* 2) UI sperren + Progress */
         $publishBtn.disabled = true;
