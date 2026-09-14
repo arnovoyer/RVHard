@@ -170,14 +170,36 @@ if ($action === 'publish') {
     ];
     $disc = $discDefs[$discKey] ?? $discDefs['bergrennen-wolfurt-buch'];
 
-    /* 5) Fotos für JSON aufbauen */
+    /* 5) Fotos für JSON aufbauen — NUR VALIDE SERVER-Pfade! Kein file:/// und kein C:\ Windows Pfad! */
     $photosJson = [];
+    $warnings   = [];
     foreach ($photosMeta as $pm) {
         $origName = $pm['originalName'] ?? '';
         $src = null;
-        if (!empty($pm['src']) && strpos($pm['src'], '/fotos/data/') === 0) {
-            $src = $pm['src'];
-        } elseif (isset($savedImages[$origName])) {
+
+        /* 🔴 SICHERHEIT: Prüfe zuerst vorhandenes src auf GÜLTIGKEIT! */
+        if (!empty($pm['src']) && is_string($pm['src'])) {
+            $raw = trim($pm['src']);
+            $blocked = false;
+            if (stripos($raw, 'file://') === 0)    $blocked = true; /* Windows/Mac/Linux Lokale Pfade */
+            if (stripos($raw, 'blob:') === 0)     $blocked = true; /* Browser Blob URLs (nur Vorschau!) */
+            if (preg_match('#^[A-Za-z]:[\\\\/]#', $raw)) $blocked = true; /* C:\ D:\ Windows-Pfade */
+            if (preg_match('#^https?://#i', $raw) && strpos($raw, 'rv-hard.at') === false && strpos($raw, 'coresg-normal.trae.ai') === false) $blocked = true;
+            if (strpos($raw, '/fotos/data/') !== 0 && !$blocked && !preg_match('#^https?://#i', $raw)) {
+                /* Kein file, aber fängt nicht mit /fotos/data an → aufräumen */
+                $raw = ltrim(str_replace('\\', '/', $raw), '/');
+                if (strpos($raw, 'fotos/data/') === 0) $raw = '/' . $raw;
+            }
+            if (!$blocked && strpos($raw, '/fotos/data/') === 0) {
+                $src = $raw;
+            } elseif ($blocked) {
+                $warnings[] = "Verworfen: Lokaler Pfad '$raw' (nicht im Web sichtbar!). Bild '$origName' muss via Upload nochmal zum Server geschickt werden.";
+                $src = null;
+            }
+        }
+
+        /* Normale Verarbeitung: Upload via HTTP Form = Bild wurde tatsächlich auf Server gespeichert */
+        if (!$src && isset($savedImages[$origName])) {
             $src = $savedImages[$origName];
         }
         if (!$src) continue;
@@ -227,29 +249,61 @@ if ($action === 'publish') {
     ]];
     $output = array_merge($metaBlock, $merged);
 
-    /* 7) events.json SPEICHERN */
-    $jsonStr = json_encode($output, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    $tmpFile = EVENTS_FILE . '.tmp.' . uniqid();
-    if (@file_put_contents($tmpFile, $jsonStr) === false) {
+    /* 7) events.json SPEICHERN — 100% VALIDES JSON! */
+    $jsonEncodeFlags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE;
+    $jsonStr = json_encode($output, $jsonEncodeFlags);
+    if ($jsonStr === false || strlen($jsonStr) < 50) {
+        /* Fallback: Photos rekursiv mit UTF8-Sanitizer durchgehen, falls ein Dateiname kaputt war */
+        $sanitizer = function($v) use (&$sanitizer) {
+            if (is_array($v)) return array_map($sanitizer, $v);
+            if (is_string($v)) return mb_convert_encoding($v, 'UTF-8', 'UTF-8');
+            return $v;
+        };
+        $output = array_map($sanitizer, $output);
+        $jsonStr = json_encode($output, $jsonEncodeFlags);
+        if ($jsonStr === false) {
+            die_json(false, 'Konnte KEIN gültiges JSON erzeugen! Fehler: ' . json_last_error_msg());
+        }
+    }
+    if (function_exists('header_register_variable')) {
+        /* Sicherstellen dass PHP Warnings nicht in Output gelangen und JSON zerstören! */
+    }
+    /* Parsebare JSON Syntax Prüfung bevor gespeichert wird! */
+    $testParse = @json_decode($jsonStr, true);
+    if (!is_array($testParse)) {
+        die_json(false, 'JSON-Validierung FEHLGESCHLAGEN! Nicht gespeichert, um Defekt zu vermeiden. JSON letzte Zeichen: ' . substr($jsonStr, -120));
+    }
+    $tmpFile = EVENTS_FILE . '.tmp.' . uniqid('', true);
+    if (@file_put_contents($tmpFile, $jsonStr, LOCK_EX) === false) {
         @unlink($tmpFile);
         die_json(false, 'Konnte events.json temporär nicht schreiben – Ordner-Rechte prüfen (/fotos/data/ = 755, Datei = 644).');
     }
+    clearstatcache(true, $tmpFile);
+    $filesizeTmp = @filesize($tmpFile);
+    if (!$filesizeTmp || $filesizeTmp < 100) {
+        @unlink($tmpFile);
+        die_json(false, 'Temporäre events.json zu klein! Wahrscheinlich fehlende Schreibrechte oder Festplatte voll.');
+    }
     if (!@rename($tmpFile, EVENTS_FILE)) {
         @unlink($tmpFile);
-        if (!@file_put_contents(EVENTS_FILE, $jsonStr)) {
+        if (!@file_put_contents(EVENTS_FILE, $jsonStr, LOCK_EX)) {
             die_json(false, 'Konnte events.json NICHT speichern! Fehlende Schreibrechte? Ordner /fotos/data/ braucht 755, Events-Datei 644.');
         }
     }
     @chmod(EVENTS_FILE, 0644);
 
-    /* 8) ERFOLGS-ANTWORT */
-    die_json(true, '✅ ERFOLG! ' . count($savedImages) . ' Bilder gespeichert, ' . count($photosJson) . ' Einträge in events.json geschrieben. Galerie sofort sichtbar!', [
+    /* 8) ERFOLGS-ANTWORT (inkl. Warnungen für verworfene lokale Pfade!) */
+    $responseData = [
         'photos_saved_count'  => count($savedImages),
         'photos_json_count'   => count($photosJson),
         'target_folder'       => $folder,
         'preview_url'         => '/fotos/event.html?id=' . rawurlencode($eventId),
-        'events_file_size'    => filesize(EVENTS_FILE)
-    ]);
+        'events_file_size'    => filesize(EVENTS_FILE),
+        'warnings'            => $warnings
+    ];
+    $msg = '✅ ERFOLG! ' . count($savedImages) . ' Bilder gespeichert, ' . count($photosJson) . ' Einträge in events.json geschrieben. Galerie sofort sichtbar!';
+    if (count($warnings)) $msg .= ' ⚠️ ACHTUNG: '.count($warnings).' Bild(er) mit LOKALEM PFAD (z.B. file://) verworfen — Admin muss via HTTP:// statt Doppelklick geöffnet werden!';
+    die_json(true, $msg, $responseData);
 }
 
 /* Fallback: unbekannte Action */

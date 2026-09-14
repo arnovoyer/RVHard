@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="/assets/style.css" />
     <link rel="stylesheet" href="/fotos/assets/galerie.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
     <style>
         body { padding-top: 70px; }
@@ -295,6 +295,32 @@
 
     <main>
     <section class="fg-container">
+
+        <!-- KONNTE NICHT ANDERS: FILE PROTOKOLL STOPPER! -->
+        <div id="proto-warn" style="display:none;padding:1rem 1.25rem;background:#f8d7da;border:2px solid #dc3545;border-radius:10px;color:#842029;margin-bottom:1.2rem;line-height:1.55;">
+            <h3 style="margin:0 0 0.5rem 0;color:#842029;"><i class="fa-solid fa-triangle-exclamation"></i> ⛔ Admin funktioniert hier NICHT!</h3>
+            <p style="margin:0 0 0.6rem 0;">
+                Du hast diese Seite per <strong>Doppelklick</strong> als <code>file:///C:/Users/...</code> geöffnet.
+                Das <strong>geht NICHT</strong> — per file:// lassen sich <strong>keine Bilder auf den Server laden</strong> und auch <strong>keine PHP-Skripte ausführen</strong>.
+                Der Browser blockiert das aus Sicherheitsgründen (genau diese Meldung: <em>"Sicherheitsfehler: darf file:/// nicht laden"</em>).
+            </p>
+            <p style="margin:0 0 0.8rem 0;">
+                <strong>Richtig so öffnen (unbedingt):</strong><br>
+                👉 <a href="https://rv-hard.at/fotos/admin/" target="_blank" rel="noopener" style="color:#842029;text-decoration:underline;font-weight:bold;">https://rv-hard.at/fotos/admin/</a>
+            </p>
+            <p style="margin:0;font-size:0.88rem;color:#7a2430;">
+                Lokal auf PC zu Hause zum Testen: <code>http://localhost/rv-hard/fotos/admin/</code> oder XAMPP/WAMP starten.
+                Bilder hochladen und taggen funktioniert NUR über <code>http://</code> oder <code>https://</code>.
+            </p>
+        </div>
+        <script>
+            if (location.protocol === 'file:') {
+                document.getElementById('proto-warn').style.display = 'block';
+                document.querySelectorAll('.fg-step, .fg-section, .fg-publish-box').forEach(el => {
+                    if (!el.id || el.id !== 'proto-warn') el.style.opacity = '0.35';
+                });
+            }
+        </script>
 
         <!-- KURZER HINWEIS -->
         <div class="fg-ftp-info" style="padding: 0.8rem 1rem; background: #fff3cd; border: 1px dashed #ffc107; border-radius: 8px; color: #7a5d00; margin-bottom: 1.2rem;">

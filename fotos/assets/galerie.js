@@ -1,34 +1,78 @@
 /* ================= RV HARD – FOTO-GALERIE LOGIK ================= */
 
 const FG_DATA_URL = '/fotos/data/events.json';
+let _fgEventsCachePromise = null;   /* Promise Cache → fetch läuft NUR 1x! */
+let _fgEventsCacheArray = null;     /* Sync Cache → zweiter Aufruf instant! */
+const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung */
 
 /* --------------- HILFSFUNKTIONEN --------------- */
 
+/* Robustes Laden mit TIMEOUT + CACHE + COMMENT CLEANUP (1 Durchgang) */
 async function fgLoadEvents() {
-    try {
-        const res = await fetch(FG_DATA_URL + '?v=' + Date.now());
-        if (!res.ok) throw new Error(`Events-JSON konnte nicht geladen werden (Status ${res.status}).`);
-        const txt = await res.text();
-        let json;
+    if (_fgEventsCacheArray) return _fgEventsCacheArray;
+    if (_fgEventsCachePromise) return _fgEventsCachePromise;
+
+    _fgEventsCachePromise = (async () => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), FG_LOAD_TIMEOUT_MS);
+
         try {
-            json = JSON.parse(txt);
-        } catch (parseErr) {
-            /* Fallback: Kommentare rausfiltern (manche Editoren fügen /* Kommentare hinzu) */
+            const cacheBust = '?v=' + Math.floor(Date.now() / 30000); /* Nur alle 30 Sekunden neu holen! */
+            const res = await fetch(FG_DATA_URL + cacheBust, {
+                signal: controller.signal,
+                cache: 'no-cache',
+                priority: 'high',
+                mode: 'cors'
+            });
+            clearTimeout(timeoutId);
+
+            if (!res.ok) throw new Error(`Server antwortete mit Status ${res.status} – events.json nicht gefunden?`);
+            const txt = await res.text();
+            if (!txt || txt.trim().length < 10) throw new Error(`events.json ist LEER! Datei wurde vermutlich nicht korrekt auf den Server geladen.`);
+
+            let json;
             try {
-                const cleaned = txt
-                    .replace(/\/\*[\s\S]*?\*\//g, '')
-                    .replace(/^\s*\/\/.*$/gm, '')
-                    .replace(/,\s*([\]}])/g, '$1');
-                json = JSON.parse(cleaned);
-            } catch (retryErr) {
-                throw new Error(`events.json ist UNGÜLTIG! Überprüfe die Datei auf Kommentare, fehlende Kommata oder Tippfehler. Original-Fehler: ${parseErr.message}`);
+                json = JSON.parse(txt);
+            } catch (parseErr) {
+                /* Letzter Ausweg: Kommentare + Trailing Commas entfernen (User hat manuell editiert) */
+                try {
+                    const cleaned = txt
+                        .replace(/\/\*[\s\S]*?\*\//g, '')
+                        .replace(/^\s*\/\/.*$/gm, '')
+                        .replace(/,\s*([\]}])/g, '$1')
+                        .replace(/^\uFEFF/, '');
+                    json = JSON.parse(cleaned);
+                } catch (retryErr) {
+                    const pos = (parseErr.message && parseErr.message.match(/position (\d+)/i))?.[1] || '?';
+                    const snippet = txt.substring(Math.max(0, Number(pos) - 80), Math.min(txt.length, Number(pos) + 80));
+                    throw new Error(
+                        `events.json ist UNGÜLTIG (JSON Parse fehlgeschlagen bei Position ${pos}).\n` +
+                        `TIPPS:\n  1. Hast du die Datei manuell bearbeitet? Keine Kommentare /* */ oder // erlaubt!\n` +
+                        `  2. Im Admin-Tool auf "Veröffentlichen" klicken, damit neu erzeugt wird.\n` +
+                        `  3. STRG+F5 drücken für neue Version.\n\n` +
+                        `Original Fehler: ${parseErr.message}\n\nStelle im JSON bei Position ${pos}: ...${snippet}...`
+                    );
+                }
             }
+
+            const arr = Array.isArray(json) ? json : (json.events || []);
+            if (!arr.length) throw new Error(`events.json wurde geladen, enthält aber KEINE Events! Admin Publish erneut durchführen.`);
+            _fgEventsCacheArray = arr;
+            return _fgEventsCacheArray;
+
+        } catch (e) {
+            clearTimeout(timeoutId);
+            /* Cache zurücksetzen, damit Retry nach Fehler wieder möglich ist */
+            _fgEventsCachePromise = null;
+            _fgEventsCacheArray = null;
+            if (e && e.name === 'AbortError') {
+                throw new Error(`Zeitüberschreitung! events.json konnte nach ${FG_LOAD_TIMEOUT_MS/1000}s nicht geladen werden. Langsame Internetverbindung oder Datei zu groß? STRG+F5 versuchen!`);
+            }
+            throw e;
         }
-        return Array.isArray(json) ? json : (json.events || []);
-    } catch (e) {
-        console.error('[fgLoadEvents] FATAL:', e);
-        throw e;
-    }
+    })();
+
+    return _fgEventsCachePromise;
 }
 
 function fgEscapeHtml(str) {
@@ -271,6 +315,32 @@ function fgFindEventById(events, id) {
     return events.find(ev => String(ev.id) === id || String(ev.slug || '') === id) || null;
 }
 
+/* Foto-URL auf GÜLTIGKEIT & SICHERHEIT prüfen: Keine lokalen Pfade erlauben! */
+function fgSanitizePhotoSrc(src, fallback = null) {
+    if (!src || typeof src !== 'string') return fallback;
+    const s = src.trim();
+    if (!s) return fallback;
+
+    /* 🔴 Blockierte gefährliche Protokolle / Windows-Pfade */
+    if (/^file:/i.test(s))      return fallback;
+    if (/^blob:/i.test(s))     return fallback;
+    if (/^[A-Za-z]:[\\/]/.test(s)) return fallback;   /* C:\ D:\ Windows */
+    if (/^\/[A-Za-z]:/.test(s))    return fallback;   /* /C:/ (Unix Form) */
+    if (/^data:image/i.test(s))    return fallback;   /* Kein Base64 Chaos */
+
+    /* Externe HTTP(S) URLs: Erlaubt, aber nur bekannte Herkunft */
+    if (/^https?:\/\//i.test(s)) {
+        if (s.includes('rv-hard.at') || s.includes('coresg-normal.trae.ai')) return s;
+        return fallback; /* Fremde Domains blockieren */
+    }
+
+    /* Relativer Server-Pfad → NUR erlaubt wenn er in /fotos/data/ anfängt! */
+    if (s.startsWith('/fotos/data/') || s.startsWith('fotos/data/')) return s;
+
+    /* Sonst alles was nicht passt → Fallback */
+    return fallback;
+}
+
 function fgPhotoMatchesBib(photo, bibQuery) {
     if (!bibQuery) return true;
     const q = String(bibQuery).toLowerCase().trim();
@@ -340,20 +410,31 @@ function fgRenderEventPage(event) {
         }
 
         gallery.innerHTML = filtered.map((p, idx) => {
-            const src = fgEscapeHtml(p.src);
-            const thumb = p.thumbnail ? fgEscapeHtml(p.thumbnail) : src;
+            const rawSrc = p.src;
+            let safeSrc = fgSanitizePhotoSrc(rawSrc, null);
+            const broken = safeSrc === null;
+            if (broken) {
+                /* Placeholder 404 statt file:// Security-Crash */
+                safeSrc = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=broken%20image%20placeholder%20gray%20white%20error%20icon%20minimal&image_size=square';
+                console.warn('[Galerie] Unsichere oder lokale Foto-URL verworfen:', rawSrc);
+            }
+            const src = fgEscapeHtml(safeSrc);
+            const thumb = p.thumbnail ? (fgEscapeHtml(fgSanitizePhotoSrc(p.thumbnail, safeSrc))) : src;
             const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
+            const brokenBadge = broken
+                ? `<span class="fg-tag" style="background:#dc3545;color:#fff;margin-right:4px;"><i class="fa-solid fa-triangle-exclamation"></i> Lokaler Pfad! Neu publ.</span>`
+                : '';
 
             return `
-                <figure class="fg-photo"
+                <figure class="fg-photo ${broken ? 'is-broken' : ''}"
                         tabindex="0"
                         data-idx="${idx}"
                         data-photos-src="${fgEscapeHtml(JSON.stringify(filtered.map(pp => pp)))}"
                         role="button"
                         aria-label="Bild vergrößern">
-                    <img src="${thumb}" alt="Foto" loading="lazy">
+                    <img src="${thumb}" alt="Foto" loading="lazy" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
                     <figcaption class="fg-photo__overlay">
-                        ${bibs}
+                        ${brokenBadge}${bibs}
                     </figcaption>
                 </figure>
             `;
@@ -389,13 +470,56 @@ function fgRenderEventPage(event) {
 async function fgInitEventPage() {
     const content = document.getElementById('fg-event-content');
     if (!content) return;
+    const $evName1 = document.getElementById('fg-event-name');
+    const $evInfo = document.getElementById('fg-gallery-info');
+    const $gallery = document.getElementById('fg-gallery');
+    const $breadcrumb = document.getElementById('fg-bc-event');
 
     try {
+        /* Loading Text setzen — falls es vorher stand, bleibt es sonst ewig! */
+        [$evName1, $breadcrumb].forEach(el => {
+            if (el) el.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Galerie lädt…`;
+        });
+        if ($evInfo) $evInfo.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Bilder werden geladen — bitte kurz warten!`;
+        if ($gallery) $gallery.innerHTML = `<div class="fg-empty"><strong>Galerie wird geladen…</strong></div>`;
+
         const events = await fgLoadEvents();
         const id = fgQueryParam('id') || fgQueryParam('event');
-        fgRenderEventPage(fgFindEventById(events, id));
+        if (!id) throw new Error(`Keine Event-ID in der URL! Öffne die Galerie über die Startseite → Event anklicken.`);
+
+        const event = fgFindEventById(events, id);
+        if (!event) {
+            const allIds = events.filter(e => !e._schemaVersion).map(e => `${e.id} (${e.shortName||'SBS'})`).slice(0,10).join(', ');
+            throw new Error(
+                `Event mit ID "${id}" nicht in events.json gefunden! ` +
+                `Verfügbare IDs (Auszug): ${allIds || '(keine Events vorhanden)'}. ` +
+                `Tipp: Gehe zurück auf /fotos/ und klicke das Event dort neu an!`
+            );
+        }
+        fgRenderEventPage(event);
+
     } catch (err) {
-        content.innerHTML = `<div class="fg-error"><strong>Fehler:</strong> ${fgEscapeHtml(err.message)}</div>`;
+        console.error('Fehler Event-Seite Init:', err);
+        /* AUCH die Überschriften mit Fehler überschreiben — sonst steht EWIG "wird geladen..." da! */
+        [$evName1, $breadcrumb].forEach(el => {
+            if (el) el.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler</span>`;
+        });
+        if ($evInfo) $evInfo.innerHTML = `<span style="color:#dc3545;">⚠️ Fehler beim Laden: ${fgEscapeHtml(err.message)}</span>`;
+        content.innerHTML = `<div class="fg-error" style="padding:1rem;border-radius:8px;background:#fef0f0;border:1px solid #f5c2c7;color:#842029;">
+            <h3 style="margin:0 0 0.4rem 0;color:#842029;"><i class="fa-solid fa-circle-exclamation"></i> Galerie konnte nicht geladen werden</h3>
+            <p style="margin:0 0 0.8rem 0;white-space:pre-wrap;">${fgEscapeHtml(err.message)}</p>
+            <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.8rem;">
+                <a class="fg-btn" href="/fotos/">← Zurück zur Galerie-Startseite</a>
+                <button class="fg-btn" style="background:#198754;border-color:#198754;color:#fff;"
+                    onclick="location.reload(true);">🔄 Seite NEU laden (Strg+F5)</button>
+            </div>
+            <p style="margin:0.9rem 0 0 0;font-size:0.88rem;color:#666;">
+                ⚡ Häufigste Gründe: 1) Admin Publish Button wurde <b>nicht</b> gedrückt → <a href="/fotos/admin/" target="_blank" style="color:#842029;">/fotos/admin/</a> öffnen & veröffentlichen!
+                2) events.json noch auf dem alten Stand → <b>STRG+F5 / ⌘+⇧+R</b> für hartes Reload!
+                3) Fehlende Schreibrechte auf /fotos/data/ Ordner (CHMOD 755 setzen).
+            </p>
+        </div>`;
+        if ($gallery) $gallery.innerHTML = '';
     }
 }
 
@@ -458,16 +582,26 @@ function _fgRenderLightboxItem() {
     if (!p) return;
 
     const img = lb.querySelector('.fg-lightbox__img-wrap img');
-    img.src = p.src;
+    let safeSrc = fgSanitizePhotoSrc(p.src, null);
+    const broken = safeSrc === null;
+    if (broken) {
+        safeSrc = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=photo%20placeholder%20image%20unavailable%20reupload%20notice&image_size=landscape_16_9';
+        console.warn('[Lightbox] Unsichere Foto-URL verworfen:', p.src);
+    }
+    img.src = safeSrc;
     img.alt = `Bild ${index + 1}`;
 
     const info = lb.querySelector('.fg-lightbox__info');
     const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
+    const warnBadge = broken
+        ? `<div class="fg-lightbox__row" style="background:#f8d7da;color:#842029;border-radius:6px;padding:0.5rem 0.75rem;margin-bottom:0.6rem;"><label><i class="fa-solid fa-triangle-exclamation"></i> Fehler</label><span style="font-weight:500;">Bild kann nicht angezeigt werden: Lokaler Pfad (<code>file://</code>)! Admin nochmal per HTTPS veröffentlichen!</span></div>`
+        : '';
 
     info.innerHTML = `
+        ${warnBadge}
         ${bibs ? `<div class="fg-lightbox__row"><label>🏁 Startnummer(n)</label><div class="fg-lightbox__tags">${bibs}</div></div>` : ''}
         <div class="fg-lightbox__actions">
-            <a class="fg-btn" href="${fgEscapeHtml(p.src)}" target="_blank" rel="noopener" download>
+            <a class="fg-btn" href="${fgEscapeHtml(safeSrc)}" target="_blank" rel="noopener" download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
             </a>
             <div style="font-size:0.78rem;color:#777;text-align:center;">
@@ -481,16 +615,24 @@ function _fgRenderLightboxItem() {
    INIT
 ================================================= */
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try { await Promise.all([fgLoadNavigation(), fgLoadFooter()]); }
-    catch(e) { console.warn('Nav/Foot Load fehlgeschlagen (Galerie läuft trotzdem):', e); }
+document.addEventListener('DOMContentLoaded', () => {
+    /* Nav & Footer HINTERGRUND laden — darf GALERIE NICHT blockieren! */
+    Promise.all([fgLoadNavigation(), fgLoadFooter()]).then(() => {
+        if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){}
+    }).catch(e => console.warn('Nav/Foot Load fehlgeschlagen (Galerie läuft trotzdem):', e));
 
-    try {
-        if (document.getElementById('fg-events')) await fgInitEventsOverview();
-        if (document.getElementById('fg-event-content')) await fgInitEventPage();
-    } catch (e) {
-        console.error('GALERIE FATALER INIT FEHLER:', e);
-        const info = document.getElementById('fg-info');
-        if (info) info.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler: ${fgEscapeHtml(e.message)}</span>`;
-    }
+    /* GALERIE SOFORT INITIALISIEREN — KEIN WARTEN auf Nav/Footer! */
+    (async () => {
+        try {
+            if (document.getElementById('fg-events')) await fgInitEventsOverview();
+            if (document.getElementById('fg-event-content')) await fgInitEventPage();
+        } catch (e) {
+            console.error('GALERIE FATALER INIT FEHLER:', e);
+            const info = document.getElementById('fg-info');
+            const evInfo = document.getElementById('fg-gallery-info');
+            const msg = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler: ${fgEscapeHtml(e.message)}</span>`;
+            if (info) info.innerHTML = msg;
+            if (evInfo) evInfo.innerHTML = msg;
+        }
+    })();
 });
