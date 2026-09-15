@@ -31,7 +31,9 @@
     </header>
 
     <main>
-        <section class="fg-container">
+        <!-- 🔥 WICHTIG! fg-event-content wird in fgInitEventPage() ZWINGEND benötigt!
+             Ohne diese ID wird die Galerie NIEMALS geladen (return sofort!) -->
+        <section class="fg-container" id="fg-event-content">
 
             <!-- BREADCRUMB -->
             <div class="fg-breadcrumb">
@@ -39,11 +41,13 @@
                 <span class="sep">›</span>
                 <a href="/fotos/"><i class="fa-regular fa-images"></i> Foto-Galerie</a>
                 <span class="sep">›</span>
-                <span id="fg-event-name">Event wird geladen…</span>
+                <!-- 🔥 Doppelte ID FIX! Vorher hieß das hier AUCH fg-event-name! Nur H1 hat fg-event-name! -->
+                <span id="fg-bc-event">Event wird geladen…</span>
             </div>
 
             <!-- HEADER / EVENT INFOS -->
             <div class="fg-section" data-aos="fade-up">
+                <!-- 🔥 fg-event-name NUR EINMAL (für H1!) jetzt korrekt! -->
                 <h1 id="fg-event-name" style="font-size:2rem;"><i class="fa-solid fa-camera-retro" style="color:#f5b301;"></i> Event wird geladen…</h1>
                 <p style="color:#777; margin: 0.25rem 0 0 0; font-size:0.92rem;">
                     <span id="fg-event-date"></span><span id="fg-event-location"></span>

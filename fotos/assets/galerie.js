@@ -64,6 +64,7 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
                     return true;
                 }
                 if (/^`+https?:\/\//i.test(v)) return true;
+                if (/`/.test(v) && /https?:\/\//.test(v)) return true; /* Backtick irgendwo + URL */
                 return false;
             };
             const checkEl = (el, attrName, selectorPart) => {
@@ -79,7 +80,7 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
                     FGBG.addNasty(sel, attrName, raw);
                 }
                 /* Auch inline style nach file:// durchsuchen! */
-                if (attrName === 'style' && typeof raw === 'string' && (raw.indexOf('file:')>=0 || raw.indexOf('C:\\')>=0)) {
+                if (attrName === 'style' && typeof raw === 'string' && (raw.indexOf('file:')>=0 || raw.indexOf('C:\\')>=0 || /`/.test(raw))) {
                     let sel = (el.tagName||'').toLowerCase() + selectorPart;
                     if (el.id) sel += `#${el.id}`;
                     if (el.className && typeof el.className === 'string') {
@@ -89,22 +90,76 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
                     FGBG.addNasty(sel,'style', raw);
                 }
             };
-            /* Alle relevanten Attribute checken! */
+            /* 🔥 ERWEITERTE LISTE ALLER URL ATTRIBUTE! BASE + FORMACTION + POSTER + DATA etc! */
+            document.querySelectorAll('base[href]').forEach(e=>checkEl(e,'href','')); /* 🔥 KRITISCH: BASE TAG! */
             document.querySelectorAll('a[href]').forEach(e=>checkEl(e,'href',''));
+            document.querySelectorAll('area[href]').forEach(e=>checkEl(e,'href',''));
             document.querySelectorAll('img[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('img[srcset]').forEach(e=>checkEl(e,'srcset',''));
+            document.querySelectorAll('img[poster]').forEach(e=>checkEl(e,'poster',''));
             document.querySelectorAll('link[href]').forEach(e=>checkEl(e,'href',''));
             document.querySelectorAll('script[src]').forEach(e=>checkEl(e,'src',''));
             document.querySelectorAll('iframe[src]').forEach(e=>checkEl(e,'src',''));
-            document.querySelectorAll('video[src],audio[src],source[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('iframe[srcdoc]').forEach(e=>checkEl(e,'srcdoc',''));
+            document.querySelectorAll('video[src],audio[src],source[src],track[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('video[poster]').forEach(e=>checkEl(e,'poster',''));
+            document.querySelectorAll('embed[src],object[data],applet[codebase],applet[archive]').forEach(e=>checkEl(e,e.hasAttribute('src')?'src':e.hasAttribute('data')?'data':e.hasAttribute('codebase')?'codebase':'archive',''));
+            document.querySelectorAll('form[action],input[formaction],button[formaction]').forEach(e=>checkEl(e,e.hasAttribute('action')?'action':'formaction',''));
+            document.querySelectorAll('blockquote[cite],q[cite],del[cite],ins[cite]').forEach(e=>checkEl(e,'cite',''));
+            document.querySelectorAll('html[manifest]').forEach(e=>checkEl(e,'manifest',''));
+            document.querySelectorAll('*[background]').forEach(e=>checkEl(e,'background','')); /* Old HTML! */
             document.querySelectorAll('[style]').forEach(e=>checkEl(e,'style',''));
             /* Auch meta property=og:image content! */
             document.querySelectorAll('meta[content]').forEach(e=>{
-                const prop = String(e.getAttribute('property')||'').toLowerCase();
-                if (prop.indexOf('og:image') === 0 || prop.indexOf('twitter:image') === 0) checkEl(e,'content',`[${prop}]`);
+                const prop = String(e.getAttribute('property')||'').toLowerCase() + ' ' + String(e.getAttribute('name')||'').toLowerCase();
+                if (prop.indexOf('og:image') >= 0 || prop.indexOf('twitter:image') >= 0 || prop.indexOf('msapplication-') >= 0) checkEl(e,'content',`[${prop.trim()}]`);
             });
+            /* ALLE data-* Attribute nach file:// oder Backticks durchsuchen! */
+            document.querySelectorAll('*').forEach(el => {
+                if (!el || !el.attributes) return;
+                for (let i = 0; i < el.attributes.length; i++) {
+                    const attr = el.attributes[i];
+                    if (!attr || !attr.name) continue;
+                    total++;
+                    if (attr.name.indexOf('data-') === 0 || attr.name.indexOf('on') === 0 /* onclick etc. */) {
+                        if (isNasty(attr.value)) {
+                            let sel = (el.tagName||'').toLowerCase();
+                            if (el.id) sel += `#${el.id}`;
+                            if (el.className && typeof el.className === 'string') {
+                                const c = el.className.trim().split(/\s+/).filter(Boolean).slice(0,3).join('.');
+                                if (c) sel += '.' + c;
+                            }
+                            FGBG.addNasty(`${sel}[${attr.name}]`, attr.name, attr.value);
+                        }
+                    }
+                }
+            });
+
+            /* 🔥 FINAL BOMBE! Gesamtes Dokument HTML String nach file://, C:, Backticks durchsuchen! */
+            try {
+                const fullHtml = (document.documentElement ? (document.documentElement.outerHTML || '') : '') + ' ' + (document.head ? document.head.innerHTML : '');
+                const fileIdx = fullHtml.search(/file\s*:\s*[\/\\]/i);
+                if (fileIdx >= 0) {
+                    const snippet = fullHtml.slice(Math.max(0,fileIdx-40), fileIdx+80);
+                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'innerHTML FILE TREFFER', snippet);
+                }
+                const winPathIdx = fullHtml.search(/[A-Za-z]:\\/);
+                if (winPathIdx >= 0) {
+                    const snippet = fullHtml.slice(Math.max(0,winPathIdx-40), winPathIdx+80);
+                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'innerHTML C:\\ TREFFER', snippet);
+                }
+                const backtickUrlIdx = fullHtml.search(/`[^`]*https?:\/\//i);
+                if (backtickUrlIdx >= 0) {
+                    const snippet = fullHtml.slice(Math.max(0,backtickUrlIdx-40), backtickUrlIdx+80);
+                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'BACKTICK URL TREFFER', snippet);
+                }
+            } catch(e) {
+                FGBG.log('warn', 'Konnte outerHTML nicht scannen: ' + String(e.message||e));
+            }
+
             FGBG.scanned = (FGBG.scanned||0) + total;
             FGBG.renderNasty();
-            FGBG.log('info', `🔍 Scan ${label||''}: ${total} Elemente gecheckt, ${FGBG.badUrls.length} böse.`);
+            FGBG.log('info', `🔍 Scan ${label||''}: ${total} Attrib.+HTML gecheckt, ${FGBG.badUrls.length} böse.`);
         }
     };
     window.__FGBG = FGBG;
@@ -494,18 +549,28 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 }
 
 async function fgInitEventsOverview() {
+    if (window.__FGBG) window.__FGBG.setPhase('fgInitEventsOverview() startet…');
     const container = document.getElementById('fg-events');
-    if (!container) return;
-    const info = document.getElementById('fg-info');
+    if (!container) {
+        if (window.__FGBG) window.__FGBG.log('err', '❌ FATAL: #fg-events Div NICHT gefunden!');
+        return;
+    }
+    if (window.__FGBG) window.__FGBG.log('info', '✅ #fg-events Container vorhanden.');
 
+    const info = document.getElementById('fg-info');
     const searchInput = document.getElementById('fg-search');
     const filterYear = document.getElementById('fg-filter-year');
     const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     try {
         if (info) info.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Lade SBS Events…`;
+        if (window.__FGBG) window.__FGBG.setPhase('Lade events.json für Overview…');
+
         const events = await fgLoadEvents();
+        if (window.__FGBG) window.__FGBG.log('info', `✅ events.json geladen (${events.length}). Filtere SBS Events…`);
+
         const sbsEvents = events.filter(e => !e._schemaVersion && (!e.category || e.category === 'SBS'));
+        if (window.__FGBG) window.__FGBG.setPhase(`${sbsEvents.length} SBS Events geladen. Sanitize CoverPhotos…`);
 
         /* Fallback: Cover Photo auf gültiges Bild prüfen (404 = Platzhalter) — NUR SANITIZE + KEINE KI PLATZHALTER! */
         const fallbackCoverLocal = () => null; /* User Wunsch: NUR echte Bilder! Keine KI Placeholder! */
@@ -732,8 +797,17 @@ function fgRenderEventPage(event) {
 }
 
 async function fgInitEventPage() {
+    if (window.__FGBG) window.__FGBG.setPhase('fgInitEventPage() startet…');
     const content = document.getElementById('fg-event-content');
-    if (!content) return;
+    if (!content) {
+        const msg = '❌ FATAL: <div id="fg-event-content"> NICHT im HTML gefunden! Bitte event.html Template prüfen.';
+        if (window.__FGBG) window.__FGBG.log('err', msg);
+        const name = document.getElementById('fg-event-name');
+        if (name) name.innerHTML = `<span style="color:#dc3545;">${fgEscapeHtml(msg)}</span>`;
+        return;
+    }
+    if (window.__FGBG) window.__FGBG.log('info', '✅ #fg-event-content vorhanden. Setze Loading-Texte.');
+
     const $evName1 = document.getElementById('fg-event-name');
     const $evInfo = document.getElementById('fg-gallery-info');
     const $gallery = document.getElementById('fg-gallery');
@@ -746,10 +820,14 @@ async function fgInitEventPage() {
         });
         if ($evInfo) $evInfo.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Bilder werden geladen — bitte kurz warten!`;
         if ($gallery) $gallery.innerHTML = `<div class="fg-empty"><strong>Galerie wird geladen…</strong></div>`;
+        if (window.__FGBG) window.__FGBG.setPhase('Warte auf fgLoadEvents() Fetch…');
 
         const events = await fgLoadEvents();
+        if (window.__FGBG) window.__FGBG.log('info', `✅ fgLoadEvents() OK! ${events.length} Events. Suche Event-ID in URL…`);
+
         const id = fgQueryParam('id') || fgQueryParam('event');
         if (!id) throw new Error(`Keine Event-ID in der URL! Öffne die Galerie über die Startseite → Event anklicken.`);
+        if (window.__FGBG) window.__FGBG.setPhase(`Suche Event mit ID="${id}" in ${events.length} Events…`);
 
         const event = fgFindEventById(events, id);
         if (!event) {
@@ -760,10 +838,13 @@ async function fgInitEventPage() {
                 `Tipp: Gehe zurück auf /fotos/ und klicke das Event dort neu an!`
             );
         }
+        if (window.__FGBG) window.__FGBG.log('info', `✅ Event gefunden: ${event.name} (${event.photos && event.photos.length} Bilder). Rendere Seite…`);
         fgRenderEventPage(event);
+        if (window.__FGBG) window.__FGBG.setPhase(`✅ ${event.shortName} Galerie geladen!`);
 
     } catch (err) {
         console.error('Fehler Event-Seite Init:', err);
+        if (window.__FGBG) window.__FGBG.log('err', `fgInitEventPage CRASH: ${err.message}`);
         /* AUCH die Überschriften mit Fehler überschreiben — sonst steht EWIG "wird geladen..." da! */
         [$evName1, $breadcrumb].forEach(el => {
             if (el) el.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler</span>`;
