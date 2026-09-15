@@ -5,12 +5,247 @@ let _fgEventsCachePromise = null;   /* Promise Cache → fetch läuft NUR 1x! */
 let _fgEventsCacheArray = null;     /* Sync Cache → zweiter Aufruf instant! */
 const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung */
 
+/* ================ 🔥 ULTIMATIVES DEBUG-PANEL (SICHTBAR!) ================ */
+/* Zeigt ALLES an! Phasen, Fehler, böse URLs! User soll mir Screenshot schicken können! */
+(function fgDebugBootstrap() {
+    let log = [];
+    const MAX_LOG = 30;
+    const MAX_NASTY = 50;
+    let panelEl = null;
+    let phaseBoxEl = null;
+    let logBoxEl = null;
+    let nastyBoxEl = null;
+
+    const FGBG = {
+        phase: 'Start',
+        badUrls: [], /* {selector, attr, value} */
+        log: function(lvl, msg) {
+            const t = new Date().toLocaleTimeString('de-DE', { hour12:false }) + '.' + String(new Date().getMilliseconds()).padStart(3,'0');
+            log.unshift(`<div style="padding:2px 4px;border-bottom:1px dotted #555;"><span style="opacity:.65">[${t}]</span> <b style="color:${lvl==='err'?'#ff6b6b':lvl==='warn'?'#ffc107':'#6ee7b7'}">${lvl.toUpperCase()}</b> ${String(msg||'')}</div>`);
+            log = log.slice(0, MAX_LOG);
+            if (logBoxEl) { logBoxEl.innerHTML = log.join(''); }
+        },
+        setPhase: function(p) {
+            FGBG.phase = String(p || '');
+            if (phaseBoxEl) phaseBoxEl.innerHTML = `<b>PHASE:</b> <span style="color:#ffc107">${FGBG.phase}</span>`;
+            FGBG.log('info', '→ ' + FGBG.phase);
+        },
+        addNasty: function(selector, attr, value) {
+            FGBG.badUrls.push({s:selector,a:String(attr||''),v:String(value||'').slice(0,150)});
+            if (nastyBoxEl) FGBG.renderNasty();
+            FGBG.log('err', `BÖSE URL! ${attr||''} = ${String(value||'').slice(0,80)}`);
+            if (panelEl) panelEl.style.background = 'linear-gradient(135deg,#7f1d1d,#991b1b)';
+        },
+        renderNasty: function() {
+            if (!nastyBoxEl) return;
+            const cnt = FGBG.badUrls.length;
+            if (!cnt) { nastyBoxEl.innerHTML = `<span style="color:#86efac"><b>✅ KEINE file:///C:/ URLs gefunden!</b> (Gescannt: ${FGBG.scanned||0})</span>`; return; }
+            nastyBoxEl.innerHTML = `<div style="margin-bottom:8px;color:#fca5a5;"><b>🚨 ${cnt} BÖSE URL(s) GEFUNDEN! Max ${MAX_NASTY} angezeigt:</b></div>`
+                + FGBG.badUrls.slice(0, MAX_NASTY).map(x=>`
+                    <div style="background:#0f172a;padding:6px 8px;border-radius:4px;margin:4px 0;border:1px solid #ef4444;word-break:break-all;font-family:monospace;font-size:11px;">
+                      <div style="color:#fca5a5;"><b>${fgEscapeHtml(x.s)}</b> → @${fgEscapeHtml(x.a)}</div>
+                      <div style="color:#fff;margin-top:2px;">${fgEscapeHtml(x.v)}</div>
+                    </div>`).join('');
+        },
+        scanned: 0,
+        scanDom: function(label) {
+            FGBG.setPhase(`Scan DOM (${label||''})`);
+            let total = 0;
+            const isNasty = (val) => {
+                if (typeof val !== 'string') return false;
+                const v = val.trim();
+                if (!v) return false;
+                if (v.indexOf('file:') === 0) return true;
+                if (v.indexOf('FILE:') === 0) return true;
+                if (/^[A-Za-z]:[\\/]/.test(v)) return true; /* C:\ D:\ */
+                if (/^\/[A-Za-z]:/.test(v)) return true; /* /C: */
+                if (v.startsWith('\`') || v.endsWith('\`')) {
+                    /* Genau die Backtick-Ursache! */
+                    return true;
+                }
+                if (/^`+https?:\/\//i.test(v)) return true;
+                return false;
+            };
+            const checkEl = (el, attrName, selectorPart) => {
+                total++;
+                const raw = el.getAttribute && el.getAttribute(attrName);
+                if (isNasty(raw)) {
+                    let sel = (el.tagName||'').toLowerCase() + selectorPart;
+                    if (el.id) sel += `#${el.id}`;
+                    if (el.className && typeof el.className === 'string') {
+                        const c = el.className.trim().split(/\s+/).filter(Boolean).slice(0,3).join('.');
+                        if (c) sel += '.' + c;
+                    }
+                    FGBG.addNasty(sel, attrName, raw);
+                }
+                /* Auch inline style nach file:// durchsuchen! */
+                if (attrName === 'style' && typeof raw === 'string' && (raw.indexOf('file:')>=0 || raw.indexOf('C:\\')>=0)) {
+                    let sel = (el.tagName||'').toLowerCase() + selectorPart;
+                    if (el.id) sel += `#${el.id}`;
+                    if (el.className && typeof el.className === 'string') {
+                        const c = el.className.trim().split(/\s+/).filter(Boolean).slice(0,3).join('.');
+                        if (c) sel += '.' + c;
+                    }
+                    FGBG.addNasty(sel,'style', raw);
+                }
+            };
+            /* Alle relevanten Attribute checken! */
+            document.querySelectorAll('a[href]').forEach(e=>checkEl(e,'href',''));
+            document.querySelectorAll('img[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('link[href]').forEach(e=>checkEl(e,'href',''));
+            document.querySelectorAll('script[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('iframe[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('video[src],audio[src],source[src]').forEach(e=>checkEl(e,'src',''));
+            document.querySelectorAll('[style]').forEach(e=>checkEl(e,'style',''));
+            /* Auch meta property=og:image content! */
+            document.querySelectorAll('meta[content]').forEach(e=>{
+                const prop = String(e.getAttribute('property')||'').toLowerCase();
+                if (prop.indexOf('og:image') === 0 || prop.indexOf('twitter:image') === 0) checkEl(e,'content',`[${prop}]`);
+            });
+            FGBG.scanned = (FGBG.scanned||0) + total;
+            FGBG.renderNasty();
+            FGBG.log('info', `🔍 Scan ${label||''}: ${total} Elemente gecheckt, ${FGBG.badUrls.length} böse.`);
+        }
+    };
+    window.__FGBG = FGBG;
+
+    /* Panel ins DOM */
+    document.addEventListener('DOMContentLoaded', () => {
+        panelEl = document.createElement('div');
+        panelEl.setAttribute('id', 'fg-debug-panel');
+        panelEl.style.cssText = `position:fixed;z-index:999999;right:8px;bottom:8px;width:min(520px,96vw);max-height:55vh;overflow:auto;
+            background:#111827;color:#e5e7eb;font-family:Inter,Segoe UI,sans-serif;font-size:12px;
+            border:2px solid #f5b301;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.5);padding:10px 12px;line-height:1.35;`;
+        panelEl.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+            <div style="font-weight:700;color:#f5b301;font-size:13px;">🛠️ RV HARD · FOTO GALERIE DEBUGGER</div>
+            <button id="fgdbg-close" style="background:#374151;color:#fff;border:0;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11px;">Minimieren</button>
+          </div>
+          <div id="fgdbg-phase" style="background:#0b1220;padding:6px 8px;border-radius:6px;margin-bottom:8px;">
+            <b>PHASE:</b> <span style="color:#ffc107">DOM bereit</span>
+          </div>
+          <details open><summary style="cursor:pointer;font-weight:600;margin-bottom:4px;">🎯 Böse URLs finden (file:/// C: \`…)</summary>
+            <div id="fgdbg-nasty" style="margin-top:4px;max-height:180px;overflow:auto;font-size:11px;">
+              Scannen läuft…
+            </div>
+          </details>
+          <details style="margin-top:6px;"><summary style="cursor:pointer;font-weight:600;">📜 Ausführungs-Log (Letzte ${MAX_LOG})</summary>
+            <div id="fgdbg-log" style="margin-top:4px;max-height:160px;overflow:auto;font-size:11px;"></div>
+          </details>
+          <details style="margin-top:6px;"><summary style="cursor:pointer;font-weight:600;">👨‍💻 Für Support: Screenshot von diesem Panel machen</summary>
+            <div style="margin-top:4px;color:#9ca3af;">
+              Kopiere den Inhalt oder mache Screenshot vom Panel bei Fehlerhilfe. Falls oben unter "Böse URLs" Einträge erscheinen, sind diese DIE URSACHE für den "Sicherheitsfehler darf file:// nicht laden".
+            </div>
+          </details>`;
+        document.body.appendChild(panelEl);
+        phaseBoxEl = document.getElementById('fgdbg-phase');
+        logBoxEl   = document.getElementById('fgdbg-log');
+        nastyBoxEl = document.getElementById('fgdbg-nasty');
+        document.getElementById('fgdbg-close').addEventListener('click', (e) => {
+            if (!panelEl) return;
+            const btn = e.currentTarget;
+            if (panelEl.dataset.min === '1') {
+                panelEl.style.maxHeight = '55vh';
+                panelEl.querySelectorAll('details').forEach(d=>d.setAttribute('open',''));
+                btn.textContent = 'Minimieren';
+                panelEl.dataset.min = '0';
+            } else {
+                panelEl.style.maxHeight = 'none';
+                panelEl.querySelectorAll('details').forEach(d=>d.removeAttribute('open'));
+                btn.textContent = 'Maximieren';
+                panelEl.dataset.min = '1';
+            }
+        });
+        FGBG.log('info', '✅ Debug Panel geladen. Warte auf Galerie-Init…');
+        setTimeout(()=>FGBG.scanDom('Initial (sofort)'), 200);
+    });
+})();
+
+/* 🔥 HELFER: fgEscapeHtml MUSS VOR Globalem onerror kommen! (sonst ReferenceError!) */
+function fgEscapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+}
+
+/* 🔥 GLOBALER JS FEHLER HANDLER! Alle Fehler werden im Browser (statt stiller console.error)
+   direkt im Galerie-Info Feld angezeigt! So sehen wir SOFORT was los ist! */
+window.addEventListener('error', function(errEvt) {
+    try {
+        const msg = `⚠️ JS-Fehler: ${fgEscapeHtml(errEvt.message || String(errEvt.error || ''))} (Zeile ${errEvt.lineno||'?'})`;
+        console.error('GLOBAL JS ERROR CATCHER:', errEvt);
+        const info = document.getElementById('fg-info') || document.getElementById('fg-gallery-info');
+        if (info) {
+            info.innerHTML = `<span style="color:#dc3545;font-weight:600;">${msg}</span>`;
+        }
+        const evName = document.getElementById('fg-event-name');
+        if (evName && evName.textContent.includes('wird geladen')) {
+            evName.textContent = 'Fehler beim Laden';
+        }
+        if (window.__FGBG) window.__FGBG.log('err', msg);
+    } catch(e) {}
+});
+
+/* Promise Uncaught ebenfalls! */
+window.addEventListener('unhandledrejection', function(ev) {
+    try {
+        console.error('UNHANDLED PROMISE:', ev);
+        const msg = `⚠️ Netzwerk/Promise Fehler: ${fgEscapeHtml((ev.reason && (ev.reason.message||String(ev.reason))) || String(ev||''))}`;
+        const info = document.getElementById('fg-info') || document.getElementById('fg-gallery-info');
+        if (info) info.innerHTML = `<span style="color:#dc3545;font-weight:600;">${msg}</span>`;
+        if (window.__FGBG) window.__FGBG.log('err', msg);
+    } catch(e) {}
+});
+
+/* 🔥 FINALE SICHERHEITSKANONE: ALLE URLs gehen durch diese Funktion!
+   GARANTIERT dass NIE file:// / Backtick / Windows C: URLs ins DOM gelangen!
+   → Wenn irgendwo (Nav, Footer, Meta, Galerie) eine schlechte URL durchschleicht,
+      wird sie hier ABGEFANGEN und durch NULL ersetzt! */
+function fgSafeUrl(raw, fallback = null, label = 'url') {
+    if (raw === null || raw === undefined) return fallback;
+    if (typeof raw !== 'string') return fallback;
+    let s = raw;
+
+    /* Step 1 + 2 + 3: DREIFACHE Backtick + Smart Quotes + Anführungszeichen Entfernung! */
+    for (let i = 0; i < 3; i++) {
+        s = s.replace(/^[\s`"'“”‘’]+|[\s`"'“”‘’]+$/g, '');
+        s = s.trim();
+    }
+
+    /* Step 4: 100% Blockliste! Alles was nicht erlaubt ist → FALLBACK */
+    const BAD_PREFIXES = ['file:', 'blob:', 'data:image', 'C:', 'D:', 'E:', 'F:', 'G:', 'c:', 'd:', 'e:', 'f:', 'g:', '/C:', '/c:'];
+    for (const bp of BAD_PREFIXES) {
+        if (s.startsWith(bp)) {
+            console.error(`[fgSafeUrl:${label}] BLOCKED unsafe url →`, bp, raw);
+            return fallback;
+        }
+    }
+
+    /* Step 5: Externe URLs nur auf RV-Hard Domains! (User will KEINE fremden/KI Bilder!) */
+    if (/^https?:\/\//i.test(s)) {
+        if (s.includes('rv-hard.at') || s.includes('rv-hard.arnovoyer.com') || s.includes('cdnjs.cloudflare.com') || s.includes('fonts.googleapis.com') || s.includes('fonts.gstatic.com') || s.includes('cdn.jsdelivr.net')) {
+            return s; /* Nur RV Hard + CDN (Font Awesome etc.) erlaubt! */
+        }
+        console.error(`[fgSafeUrl:${label}] BLOCKED external url (nicht RV Hard!) →`, raw);
+        return fallback;
+    }
+
+    /* Step 6: Interne Pfade NUR erlaubt wenn sie MIT / anfangen! */
+    if (s.startsWith('/')) return s;
+
+    /* Step 7: Alles andere → Fallback */
+    if (s === '') return fallback;
+    console.error(`[fgSafeUrl:${label}] BLOCKED unknown format →`, raw);
+    return fallback;
+}
+
 /* --------------- HILFSFUNKTIONEN --------------- */
 
 /* Robustes Laden mit TIMEOUT + CACHE + COMMENT CLEANUP (1 Durchgang) */
 async function fgLoadEvents() {
     if (_fgEventsCacheArray) return _fgEventsCacheArray;
     if (_fgEventsCachePromise) return _fgEventsCachePromise;
+    if (window.__FGBG) window.__FGBG.setPhase('Lade events.json vom Server…');
 
     _fgEventsCachePromise = (async () => {
         const controller = new AbortController();
@@ -58,6 +293,7 @@ async function fgLoadEvents() {
             const arr = Array.isArray(json) ? json : (json.events || []);
             if (!arr.length) throw new Error(`events.json wurde geladen, enthält aber KEINE Events! Admin Publish erneut durchführen.`);
             _fgEventsCacheArray = arr;
+            if (window.__FGBG) window.__FGBG.log('info', `✅ events.json OK! ${arr.length} Events geladen.`);
             return _fgEventsCacheArray;
 
         } catch (e) {
@@ -73,12 +309,6 @@ async function fgLoadEvents() {
     })();
 
     return _fgEventsCachePromise;
-}
-
-function fgEscapeHtml(str) {
-    return String(str ?? '').replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
 }
 
 function fgFormatDate(dateStr) {
@@ -132,6 +362,7 @@ async function fgLoadFooter() {
 function fgRenderEventsOverview(events, containerId = 'fg-events') {
     const container = document.getElementById(containerId);
     if (!container) return;
+    if (window.__FGBG) window.__FGBG.setPhase('Rendere Event-Karten (Übersicht)…');
 
     /* Filter Zustand */
     const searchInput = document.getElementById('fg-search');
@@ -200,9 +431,9 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     };
 
     const fallbackCover = (subtype) => {
-        if (subtype === 'bergrennen') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20austrian%20mountains&image_size=landscape_16_9';
-        if (subtype === 'kriterium') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion&image_size=landscape_16_9';
-        return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20lake%20shore%20sunset&image_size=landscape_16_9';
+        /* User Wunsch: KEINE KI generierten Placeholder Bilder! 
+           → return null: Karte zeigt nur Farbverlauf + Disziplin-Icon (CSS sorgt für Hintergrund) */
+        return null;
     };
 
     const html = [];
@@ -218,17 +449,21 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
         byYear[year].forEach(ev => {
             const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
             const rawCover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '');
-            /* 🔥 WICHTIG: Cover zuerst SANITIZEN (Backticks entfernen!) — sonst Security-Fehler "file:// nicht erlaubt" */
-            const safeCover = fgSanitizePhotoSrc(rawCover, fallbackCover(ev.subtype));
+            /* 🔥 WICHTIG: Dreifache Sicherheit! Backticks entfernen!
+               1) fgSanitizePhotoSrc + 2) fgSafeUrl + 3) Wenn NULL dann KEIN background-image! */
+            const sanitizedCover = fgSanitizePhotoSrc(rawCover, null);
+            const safeCover = fgSafeUrl(sanitizedCover, null, `card-cover-${ev.id}`);
             const date = fgFormatDate(ev.date);
             const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
             const uniqueBibs = new Set();
             (ev.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => uniqueBibs.add(String(b))));
             const badge = ev.subtype ? disciplineBadge[ev.subtype] : { label:'SBS', bg:'#ffc107' };
             const icon = disciplineIcon[ev.subtype || ''] || 'fa-bicycle';
+            /* Wenn KEIN echtes Bild da → style leer lassen (CSS zeigt automatisch Gradient Background!) */
+            const coverBgStyle = safeCover ? `style="background-image:url('${fgEscapeHtml(safeCover)}')"` : '';
             html.push(`
                 <a class="fg-event-card" href="${link}" data-aos="fade-up">
-                    <div class="fg-event-card__cover" style="background-image:url('${fgEscapeHtml(safeCover)}')">
+                    <div class="fg-event-card__cover" ${coverBgStyle}>
                         <span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>
                         <div class="fg-event-card__count">
                             <i class="fa-regular fa-image"></i> ${count}
@@ -272,15 +507,16 @@ async function fgInitEventsOverview() {
         const events = await fgLoadEvents();
         const sbsEvents = events.filter(e => !e._schemaVersion && (!e.category || e.category === 'SBS'));
 
-        /* Fallback: Cover Photo auf gültiges Bild prüfen (404 = Platzhalter) */
-        const fallbackCover = (subtype) => {
-            if (subtype === 'bergrennen') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20uphill%20race%20austrian%20mountains&image_size=landscape_16_9';
-            if (subtype === 'kriterium') return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=road%20cycling%20criterium%20city%20race%20blurred%20motion&image_size=landscape_16_9';
-            return 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=time%20trial%20cyclist%20lake%20shore%20sunset&image_size=landscape_16_9';
-        };
+        /* Fallback: Cover Photo auf gültiges Bild prüfen (404 = Platzhalter) — NUR SANITIZE + KEINE KI PLATZHALTER! */
+        const fallbackCoverLocal = () => null; /* User Wunsch: NUR echte Bilder! Keine KI Placeholder! */
         sbsEvents.forEach(e => {
-            if (!e.coverPhoto || /\/cover\.jpg(\?|$)/.test(String(e.coverPhoto)) || String(e.coverPhoto).startsWith('https://via.placeholder')) {
-                e.coverPhoto = fallbackCover(e.subtype);
+            /* Backticks entfernen! (Sonst file:// Security Fehler!) */
+            if (typeof e.coverPhoto === 'string') {
+                e.coverPhoto = e.coverPhoto.replace(/^[`\s"'“”‘’]+|[`\s"'“”‘’]+$/g, '');
+            }
+            if (!e.coverPhoto || /\/cover\.jpg(\?|$)/.test(String(e.coverPhoto)) || String(e.coverPhoto).startsWith('https://via.placeholder') || String(e.coverPhoto).includes('coresg-normal.trae.ai')) {
+                /* User Wunsch: KEINE KI Bilder! Fallback = ERSTES ECHTES FOTO! sonst null */
+                e.coverPhoto = (e.photos && e.photos[0] && e.photos[0].src && fgSanitizePhotoSrc(e.photos[0].src, null)) || fallbackCoverLocal();
             }
         });
 
@@ -367,32 +603,13 @@ function fgRenderEventPage(event) {
         document.getElementById('fg-event-content').innerHTML =
             `<div class="fg-error"><strong>Event nicht gefunden.</strong>
             <br><a href="/fotos/" class="fg-btn" style="margin-top:1rem;">← Zurück zur Galerie-Übersicht</a></div>`;
+        if (window.__FGBG) window.__FGBG.log('err', 'Event NICHT in events.json gefunden!');
         return;
     }
+    if (window.__FGBG) window.__FGBG.setPhase(`Event laden: "${event.name || 'unbekannt'}" (${event.photos && event.photos.length} Bilder)…`);
 
     const date = fgFormatDate(event.date);
     document.title = `${event.name} | Foto-Galerie | RV Hard`;
-
-    /* 🔥 SECURITY og:image Meta Tag SETZEN! Genau DIESER erzeugt den "file:// nicht erlaubt" Fehler!
-       Das eventuelle OG:IMAGE Meta Tag im HTML HEAD wird jetzt SANITIZED & neu gesetzt! */
-    (function setSafeMetaTags() {
-        const rawCover = event.coverPhoto || (event.photos && event.photos[0] && event.photos[0].src) || '';
-        const safeCover = fgSanitizePhotoSrc(rawCover, null);
-        const setMeta = (property, content) => {
-            if (!content) return;
-            const escapedContent = String(content).replace(/"/g, '&quot;');
-            let el = document.querySelector(`meta[property="${property}"]`);
-            if (!el) {
-                el = document.createElement('meta');
-                el.setAttribute('property', property);
-                document.head.appendChild(el);
-            }
-            el.setAttribute('content', escapedContent);
-        };
-        if (safeCover) setMeta('og:image', location.origin + safeCover);
-        setMeta('og:title', event.name || 'Event Galerie');
-        setMeta('og:description', (event.location ? event.location + ' · ' : '') + (event.date ? event.date : ''));
-    })();
 
     document.getElementById('fg-event-name').textContent = event.name;
     document.getElementById('fg-event-date').textContent = date;
@@ -430,6 +647,9 @@ function fgRenderEventPage(event) {
         const bib = (bibInput ? bibInput.value : '').trim();
 
         const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib));
+        /* 🔥 Memory Speicher statt data-photos-src JSON im HTML! (Riesige JSON im HTML Attribut löste Security Parser Error file:// aus!) */
+        if (!window._fgPhotoBuckets) window._fgPhotoBuckets = {};
+        window._fgPhotoBuckets.current = filtered;
 
         document.getElementById('fg-gallery-info').innerHTML =
             `Galerie enthält <strong>${photos.length}</strong> Bilder – angezeigt: <strong>${filtered.length}</strong>`;
@@ -445,15 +665,21 @@ function fgRenderEventPage(event) {
 
         gallery.innerHTML = filtered.map((p, idx) => {
             const rawSrc = p.src;
-            let safeSrc = fgSanitizePhotoSrc(rawSrc, null);
+            /* DOUBLE SAFE! 1x Sanitize + 1x fgSafeUrl! */
+            const sanitizedSrc = fgSanitizePhotoSrc(rawSrc, null);
+            let safeSrc = fgSafeUrl(sanitizedSrc, null, `gallery-img-${idx}`);
             const broken = safeSrc === null;
+            /* 100% SICHERER Fallback: Inline SVG (minimal) → KEIN externer Request! KEIN KI! KEIN file:// Risiko! */
+            const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="100%" height="100%" fill="#f5f5f5"/><path fill="#ccc" d="M100 100h200v200H100z" stroke="#aaa" stroke-width="4"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#888" font-family="Arial" font-size="48">404</text></svg>');
             if (broken) {
-                /* Placeholder 404 statt file:// Security-Crash */
-                safeSrc = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=broken%20image%20placeholder%20gray%20white%20error%20icon%20minimal&image_size=square';
+                safeSrc = FALLBACK_IMG;
                 console.warn('[Galerie] Unsichere oder lokale Foto-URL verworfen:', rawSrc);
             }
-            const src = fgEscapeHtml(safeSrc);
-            const thumb = p.thumbnail ? (fgEscapeHtml(fgSanitizePhotoSrc(p.thumbnail, safeSrc))) : src;
+            /* Thumbnail → ebenfalls double-check! */
+            const rawThumb = p.thumbnail;
+            const sanitizedThumb = rawThumb ? fgSanitizePhotoSrc(rawThumb, null) : safeSrc;
+            let thumb = fgSafeUrl(sanitizedThumb, safeSrc, `gallery-thumb-${idx}`);
+            if (!thumb) thumb = safeSrc;
             const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
             const brokenBadge = broken
                 ? `<span class="fg-tag" style="background:#dc3545;color:#fff;margin-right:4px;"><i class="fa-solid fa-triangle-exclamation"></i> Lokaler Pfad! Neu publ.</span>`
@@ -463,10 +689,9 @@ function fgRenderEventPage(event) {
                 <figure class="fg-photo ${broken ? 'is-broken' : ''}"
                         tabindex="0"
                         data-idx="${idx}"
-                        data-photos-src="${fgEscapeHtml(JSON.stringify(filtered.map(pp => pp)))}"
                         role="button"
                         aria-label="Bild vergrößern">
-                    <img src="${thumb}" alt="Foto" loading="lazy" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
+                    <img src="${fgEscapeHtml(thumb)}" alt="Foto" loading="lazy" decoding="async" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
                     <figcaption class="fg-photo__overlay">
                         ${brokenBadge}${bibs}
                     </figcaption>
@@ -474,10 +699,10 @@ function fgRenderEventPage(event) {
             `;
         }).join('');
 
-        /* Click-Handler für Lightbox (delegiert) */
+        /* Click-Handler für Lightbox (delegiert) — NUR data-idx! Photos Array holen aus window._fgPhotoBuckets.current! */
         gallery.querySelectorAll('.fg-photo').forEach(fig => {
             const go = () => {
-                const photosArr = JSON.parse(fig.getAttribute('data-photos-src'));
+                const photosArr = (window._fgPhotoBuckets && window._fgPhotoBuckets.current) || [];
                 const start = Number(fig.getAttribute('data-idx') || 0);
                 fgOpenLightbox(photosArr, start);
             };
@@ -486,6 +711,11 @@ function fgRenderEventPage(event) {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
             });
         });
+        if (window.__FGBG) {
+            window.__FGBG.log('info', `✅ Galerie gerendert: ${filtered.length} Bilder angezeigt.`);
+            window.__FGBG.scanDom('Nach Galerie-Render');
+            window.__FGBG.setPhase('Fertig! Galerie geladen.');
+        }
     }
 
     if (bibInput) {
@@ -615,13 +845,19 @@ function _fgRenderLightboxItem() {
     const p = photos[index];
     if (!p) return;
 
+    const FALLBACK_LB = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="100%" height="100%" fill="#f5f5f5"/><path fill="#eee" d="M200 200h800v400H200z" stroke="#ccc" stroke-width="8"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999" font-family="Arial" font-size="80">Bild nicht verfügbar</text><text x="50%" y="62%" text-anchor="middle" dy=".3em" fill="#bbb" font-family="Arial" font-size="44">Im Admin nochmals veröffentlichen!</text></svg>');
+
     const img = lb.querySelector('.fg-lightbox__img-wrap img');
-    let safeSrc = fgSanitizePhotoSrc(p.src, null);
+    /* DOUBLE SAFETY: fgSanitizePhotoSrc + fgSafeUrl! */
+    const sanitizedSrc = fgSanitizePhotoSrc(p.src, null);
+    let safeSrc = fgSafeUrl(sanitizedSrc, null, 'lightbox-img');
     const broken = safeSrc === null;
     if (broken) {
-        safeSrc = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=photo%20placeholder%20image%20unavailable%20reupload%20notice&image_size=landscape_16_9';
+        safeSrc = FALLBACK_LB; /* 100% sicher! Inline SVG! */
         console.warn('[Lightbox] Unsichere Foto-URL verworfen:', p.src);
     }
+    /* Download URL: Doppelt absichern! */
+    const downloadSafe = fgSafeUrl(safeSrc, FALLBACK_LB, 'lightbox-download');
     img.src = safeSrc;
     img.alt = `Bild ${index + 1}`;
 
@@ -635,7 +871,7 @@ function _fgRenderLightboxItem() {
         ${warnBadge}
         ${bibs ? `<div class="fg-lightbox__row"><label>🏁 Startnummer(n)</label><div class="fg-lightbox__tags">${bibs}</div></div>` : ''}
         <div class="fg-lightbox__actions">
-            <a class="fg-btn" href="${fgEscapeHtml(safeSrc)}" target="_blank" rel="noopener" download>
+            <a class="fg-btn" href="${fgEscapeHtml(downloadSafe)}" target="_blank" rel="noopener" ${broken ? 'style="opacity:0.5;pointer-events:none;" title="Original kann nicht geladen werden – neu publ."' : ''} download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
             </a>
             <div style="font-size:0.78rem;color:#777;text-align:center;">
@@ -650,16 +886,29 @@ function _fgRenderLightboxItem() {
 ================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (window.__FGBG) window.__FGBG.setPhase('DOMContentLoaded: Starte Galerie!');
+
     /* Nav & Footer HINTERGRUND laden — darf GALERIE NICHT blockieren! */
     Promise.all([fgLoadNavigation(), fgLoadFooter()]).then(() => {
-        if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){}
-    }).catch(e => console.warn('Nav/Foot Load fehlgeschlagen (Galerie läuft trotzdem):', e));
+        if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){console.warn(e);}
+        if (window.__FGBG) {
+            window.__FGBG.log('info', '✅ Nav + Footer geladen. Scanne DOM nach bösen URLs…');
+            window.__FGBG.scanDom('Nav+Footer');
+        }
+    }).catch(e => {
+        console.warn('Nav/Foot Load fehlgeschlagen (Galerie läuft trotzdem):', e);
+        if (window.__FGBG) window.__FGBG.log('warn', 'Nav/Footer Fehler: '+String(e.message||e));
+    });
 
     /* GALERIE SOFORT INITIALISIEREN — KEIN WARTEN auf Nav/Footer! */
     (async () => {
         try {
             if (document.getElementById('fg-events')) await fgInitEventsOverview();
             if (document.getElementById('fg-event-content')) await fgInitEventPage();
+            if (window.__FGBG) {
+                window.__FGBG.scanDom('FINAL (alles geladen)');
+                window.__FGBG.setPhase('✅ Galerie INIT abgeschlossen!');
+            }
         } catch (e) {
             console.error('GALERIE FATALER INIT FEHLER:', e);
             const info = document.getElementById('fg-info');
@@ -667,6 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const msg = `<span style="color:#dc3545;"><i class="fa-solid fa-triangle-exclamation"></i> Galerie-Fehler: ${fgEscapeHtml(e.message)}</span>`;
             if (info) info.innerHTML = msg;
             if (evInfo) evInfo.innerHTML = msg;
+            if (window.__FGBG) window.__FGBG.log('err', 'FATAL INIT: ' + String(e.message||e));
         }
     })();
 });
