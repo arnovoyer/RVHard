@@ -27,15 +27,48 @@ define('THUMB_QUALITY', 78); /* WebP Qualität (60-85 reicht für Vorschau) */
  * Nimmt großes Original, erzeugt kleine .webp Vorschau (max THUMB_MAX_W breit, 80KB statt 12MB!)
  * Gibt: relativen Web-Pfad zum Thumbnail ODER false bei Fehler
  * Retroaktiv: Alte bestehende Bilder ohne Thumbnail werden automatisch beim nächsten Publish nachträglich erzeugt!
+ * FIX HOCHKANT FOTOS: Liest EXIF Orientation Tag (Handy/Kamera speichert Pixel quer, Tag sagt "90° drehen!)
+ *                     GD ignoriert EXIF standardmäßig, Browser aber nicht! Deshalb vorher Thumbnails falsch gedreht!
  */
 function rv_createThumbIfMissing(string $absSourcePath, string $publicSrc) {
     if (!file_exists($absSourcePath)) return false;
-    /* 1) Ziel-Pfad: <OriginalPfad>._rvthumb.webp  */
-    $thumbAbs = $absSourcePath . THUMB_SUFFIX . '.webp';
-    $thumbPublic = $publicSrc . THUMB_SUFFIX . '.webp';
-    /* 2) Schon vorhanden + nicht älter als Original → NIX tun (schnell!) */
-    if (file_exists($thumbAbs) && filemtime($thumbAbs) >= filemtime($absSourcePath)) {
-        return $thumbPublic;
+    /* 1) Ziel-Pfade: <OriginalPfad>._rvthumb.webp  (oder .jpg falls WebP nicht geht) */
+    $thumbAbs    = $absSourcePath . THUMB_SUFFIX . '.webp';
+    $thumbAbsJpg = $absSourcePath . THUMB_SUFFIX . '.jpg';
+    $thumbPublic = $publicSrc  . THUMB_SUFFIX . '.webp';
+
+    /* ---------------- EXIF ORIENTATION SCHNELL-CHECK ----------------
+     * Hochkant-Fotos: JPEGs von Handy/Kamera haben oft Pixel in Querformat + EXIF Orientation = 6 (90° drehen)
+     * Browser (Lightbox Original) liest EXIF automatisch → OK! GD (Thumbnail Generator) liest ihn NICHT → 90° gedreht!
+     * Fix: Wenn EXIF != 1 und Thumb schon alt existiert → IGNORIER Cache, neu erzeugen! (Behebt alte falsche Thumbs)
+     */
+    $exifOrient = 1;
+    if (function_exists('exif_imagetype') && function_exists('exif_read_data')) {
+        $type = @exif_imagetype($absSourcePath);
+        if ($type === IMAGETYPE_JPEG || $type === IMAGETYPE_TIFF_II || $type === IMAGETYPE_TIFF_MM) {
+            $exif = @exif_read_data($absSourcePath, 'IFD0');
+            if (is_array($exif) && !empty($exif['Orientation'])) {
+                $exifOrient = (int)$exif['Orientation'];
+                if ($exifOrient < 1) $exifOrient = 1;
+                if ($exifOrient > 8) $exifOrient = 8;
+            }
+        }
+    }
+    /* 2) Schon vorhanden + nicht älter als Original + EXIF=1 (keine Drehung nötig) → Cache verwenden! */
+    $useCache = file_exists($thumbAbs) || file_exists($thumbAbsJpg);
+    if ($useCache && $exifOrient === 1) {
+        $cacheMod = max(
+            (file_exists($thumbAbs) ? filemtime($thumbAbs) : 0),
+            (file_exists($thumbAbsJpg) ? filemtime($thumbAbsJpg) : 0)
+        );
+        if ($cacheMod >= filemtime($absSourcePath)) {
+            return file_exists($thumbAbs) ? ($publicSrc . THUMB_SUFFIX . '.webp') : ($publicSrc . THUMB_SUFFIX . '.jpg');
+        }
+    }
+    /* Alte falsche Thumbnails (EXIF !=1, Drehung fehlte) sofort löschen, damit wir neu machen */
+    if ($exifOrient !== 1) {
+        @unlink($thumbAbs);
+        @unlink($thumbAbsJpg);
     }
     /* 3) GD Extension verfügbar? Ohne GD können wir nichts machen → false (Browser nimmt Original) */
     if (!extension_loaded('gd') || !function_exists('gd_info')) {
@@ -45,44 +78,97 @@ function rv_createThumbIfMissing(string $absSourcePath, string $publicSrc) {
     }
     [$origW, $origH, $imgType] = @getimagesize($absSourcePath);
     if (!$origW || !$origH) return false;
+    /* Source einlesen je nach Typ (JPG/PNG/GIF/WEBP) — NUR JPEG/PNG haben EXIF mit Orientation! */
+    $srcImage = null;
+    switch ($imgType) {
+        case IMAGETYPE_JPEG: $srcImage = @imagecreatefromjpeg($absSourcePath); break;
+        case IMAGETYPE_PNG:  $srcImage = @imagecreatefrompng($absSourcePath);  break;
+        case IMAGETYPE_GIF:  $srcImage = @imagecreatefromgif($absSourcePath);  break;
+        case IMAGETYPE_WEBP: $srcImage = @imagecreatefromwebp($absSourcePath); break;
+        default: break;
+    }
+    if (!$srcImage) return false;
+
+    /* ---------------- 🔥 EXIF ORIENTATION KORREKTUR AUF ORIGINAL-GD BILD ----------------
+     * WICHTIG: Drehung MUSS vor dem Resizen passieren, sonst stimmen Breite/Höhe nicht!
+     * Standard EXIF Werte 1-8 (https://exiftool.org/TagNames/EXIF.html):
+     * 1 = Normal        → Nichts tun
+     * 2 = Spiegel horiz → Flip Horizontal
+     * 3 = 180° drehen   → Rotate 180
+     * 4 = Spiegel vert  → Flip Vertical
+     * 5 = Transpose     → Flip Horiz + Rotate 270° CW (swap W/H!)
+     * 6 = 90° CW        → Rotate 90° (swap W/H! → Hochkant!)
+     * 7 = Transverse    → Flip Horiz + Rotate 90° CW (swap W/H!)
+     * 8 = 270° CW       → Rotate 270° CW = 90° CCW (swap W/H!)
+     */
+    $needsWHSwap = false;
+    if (is_resource($srcImage) || (is_object($srcImage) && $srcImage instanceof \GdImage)) {
+        switch ($exifOrient) {
+            case 2: @imageflip($srcImage, IMG_FLIP_HORIZONTAL); break;
+            case 3: $srcImage = @imagerotate($srcImage, 180, 0); break;
+            case 4: @imageflip($srcImage, IMG_FLIP_VERTICAL); break;
+            case 5:
+                @imageflip($srcImage, IMG_FLIP_HORIZONTAL);
+                $srcImage = @imagerotate($srcImage, 270, 0);
+                $needsWHSwap = true;
+                break;
+            case 6:
+                $srcImage = @imagerotate($srcImage, -90, 0); /* -90° = CW 90° */
+                $needsWHSwap = true;
+                break;
+            case 7:
+                @imageflip($srcImage, IMG_FLIP_HORIZONTAL);
+                $srcImage = @imagerotate($srcImage, -90, 0);
+                $needsWHSwap = true;
+                break;
+            case 8:
+                $srcImage = @imagerotate($srcImage, -270, 0); /* -270° = CW 270° = CCW 90° */
+                $needsWHSwap = true;
+                break;
+        }
+    }
+    /* Nach Rotation: Breite ↔ Höhe vertauschen (wichtig für neue Zielgröße!) */
+    if ($needsWHSwap) {
+        $tmp = $origW; $origW = $origH; $origH = $tmp;
+        unset($tmp);
+    }
+    if (!$srcImage) return false;
+
     /* Kein Upscaling! Wenn Bild kleiner als THUMB_MAX_W → sparen wir uns das (Original ist klein genug) */
     if ($origW <= THUMB_MAX_W) {
+        @imagedestroy($srcImage);
         return $publicSrc; /* Original ist schon klein genug → kein extra Thumb nötig! */
     }
     $newW = (int)THUMB_MAX_W;
     $newH = (int)round($origH * ($newW / $origW));
     $canvas = @imagecreatetruecolor($newW, $newH);
-    if (!$canvas) return false;
+    if (!$canvas) { @imagedestroy($srcImage); return false; }
     imagealphablending($canvas, false);
     imagesavealpha($canvas, true);
     $transparent = imagecolorallocatealpha($canvas, 255, 255, 255, 127);
     imagefilledrectangle($canvas, 0, 0, $newW, $newH, $transparent);
-    /* Source einlesen je nach Typ (JPG/PNG/GIF/WEBP) */
-    $srcImage = null;
-    switch ($imgType) {
-        case IMAGETYPE_JPEG: $srcImage = @imagecreatefromjpeg($absSourcePath); break;
-        case IMAGETYPE_PNG:  $srcImage = @imagecreatefrompng($absSourcePath); break;
-        case IMAGETYPE_GIF:  $srcImage = @imagecreatefromgif($absSourcePath); break;
-        case IMAGETYPE_WEBP: $srcImage = @imagecreatefromwebp($absSourcePath); break;
-        default: break;
-    }
-    if (!$srcImage) { @imagedestroy($canvas); return false; }
-    /* Scharf resizen mit imagecopyresampled! */
+
+    /* Scharf resizen mit imagecopyresampled! (Jetzt mit korrekt gedrehtem Source!) */
     @imagecopyresampled($canvas, $srcImage, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
     /* WebP ist STANDARD (Google Drive nutzt auch WebP für Vorschauen! 50% kleiner als JPG bei gleicher Qualität!) */
     $saved = false;
     if (function_exists('imagewebp')) {
         $saved = @imagewebp($canvas, $thumbAbs, (int)THUMB_QUALITY);
+        if (!$saved) {
+            /* Fallback WebP fehlgeschlagen → JPG versuchen */
+            $saved = @imagejpeg($canvas, $thumbAbsJpg, 82);
+            if ($saved) $thumbPublic = $publicSrc . THUMB_SUFFIX . '.jpg';
+        }
     } else {
         /* Fallback falls altes PHP ohne WebP-Support: Thumb als .jpg speichern */
-        $thumbAbsJpg = $absSourcePath . THUMB_SUFFIX . '.jpg';
-        $thumbPublic = $publicSrc . THUMB_SUFFIX . '.jpg';
         $saved = @imagejpeg($canvas, $thumbAbsJpg, 82);
+        if ($saved) $thumbPublic = $publicSrc . THUMB_SUFFIX . '.jpg';
     }
     @imagedestroy($canvas);
     @imagedestroy($srcImage);
     if (!$saved) return false;
     @chmod($thumbAbs, 0644);
+    @chmod($thumbAbsJpg, 0644);
     return $thumbPublic;
 }
 
