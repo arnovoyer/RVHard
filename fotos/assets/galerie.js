@@ -114,9 +114,13 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
                 const prop = String(e.getAttribute('property')||'').toLowerCase() + ' ' + String(e.getAttribute('name')||'').toLowerCase();
                 if (prop.indexOf('og:image') >= 0 || prop.indexOf('twitter:image') >= 0 || prop.indexOf('msapplication-') >= 0) checkEl(e,'content',`[${prop.trim()}]`);
             });
-            /* ALLE data-* Attribute nach file:// oder Backticks durchsuchen! */
+            /* 🔥 NUR data-* Attribute nach file:// oder Backticks durchsuchen!
+                 AUSSCHLIESSEN des Debug-Panels selbst (id=fg-debug-panel, fgdbg-*) sonst False Positives! */
             document.querySelectorAll('*').forEach(el => {
                 if (!el || !el.attributes) return;
+                /* 🔥 Ausschluss: Debug Panel selbst und alle seine Kinder! Der Text im Panel enthält "file:/// C:`"  - das ist Text, KEINE echte URL!  */
+                if (el.closest && el.closest('#fg-debug-panel')) return;
+                if (el.id && el.id.indexOf('fgdbg-') === 0) return;
                 for (let i = 0; i < el.attributes.length; i++) {
                     const attr = el.attributes[i];
                     if (!attr || !attr.name) continue;
@@ -135,27 +139,9 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
                 }
             });
 
-            /* 🔥 FINAL BOMBE! Gesamtes Dokument HTML String nach file://, C:, Backticks durchsuchen! */
-            try {
-                const fullHtml = (document.documentElement ? (document.documentElement.outerHTML || '') : '') + ' ' + (document.head ? document.head.innerHTML : '');
-                const fileIdx = fullHtml.search(/file\s*:\s*[\/\\]/i);
-                if (fileIdx >= 0) {
-                    const snippet = fullHtml.slice(Math.max(0,fileIdx-40), fileIdx+80);
-                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'innerHTML FILE TREFFER', snippet);
-                }
-                const winPathIdx = fullHtml.search(/[A-Za-z]:\\/);
-                if (winPathIdx >= 0) {
-                    const snippet = fullHtml.slice(Math.max(0,winPathIdx-40), winPathIdx+80);
-                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'innerHTML C:\\ TREFFER', snippet);
-                }
-                const backtickUrlIdx = fullHtml.search(/`[^`]*https?:\/\//i);
-                if (backtickUrlIdx >= 0) {
-                    const snippet = fullHtml.slice(Math.max(0,backtickUrlIdx-40), backtickUrlIdx+80);
-                    FGBG.addNasty('GESAMTES DOKUMENT (outerHTML Regex)', 'BACKTICK URL TREFFER', snippet);
-                }
-            } catch(e) {
-                FGBG.log('warn', 'Konnte outerHTML nicht scannen: ' + String(e.message||e));
-            }
+            /* KEIN outerHTML Scan! Das macht NUR False Positives!
+               (Der Text "🎯 Böse URLs finden (file:/// C: `…)" im Debug Panel
+               wird sonst als "file:" oder "Backtick URL" erkannt - reiner Text!) */
 
             FGBG.scanned = (FGBG.scanned||0) + total;
             FGBG.renderNasty();
@@ -503,7 +489,14 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 
         byYear[year].forEach(ev => {
             const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
-            const rawCover = (ev.coverPhoto || (ev.photos && ev.photos[0] && ev.photos[0].src) || '');
+            /* 🔥 GOOGLE DRIVE SPEED: Bevorzugt THUMBNAIL (klein, 40KB) statt Original (12MB)!
+               1. Priorität: erstes Foto thumbnail   2. coverPhoto   3. erstes Foto src   4. null */
+            const firstPhoto = (ev.photos && ev.photos[0]) ? ev.photos[0] : null;
+            const rawCover =
+                (firstPhoto && firstPhoto.thumbnail ? firstPhoto.thumbnail : '') ||
+                (ev.coverPhoto || '') ||
+                (firstPhoto && firstPhoto.src ? firstPhoto.src : '') ||
+                '';
             /* 🔥 WICHTIG: Dreifache Sicherheit! Backticks entfernen!
                1) fgSanitizePhotoSrc + 2) fgSafeUrl + 3) Wenn NULL dann KEIN background-image! */
             const sanitizedCover = fgSanitizePhotoSrc(rawCover, null);
@@ -756,7 +749,7 @@ function fgRenderEventPage(event) {
                         data-idx="${idx}"
                         role="button"
                         aria-label="Bild vergrößern">
-                    <img src="${fgEscapeHtml(thumb)}" alt="Foto" loading="lazy" decoding="async" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
+                    <img src="${fgEscapeHtml(thumb)}" alt="Foto" loading="lazy" decoding="async" fetchpriority="low" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
                     <figcaption class="fg-photo__overlay">
                         ${brokenBadge}${bibs}
                     </figcaption>
