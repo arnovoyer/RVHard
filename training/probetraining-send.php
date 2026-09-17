@@ -13,7 +13,7 @@ ini_set('log_errors', 1);
  * ============================================================ */
 
 /* ============ KONFIGURATION – HIER E-MAIL ADRESSE EINTRAGEN! ============ */
-define('EMPFAENGER_EMAIL', 'arnovoyer@outlook.com');   /* HIER EURE E-MAIL ADRESSE REIN! */
+define('EMPFAENGER_EMAIL', 'vorstand@rv-hard.at');   /* HIER EURE E-MAIL ADRESSE REIN! */
 define('ABSENDER_EMAIL',  'no-reply@rv-hard.at');    /* Absender (Domain muss auf Server zeigen!) */
 define('ABSENDER_NAME',   'RV Hard Webseite');
 define('BETREFF_PREFIX',  '[Probetraining] ');
@@ -218,7 +218,7 @@ if (!$erfolg) {
 
 /* ===== 6) ANTWORTEN ===== */
 if ($erfolg) {
-    die_json(true, 'Vielen Dank, ' . htmlspecialchars($nameKind) . '! Deine Anfrage wurde erfolgreich an uns versendet. Wir melden uns innerhalb von 2 Werktagen telefonisch bei ' . htmlspecialchars($nameEltern) . ' unter ' . htmlspecialchars($telefon) . ' zurück.');
+    die_json(true, 'Vielen Dank, ' . htmlspecialchars($nameKind) . '! Deine Anfrage wurde erfolgreich an uns versendet. Wir melden uns telefonisch bei ' . htmlspecialchars($nameEltern) . ' unter ' . htmlspecialchars($telefon) . ' zurück.');
 } else {
     http_response_code(500);
     $fallbackMsg  = 'Technischer Fehler beim Senden der E-Mail. ';
