@@ -5,7 +5,7 @@
   const placeholderCache = new Map();
   const CONSENT_COOKIE_NAME = "rvhard_cookie_consent";
   const CONSENT_STORAGE_KEY = "cookieChoice";
-  const CONSENT_VERSION = 1;
+  const CONSENT_VERSION = 2; /* 🔥 2026-09: Neue Hinweise zu Kontaktformularen + IP-Logging; erzwungener erneuter Banner-Aufruf für alle Besucher */
   const CONSENT_MAX_AGE_DAYS = 180;
 
   function writeConsentCookie(choice) {
@@ -126,9 +126,12 @@
 
       <h3>Datenschutz-Einstellungen</h3>
       <p>
-        Wir verwenden technisch notwendige Cookies und lokale Speicherung im Browser (localStorage) fuer den Betrieb der Website. 
-        Dazu gehoert auch die Speicherung Ihrer Kontrastmodus-Einstellung.
-        Externe Inhalte (z.B. YouTube, RaceResult, Instagram/LightWidget) werden 
+        Wir verwenden technisch notwendige Cookies und lokale Speicherung im Browser (localStorage) für den Betrieb der Website. 
+        Dazu gehört die Speicherung Ihrer Kontrastmodus-Einstellung sowie die Speicherung dieser Einwilligungsauswahl.
+        Bei Nutzung von Kontaktformularen (z.&nbsp;B. Probetraining-Anfrage) werden die von Ihnen eingegebenen Daten sowie Ihre
+        IP-Adresse zur Bearbeitung der Anfrage und zur Sicherheit (Missbrauchsschutz) temporär in Server-Log-Dateien und 
+        E-Mails verarbeitet. 
+        Externe Inhalte (z.&nbsp;B. YouTube, RaceResult, Instagram/LightWidget) werden 
         erst nach Ihrer ausdrücklichen Einwilligung geladen. 
         Dabei können personenbezogene Daten an Drittanbieter übermittelt werden.
 
@@ -144,7 +147,15 @@
       <div id="cookie-detailed">
         <div class="cookie-checkbox">
           <input type="checkbox" checked disabled>
-          <strong>Notwendige Cookies und lokale Speicherung</strong>
+          <strong>Notwendige Cookies, Formulardaten & Server-Logs</strong>
+          <div style="font-size:0.9rem;">
+            Um die Website sicher und funktionsfähig zu betreiben, speichern wir:
+            <ul style="margin:0.3rem 0 0 1.2rem; padding:0; list-style:disc;">
+              <li>Cookie: Einwilligungsauswahl (180 Tage, Art. 6 Abs. 1 lit. c DSGVO)</li>
+              <li>localStorage: Kontrastmodus / Theme (nur auf deinem Gerät)</li>
+              <li>Bei Formularen (Probetraining, Kontakt): Name, Telefon, E-Mail und IP-Adresse temporär in E-Mails und Server-Logs zur Bearbeitung + Missbrauchsschutz (Art. 6 Abs. 1 lit. b/f DSGVO)</li>
+            </ul>
+          </div>
         </div>
 
         <div class="cookie-checkbox">
@@ -255,7 +266,11 @@
   function safeReadCookieChoice() {
     const cookieConsent = readConsentCookie();
     if (cookieConsent && typeof cookieConsent.external !== "undefined") {
-      return { external: !!cookieConsent.external, hasChoice: true };
+      /* 🔥 Version-Check: Wenn Einwilligung von älterer Banner-Version stammt → NEU zeigen! */
+      const version = typeof cookieConsent.version === "number" ? cookieConsent.version : 0;
+      if (version >= CONSENT_VERSION) {
+        return { external: !!cookieConsent.external, hasChoice: true };
+      }
     }
 
     const stored = localStorage.getItem(CONSENT_STORAGE_KEY);
@@ -263,8 +278,16 @@
 
     try {
       const parsed = JSON.parse(stored);
-      persistConsent(parsed);
-      return { external: !!parsed.external, hasChoice: true };
+      /* 🔥 Version-Check: Auch localStorage prüfen, sonst erscheint Banner trotz alter Zustimmung nicht neu */
+      const version = typeof parsed.version === "number" ? parsed.version : 0;
+      if (version >= CONSENT_VERSION) {
+        persistConsent(parsed);
+        return { external: !!parsed.external, hasChoice: true };
+      } else {
+        /* Alte Version → Speicher löschen, damit Banner neu kommt */
+        localStorage.removeItem(CONSENT_STORAGE_KEY);
+        return { external: false, hasChoice: false };
+      }
     } catch (error) {
       return { external: false, hasChoice: false };
     }
