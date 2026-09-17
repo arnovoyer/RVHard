@@ -126,16 +126,20 @@
 
       <h3>Datenschutz-Einstellungen</h3>
       <p>
-        Wir verwenden technisch notwendige Cookies und lokale Speicherung im Browser (localStorage) für den Betrieb der Website. 
-        Dazu gehört die Speicherung Ihrer Kontrastmodus-Einstellung sowie die Speicherung dieser Einwilligungsauswahl.
-        Bei Nutzung von Kontaktformularen (z.&nbsp;B. Probetraining-Anfrage) werden die von Ihnen eingegebenen Daten sowie Ihre
-        IP-Adresse zur Bearbeitung der Anfrage und zur Sicherheit (Missbrauchsschutz) temporär in Server-Log-Dateien und 
-        E-Mails verarbeitet. 
-        Externe Inhalte (z.&nbsp;B. YouTube, RaceResult, Instagram/LightWidget) werden 
-        erst nach Ihrer ausdrücklichen Einwilligung geladen. 
-        Dabei können personenbezogene Daten an Drittanbieter übermittelt werden.
-
-        Mehr Infos in der <a href="/datenschutz.html">Datenschutzerklärung</a>.
+        Wir verwenden Cookies und lokale Speicherung im Browser (localStorage) für den
+        sicheren Betrieb der Website und zum Speichern Ihrer Einstellungen (z. B. Kontrastmodus
+        und dieser Einwilligungsauswahl).
+      </p>
+      <p>
+        Externe Inhalte (z. B. YouTube, RaceResult, Instagram) werden erst nach Ihrer
+        ausdrücklichen Einwilligung geladen. Dabei können personenbezogene Daten an
+        Drittanbieter übermittelt werden.
+      </p>
+      <p style="font-size:0.88rem; color:#666;">
+        <strong>Hinweis:</strong> Bei Nutzung von Kontaktformularen (z.&nbsp;B. „Probetraining
+        anfragen“) werden Ihre Angaben zur Bearbeitung Ihrer Anfrage verarbeitet – alle
+        Details dazu finden Sie in unserer
+        <a href="/datenschutz.html">Datenschutzerklärung</a>.
       </p>
 
       <div class="cookie-actions">
