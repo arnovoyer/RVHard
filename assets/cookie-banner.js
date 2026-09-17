@@ -80,6 +80,12 @@
   }
 
 
+  /* 🔥 GLOBALER HELFER: Immer wenn das Cookie-Overlay entfernt wird, muss Body-Scroll wieder freigegeben werden! */
+  function unlockBodyScroll() {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }
+
   function createCookieBanner() {
     if (document.getElementById("cookie-overlay")) return;
 
@@ -91,10 +97,17 @@
       background: rgba(0,0,0,0.6);
       backdrop-filter: blur(5px);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       z-index: 10000;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 1.25rem 0;
     `;
+
+    /* 🔥 Body Scroll sperren, solange das Overlay offen ist – sonst scrollt der Hintergrund! */
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const banner = document.createElement("div");
     banner.id = "cookie-banner";
@@ -102,12 +115,16 @@
       background: #fff;
       max-width: 600px;
       width: 90%;
-      padding: 2rem;
+      margin: auto 0;
+      padding: 1.5rem;
       border-radius: 12px;
       box-shadow: 0 4px 25px rgba(0,0,0,0.3);
       font-size: 0.95rem;
       line-height: 1.5;
       font-family: 'Poppins', sans-serif;
+      max-height: calc(100vh - 2.5rem);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     `;
 
     banner.innerHTML = `
@@ -180,7 +197,6 @@
     overlay.appendChild(banner);
     document.body.appendChild(overlay);
 
-
     banner.querySelector("#open-preferences").onclick = () => {
       banner.querySelector("#cookie-detailed").style.display = "block";
       banner.querySelector("#save-preferences").style.display = "block";
@@ -189,14 +205,16 @@
 
     banner.querySelector("#accept-all").onclick = () => {
       persistConsent({ necessary: true, external: true });
-      overlay.remove();
+      document.getElementById("cookie-overlay")?.remove();
+      unlockBodyScroll();
       loadConsentContent(true);
       updateInstagramSection(true);
     };
 
     banner.querySelector("#decline-all").onclick = () => {
       persistConsent({ necessary: true, external: false });
-      overlay.remove();
+      document.getElementById("cookie-overlay")?.remove();
+      unlockBodyScroll();
       loadConsentContent(false);
       updateInstagramSection(false);
     };
@@ -204,7 +222,8 @@
     banner.querySelector("#save-preferences").onclick = () => {
       const external = banner.querySelector("#chk-external").checked;
       persistConsent({ necessary: true, external });
-      overlay.remove();
+      document.getElementById("cookie-overlay")?.remove();
+      unlockBodyScroll();
       loadConsentContent(external);
       updateInstagramSection(external);
     };
@@ -217,6 +236,7 @@
 
     persistConsent({ necessary: true, external: true });
     document.getElementById("cookie-overlay")?.remove();
+    unlockBodyScroll();
     loadConsentContent(true);
   });
 
