@@ -22,6 +22,12 @@ define('ALLOWED_TYPES', [
 define('THUMB_SUFFIX', '._rvthumb'); /* Dateiendung = Suffix + .webp (Beispiel: IMG_123.JPG._rvthumb.webp) */
 define('THUMB_MAX_W', 420); /* Pixel Breite – ausreichend für Galerie-Vorschau Karten */
 define('THUMB_QUALITY', 78); /* WebP Qualität (60-85 reicht für Vorschau) */
+/* 🔥 LIGHTBOX DISPLAY GRÖSSE (Drittes Format! Zwischen Thumbnail und Original 12MB!)
+    Perfekt für Lightbox-Ansicht auf Handy/Tablet/PC Full-HD / 4K: Statt 12MB DSLR Original nur 600KB-1.2MB → KEIN LAG MEHR!
+    Genau wie Google Drive: Lightbox zeigt NICHT das Original (nur Download!), sondern die optimierte Display-Größe! */
+define('DISPLAY_SUFFIX', '._rvdisplay');
+define('DISPLAY_MAX_W', 2560); /* 2560px breit → passt auf Full-HD (1920) + 4K mit Skalierung, super scharf! */
+define('DISPLAY_QUALITY', 84); /* Höher als Thumbnail, weil Lightbox größer! 82-86 reicht für kaum sichtbaren Unterschied zum Original */
 
 /* =============== 🔥 THUMBNAIL HELFER (GD Library, fast überall verfügbar) ===============
  * Nimmt großes Original, erzeugt kleine .webp Vorschau (max THUMB_MAX_W breit, 80KB statt 12MB!)
@@ -170,6 +176,88 @@ function rv_createThumbIfMissing(string $absSourcePath, string $publicSrc) {
     @chmod($thumbAbs, 0644);
     @chmod($thumbAbsJpg, 0644);
     return $thumbPublic;
+}
+
+/* =============== 🔥 LIGHTBOX DISPLAY HELFER (mittlere Größe, kein Lag!) ===============
+ * Genau wie Google Drive! Lightbox zeigt NICHT 12MB DSLR-Original sondern optimierte ~1MB Version!
+ * AUCH mit EXIF Orientation Fix! + Retroaktiv erzeugen bei nächstem Publish.
+ */
+function rv_createMediumDisplayIfMissing(string $absSourcePath, string $publicSrc) {
+    if (!file_exists($absSourcePath)) return false;
+    $dAbs    = $absSourcePath . DISPLAY_SUFFIX . '.webp';
+    $dAbsJpg = $absSourcePath . DISPLAY_SUFFIX . '.jpg';
+    $dPub    = $publicSrc    . DISPLAY_SUFFIX . '.webp';
+    /* EXIF Drehung Check (gleiches Prinzip wie Thumbnail → sonst falsch herum) */
+    $exifOrient = 1;
+    if (function_exists('exif_imagetype') && function_exists('exif_read_data')) {
+        $type = @exif_imagetype($absSourcePath);
+        if ($type === IMAGETYPE_JPEG || $type === IMAGETYPE_TIFF_II || $type === IMAGETYPE_TIFF_MM) {
+            $exif = @exif_read_data($absSourcePath, 'IFD0');
+            if (is_array($exif) && !empty($exif['Orientation'])) {
+                $exifOrient = (int)$exif['Orientation'];
+                if ($exifOrient < 1 || $exifOrient > 8) $exifOrient = 1;
+            }
+        }
+    }
+    /* Cache OK wenn: Display existiert + neuer als Original + EXIF=1 (sonst neu machen wg. Drehung!) */
+    $cacheOk = (file_exists($dAbs) || file_exists($dAbsJpg)) && $exifOrient === 1;
+    if ($cacheOk) {
+        $cm = max((file_exists($dAbs)?filemtime($dAbs):0), (file_exists($dAbsJpg)?filemtime($dAbsJpg):0));
+        if ($cm >= filemtime($absSourcePath)) {
+            return file_exists($dAbs) ? ($publicSrc . DISPLAY_SUFFIX . '.webp') : ($publicSrc . DISPLAY_SUFFIX . '.jpg');
+        }
+    }
+    /* Alte falsche Display Versionen mit fehlender Drehung löschen */
+    if ($exifOrient !== 1) { @unlink($dAbs); @unlink($dAbsJpg); }
+    if (!extension_loaded('gd') || !function_exists('gd_info')) return false;
+    [$origW, $origH, $imgType] = @getimagesize($absSourcePath);
+    if (!$origW || !$origH) return false;
+    /* Source laden */
+    $src = null;
+    switch ($imgType) {
+        case IMAGETYPE_JPEG: $src = @imagecreatefromjpeg($absSourcePath); break;
+        case IMAGETYPE_PNG:  $src = @imagecreatefrompng($absSourcePath);  break;
+        case IMAGETYPE_GIF:  $src = @imagecreatefromgif($absSourcePath);  break;
+        case IMAGETYPE_WEBP: $src = @imagecreatefromwebp($absSourcePath); break;
+    }
+    if (!$src) return false;
+    /* EXIF Drehung auf Source (VOR Resize!) */
+    $whSwap = false;
+    if (is_resource($src) || (is_object($src) && $src instanceof \GdImage)) {
+        switch ($exifOrient) {
+            case 2: @imageflip($src, IMG_FLIP_HORIZONTAL); break;
+            case 3: $src = @imagerotate($src, 180, 0); break;
+            case 4: @imageflip($src, IMG_FLIP_VERTICAL); break;
+            case 5: @imageflip($src, IMG_FLIP_HORIZONTAL); $src = @imagerotate($src, 270, 0); $whSwap = true; break;
+            case 6: $src = @imagerotate($src, -90, 0);  $whSwap = true; break;
+            case 7: @imageflip($src, IMG_FLIP_HORIZONTAL); $src = @imagerotate($src, -90, 0); $whSwap = true; break;
+            case 8: $src = @imagerotate($src, -270, 0); $whSwap = true; break;
+        }
+    }
+    if ($whSwap) { $t=$origW; $origW=$origH; $origH=$t; unset($t); }
+    if (!$src) return false;
+    /* Wenn Original kleiner als DISPLAY_MAX_W → kein extra Medium nötig (Original ist klein genug!) */
+    if ($origW <= DISPLAY_MAX_W) { @imagedestroy($src); return $publicSrc; }
+    $newW = (int)DISPLAY_MAX_W;
+    $newH = (int)round($origH * ($newW / $origW));
+    $canvas = @imagecreatetruecolor($newW, $newH);
+    if (!$canvas) { @imagedestroy($src); return false; }
+    imagealphablending($canvas, false);
+    imagesavealpha($canvas, true);
+    imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
+    @imagecopyresampled($canvas, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
+    $saved = false;
+    if (function_exists('imagewebp')) {
+        $saved = @imagewebp($canvas, $dAbs, (int)DISPLAY_QUALITY);
+        if (!$saved) { $saved = @imagejpeg($canvas, $dAbsJpg, 86); if ($saved) $dPub = $publicSrc . DISPLAY_SUFFIX . '.jpg'; }
+    } else {
+        $saved = @imagejpeg($canvas, $dAbsJpg, 86);
+        if ($saved) $dPub = $publicSrc . DISPLAY_SUFFIX . '.jpg';
+    }
+    @imagedestroy($canvas); @imagedestroy($src);
+    if (!$saved) return false;
+    @chmod($dAbs, 0644); @chmod($dAbsJpg, 0644);
+    return $dPub;
 }
 
 $ALLOWED_FOLDERS = [
@@ -528,6 +616,45 @@ if ($action === 'publish') {
     unset($_evRef2);
     if ($totalThumbsCreated > 0) {
         $warnings[] = "🖼️🚀 Google Drive Speed! Automatisch $totalThumbsCreated Mini-Vorschau-Bilder (kleine .webp Dateien, 30-80KB statt 12MB!) neu erzeugt — Galerie lädt jetzt 20-50x SCHNELLER (geprüft: $totalThumbsChecked Fotos)";
+    }
+
+    /* 🔥🔥🔥 LIGHTBOX DISPLAY MEDIUM GRÖSSE (LAG FREI!)
+       Genau wie Google Drive: Zwischen 420px Thumb und 12MB Original → 2560px Display (600KB-1.2MB)!
+       Beim Klick aufs Bild wird SOFORT das Medium angezeigt → KEIN 12MB Lade-LAG mehr!
+       Original wird NUR noch beim "Herunterladen" Button geladen!
+    */
+    $totalDisplayCreated = 0;
+    $totalDisplayChecked = 0;
+    foreach ($merged as &$_evRef3) {
+        if (!is_array($_evRef3) || empty($_evRef3['photos']) || !is_array($_evRef3['photos'])) continue;
+        $evFolder = trim((string)($_evRef3['folder'] ?? ''));
+        if ($evFolder === '') continue;
+        $evFolder = preg_replace('/[^a-z0-9_\-äöüÄÖÜß]/i', '', $evFolder);
+        foreach ($_evRef3['photos'] as &$_phRef3) {
+            if (!is_array($_phRef3)) continue;
+            $totalDisplayChecked++;
+            $src = (string)($_phRef3['src'] ?? '');
+            if ($src === '') continue;
+            /* Schon gesetzt + Datei existiert → skip */
+            if (!empty($_phRef3['display'])) {
+                $e = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', (string)$_phRef3['display']);
+                if (file_exists($e)) continue;
+            }
+            $absSrc = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', $src);
+            if (!file_exists($absSrc)) continue;
+            $display = rv_createMediumDisplayIfMissing($absSrc, $src);
+            if (is_string($display) && $display !== '' && $display !== $src) {
+                $_phRef3['display'] = $display;
+                $totalDisplayCreated++;
+            } elseif (is_string($display) && $display === $src) {
+                $_phRef3['display'] = null; /* Original kleiner als 2560px → kein Medium nötig */
+            }
+        }
+        unset($_phRef3);
+    }
+    unset($_evRef3);
+    if ($totalDisplayCreated > 0) {
+        $warnings[] = "🚀🔍 Lightbox LAG-FREI! Automatisch $totalDisplayCreated mittlere Display-Größen (2560px breit, ~600KB-1.2MB statt 12MB DSLR-Original!) erzeugt — beim Klick aufs Bild wird SOFORT angezeigt (geprüft: $totalDisplayChecked Fotos). Original nur noch für Download-Button!";
     }
 
     if ($totalDeletedBadPhotos > 0) {

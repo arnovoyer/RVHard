@@ -910,6 +910,51 @@ function fgLightboxNav(delta) {
     if (next >= photos.length) next = 0;
     _fgLightboxState.index = next;
     _fgRenderLightboxItem();
+    /* 🔥 Hintergrund Preload: Nächstes & Vorheriges Bild sofort in den Cache ziehen!
+        So hat User beim Nächsten Klick schon das Bild vorbereitet → KEIN LAG! */
+    _fgLightboxPreloadAdjacent();
+}
+
+/* 🔥🔥 LIGHTBOX LAG FREI – 3-stufige Bild-Ladekette (Genau wie Google Drive!):
+ *   Stufe 1: thumbnail (420px / 60KB) → SOFORT sichtbar, Low-Quality Placeholder
+ *   Stufe 2: display   (2560px / 800KB) → HOCHWERTIG! Hauptansicht! (15x kleiner als 12MB DSLR-Original!)
+ *   Stufe 3: src       (Original 12MB)  → NUR für Download-Button! Wird NICHT automatisch geladen!
+ *  + Vorheriges/Nächstes Bild wird sofort im Hintergrund vorgeladen!
+ *  + Kein DOM-Neuaufbau, nur src tauschen + Opacity Fade Transition!
+ */
+function _fgLightboxBestDisplaySrc(p) {
+    if (!p) return null;
+    if (p.display) { const s = fgSanitizePhotoSrc(p.display, null); if (s) return fgSafeUrl(s, null, 'lb-disp'); }
+    if (p.src)     { const s = fgSanitizePhotoSrc(p.src, null);     if (s) return fgSafeUrl(s, null, 'lb-src'); }
+    return null;
+}
+function _fgLightboxBestLQIP(p) { /* Low Quality Immediate Preview – falls Display noch lädt */
+    if (!p) return null;
+    if (p.thumbnail) { const s = fgSanitizePhotoSrc(p.thumbnail, null); if (s) return fgSafeUrl(s, null, 'lb-lqip'); }
+    return null;
+}
+/* Vorbereitete Preload Bilder im Document versteckt halten (Browser cached automatisch!) */
+let _fgLightboxPreloaded = new Set();
+function _fgLightboxPreloadOne(url) {
+    if (!url || _fgLightboxPreloaded.has(url)) return;
+    _fgLightboxPreloaded.add(url);
+    try {
+        const i = new Image();
+        i.decoding = 'async';
+        i.fetchpriority = 'low';
+        i.src = url;
+    } catch(e){}
+}
+function _fgLightboxPreloadAdjacent() {
+    const { photos, index } = _fgLightboxState;
+    if (!photos.length) return;
+    const p = photos.length;
+    const prev = photos[(index - 1 + p) % p];
+    const next = photos[(index + 1) % p];
+    [prev, next].forEach(ph => {
+        const u = _fgLightboxBestDisplaySrc(ph); if (u) _fgLightboxPreloadOne(u);
+        const l = _fgLightboxBestLQIP(ph);        if (l) _fgLightboxPreloadOne(l);
+    });
 }
 
 function _fgRenderLightboxItem() {
@@ -921,19 +966,100 @@ function _fgRenderLightboxItem() {
 
     const FALLBACK_LB = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="100%" height="100%" fill="#f5f5f5"/><path fill="#eee" d="M200 200h800v400H200z" stroke="#ccc" stroke-width="8"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999" font-family="Arial" font-size="80">Bild nicht verfügbar</text><text x="50%" y="62%" text-anchor="middle" dy=".3em" fill="#bbb" font-family="Arial" font-size="44">Im Admin nochmals veröffentlichen!</text></svg>');
 
-    const img = lb.querySelector('.fg-lightbox__img-wrap img');
-    /* DOUBLE SAFETY: fgSanitizePhotoSrc + fgSafeUrl! */
-    const sanitizedSrc = fgSanitizePhotoSrc(p.src, null);
-    let safeSrc = fgSafeUrl(sanitizedSrc, null, 'lightbox-img');
-    const broken = safeSrc === null;
-    if (broken) {
-        safeSrc = FALLBACK_LB; /* 100% sicher! Inline SVG! */
-        console.warn('[Lightbox] Unsichere Foto-URL verworfen:', p.src);
+    /* WRAP enthält zwei <img> Layer:
+     *  layer fg-lqip: thumbnail 420px → SOFORT sichtbar (0.05s!) → User sieht sofort Bild!
+     *  layer fg-main: display 2560px hochwertig! → geladen → FADE IN (+ LQIP fade out!)
+     */
+    const imgWrap = lb.querySelector('.fg-lightbox__img-wrap');
+    /* Kein single img mehr! Wir müssen das alte <img> entfernen, falls es noch ohne Klassen existiert! */
+    const oldSingle = imgWrap.querySelector('img:not(.fg-lqip):not(.fg-main)');
+    if (oldSingle) try { oldSingle.remove(); } catch(e){}
+    let lqipImg = imgWrap ? imgWrap.querySelector('img.fg-lqip') : null;
+    let mainImg = imgWrap ? imgWrap.querySelector('img.fg-main') : null;
+    if (!lqipImg) {
+        lqipImg = document.createElement('img');
+        lqipImg.className = 'fg-lqip';
+        lqipImg.alt = '';
+        lqipImg.setAttribute('aria-hidden','true');
+        lqipImg.decoding = 'async';
+        lqipImg.referrerPolicy = 'no-referrer';
+        imgWrap.appendChild(lqipImg);
     }
-    /* Download URL: Doppelt absichern! */
-    const downloadSafe = fgSafeUrl(safeSrc, FALLBACK_LB, 'lightbox-download');
-    img.src = safeSrc;
-    img.alt = `Bild ${index + 1}`;
+    if (!mainImg) {
+        mainImg = document.createElement('img');
+        mainImg.className = 'fg-main';
+        mainImg.decoding = 'async';
+        mainImg.fetchpriority = 'high';
+        mainImg.referrerPolicy = 'no-referrer';
+        imgWrap.appendChild(mainImg);
+    }
+
+    /* Display Fallback Reihenfolge: 1. display (2560px) 2. src (Original) */
+    const getDisplay = () => {
+        if (p && p.display) {
+            const s = fgSanitizePhotoSrc(p.display, null);
+            if (s) return fgSafeUrl(s, null, 'lb-disp');
+        }
+        if (p && p.src) {
+            const s = fgSanitizePhotoSrc(p.src, null);
+            if (s) return fgSafeUrl(s, null, 'lb-src');
+        }
+        return null;
+    };
+    /* LQIP: thumbnail falls vorhanden, sonst Fallback */
+    const getLQIP = () => {
+        if (p && p.thumbnail) {
+            const s = fgSanitizePhotoSrc(p.thumbnail, null);
+            if (s) return fgSafeUrl(s, null, 'lb-lqip');
+        }
+        return null;
+    };
+
+    const displaySrc = getDisplay();
+    const lqipSrc    = getLQIP();
+    const broken = displaySrc === null;
+    const mainSrcFinal = displaySrc || lqipSrc || FALLBACK_LB;
+    const lqipFinal    = lqipSrc || mainSrcFinal;
+
+    /* 🔥 Layer zurücksetzen für neuen Klick: LQIP sichtbar, main transparent! */
+    lqipImg.style.transition = 'none';
+    lqipImg.style.opacity = '1';
+    lqipImg.src = lqipFinal;
+
+    mainImg.style.transition = 'none';
+    mainImg.style.opacity = '0';
+    mainImg.alt = `Bild ${index + 1}`;
+    /* Reset Event Handler (nur für dieses Bild!) */
+    try { mainImg.onload = null; mainImg.onerror = null; } catch(e){}
+
+    let mainFired = false;
+    const showMain = () => {
+        if (mainFired) return; mainFired = true;
+        requestAnimationFrame(() => {
+            mainImg.style.transition = 'opacity 0.35s ease-out';
+            mainImg.style.opacity = '1';
+            /* Kurz warten bis main drüber ist → dann LQIP rausblenden für volle Schärfe! */
+            setTimeout(() => {
+                lqipImg.style.transition = 'opacity 0.35s ease-out';
+                lqipImg.style.opacity = '0';
+            }, 220);
+        });
+    };
+    mainImg.onload = showMain;
+    mainImg.onerror = () => {
+        /* Wenn main laden fehlschlägt: LQIP bleibt! */
+        if (window.__FGBG) window.__FGBG.log('warn', '[Lightbox] Main image failed to load (show LQIP): ' + String(mainSrcFinal).slice(0,80));
+    };
+    /* 🔥 Sicherheitsnetz: Selbst wenn onload aus irgendeinem Grund nicht feuert, nach max 2.8s sichtbar! */
+    setTimeout(() => { if (!mainFired) showMain(); }, 2800);
+    mainImg.src = mainSrcFinal;
+
+    /* Download URL = IMMER das ORIGINAL! (Nicht die kleine Display Version!) */
+    const origSafe = (() => {
+        const s = fgSanitizePhotoSrc(p.src, null);
+        return s ? fgSafeUrl(s, FALLBACK_LB, 'lb-download') : FALLBACK_LB;
+    })();
+    const origBroken = !p.src || (origSafe === FALLBACK_LB);
 
     const info = lb.querySelector('.fg-lightbox__info');
     const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
@@ -945,7 +1071,7 @@ function _fgRenderLightboxItem() {
         ${warnBadge}
         ${bibs ? `<div class="fg-lightbox__row"><label>🏁 Startnummer(n)</label><div class="fg-lightbox__tags">${bibs}</div></div>` : ''}
         <div class="fg-lightbox__actions">
-            <a class="fg-btn" href="${fgEscapeHtml(downloadSafe)}" target="_blank" rel="noopener" ${broken ? 'style="opacity:0.5;pointer-events:none;" title="Original kann nicht geladen werden – neu publ."' : ''} download>
+            <a class="fg-btn" href="${fgEscapeHtml(origSafe)}" target="_blank" rel="noopener" ${origBroken ? 'style="opacity:0.5;pointer-events:none;" title="Original kann nicht geladen werden – neu publ."' : ''} download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
             </a>
             <div style="font-size:0.78rem;color:#777;text-align:center;">
@@ -953,6 +1079,9 @@ function _fgRenderLightboxItem() {
             </div>
         </div>
     `;
+
+    /* 🔥 Direkt nach Rendern: Vorheriges + Nächstes Bild im Hintergrund vorladen! (Nicht warten bis User klickt!) */
+    setTimeout(_fgLightboxPreloadAdjacent, 40);
 }
 
 /* ================================================

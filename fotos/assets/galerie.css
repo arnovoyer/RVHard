@@ -330,6 +330,11 @@ header {
     justify-content: center;
     padding: 20px;
     animation: fg-fade-in .25s ease;
+    /* 🔥 Performance Optimierungen! Kein Layout Thrashing! */
+    contain: strict;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 .fg-lightbox.is-open { display: flex; }
 @keyframes fg-fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -344,21 +349,58 @@ header {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 .fg-lightbox__img-wrap {
     background: #000;
-    display: flex;
+    display: flex; /* Zurück zum Flexbox Container! */
     align-items: center;
     justify-content: center;
     min-height: 300px;
     max-height: 90vh;
     position: relative;
+    width: 100%;
+    height: 90vh; /* Stabiler Container! Kein Höhen-Sprung! */
+    margin: 0;
+    overflow: hidden;
 }
-.fg-lightbox__img-wrap img {
-    max-width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
-    display: block;
+/* 🔥 Zwei übereinander liegende Bilder! Beide zentriert!
+   Layer 0 (fg-lqip): SOFORT sichtbar (420px klein!) → User sieht sofort was!
+   Layer 1 (fg-main): Scharfes 2560px Display! Fadet über LQIP drüber! Danach LQIP ausgeblendet!
+*/
+.fg-lightbox__img-wrap img.fg-lqip,
+.fg-lightbox__img-wrap img.fg-main {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.fg-lightbox__img-wrap img.fg-lqip {
+    z-index: 2;
+    transition: opacity 0.4s ease-out !important;
+    filter: saturate(1.05);
+}
+.fg-lightbox__img-wrap img.fg-main {
+    z-index: 3;
+    opacity: 0; /* Wird per JS auf 1 gesetzt! */
+    transition: opacity 0.3s ease-out !important;
+}
+/* 🎯 NAV BUTTONS SICHTBAR! HÖHERER Z-INDEX! Über den Bildern! */
+.fg-lightbox__nav {
+    z-index: 50 !important;
+}
+.fg-lightbox__close {
+    z-index: 55 !important;
 }
 .fg-lightbox__close {
     position: absolute;
