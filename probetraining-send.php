@@ -1,7 +1,6 @@
 <?php
 /* =========================================================
    RV HARD – PROBETRAINING ANFRAGE SENDER
-   (Datei liegt im /training/ Unterverzeichnis!)
    =========================================================
    ⚠️  HIER UNBEDINGT DIE RICHTIGE EMAIL ADRESSE EINTRAGEN!
    ========================================================= */
@@ -12,35 +11,33 @@ define('WEBSITE_NAME',      'RV Hard Probetraining');
 
 /* =========================================================
    🧪 TEST-MODUS – zum Prüfen ob DIESE Datei auf dem Server läuft!
-   Ruf im Browser auf: https://rv-hard.at/training/probetraining-send.php?test=rvhard
+   Ruf im Browser auf: https://rv-hard.at/probetraining-send.php?test=rvhard
    ========================================================= */
 if (isset($_GET['test']) && $_GET['test'] === 'rvhard') {
     header('Content-Type: text/html; charset=utf-8');
-    echo "<h1 style='color:#28a745;'>✅ Debug: /training/probetraining-send.php AKTUELL geladen!</h1>";
+    echo "<h1>✅ Debug: probetraining-send.php AKTUELL geladen!</h1>";
     echo "<p><strong>Pfad dieser Datei:</strong> " . __FILE__ . "</p>";
     echo "<p><strong>PHP Version:</strong> " . phpversion() . "</p>";
     echo "<p><strong>mail() Funktion verfügbar:</strong> " . (function_exists('mail') ? "✅ JA" : "❌ NEIN") . "</p>";
     echo "<hr>";
-    echo "<h3>📧 Aktuell konfigurierte E-Mails (in DIESER Datei im /training/ Ordner!):</h3>";
-    echo "<p><strong>EMPFAENGER (wo hingeht):</strong> <span style='color:#ffc107;font-size:1.1rem;font-weight:bold;background:#333;padding:0.2rem 0.4rem;border-radius:4px;'>" . EMPFAENGER_EMAIL . "</span></p>";
+    echo "<h3>📧 Aktuell konfigurierte E-Mails:</h3>";
+    echo "<p><strong>EMPFAENGER (wo hingeht):</strong> <span style='color:#ffc107;font-size:1.1rem;font-weight:bold;'>" . EMPFAENGER_EMAIL . "</span></p>";
     echo "<p><strong>ABSENDER:</strong> " . ABSENDER_NAME . " &lt;" . ABSENDER_EMAIL . "&gt;</p>";
-    echo "<p style='background:#fff3cd;padding:0.5rem;border-left:4px solid #ffc107;border-radius:4px;'><strong>⚠️  WICHTIG:</strong> Wenn oben die <em>FALSCHE</em> EMAIL steht, hast du diese Datei auf dem Server <strong>NOCH NICHT aktualisiert!</strong> Lade sie via KAS WebFTP hoch und prüfe sie erneut mit Bearbeiten!</p>";
     echo "<hr>";
     echo "<h3>📬 Test-Mail senden...</h3>";
-    $testBetreff = "TEST: /training/probetraining-send.php funktioniert!";
-    $testNachricht = "Dies ist eine Test-Mail von deinem Probetraining-Formular (Pfad /training/).\n\nWenn du das hier bekommst, ist die AKTUELLE PHP-Datei im /training/ Ordner aktiv und die E-Mail Konfiguration stimmt!\n\nGeneriert am: " . date('d.m.Y H:i:s');
+    $testBetreff = "TEST: probetraining-send.php funktioniert!";
+    $testNachricht = "Dies ist eine Test-Mail von deinem Probetraining-Formular.\n\nWenn du das hier bekommst, ist die aktuelle PHP-Datei aktiv und die E-Mail Konfiguration stimmt!\n\nGeneriert am: " . date('d.m.Y H:i:s');
     $testHeader  = "From: " . ABSENDER_NAME . " <" . ABSENDER_EMAIL . ">\r\n";
     $testHeader .= "Reply-To: " . ABSENDER_EMAIL . "\r\n";
     $testHeader .= "MIME-Version: 1.0\r\n";
     $testHeader .= "Content-Type: text/plain; charset=UTF-8\r\n";
     $ok = @mail(EMPFAENGER_EMAIL, '=?UTF-8?B?'.base64_encode($testBetreff).'?=', $testNachricht, $testHeader, "-f " . ABSENDER_EMAIL);
     if ($ok) {
-        echo "<p style='color:green;font-size:1.2rem;'>✅ Test-Mail wurde AKZEPTIERT vom Server! Prüfe JETZT dein Postfach: <strong>" . EMPFAENGER_EMAIL . "</strong> (auch Spam-Ordner!)</p>";
-        echo "<p><strong>Aktion:</strong> Wenn die Mail hier ankommt, aber die Formular-Mails immer noch falsch sind → <em>Cache im Browser löschen!</em> oder im Inkognito testen!</p>";
+        echo "<p style='color:green;font-size:1.2rem;'>✅ Test-Mail wurde AKZEPTIERT vom Server! Prüfe dein Postfach: <strong>" . EMPFAENGER_EMAIL . "</strong> (auch Spam-Ordner!)</p>";
     } else {
         echo "<p style='color:red;'>❌ mail() Funktion hat FALSE zurückgegeben! Prüfe bei All-Inkl im KAS: <ul><li>Ist die ABSENDER E-Mail <strong>".ABSENDER_EMAIL."</strong> als Postfach oder Weiterleitung angelegt?</li><li>E-Mail Verwaltung → Postfächer → Neu anlegen, falls nicht!</li><li>All-Inkl erlaubt NUR ABSENDER-Emails die auch EXISTIEREN auf dem Space!</li></ul></p>";
     }
-    echo "<hr><p><em>⚠️  Bitte ändere in der Datei die <strong>EMPFAENGER_EMAIL</strong> falls die oben angezeigte Adresse falsch ist, dann lade sie neu hoch via KAS WebFTP!</em></p>";
+    echo "<hr><p><em>⚠️  Bitte ändere in der Datei die <strong>EMPFAENGER_EMAIL</strong> falls die oben angezeigte Adresse falsch ist, dann lade sie neu hoch!</em></p>";
     exit;
 }
 
@@ -51,9 +48,8 @@ $formular_ist_gesendet = ($_SERVER['REQUEST_METHOD'] === 'POST') ? true : false;
 $ist_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
 
 if (!$formular_ist_gesendet) {
-    if ($ist_ajax) { echo json_encode(['status' => 'error', 'ok' => false, 'msg' => 'Keine POST-Daten.']); exit; }
-    // 🔥 Da wir im /training/ Ordner sind, Redirect auf das Formular in DIESEM Ordner!
-    header('Location: /training/probetraining.html');
+    if ($ist_ajax) { echo json_encode(['status' => 'error', 'msg' => 'Keine POST-Daten.']); exit; }
+    header('Location: /probetraining.html');
     exit;
 }
 
@@ -144,8 +140,7 @@ $betreff_mail = '=?UTF-8?B?' . base64_encode($betreff) . '?=';
 $replyTo = !empty($email) ? $email : EMPFAENGER_EMAIL;
 $replyToName = !empty($name_eltern) ? $name_eltern : $name_kind;
 
-$nachricht_mail  = "Es gibt eine neue Probetraining-Anfrage über die Website!\n";
-$nachricht_mail .= "Formular-Pfad: /training/probetraining.html\n\n";
+$nachricht_mail  = "Es gibt eine neue Probetraining-Anfrage über die Website!\n\n";
 $nachricht_mail .= "Name Kind:      " . $name_kind . "\n";
 $nachricht_mail .= "Name Eltern:    " . $name_eltern . "\n";
 $nachricht_mail .= "Alter Kind:     " . $alter_kind . " Jahre\n";
@@ -163,7 +158,7 @@ $header .= "Reply-To: " . $replyToName . " <" . $replyTo . ">\r\n";
 $header .= "MIME-Version: 1.0\r\n";
 $header .= "Content-Type: text/plain; charset=UTF-8\r\n";
 $header .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-$header .= "X-RVHARD-Form: Probetraining-Training-Subdir\r\n";
+$header .= "X-RVHARD-Form: Probetraining\r\n";
 
 // 🔥 WICHTIG FÜR ALL-INKL.COM: Der "-f" Parameter zwingt den Absender!
 $zusatz_parameter = "-f " . ABSENDER_EMAIL;

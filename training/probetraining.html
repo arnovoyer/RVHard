@@ -289,13 +289,7 @@
 
       <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
 
-      <!-- 
-        WICHTIG ZUM E-MAIL VERSAND:
-        Variante A (PHP Mail Lokal): action="/probetraining-send.php" (unsere eigene PHP Datei)
-        Variante B (FormSubmit Fallback): action="https://formsubmit.co/deine@rv-hard.at"
-        FormSubmit ist kostenlos, braucht einmalige Bestätigung, funktioniert ohne Server-Konfiguration!
-      -->
-      <form id="probetraining-form" method="POST" action="/probetraining-send.php" novalidate>
+      <form id="probetraining-form" method="POST" action="/training/probetraining-send.php" novalidate>
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
         <input type="hidden" name="_captcha" value="false">
 
