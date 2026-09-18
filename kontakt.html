@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -157,6 +157,165 @@
             margin-top: 0;
             margin-bottom: 0.5rem;
         }
+
+        /* ===== KONTAKT FORMULAR ===== */
+        .form-status {
+            display: none;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-status.erfolg {
+            display: block;
+            background: #d3f9d8;
+            border: 1px solid #8ce99a;
+            color: #2b8a3e;
+        }
+
+        .form-status.fehler {
+            display: block;
+            background: #ffe3e3;
+            border: 1px solid #ffa8a8;
+            color: #c92a2a;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .form-group label .pflicht {
+            color: #dc3545;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #aaa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffc107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit-row {
+            margin-top: 0.25rem;
+            text-align: center;
+        }
+
+        .form-submit-row .gelber-button {
+            min-width: 220px;
+            transition: transform 0.25s ease, background-color 0.25s ease;
+        }
+
+        .form-submit-row .gelber-button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .form-submit-row .gelber-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-datenschutz {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin-top: 1.1rem;
+            margin-bottom: 1.75rem;
+            padding: 0.8rem 0.35rem 0.3rem 0.35rem;
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.45;
+            border-top: 1px dashed #eee;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .form-datenschutz input[type="checkbox"] {
+            margin-top: 0.1rem;
+            width: 15px;
+            height: 15px;
+            accent-color: #ffc107;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .form-datenschutz .dse-label-text {
+            flex: 1;
+            display: block;
+        }
+
+        .form-datenschutz .pflicht {
+            color: #dc3545;
+            font-weight: 700;
+            margin-left: 0.1rem;
+        }
+
+        .form-datenschutz i {
+            margin-right: 0.2rem;
+            color: #bbb;
+            font-size: 0.82rem;
+        }
+
+        .form-datenschutz a {
+            color: #ffc107;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.35);
+        }
+
+        .form-datenschutz a:hover {
+            border-bottom-color: #ffc107;
+        }
     </style>
 </head>
 
@@ -167,18 +326,83 @@
     </header>
     <main class="kontakt-container">
         <h1>Kontakt</h1>
-        <p>Wir freuen uns auf deine Anfrage - egal ob allgemein oder zur Mitgliedschaft.</p>
-        <section class="kontaktformular-bereich">
+        <p class="kontakt-hinweis" style="text-align:center;">Wir freuen uns auf deine Anfrage - egal ob allgemein oder zur Mitgliedschaft.</p>
+
+        <section class="kontaktformular-bereich" style="padding-top:1.25rem;">
+            <h2 style="margin-bottom:1rem;"><i class="fa-solid fa-envelope" style="color:#ffc107;margin-right:0.5rem;"></i> Schreib uns direkt</h2>
+
+            <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+
+            <form id="kontakt-form" method="POST" action="/kontakt-send.php" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Dein Name<span class="pflicht">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="Max Mustermann" maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-Mail (für Rückmeldung)<span class="pflicht">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="name@example.com" maxlength="120">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="betreff">Betreff<span class="pflicht">*</span></label>
+                        <select id="betreff" name="betreff" required>
+                            <option value="">-- Bitte wählen --</option>
+                            <option value="Allgemeine Anfrage">Allgemeine Anfrage</option>
+                            <option value="Mitgliedschaft">Mitgliedschaft</option>
+                            <option value="Training / Probetraining">Training / Probetraining</option>
+                            <option value="Events / Termine">Events / Termine</option>
+                            <option value="Sponsoring">Sponsoring</option>
+                            <option value="Feedback / Website">Feedback / Website</option>
+                            <option value="Sonstiges">Sonstiges</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefon">Telefon (optional)</label>
+                        <input type="tel" id="telefon" name="telefon" pattern="[0-9+\s()-]{8,25}" placeholder="+43 664 123 45 67" maxlength="30">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nachricht">Deine Nachricht<span class="pflicht">*</span></label>
+                    <textarea id="nachricht" name="nachricht" rows="6" required placeholder="Schreib uns hier alles, was uns wichtig ist!..." maxlength="8000"></textarea>
+                </div>
+
+                <label class="form-datenschutz" for="datenschutz_check">
+                    <input type="checkbox" id="datenschutz_check" name="datenschutz" value="1" required>
+                    <span class="dse-label-text">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <strong>Ich stimme zu</strong>, dass meine oben eingegebenen personenbezogenen Daten (Name, E-Mail, ggf. Telefonnummer, Nachricht)
+                        sowie meine IP-Adresse zur Bearbeitung meiner Anfrage verarbeitet und temporär gespeichert werden.
+                        <span class="pflicht">*</span><br>
+                        Mehr Infos und dein Widerrufsrecht findest du in der <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
+                    </span>
+                </label>
+
+                <div class="form-submit-row">
+                    <button type="submit" id="submit-btn" class="gelber-button">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Nachricht senden
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section style="padding-top:0.5rem; padding-bottom:0.25rem;">
+            <h3 style="font-size:1rem;color:#666;margin-bottom:1rem;">Alternativen:</h3>
             <div class="kontakt-buttons">
                 <div class="kontakt-button-wrapper">
-                    <h3>Allgemeine Anfragen:</h3>
-                    <a href="mailto:vorstand@rv-hard.at?subject=Kontaktanfrage:%20[Ihr%20Anliegen]&body=Sehr geehrter Vorstand,%20"
-                        class="gelber-button">Kontaktiere uns per E-Mail</a>
+                    <h3>Mitglied werden</h3>
+                    <a href="/verein/mitglied-werden.html"
+                        class="gelber-button">Mitglied werden (externes Formular)</a>
                 </div>
                 <div class="kontakt-button-wrapper">
-                    <h3>Mitglied werden</h3>
-                    <a href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880"
-                        class="gelber-button">Mitglied werden</a>
+                    <h3>...oder direkt per E-Mail</h3>
+                    <a href="mailto:vorstand@rv-hard.at?subject=Kontaktanfrage:%20[Ihr%20Anliegen]&body=Sehr geehrter Vorstand,%20"
+                        class="gelber-button">E-Mail an Vorstand senden</a>
                 </div>
             </div>
         </section>
@@ -227,6 +451,98 @@
                 document.getElementById("site-footer").innerHTML = html;
             });
     </script>
+    <script>
+    (function () {
+      const form = document.getElementById('kontakt-form');
+      if (!form) return;
+      const statusEl = document.getElementById('form-status');
+      const submitBtn = document.getElementById('submit-btn');
+
+      function zeigeStatus(typ, text) {
+        statusEl.className = 'form-status ' + (typ === 'ok' ? 'erfolg' : 'fehler');
+        statusEl.innerHTML = '';
+        const icon = document.createElement('i');
+        icon.className = typ === 'ok' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
+        icon.style.marginRight = '0.5rem';
+        statusEl.appendChild(icon);
+        statusEl.appendChild(document.createTextNode(text));
+        statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const dseCheckbox = document.getElementById('datenschutz_check');
+        if (dseCheckbox && !dseCheckbox.checked) {
+          zeigeStatus('fehler', 'Bitte klicke die Datenschutz-Checkbox an, um deine Einwilligung zu geben.');
+          dseCheckbox.focus();
+          dseCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        if (!form.checkValidity()) {
+          zeigeStatus('fehler', 'Bitte fülle alle Pflichtfelder (mit * markiert) korrekt aus.');
+          form.reportValidity();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        const origText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird gesendet...';
+
+        try {
+          const formData = new FormData(form);
+          const resp = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+
+          let data = null;
+          let rawText = '';
+          try {
+            rawText = await resp.text();
+            try { data = JSON.parse(rawText); } catch (_) { }
+          } catch (_) { }
+
+          const isOk = (resp.ok && (
+            (data && (data.ok === true || data.status === 'success')) ||
+            (rawText.includes('✅') && rawText.includes('Vielen Dank'))
+          ));
+
+          if (isOk) {
+            const successMsg =
+              (data && (data.msg || data.html)) ||
+              'Vielen Dank! Deine Nachricht wurde erfolgreich versendet. Wir melden uns per E-Mail zurück!';
+            zeigeStatus('ok', successMsg);
+            form.reset();
+          } else {
+            let fehler = 'Unbekannter Server-Fehler.';
+            if (data && data.msg) {
+              fehler = data.msg;
+            } else if (data && data.html) {
+              fehler = 'Server antwortete ohne JSON Format. Bitte erneut versuchen.';
+            } else if (resp.status === 400) {
+              fehler = 'Server hat die Anfrage (HTTP 400) abgelehnt. Bitte Cookies + Cache löschen und erneut probieren.';
+            } else if (!resp.ok) {
+              fehler = 'Server-Fehler (HTTP ' + resp.status + '). Bitte kurz warten und erneut senden!';
+            } else if (rawText.length > 0) {
+              fehler = 'Unerwartete Server-Antwort. Bitte erneut versuchen.';
+            }
+            zeigeStatus('fehler', fehler + ' Alternativ: Direkte E-Mail an vorstand@rv-hard.at schreiben.');
+          }
+        } catch (err) {
+          zeigeStatus('fehler', 'Verbindungsfehler. Bitte prüfe deine Internetverbindung oder schreibe uns direkt an vorstand@rv-hard.at.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+      });
+    })();
+  </script>
 </body>
 
 </html>
