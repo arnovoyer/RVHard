@@ -162,18 +162,43 @@
     }
 
     .form-datenschutz {
-      margin-top: 1rem;
-      padding: 0.5rem 0.15rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      margin-top: 1.1rem;
+      padding: 0.8rem 0.35rem 0.3rem 0.35rem;
       font-size: 0.78rem;
       color: #888;
       line-height: 1.45;
       border-top: 1px dashed #eee;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-datenschutz input[type="checkbox"] {
+      margin-top: 0.1rem;
+      width: 15px;
+      height: 15px;
+      accent-color: #ffc107;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .form-datenschutz .dse-label-text {
+      flex: 1;
+      display: block;
+    }
+
+    .form-datenschutz .pflicht {
+      color: #dc3545;
+      font-weight: 700;
+      margin-left: 0.1rem;
     }
 
     .form-datenschutz i {
-      margin-right: 0.3rem;
+      margin-right: 0.2rem;
       color: #bbb;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
 
     .form-datenschutz a {
@@ -290,8 +315,6 @@
       <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
 
       <form id="probetraining-form" method="POST" action="/training/probetraining-send.php" novalidate>
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-        <input type="hidden" name="_captcha" value="false">
 
         <div class="form-row">
           <div class="form-group">
@@ -311,7 +334,7 @@
           </div>
           <div class="form-group">
             <label for="telefon">Telefonnummer Rückruf<span class="pflicht">*</span></label>
-            <input type="tel" id="telefon" name="telefon" required pattern="[0-9+\s\-()]{8,25}" placeholder="+43 664 123 45 67" maxlength="30">
+            <input type="tel" id="telefon" name="telefon" required pattern="[0-9+\s()-]{8,25}" placeholder="+43 664 123 45 67" maxlength="30">
           </div>
         </div>
 
@@ -338,21 +361,23 @@
           <textarea id="nachricht" name="nachricht" rows="3" placeholder="Erfahrung, Wünsche, Fragen, verfügbare Tage etc. – alles was für uns wichtig ist!" maxlength="1000"></textarea>
         </div>
 
+        <label class="form-datenschutz" for="datenschutz_check">
+          <input type="checkbox" id="datenschutz_check" name="datenschutz" value="1" required>
+          <span class="dse-label-text">
+            <i class="fa-solid fa-shield-halved"></i>
+            <strong>Ich stimme zu</strong>, dass meine oben eingegebenen personenbezogenen Daten (Name, Alter, Telefonnummer etc.)
+            sowie meine IP-Adresse zur Bearbeitung meiner Anfrage und zur Terminvereinbarung verarbeitet und temporär gespeichert werden.
+            <span class="pflicht">*</span><br>
+            Mehr Infos und dein Widerrufsrecht findest du in der <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
+          </span>
+        </label>
+
         <div class="form-submit-row">
           <button type="submit" id="submit-btn" class="gelber-button">
             <i class="fa-solid fa-paper-plane"></i>
             Anfrage senden
           </button>
         </div>
-
-        <p class="form-datenschutz">
-          <i class="fa-solid fa-shield-halved"></i>
-          Mit dem Senden dieser Anfrage bestätigst du, dass deine Angaben (Name, Alter, Telefonnummer etc.)
-          sowie deine IP-Adresse zur Bearbeitung deiner Anfrage verarbeitet und temporär in Log-Dateien gespeichert werden.
-          Rechtsgrundlage: Art.&nbsp;6&nbsp;Abs.&nbsp;1&nbsp;lit.&nbsp;b&nbsp;DSGVO.
-          Mehr Infos und dein Widerrufsrecht findest du in der
-          <a href="/datenschutz.html">Datenschutzerklärung</a>.
-        </p>
       </form>
     </div>
   </main>
@@ -399,6 +424,14 @@
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        const dseCheckbox = document.getElementById('datenschutz_check');
+        if (dseCheckbox && !dseCheckbox.checked) {
+          zeigeStatus('fehler', 'Bitte klicke die Datenschutz-Checkbox an (oben links), um deine Einwilligung zu geben.');
+          dseCheckbox.focus();
+          dseCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
         if (!form.checkValidity()) {
           zeigeStatus('fehler', 'Bitte fülle alle Pflichtfelder (mit * markiert) korrekt aus.');
           form.reportValidity();
@@ -415,19 +448,43 @@
             method: 'POST',
             body: formData,
             headers: {
-              'Accept': 'application/json'
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
             }
           });
 
           let data = null;
-          try { data = await resp.json(); } catch (_) { }
+          let rawText = '';
+          try {
+            rawText = await resp.text();
+            try { data = JSON.parse(rawText); } catch (_) { }
+          } catch (_) { }
 
-          if (resp.ok && data && data.ok) {
-            zeigeStatus('ok', data.msg || 'Vielen Dank! Deine Anfrage wurde erfolgreich versendet. Wir melden uns telefonisch bei dir!');
+          const isOk = (resp.ok && (
+            (data && (data.ok === true || data.status === 'success')) ||
+            (rawText.includes('✅') && rawText.includes('Vielen Dank'))
+          ));
+
+          if (isOk) {
+            const successMsg =
+              (data && (data.msg || (data.html))) ||
+              'Vielen Dank! Deine Anfrage wurde erfolgreich versendet. Wir melden uns telefonisch bei dir!';
+            zeigeStatus('ok', successMsg);
             form.reset();
           } else {
-            const fehler = (data && data.msg) ? data.msg : ('Server Fehler (HTTP ' + resp.status + ').');
-            zeigeStatus('fehler', fehler + ' Alternativ kannst du uns auch direkt per E-Mail an vorstand@rv-hard.at schreiben.');
+            let fehler = 'Unbekannter Server-Fehler.';
+            if (data && data.msg) {
+              fehler = data.msg;
+            } else if (data && data.html) {
+              fehler = 'Server antwortete ohne JSON Format. Bitte erneut versuchen.';
+            } else if (resp.status === 400) {
+              fehler = 'Server hat die Anfrage (HTTP 400) abgelehnt. Bitte Cookies + Cache löschen und erneut probieren.';
+            } else if (!resp.ok) {
+              fehler = 'Server-Fehler (HTTP ' + resp.status + '). Bitte kurz warten und erneut senden!';
+            } else if (rawText.length > 0) {
+              fehler = 'Unerwartete Server-Antwort. Bitte erneut versuchen.';
+            }
+            zeigeStatus('fehler', fehler + ' Alternativ: Direkte E-Mail an vorstand@rv-hard.at schreiben.');
           }
         } catch (err) {
           zeigeStatus('fehler', 'Verbindungsfehler. Bitte prüfe deine Internetverbindung oder schreibe uns direkt an vorstand@rv-hard.at.');

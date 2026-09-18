@@ -45,10 +45,14 @@ if (isset($_GET['test']) && $_GET['test'] === 'rvhard') {
 header('Content-Type: text/html; charset=utf-8');
 
 $formular_ist_gesendet = ($_SERVER['REQUEST_METHOD'] === 'POST') ? true : false;
-$ist_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+
+// AJAX-Erkennung: ZUSÄTZLICH zum X-Requested-With Header auch den Accept-Header auswerten!
+$ist_xhr = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+$accept_json = (!empty($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+$ist_ajax = ($ist_xhr || $accept_json);
 
 if (!$formular_ist_gesendet) {
-    if ($ist_ajax) { echo json_encode(['status' => 'error', 'msg' => 'Keine POST-Daten.']); exit; }
+    if ($ist_ajax) { echo json_encode(['status' => 'error', 'ok' => false, 'msg' => 'Keine POST-Daten.']); exit; }
     header('Location: /probetraining.html');
     exit;
 }
@@ -188,5 +192,5 @@ $html .= '📞 Wir melden uns telefonisch in den nächsten 1–2 Werktagen unter
 $html .= '</p>';
 $html .= '<p>Falls du Fragen hast, kannst du uns auch jederzeit per E-Mail an <a href="mailto:' . htmlspecialchars(EMPFAENGER_EMAIL) . '">' . htmlspecialchars(EMPFAENGER_EMAIL) . '</a> erreichen.</p>';
 $html .= '</div>';
-$msg_plain = 'Vielen Dank ' . $name_kind . '! Deine Anfrage wurde versendet. Wir rufen dich in den nächsten 1-2 Werktagen unter ' . $telefon . ' an!';
+$msg_plain = 'Vielen Dank ' . $name_kind . '! Deine Anfrage wurde versendet. Wir rufen dich in den nächsten Werktagen unter ' . $telefon . ' an!';
 antwort_senden('success', $html, $msg_plain, $ist_ajax);

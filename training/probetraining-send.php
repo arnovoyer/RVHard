@@ -48,7 +48,11 @@ if (isset($_GET['test']) && $_GET['test'] === 'rvhard') {
 header('Content-Type: text/html; charset=utf-8');
 
 $formular_ist_gesendet = ($_SERVER['REQUEST_METHOD'] === 'POST') ? true : false;
-$ist_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+
+// AJAX-Erkennung: ZUSÄTZLICH zum X-Requested-With Header auch den Accept-Header auswerten!
+$ist_xhr = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+$accept_json = (!empty($_SERVER['HTTP_ACCEPT']) && stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+$ist_ajax = ($ist_xhr || $accept_json);
 
 if (!$formular_ist_gesendet) {
     if ($ist_ajax) { echo json_encode(['status' => 'error', 'ok' => false, 'msg' => 'Keine POST-Daten.']); exit; }
