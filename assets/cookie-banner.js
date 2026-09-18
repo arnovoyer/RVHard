@@ -5,7 +5,7 @@
   const placeholderCache = new Map();
   const CONSENT_COOKIE_NAME = "rvhard_cookie_consent";
   const CONSENT_STORAGE_KEY = "cookieChoice";
-  const CONSENT_VERSION = 2; /* 🔥 2026-09: Neue Hinweise zu Kontaktformularen + IP-Logging; erzwungener erneuter Banner-Aufruf für alle Besucher */
+  const CONSENT_VERSION = 2; /* 🔥 2026-09: Hinweise zu Server-Logs + Versionierung; erzwungener erneuter Banner-Aufruf für alle Besucher */
   const CONSENT_MAX_AGE_DAYS = 180;
 
   function writeConsentCookie(choice) {
@@ -152,12 +152,6 @@
         ausdrücklichen Einwilligung geladen. Dabei können personenbezogene Daten an
         Drittanbieter übermittelt werden.
       </p>
-      <p style="font-size:0.88rem; color:#666;">
-        <strong>Hinweis:</strong> Bei Nutzung von Kontaktformularen (z.&nbsp;B. „Probetraining
-        anfragen“) werden Ihre Angaben zur Bearbeitung Ihrer Anfrage verarbeitet – alle
-        Details dazu finden Sie in unserer
-        <a href="/datenschutz.html">Datenschutzerklärung</a>.
-      </p>
 
       <div class="cookie-actions">
         <button id="decline-all">Nur notwendige</button>
@@ -168,13 +162,13 @@
       <div id="cookie-detailed">
         <div class="cookie-checkbox">
           <input type="checkbox" checked disabled>
-          <strong>Notwendige Cookies, Formulardaten & Server-Logs</strong>
+          <strong>Notwendige Cookies &amp; Server-Logs</strong>
           <div style="font-size:0.9rem;">
             Um die Website sicher und funktionsfähig zu betreiben, speichern wir:
             <ul style="margin:0.3rem 0 0 1.2rem; padding:0; list-style:disc;">
               <li>Cookie: Einwilligungsauswahl (180 Tage, Art. 6 Abs. 1 lit. c DSGVO)</li>
               <li>localStorage: Kontrastmodus / Theme (nur auf deinem Gerät)</li>
-              <li>Bei Formularen (Probetraining, Kontakt): Name, Telefon, E-Mail und IP-Adresse temporär in E-Mails und Server-Logs zur Bearbeitung + Missbrauchsschutz (Art. 6 Abs. 1 lit. b/f DSGVO)</li>
+              <li>Server-Log-Dateien: IP-Adresse &amp; Zugriffsdaten zur Aufrechterhaltung der IT-Sicherheit &amp; zum Missbrauchsschutz (max. 14 Tage, Art. 6 Abs. 1 lit. f DSGVO)</li>
             </ul>
           </div>
         </div>
