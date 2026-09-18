@@ -1,6 +1,46 @@
 /* ================= RV HARD – FOTO-GALERIE LOGIK ================= */
 
-const FG_DATA_URL = '/fotos/data/events.json';
+/* 🔥 SUBDOMAIN / ANY-DOMAIN KOMPATIBEL!
+   Galerie kann jetzt auf:
+     - rv-hard.at/fotos/     (Hauptdomain Unterordner)
+     - fotos.rv-hard.at/       (Subdomain Galerie Root)
+     - fotos.meinedomain.test/   (beliebige andere Domain/Subdomain)
+   Pfade werden AUTOMATISCH an die aktuelle Origin + aktueller Pfad angepasst!
+*/
+(function () {
+    const scriptTag = (function () {
+        try { if (document.currentScript) return document.currentScript; } catch(e){}
+        const q = document.querySelectorAll && document.querySelectorAll('script[src]');
+        if (q && q.length) for (let i=q.length-1; i>=0; i--) {
+            const s = q[i].src || '';
+            if (s.indexOf('galerie.js') > -1) return q[i];
+        }
+        return null;
+    })();
+    let inferredRoot = '';
+    if (scriptTag) {
+        let src = scriptTag.getAttribute ? (scriptTag.getAttribute('src') || '') : '';
+        if (!src && scriptTag.src) { try { src = new URL(scriptTag.src, window.location.href).pathname; } catch(e){} }
+        if (typeof src === 'string' && src.indexOf('assets/galerie.js') > -1) {
+            inferredRoot = src.split('assets/galerie.js')[0].trim().replace(/\/*$/, '');
+        }
+    }
+    const path = String(window.location.pathname || '/').trim();
+    let autoBase = '';
+    if (path.indexOf('/fotos/') === 0 || path === '/fotos' ||
+        (inferredRoot && (inferredRoot.indexOf('/fotos') === 0 || inferredRoot.indexOf('fotos/') === 0))) {
+        autoBase = '/fotos';
+    } else if (path.indexOf('/fotos') === 0) {
+        autoBase = '/fotos';
+    }
+    if (scriptTag && !autoBase && inferredRoot !== '') autoBase = inferredRoot;
+    window.__FGBASE = (autoBase || '').replace(/\/+$/,'');
+})();
+const FG_BASE = window.__FGBASE || ''; /* z.B. '' (Subdomain root) ODER '/fotos' (Hauptdomain Unterordner) */
+const FG_DATA_URL = (FG_BASE? FG_BASE : '') + '/data/events.json';
+const FG_EVENT_URL = (FG_BASE? FG_BASE : '') + '/event.html';
+const FG_ADMIN_URL = (FG_BASE? FG_BASE : '') + '/admin/';
+const FG_HOME_URL = (FG_BASE? FG_BASE : '') + '/';
 let _fgEventsCachePromise = null;   /* Promise Cache → fetch läuft NUR 1x! */
 let _fgEventsCacheArray = null;     /* Sync Cache → zweiter Aufruf instant! */
 const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung */
@@ -262,17 +302,31 @@ function fgSafeUrl(raw, fallback = null, label = 'url') {
         }
     }
 
-    /* Step 5: Externe URLs nur auf RV-Hard Domains! (User will KEINE fremden/KI Bilder!) */
+    /* Step 5: Externe URLs nur auf RV-Hard Domains + aktueller Host! (User will KEINE fremden/KI Bilder!) */
     if (/^https?:\/\//i.test(s)) {
-        if (s.includes('rv-hard.at') || s.includes('rv-hard.arnovoyer.com') || s.includes('cdnjs.cloudflare.com') || s.includes('fonts.googleapis.com') || s.includes('fonts.gstatic.com') || s.includes('cdn.jsdelivr.net')) {
-            return s; /* Nur RV Hard + CDN (Font Awesome etc.) erlaubt! */
-        }
-        console.error(`[fgSafeUrl:${label}] BLOCKED external url (nicht RV Hard!) →`, raw);
-        return fallback;
+        try {
+            const u = new URL(s, window.location.href);
+            const curHost = window.location.hostname.toLowerCase();
+            const tgtHost = u.hostname.toLowerCase();
+            const isRvHard    = tgtHost === 'rv-hard.at' || tgtHost.endsWith('.rv-hard.at');
+            const isArnovoyer = tgtHost === 'rv-hard.arnovoyer.com' || tgtHost.endsWith('.rv-hard.arnovoyer.com');
+            const isCDN = tgtHost.endsWith('cdnjs.cloudflare.com') || tgtHost.endsWith('fonts.googleapis.com') ||
+                          tgtHost.endsWith('fonts.gstatic.com')   || tgtHost.endsWith('cdn.jsdelivr.net') ||
+                          tgtHost.endsWith('unpkg.com')           || tgtHost.endsWith('kit.fontawesome.com') ||
+                          tgtHost.endsWith('use.fontawesome.com') || tgtHost.endsWith('ka-f.fontawesome.com');
+            if (tgtHost === curHost || isRvHard || isArnovoyer || isCDN) return s;
+            console.error(`[fgSafeUrl:${label}] BLOCKED external url (nicht RV Hard / aktive Domain!) →`, raw);
+            return fallback;
+        } catch(e) { return fallback; }
     }
 
-    /* Step 6: Interne Pfade NUR erlaubt wenn sie MIT / anfangen! */
+    /* Step 6: Interne Pfade! JETZT SUBDOMAIN KOMPATIBEL!
+       Führt mit / (z.B. /fotos/, /data/) → OK!
+       Relativ (./assets/, assets/) → OK!
+       Wenn FG_BASE gesetzt, auch FG_BASE/data/ etc. → OK! */
     if (s.startsWith('/')) return s;
+    if (s.startsWith('./')) return s;
+    if (/^[^/]{1,40}\//.test(s)) return s; /* z.B. assets/style.css (relativ zu aktueller Seite) */
 
     /* Step 7: Alles andere → Fallback */
     if (s === '') return fallback;
@@ -369,30 +423,50 @@ function fgQueryParam(name) {
     return (v == null) ? '' : v.trim();
 }
 
-/* --------------- SEITEN-NAVIGATION & FOOTER --------------- */
-
+/* --------------- SEITEN-NAVIGATION & FOOTER (SUBDOMAIN KOMPATIBEL!) ---------------
+   Navigation + Footer HTML sind NICHT in der Galerie enthalten! Sie liegen auf der
+   Haupt-Domain RV Hard. Problem bei eigener Subdomain (fotos.rv-hard.at):
+   CORS (Cross Origin) verbietet Fetch von fremder Domain!
+   Lösung: 1. Versuche relative Pfade /assets/navigationneu.html (altes Verhalten)
+           2. Fallback: Navigation/Footer NUR anzeigen, wenn wir in /fotos Unterordner sind!
+              Auf eigener Subdomain (FG_BASE === '') → Navigation/Footer werden GAR NICHT geladen!
+              → Galerie hat dann KEINE Hauptnavigation (aber ist ja auf fotos.example.com separat!)
+*/
 async function fgLoadNavigation() {
     const container = document.getElementById('navigation-container');
     if (!container) return;
+    /* Auf eigener Subdomain (FG_BASE = '' und kein /fotos Pfad): Skip Navigation!
+       User will vermutlich Galerie separat ohne RV Hard Menü. */
+    const path = window.location.pathname || '';
+    const istUnterordnerRVHard = FG_BASE === '/fotos' || path.indexOf('/fotos/') === 0;
+    if (!istUnterordnerRVHard) {
+        container.innerHTML = ''; /* Nav Container leer lassen (ohne Fehler!) */
+        return;
+    }
     try {
         const r = await fetch('/assets/navigationneu.html');
         if (!r.ok) throw new Error('Status ' + r.status);
         container.innerHTML = await r.text();
-        if (typeof initNavigationMenu === 'function') initNavigationMenu();
+        if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){}
     } catch (e) {
-        console.error('Navigation fehlgeschlagen:', e);
+        console.warn('Navigation konnte nicht geladen werden (Subdomain/Fehler):', e);
+        container.innerHTML = '';
     }
 }
 
 async function fgLoadFooter() {
     const footer = document.getElementById('site-footer');
     if (!footer) return;
+    const path = window.location.pathname || '';
+    const istUnterordnerRVHard = FG_BASE === '/fotos' || path.indexOf('/fotos/') === 0;
+    if (!istUnterordnerRVHard) { footer.innerHTML = ''; return; }
     try {
         const r = await fetch('/assets/footer.html');
         if (!r.ok) throw new Error('Status ' + r.status);
         footer.innerHTML = await r.text();
     } catch (e) {
-        console.error('Footer fehlgeschlagen:', e);
+        console.warn('Footer konnte nicht geladen werden:', e);
+        footer.innerHTML = '';
     }
 }
 
@@ -488,7 +562,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
         </div>`);
 
         byYear[year].forEach(ev => {
-            const link = `/fotos/event.html?id=${encodeURIComponent(ev.id)}`;
+            const link = `${FG_EVENT_URL}?id=${encodeURIComponent(ev.id)}`;
             /* 🔥 GOOGLE DRIVE SPEED: Bevorzugt THUMBNAIL (klein, 40KB) statt Original (12MB)!
                1. Priorität: erstes Foto thumbnail   2. coverPhoto   3. erstes Foto src   4. null */
             const firstPhoto = (ev.photos && ev.photos[0]) ? ev.photos[0] : null;
@@ -634,15 +708,37 @@ function fgSanitizePhotoSrc(src, fallback = null) {
     if (/^\/[A-Za-z]:/.test(s))    return fallback;   /* /C:/ (Unix Form) */
     if (/^data:image/i.test(s))    return fallback;   /* Kein Base64 Chaos */
 
-    /* Externe HTTP(S) URLs: USER WILL KEINE KI IMAGES! → NUR rv-hard.at erlaubt!
-       ↳ coresg-normal.trae.ai = KI Placeholder → GESPERRT! (User Wunsch!) */
+    /* Externe HTTP(S) URLs: USER WILL KEINE KI IMAGES! */
     if (/^https?:\/\//i.test(s)) {
-        if (s.includes('rv-hard.at') || s.includes('rv-hard.arnovoyer.com')) return s;
-        return fallback; /* Fremde Domains + KI URLs = blockieren! */
+        /* 🔥🔥🔥 JETZT SUBDOMAIN KOMPATIBEL!
+         *   Erlaube IMMER: Aktuelle Host Domain + rv-hard.at (Hauptdomain) + CDNs für Fonts!
+         *   Alles Andere (KI-Plattformen etc.) = blockieren! */
+        try {
+            const u = new URL(s, window.location.href);
+            const curHost = window.location.hostname.toLowerCase();
+            const tgtHost = u.hostname.toLowerCase();
+            if (tgtHost === curHost) return s; /* Gleiche Domain / Subdomain → OK */
+            if (tgtHost === 'rv-hard.at' || tgtHost.endsWith('.rv-hard.at')) return s; /* Hauptdomain + alle Subdomains von RV Hard! */
+            if (tgtHost === 'rv-hard.arnovoyer.com' || tgtHost.endsWith('.rv-hard.arnovoyer.com')) return s;
+            /* CDNs nur für Fonts/Skripte (keine Bilder hier erlaubt außer explizit) */
+            if (tgtHost.endsWith('cdnjs.cloudflare.com') ||
+                tgtHost.endsWith('fonts.googleapis.com') ||
+                tgtHost.endsWith('fonts.gstatic.com') ||
+                tgtHost.endsWith('cdn.jsdelivr.net') ||
+                tgtHost.endsWith('unpkg.com')) {
+                return s;
+            }
+            return fallback; /* Fremde Domains / KI URLs blockieren! */
+        } catch(e) { /* URL parse failed → block! */ return fallback; }
     }
 
-    /* Relativer Server-Pfad → NUR erlaubt wenn er in /fotos/data/ anfängt! */
+    /* Relativer Server-Pfad — JETZT SUBDOMAIN KOMPATIBEL!
+       Hauptdomain alte URLs /fotos/data/xxx sind OK!
+       Subdomain neue  /data/xxx ODER ./data/xxx OK! */
     if (s.startsWith('/fotos/data/') || s.startsWith('fotos/data/')) return s;
+    if (s.startsWith('/data/')      || s.startsWith('data/'))      return s;
+    if (s.startsWith('./data/'))                                 return s;
+    if (FG_BASE && s.startsWith(FG_BASE + '/data/'))             return s;
 
     /* Sonst alles was nicht passt → Fallback */
     return fallback;
@@ -660,7 +756,7 @@ function fgRenderEventPage(event) {
     if (!event) {
         document.getElementById('fg-event-content').innerHTML =
             `<div class="fg-error"><strong>Event nicht gefunden.</strong>
-            <br><a href="/fotos/" class="fg-btn" style="margin-top:1rem;">← Zurück zur Galerie-Übersicht</a></div>`;
+            <br><a href="${FG_HOME_URL}" class="fg-btn" style="margin-top:1rem;">← Zurück zur Galerie-Übersicht</a></div>`;
         if (window.__FGBG) window.__FGBG.log('err', 'Event NICHT in events.json gefunden!');
         return;
     }
@@ -828,7 +924,7 @@ async function fgInitEventPage() {
             throw new Error(
                 `Event mit ID "${id}" nicht in events.json gefunden! ` +
                 `Verfügbare IDs (Auszug): ${allIds || '(keine Events vorhanden)'}. ` +
-                `Tipp: Gehe zurück auf /fotos/ und klicke das Event dort neu an!`
+                `Tipp: Gehe zurück auf ${FG_HOME_URL || '/'} und klicke das Event dort neu an!`
             );
         }
         if (window.__FGBG) window.__FGBG.log('info', `✅ Event gefunden: ${event.name} (${event.photos && event.photos.length} Bilder). Rendere Seite…`);
@@ -847,14 +943,14 @@ async function fgInitEventPage() {
             <h3 style="margin:0 0 0.4rem 0;color:#842029;"><i class="fa-solid fa-circle-exclamation"></i> Galerie konnte nicht geladen werden</h3>
             <p style="margin:0 0 0.8rem 0;white-space:pre-wrap;">${fgEscapeHtml(err.message)}</p>
             <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.8rem;">
-                <a class="fg-btn" href="/fotos/">← Zurück zur Galerie-Startseite</a>
+                <a class="fg-btn" href="${FG_HOME_URL}">← Zurück zur Galerie-Startseite</a>
                 <button class="fg-btn" style="background:#198754;border-color:#198754;color:#fff;"
                     onclick="location.reload(true);">🔄 Seite NEU laden (Strg+F5)</button>
             </div>
             <p style="margin:0.9rem 0 0 0;font-size:0.88rem;color:#666;">
-                ⚡ Häufigste Gründe: 1) Admin Publish Button wurde <b>nicht</b> gedrückt → <a href="/fotos/admin/" target="_blank" style="color:#842029;">/fotos/admin/</a> öffnen & veröffentlichen!
+                ⚡ Häufigste Gründe: 1) Admin Publish Button wurde <b>nicht</b> gedrückt → <a href="${FG_ADMIN_URL}" target="_blank" style="color:#842029;">Admin</a> öffnen & veröffentlichen!
                 2) events.json noch auf dem alten Stand → <b>STRG+F5 / ⌘+⇧+R</b> für hartes Reload!
-                3) Fehlende Schreibrechte auf /fotos/data/ Ordner (CHMOD 755 setzen).
+                3) Fehlende Schreibrechte auf ${FG_BASE || ''}/data/ Ordner (CHMOD 755 setzen).
             </p>
         </div>`;
         if ($gallery) $gallery.innerHTML = '';

@@ -6,14 +6,6 @@
     <title>Summer Bike Series – Foto-Galerie | RV Hard</title>
     <meta name="description" content="Summer Bike Series Foto-Galerie – alle Bilder der SBS Events. Suche nach deiner Startnummer, deinem Namen und lade deine Fotos herunter.">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://rv-hard.at/fotos/">
-    <meta property="og:locale" content="de_AT">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="RV Hard">
-    <meta property="og:title" content="Summer Bike Series – Foto-Galerie | RV Hard">
-    <meta property="og:description" content="SBS Fotos – suche nach deiner Startnummer und lade deine Bilder herunter.">
-    <meta property="og:url" content="https://rv-hard.at/fotos/">
-    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -21,11 +13,41 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
-    <link rel="stylesheet" href="/assets/style.css?v=20260914" />
-    <link rel="stylesheet" href="/fotos/assets/galerie.css?v=20260914" />
+    <!-- 🔥🔥 SUBDOMAIN KOMPATIBEL! RELATIVE PFAD-ANGABEN!
+         assets/style.css & assets/galerie.css & Galerie-Logo:
+         - Wenn Galerie auf rv-hard.at/fotos/index.html → sucht im darüberliegenden Ordner /assets/ (../assets/)
+         - Wenn Galerie auf fotos.rv-hard.at/index.html     → sucht im selben Ordner Root /assets/ (./assets/)
+         Lösung: <script> erstellt <link> dynamisch je nach Unterordner-Erkennung!
+    -->
+    <script>
+        (function() {
+            /* Automatisch den BASE-Pfad erkennen! (Gleiches Prinzip wie upload.php + galerie.js) */
+            const here = String(window.location.pathname || '/');
+            const inferBase = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos')
+                ? '/fotos' : '';
+            const b = inferBase; /* /fotos  ODER  '' (Root) */
+            const prefixCss = (b === '' ? './' : b + '/') + 'assets/';
+            const assetsBase = (b === '' ? './' : '../') + 'assets/'; /* style.css liegt im übergeordneten */
+            const logo = assetsBase + 'img/logo/RV_Hard_Logo.webp';
+
+            /* Fav Icon */
+            const link1 = document.createElement('link');
+            link1.rel = 'icon'; link1.type = 'image/png'; link1.href = logo + '?v=20260918';
+            document.write(link1.outerHTML);
+
+            /* style.css (Haupt-Site) */
+            const link2 = document.createElement('link');
+            link2.rel = 'stylesheet'; link2.href = assetsBase + 'style.css?v=20260918';
+            document.write(link2.outerHTML);
+
+            /* galerie.css */
+            const link3 = document.createElement('link');
+            link3.rel = 'stylesheet'; link3.href = prefixCss + 'galerie.css?v=20260918';
+            document.write(link3.outerHTML);
+        })();
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp?v=20260914">
 </head>
 <body>
     <header>
@@ -49,9 +71,17 @@
                 </p>
 
                 <div style="display:flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem;">
-                    <a href="/fotos/admin/index.html" class="fg-btn" style="background: linear-gradient(135deg, #198754, #157347); color: #fff;">
-                        <i class="fa-solid fa-lock"></i> Admin: Bilder hochladen & taggen
-                    </a>
+                    <!-- 🔥 Admin Link: RELATIV! /fotos/admin/ ODER /admin/ (je nach Subdomain!) -->
+                    <script>
+                        (function(){
+                            const here = String(window.location.pathname || '/');
+                            const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
+                            const admin = (b ? b : '') + '/admin/index.html';
+                            document.write(`<a href="${admin}" class="fg-btn" style="background: linear-gradient(135deg, #198754, #157347); color: #fff;">
+                                <i class="fa-solid fa-lock"></i> Admin: Bilder hochladen & taggen
+                            </a>`);
+                        })();
+                    </script>
                     <a href="#so-funktionierts" class="fg-btn fg-btn--outline">
                         <i class="fa-regular fa-lightbulb"></i> So funktioniert die Nummernsuche
                     </a>
@@ -83,9 +113,18 @@
 
     <footer id="site-footer"></footer>
 
-    <script src="/assets/navigation-loader.js?v=20260914" defer></script>
-    <script src="/assets/nav.js?v=20260914" defer></script>
-    <script src="/fotos/assets/galerie.js?v=20260914" defer></script>
+    <!-- 🔥🔥 SUBDOMAIN KOMPATIBLE JS-Links! RELATIVE PFAD-ANGABEN! -->
+    <script>
+        (function() {
+            const here = String(window.location.pathname || '/');
+            const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+            const assetBase = (b === '' ? './' : '../') + 'assets/';
+            const galerieBase = (b ? b + '/' : './') + 'assets/';
+            document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
+            document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20260918" defer><\/script>`);
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
     <script>
         window.addEventListener('load', () => {

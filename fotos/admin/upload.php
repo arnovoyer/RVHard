@@ -8,11 +8,81 @@ ini_set('log_errors', 1);
 /* ============================================================
  *  SBS GALERIE – AUTO UPLOAD ENDPOINT
  *  Speichert Bilder direkt in Ordner + merged events.json
- *  Aufgerufen per AJAX aus /fotos/admin/
+ *  Aufgerufen per AJAX aus dem Admin Bereich
+ *  ✅ AKTUELL: Subdomain-kompatibel! (fotos.rv-hard.at / rv-hard.at/fotos / beliebige Domain)
  * ============================================================ */
 
 define('DATA_ROOT', realpath(__DIR__ . '/../data') . '/');
 define('EVENTS_FILE', DATA_ROOT . 'events.json');
+
+/* 🔥🔥🔥 SUBDOMAIN DETECTION + AUTO BASE PATH!
+ * Galerie läuft auf 2 Arten von Setups:
+ *   A) Hauptdomain Unterordner: rv-hard.at/fotos/…          → PUBLIC_BASE = '/fotos'
+ *   B) Eigene Subdomain:      fotos.rv-hard.at/…            → PUBLIC_BASE = '' (leer = Domain Root)
+ *   C) Beliebige Domain:     irgendwas.test/…               → PUBLIC_BASE = ''
+ *   D) Lokaler Test:         localhost:8080/rv-hard/fotos/ → PUBLIC_BASE = '/rv-hard/fotos'
+ *
+ * AUTO-ERKENNUNG (Falls REQUEST_URI verfügbar):
+ *   Wenn upload.php unter /fotos/admin/upload.php aufgerufen wurde → PUBLIC_BASE = '/fotos'
+ *   Sonst → PUBLIC_BASE = '' (Subdomain/Root)
+ */
+function fg_php_auto_public_base() {
+    static $cached = null;
+    if ($cached !== null) return $cached;
+    $candidates = [];
+    /* Candidate 1: Request URI Path */
+    if (!empty($_SERVER['REQUEST_URI'])) {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if (is_string($uri) && $uri !== '') {
+            /* upload.php liegt NORMALERWEISE im Admin Ordner → /<base>/admin/upload.php */
+            if (strpos($uri, '/admin/upload.php') !== false) {
+                $candidates[] = rtrim(substr($uri, 0, strpos($uri, '/admin/upload.php')), '/');
+            } elseif (preg_match('#^(.*)/admin/[^/]*\.php$#', $uri, $m)) {
+                $candidates[] = rtrim($m[1], '/');
+            }
+        }
+    }
+    /* Candidate 2: SCRIPT_NAME / PHP_SELF */
+    foreach (['SCRIPT_NAME','PHP_SELF','SCRIPT_URL','URL'] as $k) {
+        if (empty($_SERVER[$k]) || !is_string($_SERVER[$k])) continue;
+        if (strpos($_SERVER[$k], '/admin/upload.php') !== false) {
+            $candidates[] = rtrim(substr($_SERVER[$k], 0, strpos($_SERVER[$k], '/admin/upload.php')), '/');
+        } elseif (preg_match('#^(.*)/admin/[^/]*\.php$#i', $_SERVER[$k], $m)) {
+            $candidates[] = rtrim($m[1], '/');
+        }
+    }
+    $chosen = '';
+    foreach ($candidates as $c) {
+        if (is_string($c) && $c !== '' && substr($c,0,1) === '/') {
+            $chosen = $c; break;
+        }
+    }
+    /* Fallback: Wenn Ordner-Struktur auf Dateisystem /htdocs/fotos/admin/upload.php lautet,
+       aber Domain auf fotos/ zeigt → können wir nix erkennen → leer lassen (Subdomain Modus) */
+    if ($chosen === '' || strtolower($chosen) === '/fotos') {
+        /* Fallback Default: '/fotos' oder '' lassen wir '' als Default nur wenn Request URI auf / beginnt */
+        if (empty($_SERVER['REQUEST_URI']) || strpos($_SERVER['REQUEST_URI'] ?? '', '/fotos/') === 0 || strpos($_SERVER['REQUEST_URI'] ?? '', '/fotos') === 0) {
+            $chosen = '/fotos';
+        }
+    }
+    $cached = (is_string($chosen) && $chosen !== '/') ? rtrim($chosen, '/') : '';
+    return $cached;
+}
+define('PUBLIC_BASE', fg_php_auto_public_base()); /* z.B. '/fotos' oder '' (leer bei Subdomain!) */
+/* Shortcut für data Public Pfad */
+function fg_data_public_prefix(): string {
+    $b = PUBLIC_BASE;
+    return ($b === '' || $b === '0') ? '/data' : $b . '/data';
+}
+function fg_admin_public_prefix(): string {
+    $b = PUBLIC_BASE;
+    return ($b === '' || $b === '0') ? '/admin' : $b . '/admin';
+}
+function fg_event_public_url(string $eventId): string {
+    $b = PUBLIC_BASE;
+    $prefix = ($b === '' || $b === '0') ? '/event.html' : $b . '/event.html';
+    return $prefix . '?id=' . rawurlencode($eventId);
+}
 define('MAX_IMG_SIZE', 15 * 1024 * 1024);
 define('ALLOWED_EXT', ['jpg','jpeg','png','gif','webp']);
 define('ALLOWED_TYPES', [
@@ -355,7 +425,7 @@ if ($action === 'publish') {
             if (!@move_uploaded_file($tmp[$i], $targetPath)) {
                 die_json(false, 'Konnte Datei nicht speichern (Fehlende Rechte? Ordner 755!): ' . htmlspecialchars($folder . '/' . $safeName));
             }
-            $publicSrc = '/fotos/data/' . $folder . '/' . $safeName;
+            $publicSrc = fg_data_public_prefix() . '/' . $folder . '/' . $safeName;
             /* 🔥 SOFORT Thumbnail erzeugen! Dann schon vorhanden fürs Galerie-Render! */
             @rv_createThumbIfMissing($targetPath, $publicSrc);
             $savedImages[$names[$i]] = $publicSrc;
@@ -428,15 +498,47 @@ if ($action === 'publish') {
             if (stripos($raw, 'file://') === 0)    $blocked = true; /* Windows/Mac/Linux Lokale Pfade */
             if (stripos($raw, 'blob:') === 0)     $blocked = true; /* Browser Blob URLs (nur Vorschau!) */
             if (preg_match('#^[A-Za-z]:[\\\\/]#', $raw)) $blocked = true; /* C:\ D:\ Windows-Pfade */
-            if (preg_match('#^https?://#i', $raw) && strpos($raw, 'rv-hard.at') === false && strpos($raw, 'coresg-normal.trae.ai') === false) $blocked = true;
-            if (strpos($raw, '/fotos/data/') !== 0 && !$blocked && !preg_match('#^https?://#i', $raw)) {
-                /* Kein file, aber fängt nicht mit /fotos/data an → aufräumen */
-                $raw = ltrim(str_replace('\\', '/', $raw), '/');
-                if (strpos($raw, 'fotos/data/') === 0) $raw = '/' . $raw;
+
+            /* 🔥🔥🔥 Externe Domain Whitelist: JETZT SUBDOMAIN KOMPATIBEL!
+               Erlaube: 1) Aktuelle HTTP_HOST (aktive Subdomain/Domain)
+                        2) rv-hard.at + *.rv-hard.at (Hauptdomain)
+                        3) rv-hard.arnovoyer.com + *. (Testsystem)
+               Alles andere = Fremde/KI Domain = blockieren! */
+            if (!$blocked && preg_match('#^https?://#i', $raw)) {
+                $host = '';
+                if (function_exists('parse_url')) {
+                    $pu = @parse_url($raw);
+                    if (is_array($pu) && !empty($pu['host'])) $host = strtolower($pu['host']);
+                }
+                if ($host === '') {
+                    $blocked = true; /* URL kaputt! */
+                } else {
+                    $curHost = !empty($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';
+                    if (strpos($curHost, ':') !== false) $curHost = substr($curHost, 0, strpos($curHost, ':'));
+                    $isOk = false;
+                    if ($curHost !== '' && ($host === $curHost || (strlen($curHost)>0 && substr($host,-strlen($curHost)-1) === '.' . $curHost))) $isOk = true;
+                    if ($host === 'rv-hard.at' || substr($host, -11) === '.rv-hard.at') $isOk = true;
+                    if ($host === 'rv-hard.arnovoyer.com' || substr($host, -24) === '.rv-hard.arnovoyer.com') $isOk = true;
+                    if (!$isOk) $blocked = true;
+                }
             }
-            if (!$blocked && strpos($raw, '/fotos/data/') === 0) {
-                $src = $raw;
-            } elseif ($blocked) {
+
+            /* Relativer Pfad: Erlaube /fotos/data/xxx + /data/xxx! (Alt /fotos/data/ + Subdomain Neu /data/) */
+            $dataPfadAlt = '/fotos/data/';
+            $dataPfadNeu = fg_data_public_prefix() . '/';
+            if (!$blocked) {
+                $normalisiert = $raw;
+                if (!preg_match('#^https?://#i', $normalisiert)) {
+                    $normalisiert = ltrim(str_replace('\\', '/', $normalisiert), '/');
+                    if (strpos($normalisiert, 'fotos/data/') === 0) $normalisiert = '/' . $normalisiert;
+                    if (strpos($normalisiert, 'data/') === 0) $normalisiert = '/' . $normalisiert;
+                }
+                /* Alt Pfad (/fotos/data/) oder Subdomain Neu Pfad (/data/) */
+                if (strpos($normalisiert, $dataPfadAlt) === 0 || strpos($normalisiert, $dataPfadNeu) === 0) {
+                    $src = $normalisiert;
+                }
+            }
+            if ($blocked) {
                 $warnings[] = "Verworfen: Lokaler Pfad '$raw' (nicht im Web sichtbar!). Bild '$origName' muss via Upload nochmal zum Server geschickt werden.";
                 $src = null;
             }
@@ -503,8 +605,7 @@ if ($action === 'publish') {
     $sanitizeSrc = function($src) use (&$totalFixedCover, $startsWith, $endsWith) {
         if (!is_string($src) || trim($src) === '') return false;
         $s = trim($src);
-        /* Step 1: Backticks entfernen! Diese machen URLs zu "lokalem Pfad" und Security-Crash!
-           Beispiel: `https://example.com/img.jpg`  →  https://example.com/img.jpg */
+        /* Step 1: Backticks entfernen! Diese machen URLs zu "lokalem Pfad" und Security-Crash! */
         $before = $s;
         $s = trim($s, "` \t\n\r\0\x0B\"'");
         if ($startsWith($s, '`') || $endsWith($s, '`')) {
@@ -521,15 +622,38 @@ if ($action === 'publish') {
         if (preg_match('#^[A-Za-z]:[\\\\/]#', $s)) return false;
         if (preg_match('#^/[A-Za-z]:#', $s)) return false;
         if (stripos($s, 'data:image') === 0) return false;
-        /* Externe Domains blockieren außer RV Hard. User will KEINE KI URLs mehr! Also coresg-normal auch blocken! */
+
+        /* Externe Domains: JETZT SUBDOMAIN KOMPATIBEL!
+           Erlaube: 1) Aktueller HTTP_HOST (aktive Domain/Subdomain!)
+                    2) rv-hard.at + *.rv-hard.at
+                    3) rv-hard.arnovoyer.com + *. */
         if (preg_match('#^https?://#i', $s)) {
-            if (strpos($s, 'rv-hard.at') !== false) return $s;
-            return false; /* User Wunsch: KEINE KI Images (coresg-normal) mehr! */
+            $host = '';
+            if (function_exists('parse_url')) {
+                $pu = @parse_url($s);
+                if (is_array($pu) && !empty($pu['host'])) $host = strtolower($pu['host']);
+            }
+            if ($host === '') return false; /* URL kaputt */
+            $curHost = !empty($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';
+            if (strpos($curHost, ':') !== false) $curHost = substr($curHost, 0, strpos($curHost, ':'));
+            $isOk = false;
+            if ($curHost !== '' && ($host === $curHost || (strlen($curHost)>0 && substr($host,-strlen($curHost)-1) === '.' . $curHost))) $isOk = true;
+            if ($host === 'rv-hard.at' || substr($host, -11) === '.rv-hard.at') $isOk = true;
+            if ($host === 'rv-hard.arnovoyer.com' || substr($host, -24) === '.rv-hard.arnovoyer.com') $isOk = true;
+            return $isOk ? $s : false;
         }
-        /* Nur Server-interne Pfade in /fotos/data erlauben */
+        /* Server-interne Pfade: Alt (/fotos/data/xxx) + Subdomain Neu (/data/xxx) + RELATIV data/xxx + PUBLIC_BASE/data/xxx */
         $s = str_replace('\\', '/', $s);
-        if ($startsWith($s, '/fotos/data/')) return $s;
+        $dataAlt = '/fotos/data/';
+        $dataNeu = fg_data_public_prefix() . '/';
+        if ($startsWith($s, $dataAlt)) return $s;
+        if ($startsWith($s, $dataNeu)) return $s;
         if ($startsWith($s, 'fotos/data/')) return '/' . ltrim($s, '/');
+        if ($startsWith($s, '/data/') || $startsWith($s, 'data/')) {
+            /* Falls /data/ nicht unser aktuelles data/ ist (wenn wir in /fotos laufen), auf /fotos/data/ mappen */
+            if ($dataAlt !== '/data/') { return $startsWith($s, '/') ? $s : '/' . ltrim($s,'/'); }
+            return $startsWith($s, '/') ? $s : '/' . ltrim($s, '/');
+        }
         /* Alles andere ist kaputt (z.B. Windows Pfade ohne Protokoll) */
         return false;
     };
@@ -721,8 +845,10 @@ if ($action === 'publish') {
         'photos_saved_count'  => count($savedImages),
         'photos_json_count'   => count($photosJson),
         'target_folder'       => $folder,
-        'preview_url'         => '/fotos/event.html?id=' . rawurlencode($eventId),
+        'preview_url'         => fg_event_public_url($eventId),
         'events_file_size'    => filesize(EVENTS_FILE),
+        'public_base'         => PUBLIC_BASE,
+        'data_prefix'         => fg_data_public_prefix(),
         'warnings'            => $warnings
     ];
     $msg = '✅ ERFOLG! ' . count($savedImages) . ' Bilder gespeichert, ' . count($photosJson) . ' Einträge in events.json geschrieben. Galerie sofort sichtbar!';
