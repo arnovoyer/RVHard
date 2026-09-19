@@ -435,23 +435,36 @@ function fgQueryParam(name) {
 async function fgLoadNavigation() {
     const container = document.getElementById('navigation-container');
     if (!container) return;
-    /* Auf eigener Subdomain (FG_BASE = '' und kein /fotos Pfad): Skip Navigation!
-       User will vermutlich Galerie separat ohne RV Hard Menü. */
     const path = window.location.pathname || '';
     const istUnterordnerRVHard = FG_BASE === '/fotos' || path.indexOf('/fotos/') === 0;
-    if (!istUnterordnerRVHard) {
-        container.innerHTML = ''; /* Nav Container leer lassen (ohne Fehler!) */
+    if (istUnterordnerRVHard) {
+        try {
+            const r = await fetch('/assets/navigationneu.html');
+            if (!r.ok) throw new Error('Status ' + r.status);
+            container.innerHTML = await r.text();
+            if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){}
+        } catch (e) {
+            console.warn('Navigation konnte nicht geladen werden:', e);
+            container.innerHTML = '';
+        }
         return;
     }
-    try {
-        const r = await fetch('/assets/navigationneu.html');
-        if (!r.ok) throw new Error('Status ' + r.status);
-        container.innerHTML = await r.text();
-        if (typeof initNavigationMenu === 'function') try { initNavigationMenu(); } catch(e){}
-    } catch (e) {
-        console.warn('Navigation konnte nicht geladen werden (Subdomain/Fehler):', e);
-        container.innerHTML = '';
-    }
+    const mainDomain = 'https://rv-hard.at';
+    const homeUrl = FG_HOME_URL || './';
+    container.innerHTML = `
+<nav class="fg-nav">
+  <a href="${mainDomain}" class="fg-nav__back" title="Zurück zu rv-hard.at" aria-label="Zurück zur Hauptseite">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M19 12H5"></path>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    <span>rv-hard.at</span>
+  </a>
+  <a href="${homeUrl}" class="fg-nav__logo" title="Foto-Galerie Start">
+    <img src="${FG_BASE ? FG_BASE : ''}/assets/logo.svg" alt="RV Hard Logo" onerror="this.onerror=null;this.src='${mainDomain}/assets/img/logo/RV_Hard_Logo.webp';">
+  </a>
+  <div class="fg-nav__spacer" aria-hidden="true"></div>
+</nav>`;
 }
 
 async function fgLoadFooter() {
@@ -459,15 +472,37 @@ async function fgLoadFooter() {
     if (!footer) return;
     const path = window.location.pathname || '';
     const istUnterordnerRVHard = FG_BASE === '/fotos' || path.indexOf('/fotos/') === 0;
-    if (!istUnterordnerRVHard) { footer.innerHTML = ''; return; }
-    try {
-        const r = await fetch('/assets/footer.html');
-        if (!r.ok) throw new Error('Status ' + r.status);
-        footer.innerHTML = await r.text();
-    } catch (e) {
-        console.warn('Footer konnte nicht geladen werden:', e);
-        footer.innerHTML = '';
+    if (istUnterordnerRVHard) {
+        try {
+            const r = await fetch('/assets/footer.html');
+            if (!r.ok) throw new Error('Status ' + r.status);
+            footer.innerHTML = await r.text();
+        } catch (e) {
+            console.warn('Footer konnte nicht geladen werden:', e);
+            footer.innerHTML = '';
+        }
+        return;
     }
+    const mainDomain = 'https://rv-hard.at';
+    footer.innerHTML = `
+<footer class="fg-footer">
+  <div class="fg-footer__social">
+    <a href="https://www.instagram.com/rv_hard/" target="_blank" rel="noopener" aria-label="Instagram RV Hard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.2 0-3.5 0-4.7.1-1.1.1-1.7.3-2.1.4-.5.2-.9.4-1.2.8-.3.3-.6.7-.8 1.2-.1.4-.3 1-.4 2.1C2.7 9.3 2.7 9.6 2.7 12s0 2.7.1 3.9c.1 1.1.3 1.7.4 2.1.2.5.4.9.8 1.2.3.3.7.6 1.2.8.4.1 1 .3 2.1.4 1.2.1 1.5.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.3 2.1-.4.5-.2.9-.4 1.2-.8.3-.3.6-.7.8-1.2.1-.4.3-1 .4-2.1.1-1.2.1-1.5.1-3.9s0-2.7-.1-3.9c-.1-1.1-.3-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.3-.3-.7-.6-1.2-.8-.4-.1-1-.3-2.1-.4C15.5 4 15.2 4 12 4zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm5.1-2.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/radvereinhard/" target="_blank" rel="noopener" aria-label="Facebook RV Hard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.2-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21h3z"/></svg>
+    </a>
+  </div>
+  <p class="fg-footer__copy">&copy; 2026 RV Hard</p>
+  <p class="fg-footer__links">
+    <a href="${mainDomain}/kontakt.html">Kontakt</a>
+    <span class="fg-footer__sep">|</span>
+    <a href="${mainDomain}/impressum.html">Impressum</a>
+    <span class="fg-footer__sep">|</span>
+    <a href="${mainDomain}/datenschutz.html">Datenschutz</a>
+  </p>
+</footer>`;
 }
 
 /* ================================================
