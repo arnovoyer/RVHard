@@ -1,2 +1,2 @@
 - index machen neu mit platz für mehr event werbung/photo galerie etc
--
+- index 
