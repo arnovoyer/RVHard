@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foto-Galerie Event | RV Hard</title>
-    <meta name="description" content="Foto-Galerie eines RV Hard Events – suche nach deiner Startnummer und lade deine Bilder herunter.">
+    <meta name="description" content="Foto-Galerie eines RV Hard Events.">
     <meta name="robots" content="index, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,17 +82,11 @@
                     <span id="fg-external-link"></span>
                 </div>
 
-                <!-- FILTER -->
-                <div class="fg-search-row" style="margin-top: 1.75rem;">
-                    <input type="text" id="fg-bib" inputmode="numeric" placeholder="🏁 Startnummer (z.B. 42)" aria-label="Filter nach Startnummer">
-                </div>
-
-                <div id="fg-gallery-info" class="fg-results-info">
-                    <span>0 Bilder geladen…</span>
-                </div>
+                <!-- FILTER (Startnummer) - unsichtbar versteckt, aber bleibt für Bib-URL-Filter erhalten -->
+                <input type="text" id="fg-bib" inputmode="numeric" style="display:none !important;" aria-hidden="true">
 
                 <!-- GALLERY -->
-                <div id="fg-gallery" class="fg-gallery">
+                <div id="fg-gallery" class="fg-gallery" style="margin-top: 1.5rem;">
                     <div class="fg-empty"><strong>Galerie wird geladen…</strong></div>
                 </div>
 

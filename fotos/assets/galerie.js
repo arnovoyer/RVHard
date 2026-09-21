@@ -428,19 +428,10 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
 
     /* Info */
     const info = document.getElementById('fg-info');
-    if (info) {
-        const total = sbsEvents.length;
-        const bibCount = () => {
-            const s = new Set();
-            filtered.forEach(e => (e.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => s.add(String(b)))));
-            return s.size;
-        };
-        const photoCount = filtered.reduce((n, e) => n + ((e.photos && e.photos.length) || 0), 0);
-        info.innerHTML = `Insgesamt <strong>${total}</strong> SBS-Events – angezeigt: <strong>${filtered.length}</strong> · <i class="fa-regular fa-image"></i> ${photoCount} Bilder · <i class="fa-solid fa-person-running"></i> ${bibCount()} TN-Nummern`;
-    }
+    if (info) info.innerHTML = '';
 
     if (!filtered.length) {
-        container.innerHTML = `<div class="fg-empty"><strong>Keine SBS-Events gefunden.</strong><br>Versuche es mit einem anderen Jahr, Disziplin oder Suchbegriff.</div>`;
+        container.innerHTML = `<div class="fg-empty"><strong>Keine SBS-Events gefunden.</strong><br>Versuche es mit einem anderen Jahr oder Disziplin.</div>`;
         return;
     }
 
@@ -460,7 +451,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     const disciplineBadge = {
         bergrennen: { label: 'Bergrennen', bg: '#198754' },
         ezf: { label: 'EZF', bg: '#0d6efd' },
-        kriterium: { label: 'Kriterium', bg: '#dc3545' }
+        kriterium: { label: 'Stadtkriterium', bg: '#dc3545' }
     };
 
     const fallbackCover = (subtype) => {
@@ -507,7 +498,6 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
                         <span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>
                         <div class="fg-event-card__count">
                             <i class="fa-regular fa-image"></i> ${count}
-                            ${uniqueBibs.size ? ` · <i class="fa-solid fa-person-running"></i> ${uniqueBibs.size}` : ''}
                         </div>
                     </div>
                     <div class="fg-event-card__body">
@@ -518,11 +508,6 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
                             ${ev.distance ? `<span><i class="fa-solid fa-route"></i> ${fgEscapeHtml(ev.distance)}</span>` : ''}
                         </div>
                         ${ev.description ? `<p class="fg-event-card__desc">${fgEscapeHtml(ev.description)}</p>` : ''}
-                        <div class="fg-event-card__footer">
-                            <span class="fg-btn fg-btn--outline">
-                                <i class="fa-solid fa-magnifying-glass"></i> Startnummer suchen →
-                            </span>
-                        </div>
                     </div>
                 </a>
             `);
@@ -548,7 +533,7 @@ async function fgInitEventsOverview() {
     const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     try {
-        if (info) info.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="color:#f5b301;"></i> Lade SBS Events…`;
+        if (info) info.innerHTML = '';
         if (window.__FGBG) window.__FGBG.setPhase('Lade events.json für Overview…');
 
         const events = await fgLoadEvents();
@@ -723,14 +708,13 @@ function fgRenderEventPage(event) {
         if (!window._fgPhotoBuckets) window._fgPhotoBuckets = {};
         window._fgPhotoBuckets.current = filtered;
 
-        document.getElementById('fg-gallery-info').innerHTML =
-            `Galerie enthält <strong>${photos.length}</strong> Bilder – angezeigt: <strong>${filtered.length}</strong>`;
+        const galleryInfo = document.getElementById('fg-gallery-info');
+        if (galleryInfo) galleryInfo.innerHTML = '';
 
         const gallery = document.getElementById('fg-gallery');
         if (!filtered.length) {
             gallery.innerHTML = `<div class="fg-empty">
                 <strong>Keine Treffer.</strong>
-                <br>Tipp: Gib einen Teil der Startnummer ein, z.B. <code>42</code> oder auch nur <code>4</code>.
             </div>`;
             return;
         }

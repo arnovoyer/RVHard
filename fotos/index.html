@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Summer Bike Series – Foto-Galerie | RV Hard</title>
-    <meta name="description" content="Summer Bike Series Foto-Galerie – alle Bilder der SBS Events. Suche nach deiner Startnummer, deinem Namen und lade deine Fotos herunter.">
+    <meta name="description" content="Summer Bike Series Foto-Galerie – alle Bilder der SBS Events.">
     <meta name="robots" content="index, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,28 +61,10 @@
 
                 <p class="lead" style="margin-top: 0.75rem;">
                     Alle Bilder der <strong style="color:#111;">Summer Bike Series</strong> auf einen Blick.
-                    Gib einfach deine <strong style="color:#f5b301; font-size:1.05rem;">Startnummer</strong> ein – du findest sofort alle Fotos von dir!
                 </p>
 
-                <div style="display:flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem;">
-                    <!-- 🔥 Admin Link: RELATIV! /fotos/admin/ ODER /admin/ (je nach Subdomain!) -->
-                    <script>
-                        (function(){
-                            const here = String(window.location.pathname || '/');
-                            const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
-                            const admin = (b ? b : '') + '/admin/index.html';
-                            document.write(`<a href="${admin}" class="fg-btn" style="background: linear-gradient(135deg, #198754, #157347); color: #fff;">
-                                <i class="fa-solid fa-lock"></i> Admin: Bilder hochladen & taggen
-                            </a>`);
-                        })();
-                    </script>
-                    <a href="#so-funktionierts" class="fg-btn fg-btn--outline">
-                        <i class="fa-regular fa-lightbulb"></i> So funktioniert die Nummernsuche
-                    </a>
-                </div>
-
                 <div class="fg-search-row" style="margin-top: 1.5rem;">
-                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Name, Startnummer…" aria-label="SBS Events durchsuchen" style="min-width: 260px;">
+                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Jahr…" aria-label="SBS Events durchsuchen" style="min-width: 260px;">
                     <select id="fg-filter-year" aria-label="SBS Jahr Filter">
                         <option value="all">Alle SBS Jahre</option>
                     </select>
@@ -90,12 +72,8 @@
                         <option value="all">Alle Disziplinen</option>
                         <option value="bergrennen">🏔️ Bergrennen</option>
                         <option value="ezf">⏱️ Einzelzeitfahren (EZF)</option>
-                        <option value="kriterium">🏁 Kriterium Stadtkurs</option>
+                        <option value="kriterium">🏁 Stadtkriterium</option>
                     </select>
-                </div>
-
-                <div id="fg-info" class="fg-results-info">
-                    <span>Lade SBS Events…</span>
                 </div>
 
                 <div id="fg-events" class="fg-events-grid" style="margin-top:10px;">
