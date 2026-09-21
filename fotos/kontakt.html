@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt | Foto-Galerie | RV Hard</title>
+<meta name="description" content="Kontakt zur RV Hard Foto-Galerie.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script>
+(function(){
+    const here = String(window.location.pathname || '/');
+    const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+    const prefixCss = (b === '' ? './' : b + '/') + 'assets/';
+    const assetsBase = (b === '' ? './' : '../') + 'assets/';
+    const logo = assetsBase + 'img/logo/RV_Hard_Logo.webp';
+    document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
+    document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
+    document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20260918">`);
+})();
+</script>
+</head>
+<body>
+<header><nav id="navigation-container"></nav></header>
+<main>
+<section class="fg-container">
+  <div class="fg-section">
+    <h1><i class="fa-solid fa-envelope" style="color:#ffc107;"></i> Kontakt</h1>
+    <p style="margin-top:0.75rem;">Hast du Fragen zur Foto-Galerie, zu einem Foto oder wünschst du die Entfernung eines Bildes? Schreib uns einfach – wir melden uns in Kürze.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem; margin-top:2rem;">
+      <a href="mailto:vorstand@rv-hard.at?subject=Foto-Galerie%20RV%20Hard&body=Hallo%20RV%20Hard%2C%0A%0Aich%20habe%20folgende%20Frage%20zur%20Foto-Galerie%3A%0A" class="fg-btn" style="background:linear-gradient(135deg,#ffc107,#f5b301);color:#111;font-weight:600;justify-content:center;">
+        <i class="fa-solid fa-paper-plane"></i> E-Mail schreiben
+      </a>
+      <a href="tel:+436643525900" class="fg-btn fg-btn--outline" style="justify-content:center;">
+        <i class="fa-solid fa-phone"></i> +43 664 3525900
+      </a>
+    </div>
+
+    <h2 style="margin-top:2.5rem;">Allgemeine Kontaktinformationen</h2>
+    <p><strong>RV DJ's Bikeshop Simplon Hard</strong></p>
+    <p>Kohlplatzstraße 2a · 6971 Hard · Österreich</p>
+    <p>ZVR-Zahl: 855750678</p>
+    <p>E-Mail: <a href="mailto:vorstand@rv-hard.at" style="color:#222;">vorstand@rv-hard.at</a></p>
+
+    <h2 style="margin-top:2.5rem;">Social Media</h2>
+    <div style="display:flex; gap:1rem; margin-top:1rem; flex-wrap:wrap;">
+      <a href="https://www.instagram.com/rv_hard/" target="_blank" rel="noopener" class="fg-btn fg-btn--outline" style="gap:0.6rem;">
+        <i class="fa-brands fa-instagram" style="color:#E1306C;"></i> Instagram
+      </a>
+      <a href="https://www.facebook.com/radvereinhard/" target="_blank" rel="noopener" class="fg-btn fg-btn--outline" style="gap:0.6rem;">
+        <i class="fa-brands fa-facebook-f" style="color:#1877F2;"></i> Facebook
+      </a>
+    </div>
+
+    <p style="margin-top:3rem; font-size:0.9rem; color:#777;">
+      Hinweis: Für Anfragen zu Mitgliedschaft, Training oder Probetraining nutze bitte das Kontaktformular auf der <a href="https://rv-hard.at/kontakt.html" target="_blank" rel="noopener" style="color:#555;">Hauptseite rv-hard.at</a>.
+    </p>
+  </div>
+</section>
+</main>
+<footer id="site-footer"></footer>
+<script>
+(function(){
+    const here = String(window.location.pathname || '/');
+    const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+    const assetBase = (b === '' ? './' : '../') + 'assets/';
+    const galerieBase = (b ? b + '/' : './') + 'assets/';
+    document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
+    document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
+    document.write(`<script src="${galerieBase}galerie.js?v=20260918" defer><\/script>`);
+})();
+</script>
+</body>
+</html>

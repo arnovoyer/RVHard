@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum | Foto-Galerie | RV Hard</title>
+<meta name="description" content="Impressum der RV Hard Foto-Galerie.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script>
+(function(){
+    const here = String(window.location.pathname || '/');
+    const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+    const prefixCss = (b === '' ? './' : b + '/') + 'assets/';
+    const assetsBase = (b === '' ? './' : '../') + 'assets/';
+    const logo = assetsBase + 'img/logo/RV_Hard_Logo.webp';
+    document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
+    document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
+    document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20260918">`);
+})();
+</script>
+</head>
+<body>
+<header><nav id="navigation-container"></nav></header>
+<main>
+<section class="fg-container">
+  <div class="fg-section">
+    <h1><i class="fa-solid fa-gavel" style="color:#ffc107;"></i> Impressum</h1>
+    <h2 style="margin-top:1.5rem;">Verantwortlich für den Inhalt:</h2>
+    <p><strong>RV DJ's Bike Shop Simplon Hard</strong></p>
+    <p>Telefon: <a href="tel:+436643525900" style="color:#222;text-decoration:none;">+43 664 3525900</a></p>
+    <p>ZVR-Zahl: 855750678</p>
+    <p>E-Mail: <a href="mailto:vorstand@rv-hard.at" style="color:#222;">vorstand@rv-hard.at</a></p>
+    <h3 style="margin-top:1.5rem;">Kontoverbindung:</h3>
+    <p>
+      RV-DJ's Bikeshop Simplon Hard<br>
+      IBAN: AT763743100000060509<br>
+      BIC: RVVGAT2B431<br>
+      Raiffeisenbank Bodensee-Leiblachtal eGen
+    </p>
+    <h2 style="margin-top:2rem;">Haftungsausschluss</h2>
+    <p>Der Autor und Verein übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche, welche sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung der dargebotenen Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens des Autors kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.</p>
+    <p>Alle Fotos und Texte unterliegen dem Urheberrecht. Soweit nicht anders angegeben, liegen die Kopierrechte bei RV DJ's Bike Shop Simplon Hard. Vervielfältigung, Wiedergabe und sonstige Verwendung gleich welcher Art ist – auch auszugsweise – nur nach schriftlicher Genehmigung unter eindeutiger Quellenangabe erlaubt.</p>
+    <p>Für den Inhalt verlinkter Seiten wird keine Haftung übernommen.</p>
+    <h2 style="margin-top:2rem;">Website-Erstellung und Verwaltung</h2>
+    <p>Website erstellt und verwaltet von <a href="https://arnovoyer.com" target="_blank" rel="noopener" style="color:#222;text-decoration:none;">Arno Voyer</a>.</p>
+  </div>
+</section>
+</main>
+<footer id="site-footer"></footer>
+<script>
+(function(){
+    const here = String(window.location.pathname || '/');
+    const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+    const assetBase = (b === '' ? './' : '../') + 'assets/';
+    const galerieBase = (b ? b + '/' : './') + 'assets/';
+    document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
+    document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
+    document.write(`<script src="${galerieBase}galerie.js?v=20260918" defer><\/script>`);
+})();
+</script>
+</body>
+</html>

@@ -554,7 +554,8 @@ body {
     gap: 14px;
     margin-bottom: 10px;
 }
-.fg-footer__social a {
+.fg-footer__social a,
+.fg-footer__icon {
     color: #ddd;
     text-decoration: none;
     width: 36px; height: 36px;
@@ -564,8 +565,10 @@ body {
     align-items: center;
     justify-content: center;
     transition: all .22s ease;
+    font-size: 16px;
 }
-.fg-footer__social a:hover { color: #ffc107; background: rgba(255,193,7,0.1); transform: translateY(-2px); }
+.fg-footer__social a:hover,
+.fg-footer__icon:hover { color: #ffc107; background: rgba(255,193,7,0.1); transform: translateY(-2px); }
 .fg-footer__copy { margin: 6px 0; color: #ccc; font-weight: 500; }
 .fg-footer__links { margin: 8px 0 0; }
 .fg-footer__links a { color: #ccc; text-decoration: none; font-weight: 500; transition: color .2s ease; }

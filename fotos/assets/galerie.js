@@ -366,24 +366,19 @@ async function fgLoadFooter() {
         }
         return;
     }
-    const mainDomain = 'https://rv-hard.at';
-    footer.innerHTML = `
-<footer class="fg-footer">
+    const base = FG_BASE || '';
+    footer.innerHTML = `<footer class="fg-footer">
   <div class="fg-footer__social">
-    <a href="https://www.instagram.com/rv_hard/" target="_blank" rel="noopener" aria-label="Instagram RV Hard">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.2 0-3.5 0-4.7.1-1.1.1-1.7.3-2.1.4-.5.2-.9.4-1.2.8-.3.3-.6.7-.8 1.2-.1.4-.3 1-.4 2.1C2.7 9.3 2.7 9.6 2.7 12s0 2.7.1 3.9c.1 1.1.3 1.7.4 2.1.2.5.4.9.8 1.2.3.3.7.6 1.2.8.4.1 1 .3 2.1.4 1.2.1 1.5.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.3 2.1-.4.5-.2.9-.4 1.2-.8.3-.3.6-.7.8-1.2.1-.4.3-1 .4-2.1.1-1.2.1-1.5.1-3.9s0-2.7-.1-3.9c-.1-1.1-.3-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.3-.3-.7-.6-1.2-.8-.4-.1-1-.3-2.1-.4C15.5 4 15.2 4 12 4zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm5.1-2.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3z"/></svg>
-    </a>
-    <a href="https://www.facebook.com/radvereinhard/" target="_blank" rel="noopener" aria-label="Facebook RV Hard">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.2-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.9v3h2.6V21h3z"/></svg>
-    </a>
+    <a href="https://www.instagram.com/rv_hard/" target="_blank" rel="noopener" class="fg-footer__icon" title="Instagram" aria-label="Instagram RV Hard"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.facebook.com/radvereinhard/" target="_blank" rel="noopener" class="fg-footer__icon" title="Facebook" aria-label="Facebook RV Hard"><i class="fa-brands fa-facebook-f"></i></a>
   </div>
-  <p class="fg-footer__copy">&copy; 2026 RV Hard</p>
+  <p class="fg-footer__copy">&copy; 2026 RV Hard · Foto-Galerie</p>
   <p class="fg-footer__links">
-    <a href="${mainDomain}/kontakt.html">Kontakt</a>
+    <a href="${base}/kontakt.html">Kontakt</a>
     <span class="fg-footer__sep">|</span>
-    <a href="${mainDomain}/impressum.html">Impressum</a>
+    <a href="${base}/impressum.html">Impressum</a>
     <span class="fg-footer__sep">|</span>
-    <a href="${mainDomain}/datenschutz.html">Datenschutz</a>
+    <a href="${base}/datenschutz.html">Datenschutz</a>
   </p>
 </footer>`;
 }
