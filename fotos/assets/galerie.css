@@ -18,27 +18,12 @@ html, body {
 }
 
 body {
-    padding-top: 70px;
+    padding-top: 0;
 }
 
-header {
-    height: 70px;
-    margin-bottom: 0;
-}
-
-#navigation-container:empty {
-    min-height: 70px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
+#navigation-container:empty,
 #site-footer:empty {
-    min-height: 150px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s ease-in-out infinite;
-    margin-top: 3rem;
+    display: none;
 }
 
 @keyframes skeleton-loading {
