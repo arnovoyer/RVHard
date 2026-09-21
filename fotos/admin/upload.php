@@ -6,6 +6,83 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
 /* ============================================================
+ *  FALLBACK PASSWORT-SCHUTZ FÜR UPLOAD.PHP
+ *  (Zusätzlich zum .htaccess, falls dieser auf manchen Hostern
+ *   nicht greift oder aus Versehen fehlt.)
+ *
+ *  BENUTZER / PASSWORT KONFIGURIEREN:
+ *  → Bearbeite unten $ADMIN_USERS Array.
+ *  Zum Erstellen eines Hashes: generate-htpasswd.php hochladen,
+ *  aufrufen, Hash kopieren und unten als 'hash' eintragen.
+ *  Das Passwort muss dann zum selben Benutzer passen!
+ * ============================================================ */
+$ADMIN_USERS = [
+    [
+        'user' => 'rvhard',
+        'hash' => '$2y$10$CwTycUXWue0Thq9StjUM0uJ8bD8n25iLgH50Kx40a0bq93qHtT7hy'
+        /* ↑ Ersetze den Hash durch deinen eigenen! (Aus generate-htpasswd.php) */
+    ]
+];
+
+function fg_basic_auth_require() {
+    global $ADMIN_USERS;
+
+    /* 1) Allow CLI / local php -S debug (kein Auth) */
+    if (php_sapi_name() === 'cli') return;
+
+    /* 2) Credentials einlesen */
+    $auth_user = isset($_SERVER['PHP_AUTH_USER']) ? (string)$_SERVER['PHP_AUTH_USER'] : '';
+    $auth_pw   = isset($_SERVER['PHP_AUTH_PW'])   ? (string)$_SERVER['PHP_AUTH_PW']   : '';
+
+    /* CGI / FastCGI Fallback: manche Hosters legen Credentials in REDIRECT_HTTP_AUTHORIZATION */
+    if ($auth_user === '' && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        $header = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        if (stripos($header, 'Basic ') === 0) {
+            $decoded = base64_decode(substr($header, 6), true);
+            if ($decoded !== false && strpos($decoded, ':') !== false) {
+                list($auth_user, $auth_pw) = explode(':', $decoded, 2);
+            }
+        }
+    }
+    if ($auth_user === '' && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+        $header = $_SERVER['HTTP_AUTHORIZATION'];
+        if (stripos($header, 'Basic ') === 0) {
+            $decoded = base64_decode(substr($header, 6), true);
+            if ($decoded !== false && strpos($decoded, ':') !== false) {
+                list($auth_user, $auth_pw) = explode(':', $decoded, 2);
+            }
+        }
+    }
+
+    /* 3) Gegen Hash prüfen */
+    $ok = false;
+    if ($auth_user !== '' && $auth_pw !== '') {
+        foreach ($ADMIN_USERS as $entry) {
+            if (!is_array($entry) || !isset($entry['user'], $entry['hash'])) continue;
+            if (hash_equals((string)$entry['user'], $auth_user)
+                && function_exists('password_verify')
+                && password_verify($auth_pw, (string)$entry['hash'])) {
+                $ok = true; break;
+            }
+        }
+    }
+
+    if (!$ok) {
+        http_response_code(401);
+        header('WWW-Authenticate: Basic realm="RV Hard Foto-Galerie Admin"');
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'ok' => false,
+            'error' => 'Zugriff verweigert – Benutzername/Passwort falsch oder nicht gesetzt.',
+            'hint'  => 'Trage dein Passwort in .htaccess + upload.php $ADMIN_USERS ein.'
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+}
+fg_basic_auth_require();
+
+
+/* ============================================================
  *  SBS GALERIE – AUTO UPLOAD ENDPOINT
  *  Speichert Bilder direkt in Ordner + merged events.json
  *  Aufgerufen per AJAX aus dem Admin Bereich

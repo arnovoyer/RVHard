@@ -1,0 +1,33 @@
+# ================================================================
+#   SBS GALERIE – ADMIN PASSWORDSCHUTZ (.htaccess)
+#   Legt diese Datei in den /admin/ Ordner! Nicht in Galerie Root!
+#   Pfad auf Server (Beispiele:
+#   Subdomain:  /www/htdocs/w012345/fotos.rv-hard.at/admin/.htaccess
+#   Unterordner:/www/htdocs/w012345/rv-hard.at/fotos/admin/.htaccess
+# ================================================================
+
+AuthType Basic
+AuthName "RV Hard Foto-Galerie Admin – Passwort erforderlich"
+
+# ACHTUNG: Den Pfad zu .htpasswd ANPASSEN an deinen Server!
+# Bei ALL-Inkl ist meist: /www/htdocs/DEIN_KAS_LOGINNAME/SUBDOMAIN ODER DOMAINPFAD
+# Beispiel All-Inkl Korrekte Beispiele (an DEINEN Pfad anpassen:
+# Subdomain fotos.rv-hard.at:
+# AuthUserFile /www/htdocs/w01bcde/fotos.rv-hard.at/fotos/admin/.htpasswd
+# Hauptdomain rv-hard.at Unterordner:
+# AuthUserFile /www/htdocs/w01bcde/rv-hard.at/fotos/admin/.htpasswd
+
+AuthUserFile /PFAD_ZU_DEINEM_WEBROOT/fotos/admin/.htpasswd
+
+Require valid-user
+
+# Keine Directory Listings anzeigen
+Options -Indexes
+
+# Zugriff auf upload.php nur mit HTTPS erzwingen
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
