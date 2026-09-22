@@ -1,33 +1,31 @@
 # ================================================================
-#   SBS GALERIE – ADMIN PASSWORDSCHUTZ (.htaccess)
-#   Legt diese Datei in den /admin/ Ordner! Nicht in Galerie Root!
-#   Pfad auf Server (Beispiele:
-#   Subdomain:  /www/htdocs/w012345/fotos.rv-hard.at/admin/.htaccess
-#   Unterordner:/www/htdocs/w012345/rv-hard.at/fotos/admin/.htaccess
+#   SBS GALERIE – ADMIN SICHERHEIT (.htaccess)
+#   KEIN Basic Auth mehr! → Login über PHP Session login.php
+#   Hier nur noch: Schutz vor Directory Listing + HTTPS erzwingen
 # ================================================================
 
-AuthType Basic
-AuthName "RV Hard Foto-Galerie Admin – Passwort erforderlich"
+DirectoryIndex index.php index.html
 
-# ACHTUNG: Den Pfad zu .htpasswd ANPASSEN an deinen Server!
-# Bei ALL-Inkl ist meist: /www/htdocs/DEIN_KAS_LOGINNAME/SUBDOMAIN ODER DOMAINPFAD
-# Beispiel All-Inkl Korrekte Beispiele (an DEINEN Pfad anpassen:
-# Subdomain fotos.rv-hard.at:
-# AuthUserFile /www/htdocs/w01bcde/fotos.rv-hard.at/fotos/admin/.htpasswd
-# Hauptdomain rv-hard.at Unterordner:
-# AuthUserFile /www/htdocs/w01bcde/rv-hard.at/fotos/admin/.htpasswd
+Options -Indexes -MultiViews
 
-AuthUserFile /PFAD_ZU_DEINEM_WEBROOT/fotos/admin/.htpasswd
-
-Require valid-user
-
-# Keine Directory Listings anzeigen
-Options -Indexes
-
-# Zugriff auf upload.php nur mit HTTPS erzwingen
+# ---------- HTTPS erzwingen (All-Inkl unterstützt X-Forwarded-Proto) ----------
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </IfModule>
+
+# ---------- Keine .ht* / config Dateien von außen erreichbar ----------
+# (generate-password-hash.php ABSICHTLICH NICHT gesperrt, da er kurz zum
+#  Generieren eines neuen Passwort-Hashes aufgerufen werden muss.
+#  ABER: nach Gebrauch SOFORT vom Server löschen! Steht in der Anleitung!)
+<FilesMatch "^\.ht|^config(\.example)?\.php$|^auth\.php$">
+  Require all denied
+</FilesMatch>
+
+# ---------- NUR PHP SCRIPTE ALS ADMIN-SEITEN erlauben (kein HTML ohne Auth!) ----------
+# ACHTUNG: Kommentiere diese Zeile AUS wenn du index.html temporär ohne Login testen willst!
+<FilesMatch "\.html$">
+  Require all denied
+</FilesMatch>
