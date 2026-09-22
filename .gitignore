@@ -2,3 +2,13 @@ cms/
 .vscode/
 .venv/
 cms/config.php
+
+# ============================================================
+# FOTO-GALERIE ADMIN (GEHEIM!)
+# Enthalten Passwort-Hashes / Zugangsdaten – NIEMALS ins GIT!
+# ============================================================
+fotos/admin/config.php
+fotos/admin/.htpasswd
+fotos/admin/generate-password-hash.php
+fotos/admin/generate-htpasswd.php
+

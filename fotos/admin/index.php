@@ -1,3 +1,10 @@
+<?php
+require_once(__DIR__ . '/auth.php');
+fg_admin_require_login(true);
+$csrfToken = fg_csrf_token();
+$currentUser = fg_admin_current_user();
+$currentName = !empty($_SESSION['fg_admin_name']) ? $_SESSION['fg_admin_name'] : $currentUser;
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -308,6 +315,27 @@
     </style>
 </head>
 <body>
+
+<!-- Admin Session Topbar -->
+<div id="fg-admin-sessionbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#111;border-bottom:2px solid #ffcc00;padding:9px 18px;display:flex;align-items:center;gap:14px;font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#fff">
+  <div style="display:flex;align-items:center;gap:8px;color:#ffcc00;font-weight:600">
+    <i class="fa-solid fa-user-shield"></i>
+    <span><?= htmlspecialchars($currentName) ?></span>
+    <span style="color:#888;font-weight:400">(<?= htmlspecialchars($currentUser) ?>)</span>
+  </div>
+  <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <a href="../" style="color:#ddd;text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-image"></i> Galerie</a>
+    <a href="logout.php" style="background:#e2001a;color:#fff;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
+  </div>
+  <input type="hidden" id="fg-admin-csrf" name="csrf" value="<?= htmlspecialchars($csrfToken) ?>">
+</div>
+<style>
+  body { padding-top: 60px !important; }
+  @media(max-width:520px){ body { padding-top: 90px !important; } }
+  #fg-admin-sessionbar a[href="../"]:hover { background:#222;color:#ffcc00 }
+  #fg-admin-sessionbar a[href="logout.php"]:hover { background:#c70018 }
+</style>
+
     <header><nav id="navigation-container"></nav></header>
 
     <main>
