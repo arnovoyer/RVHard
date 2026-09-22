@@ -79,13 +79,62 @@ function fg_admin_current_user() {
 }
 
 function fg_admin_require_login($redirectToLogin = true) {
+    /* ============================================================
+     *  LOOP-SCHUTZ (AM ANFANG VON ALLEM!)
+     *  Wenn die aufrufende Seite selbst login.php / logout.php etc. ist,
+     *  dann AUF KEINEN FALL weiterleiten!
+     *  (auth.php wird ja VON login.php included! Wenn es dann auf
+     *   login.php umleitet → Endlos-Loop! 🚨)
+     * ============================================================ */
+    $NO_REDIRECT_FILES = ['login.php','logout.php','generate-password-hash.php','_debug-check.php'];
+    foreach (['REQUEST_URI','SCRIPT_NAME','PHP_SELF','SCRIPT_FILENAME','PATH_TRANSLATED','ORIG_PATH_INFO'] as $k) {
+        if (empty($_SERVER[$k]) || !is_string($_SERVER[$k])) continue;
+        $tmp = explode('?', $_SERVER[$k], 2)[0];
+        $b = basename($tmp);
+        if (in_array(strtolower($b), array_map('strtolower', $NO_REDIRECT_FILES), true)) {
+            /* Schon auf einer Auth-Seite → kein redirect! */
+            return fg_is_admin_logged();
+        }
+    }
+    /* Letztes Fallback: Debug-Backtrace prüfen, inkludierende Datei holen */
+    $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+    if (!empty($bt[0]['file'])) {
+        $incFile = basename($bt[0]['file']);
+        if (in_array(strtolower($incFile), array_map('strtolower', $NO_REDIRECT_FILES), true)) {
+            return fg_is_admin_logged();
+        }
+    }
+    if (!empty($bt[1]['file'])) {
+        $callerFile = basename($bt[1]['file']);
+        if (in_array(strtolower($callerFile), array_map('strtolower', $NO_REDIRECT_FILES), true)) {
+            return fg_is_admin_logged();
+        }
+    }
+
     if (!fg_is_admin_logged()) {
         if ($redirectToLogin && !headers_sent()) {
-            /* Weiterleiten zu login.php (selbes Verzeichnis wie diese auth.php!) */
-            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            $host = $_SERVER['HTTP_HOST'] ?? '';
-            $here = rawurlencode($_SERVER['REQUEST_URI'] ?? '/admin/');
-            header('Location: ' . $protocol . '://' . $host . dirname(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) . '/login.php?redirect=' . $here);
+            $requestUri = isset($_SERVER['REQUEST_URI']) ? (string)$_SERVER['REQUEST_URI'] : '';
+            $qsPos = is_string($requestUri) ? strpos($requestUri, '?') : false;
+            $herePath = ($qsPos !== false) ? substr($requestUri, 0, $qsPos) : $requestUri;
+            if ($herePath === '' || $herePath === false) $herePath = '/admin/';
+            $hereEncoded = rawurlencode($requestUri !== '' ? $requestUri : $herePath);
+
+            /* Sicherheitshalber hier nochmal: SELBST AUF login.php? Dann STOP */
+            $selfFile = basename(parse_url($herePath, PHP_URL_PATH) ?: '');
+            if (in_array(strtolower($selfFile), array_map('strtolower', $NO_REDIRECT_FILES), true)) {
+                return false;
+            }
+            foreach (['SCRIPT_NAME','PHP_SELF'] as $k) {
+                if (!empty($_SERVER[$k]) && is_string($_SERVER[$k])) {
+                    $b = basename(explode('?', $_SERVER[$k], 2)[0]);
+                    if (in_array(strtolower($b), array_map('strtolower', $NO_REDIRECT_FILES), true)) {
+                        return false;
+                    }
+                }
+            }
+
+            $sep = strpos('./login.php', '?') === false ? '?' : '&';
+            header('Location: ./login.php' . $sep . 'redirect=' . $hereEncoded);
             exit;
         }
         http_response_code(401);
@@ -93,7 +142,7 @@ function fg_admin_require_login($redirectToLogin = true) {
         echo json_encode([
             'ok' => false,
             'error' => 'Nicht eingeloggt – bitte anmelden.',
-            'login_url' => dirname(parse_url($_SERVER['REQUEST_URI'] ?? '/admin/', PHP_URL_PATH)) . '/login.php'
+            'login_url' => './login.php'
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         exit;
     }

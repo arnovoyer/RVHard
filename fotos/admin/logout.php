@@ -1,10 +1,7 @@
 <?php
 require_once(__DIR__ . '/auth.php');
-fg_admin_require_login(false);
+/* Session killen (auch wenn nicht eingeloggt – für Sauberkeit) */
 fg_admin_logout();
-
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host  = $_SERVER['HTTP_HOST'] ?? '';
-$path  = rtrim(dirname(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/admin'), '/');
-header('Location: ' . $protocol . '://' . $host . $path . '/login.php?bye');
+/* NUR RELATIVER REDIRECT, damit kein Loop bei Reverse Proxy! */
+header('Location: ./login.php?bye');
 exit;

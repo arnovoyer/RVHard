@@ -8,16 +8,52 @@ require_once(__DIR__ . '/auth.php');
 
 $error = '';
 $success = '';
-$redirectTarget = !empty($_GET['redirect']) ? (string)$_GET['redirect'] : './index.html';
-/* Schutz gegen Open Redirect: nur relative URLs oder eigene Domain erlaubt */
-if ($redirectTarget && $redirectTarget[0] !== '/') {
-    $redirectTarget = './' . ltrim($redirectTarget, '/');
-}
-$redirectTarget = $redirectTarget ?: './index.html';
 
-/* Schon eingeloggt? */
-if (fg_is_admin_logged()) {
+/* =========================================================
+ *  SICHERHEIT: redirect Parameter sanitizen (OPEN REDIRECT!)
+ *  Erlaube NUR:
+ *    - Relative Pfade mit ./ oder / (aber KEINE externen // URLs)
+ *    - index.php / index.html (Standard, wenn nichts angegeben)
+ * ========================================================= */
+$redirectTarget = '';
+if (!empty($_GET['redirect'])) {
+    $redirectTarget = (string)$_GET['redirect'];
+} elseif (!empty($_POST['redirect'])) {
+    $redirectTarget = (string)$_POST['redirect'];
+}
+if (!$redirectTarget) {
+    $redirectTarget = './index.php';
+}
+/* Dekodiere URL-kodierte Redirects (für die Prüfung!) */
+$decoded = rawurldecode($redirectTarget);
+if (is_string($decoded) && $decoded !== '') {
+    $redirectTarget = $decoded;
+}
+/* Externe URLs mit Protokoll? AUF KEINEN FALL! → Default */
+if (preg_match('#^[a-zA-Z][a-zA-Z0-9+\-.]*://#', $redirectTarget) || strpos($redirectTarget, '//') === 0) {
+    $redirectTarget = './index.php';
+}
+/* Falls Start ohne / oder ./ → mit ./ ergänzen (relativ zu Admin!) */
+if ($redirectTarget !== '' && $redirectTarget[0] !== '/' && strpos($redirectTarget, './') !== 0 && strpos($redirectTarget, '?') !== 0) {
+    $redirectTarget = './' . $redirectTarget;
+}
+/* Zusätzlicher Schutz: Keine Protokolle, keine Backslashes, keine NULL Bytes */
+$redirectTarget = str_replace(["\x00","\\","\r","\n"], '', $redirectTarget);
+
+/* Schon eingeloggt? → Sofort weiter (aber immer relative URL!)
+ * AUSSER: redirectTarget ist login.php SELBST! → Dann Endlosschleife vermeiden! */
+$decodedRedirectForLoopCheck = $redirectTarget;
+if ($decodedRedirectForLoopCheck) {
+    $tmp = explode('?', rawurldecode($decodedRedirectForLoopCheck), 2);
+    $decodedRedirectForLoopCheck = basename($tmp[0]);
+}
+$loopTargets = ['login.php','logout.php','generate-password-hash.php'];
+if (fg_is_admin_logged() && !in_array(strtolower($decodedRedirectForLoopCheck), array_map('strtolower', $loopTargets), true)) {
     header('Location: ' . $redirectTarget);
+    exit;
+} elseif (fg_is_admin_logged()) {
+    /* Schon eingeloggt, aber man wollte auf login.php → auf index.php schicken */
+    header('Location: ./index.php');
     exit;
 }
 
@@ -45,10 +81,8 @@ if (isset($_GET['logout'])) {
 }
 
 /* ======= HTML Ausgabe ======= */
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host  = $_SERVER['HTTP_HOST'] ?? '';
-$path  = rtrim(dirname(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/admin'), '/');
-$assetBase = $protocol . '://' . $host . $path . '/../assets/';
+/* Asset-Base: Ebenen relativ hoch (admin/ liegt unter Galerie root) */
+$assetBase = '../assets/';
 $logoUrl   = $assetBase . 'img/logo/RV_Hard_Logo.webp';
 $csrfHtml  = '<input type="hidden" name="csrf" value="' . htmlspecialchars(fg_csrf_token()) . '">';
 ?>

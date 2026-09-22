@@ -1,31 +1,34 @@
 # ================================================================
 #   SBS GALERIE – ADMIN SICHERHEIT (.htaccess)
 #   KEIN Basic Auth mehr! → Login über PHP Session login.php
-#   Hier nur noch: Schutz vor Directory Listing + HTTPS erzwingen
 # ================================================================
 
 DirectoryIndex index.php index.html
 
 Options -Indexes -MultiViews
 
-# ---------- HTTPS erzwingen (All-Inkl unterstützt X-Forwarded-Proto) ----------
+# ---------- HTTPS erzwingen: nur bei 302 (Temporär!), damit kein Cache-Loop! ----------
+# (R=302 statt R=301, und erstellen wir NUR weiterleitung wenn es wirklich KEIN https ist.
+#  Bei Reverse Proxy / CDN wird HTTPS oft vor dem Server beendet → X-Forwarded-Proto checken!)
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP:X-Forwarded-Ssl} !on [NC]
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=302,L]
 </IfModule>
 
 # ---------- Keine .ht* / config Dateien von außen erreichbar ----------
-# (generate-password-hash.php ABSICHTLICH NICHT gesperrt, da er kurz zum
-#  Generieren eines neuen Passwort-Hashes aufgerufen werden muss.
-#  ABER: nach Gebrauch SOFORT vom Server löschen! Steht in der Anleitung!)
 <FilesMatch "^\.ht|^config(\.example)?\.php$|^auth\.php$">
   Require all denied
 </FilesMatch>
 
-# ---------- NUR PHP SCRIPTE ALS ADMIN-SEITEN erlauben (kein HTML ohne Auth!) ----------
-# ACHTUNG: Kommentiere diese Zeile AUS wenn du index.html temporär ohne Login testen willst!
+# ---------- _debug-check.php auch von außen erlauben (kurz zur Fehleranalyse!) ----------
+<FilesMatch "^_debug-check\.php$">
+  Require all granted
+</FilesMatch>
+
+# ---------- NUR PHP SCRIPTE ALS ADMIN-SEITEN erlauben ----------
 <FilesMatch "\.html$">
   Require all denied
 </FilesMatch>
