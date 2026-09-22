@@ -6,20 +6,39 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
 /* ============================================================
- *  ADMIN SESSION AUTH
- *  (Ersetzt Basic Auth / htaccess durch eigene Login-Seite login.php)
+ *  ADMIN SESSION AUTH (STANDALONE auth2.php, KEINE redirects!)
  * ============================================================ */
-require_once(__DIR__ . '/auth.php');
-fg_admin_require_login(false); /* false = kein HTTP-Redirect, sondern JSON Error */
+require_once(__DIR__ . '/auth2.php');
 
-/* ZUSATZ-SCHUTZ: POST Requests benötigen CSRF Token */
-if (!empty($_POST) && !fg_csrf_check()) {
-    http_response_code(400);
+/* Nicht eingeloggt? 401 JSON ausgeben (KEIN redirect!) */
+if (!fg2_logged()) {
+    http_response_code(401);
     echo json_encode([
         'ok' => false,
-        'error' => 'Ungültige Sitzung (CSRF Token). Bitte Seite neu laden und erneut anmelden.'
+        'error' => 'Nicht eingeloggt – bitte Seite neu laden und anmelden.',
+        'reload_hint' => true
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
+}
+
+/* CSRF Check für POST-Requests (ping kann GET sein, also nur POST prüfen!) */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $csrfOk = false;
+    if (isset($_POST['csrf']) && is_string($_POST['csrf']) && !empty($_SESSION['fg2_csrf'])) {
+        if (hash_equals($_SESSION['fg2_csrf'], $_POST['csrf'])) $csrfOk = true;
+    }
+    /* Fallback: csrf als URL-Parameter */
+    if (!$csrfOk && isset($_GET['csrf']) && is_string($_GET['csrf']) && !empty($_SESSION['fg2_csrf'])) {
+        if (hash_equals($_SESSION['fg2_csrf'], $_GET['csrf'])) $csrfOk = true;
+    }
+    if (!$csrfOk) {
+        http_response_code(400);
+        echo json_encode([
+            'ok' => false,
+            'error' => 'Ungültige Sitzung (CSRF Token). Bitte Seite neu laden und erneut anmelden.'
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
 }
 
 

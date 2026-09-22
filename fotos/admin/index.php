@@ -1,9 +1,26 @@
 <?php
-require_once(__DIR__ . '/auth.php');
-fg_admin_require_login(true);
-$csrfToken = fg_csrf_token();
-$currentUser = fg_admin_current_user();
-$currentName = !empty($_SESSION['fg_admin_name']) ? $_SESSION['fg_admin_name'] : $currentUser;
+/* ================================================================
+ *  SBS GALERIE ADMIN – HAUPTSEITE (KEIN redirect! Loop-sicher!)
+ *  Wenn nicht eingeloggt → FORMULAR DIREKT AUF DER SEITE + exit()
+ *  Auf KEINEN FALL auf login.php weiterleiten → Loop-Gefahr!
+ * ================================================================ */
+
+require_once(__DIR__ . '/auth2.php');
+
+/* Flash Msg holen */
+$__msg = ''; $__mType = 'err';
+if (!empty($_SESSION['fg2_msg']))  { $__msg = $_SESSION['fg2_msg'];  $__mType = ($_SESSION['fg2_mtype'] ?? 'err'); unset($_SESSION['fg2_msg'], $_SESSION['fg2_mtype']); }
+
+/* WICHTIG! Nur WENN EINGELOGGT: Rest der Seite ausgeben! */
+if (!fg2_logged()) {
+    fg2_render_login_page($__msg, $__mType);
+    exit; /* STOP! Kein Rest der Seite wird geladen wenn nicht eingeloggt! */
+}
+
+/* ---- Ab hier: NUR WENN EINGELOGGT! ---- */
+$csrfToken   = fg2_csrf_token();
+$currentUser = fg2_user();
+$currentName = fg2_displayname();
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -317,15 +334,18 @@ $currentName = !empty($_SESSION['fg_admin_name']) ? $_SESSION['fg_admin_name'] :
 <body>
 
 <!-- Admin Session Topbar -->
-<div id="fg-admin-sessionbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#111;border-bottom:2px solid #ffcc00;padding:9px 18px;display:flex;align-items:center;gap:14px;font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#fff">
+
+<!-- Admin Session Topbar (auth2.php standalone) -->
+<div id="fg-admin-sessionbar" style="position:fixed;top:0;left:0;right:0;z-index:10000;background:#111;border-bottom:2px solid var(--rv-gelb,#ffcc00);padding:9px 18px;display:flex;align-items:center;gap:14px;font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#fff">
   <div style="display:flex;align-items:center;gap:8px;color:#ffcc00;font-weight:600">
     <i class="fa-solid fa-user-shield"></i>
     <span><?= htmlspecialchars($currentName) ?></span>
     <span style="color:#888;font-weight:400">(<?= htmlspecialchars($currentUser) ?>)</span>
   </div>
   <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <a href="../" style="color:#ddd;text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-image"></i> Galerie</a>
-    <a href="logout.php" style="background:#e2001a;color:#fff;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
+    <a href="../" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-image"></i> Galerie</a>
+    <a href="?logout=1" style="background:#e2001a;color:#fff;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600"
+       onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
   </div>
   <input type="hidden" id="fg-admin-csrf" name="csrf" value="<?= htmlspecialchars($csrfToken) ?>">
 </div>
@@ -333,8 +353,9 @@ $currentName = !empty($_SESSION['fg_admin_name']) ? $_SESSION['fg_admin_name'] :
   body { padding-top: 60px !important; }
   @media(max-width:520px){ body { padding-top: 90px !important; } }
   #fg-admin-sessionbar a[href="../"]:hover { background:#222;color:#ffcc00 }
-  #fg-admin-sessionbar a[href="logout.php"]:hover { background:#c70018 }
+  #fg-admin-sessionbar a[href="?logout=1"]:hover { background:#c70018 }
 </style>
+
 
     <header><nav id="navigation-container"></nav></header>
 

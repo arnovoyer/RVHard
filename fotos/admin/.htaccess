@@ -1,34 +1,41 @@
 # ================================================================
 #   SBS GALERIE – ADMIN SICHERHEIT (.htaccess)
-#   KEIN Basic Auth mehr! → Login über PHP Session login.php
+#   MINDEST KONFIGURATION – KEINE REWRITES, KEINE HTTPS-UMLEITUNG!
+#   (HTTPS wird bereits über Subdomain / CDN erzwungen → sonst Loop-Gefahr!)
+#   ACHTUNG: Wenn Du eine Zeile änderst, danach Browser-Cache LEEREN!
 # ================================================================
 
+# Standard: Index-Dateien
 DirectoryIndex index.php index.html
 
+# Keine Verzeichnisauflistung, keine Wildcard-MultiViews
 Options -Indexes -MultiViews
 
-# ---------- HTTPS erzwingen: nur bei 302 (Temporär!), damit kein Cache-Loop! ----------
-# (R=302 statt R=301, und erstellen wir NUR weiterleitung wenn es wirklich KEIN https ist.
-#  Bei Reverse Proxy / CDN wird HTTPS oft vor dem Server beendet → X-Forwarded-Proto checken!)
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
-  RewriteCond %{HTTP:X-Forwarded-Ssl} !on [NC]
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=302,L]
-</IfModule>
-
-# ---------- Keine .ht* / config Dateien von außen erreichbar ----------
-<FilesMatch "^\.ht|^config(\.example)?\.php$|^auth\.php$">
+# Kein Zugriff auf .ht* Dateien, config/auth (internal)
+<FilesMatch "^\.ht|^config(\.example)?\.php$|^auth\.php$|^auth2\.php$">
   Require all denied
 </FilesMatch>
 
-# ---------- _debug-check.php auch von außen erlauben (kurz zur Fehleranalyse!) ----------
-<FilesMatch "^_debug-check\.php$">
+# Debug und Passwort-Generator: kurzfristig erlaubt, nach Gebrauch LÖSCHEN!
+<FilesMatch "^(_debug-check|generate-password-hash)\.php$">
   Require all granted
 </FilesMatch>
 
-# ---------- NUR PHP SCRIPTE ALS ADMIN-SEITEN erlauben ----------
+# HTML im Admin ggf. sperren (wir nutzen nur index.php!)
 <FilesMatch "\.html$">
   Require all denied
 </FilesMatch>
+
+# =================================================================
+#  HTTPS UMLEITUNG - VORSICHT AKTIVIERT!
+#  Wenn du sicher bist, dass es KEINEN Reverse Proxy Loop gibt:
+#  Entferne die # vor RewriteEngine/RewriteCond/RewriteRule.
+#  NUTZE R=302 (temporär!) – R=301 wird für IMMER im Browser gespeichert!
+# =================================================================
+#<IfModule mod_rewrite.c>
+#  RewriteEngine On
+#  RewriteCond %{HTTPS} !=on
+#  RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+#  RewriteCond %{HTTP:X-Forwarded-Ssl} !on [NC]
+#  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=302,L]
+#</IfModule>
