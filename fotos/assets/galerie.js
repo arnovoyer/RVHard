@@ -642,12 +642,32 @@ function fgSanitizePhotoSrc(src, fallback = null) {
     return fallback;
 }
 
-function fgPhotoMatchesBib(photo, bibQuery) {
+function fgPhotoMatchesBib(photo, bibQuery, mode /* 'exact' | 'partial' */) {
     if (!bibQuery) return true;
     const q = String(bibQuery).toLowerCase().trim();
     if (!q) return true;
-    const bibs = (photo.bibNumbers || []).map(b => String(b).toLowerCase());
-    return bibs.some(b => b === q || b.includes(q));
+
+    // Default: EXAKTE SUCHE (sonst 1 → 10, 100!)
+    const useExact = (mode === 'partial') ? false : true;
+
+    const photoBibs = (photo.bibNumbers || []).map(b => String(b).toLowerCase().trim());
+
+    // 1) Multi-Suche: Mehrere Nummern durch Leerzeichen, Komma, Semikolon trennen
+    const qTokens = q.split(/[\s,;]+/).map(t => t.trim()).filter(Boolean);
+    if (qTokens.length === 0) return true;
+
+    // Match if ANY Query-Token matches ANY Photo-Bib (ODER Logik)
+    return qTokens.some(tok => {
+        return photoBibs.some(pb => {
+            if (useExact) {
+                // 🔥 EXAKT: Token entspricht genau einer Bib! (Keine 1 → 10 Fehler!)
+                return pb === tok;
+            } else {
+                // Teilweise: Token ist IN Bib enthalten (alte Logik, nur bei Toggle)
+                return pb.includes(tok);
+            }
+        });
+    });
 }
 
 function fgRenderEventPage(event) {
@@ -690,6 +710,62 @@ function fgRenderEventPage(event) {
     const photos = Array.isArray(event.photos) ? event.photos : [];
     const allBibs = new Set();
     photos.forEach(p => (p.bibNumbers || []).forEach(b => allBibs.add(String(b))));
+
+    /* ============ STARTNUMMER SUCH-MODUS (Standard: Exakt!) ============ */
+    // Speichert dauerhaft pro User im localStorage, zusätzlich in URL (für geteilte Links)
+    const STORAGE_KEY_MODE = 'fg_bib_mode';
+    function fgGetBibMode() {
+        let m = null;
+        try { m = fgQueryParam('bibMode'); } catch(e){}
+        if (m !== 'exact' && m !== 'partial') {
+            try {
+                const s = window.localStorage.getItem(STORAGE_KEY_MODE);
+                if (s === 'exact' || s === 'partial') m = s;
+            } catch(e){}
+        }
+        return (m === 'partial') ? 'partial' : 'exact';
+    }
+    function fgSetBibMode(newMode) {
+        const mode = (newMode === 'partial') ? 'partial' : 'exact';
+        try { window.localStorage.setItem(STORAGE_KEY_MODE, mode); } catch(e){}
+        try {
+            const url = new URL(window.location.href);
+            if (mode === 'partial') url.searchParams.set('bibMode','partial');
+            else url.searchParams.delete('bibMode');
+            window.history.replaceState({}, '', url.toString());
+        } catch(e){}
+        fgApplyBibModeUI(mode);
+        renderGallery();
+    }
+    function fgApplyBibModeUI(mode) {
+        const btnExact = document.getElementById('fg-bibmode-exact');
+        const btnPart  = document.getElementById('fg-bibmode-partial');
+        if (!btnExact || !btnPart) return;
+        const IS_EXACT = mode !== 'partial';
+        // ACTIVE Button: Gelb wie RV Hard; INACTIVE: Grau/Weiss
+        const active = "background: linear-gradient(180deg, #ffd24a, #ffc107); background-image: linear-gradient(180deg, #ffd24a, #ffc107); color:#1a1600; border-color: rgba(0,0,0,.08); box-shadow: 0 4px 10px rgba(255,193,7,.28), 0 1px 0 rgba(255,255,255,.35) inset;";
+        const inactive = "background: #fff; color:#374151; border-color:#e5e7eb; box-shadow:none;";
+        btnExact.style.cssText = btnExact.getAttribute('data-css-base') + ';' + (IS_EXACT ? active : inactive);
+        btnPart.style.cssText  = btnPart.getAttribute('data-css-base')  + ';' + (IS_EXACT ? inactive : active);
+    }
+    let bibMode = fgGetBibMode();
+    /* Initial UI State setzen, sobald DOM Ready (Buttons existieren, da sie in event.html stehen!) */
+    requestAnimationFrame(() => fgApplyBibModeUI(bibMode));
+    /* Button Listener (haken sich sobald die Elemente im DOM sind) */
+    function fgAttachModeListeners() {
+        const btnExact = document.getElementById('fg-bibmode-exact');
+        const btnPart  = document.getElementById('fg-bibmode-partial');
+        if (btnExact && !btnExact._fgBound) {
+            btnExact._fgBound = true;
+            btnExact.addEventListener('click', () => fgSetBibMode('exact'));
+        }
+        if (btnPart && !btnPart._fgBound) {
+            btnPart._fgBound = true;
+            btnPart.addEventListener('click', () => fgSetBibMode('partial'));
+        }
+    }
+    requestAnimationFrame(fgAttachModeListeners);
+    setInterval(fgAttachModeListeners, 500); // Fallback, falls DOM zu langsam lädt
 
     /* Query-Parameter vorbelegen */
     const qBib = fgQueryParam('bib');
@@ -738,8 +814,9 @@ function fgRenderEventPage(event) {
 
     function renderGallery() {
         const bib = (bibInput ? bibInput.value : '').trim();
+        const mode = fgGetBibMode();
 
-        const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib));
+        const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib, mode));
         /* 🔥 Memory Speicher statt data-photos-src JSON im HTML! (Riesige JSON im HTML Attribut löste Security Parser Error file:// aus!) */
         if (!window._fgPhotoBuckets) window._fgPhotoBuckets = {};
         window._fgPhotoBuckets.current = filtered;
@@ -751,6 +828,10 @@ function fgRenderEventPage(event) {
         if (!filtered.length) {
             gallery.innerHTML = `<div class="fg-empty">
                 <strong>Keine Treffer.</strong>
+                ${bib && mode === 'exact' ? `<div style="margin-top:.6rem; font-size:.85rem; color:#6b7280;">
+                    Tipp: Suche nach <em style="color:#111;">${fgEscapeHtml(bib)}</em> ohne Ergebnisse.
+                    <button onclick="document.getElementById('fg-bibmode-partial')&&document.getElementById('fg-bibmode-partial').click();" style="margin-left:.4rem; padding:4px 10px; font-size:12px; font-weight:700; border-radius:8px; background:#ffc107; color:#1a1600; border:0; cursor:pointer;">Oder: Teilweise-Suche aktivieren</button>
+                </div>` : ''}
             </div>`;
             return;
         }

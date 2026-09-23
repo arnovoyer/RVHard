@@ -82,29 +82,91 @@
                     <span id="fg-external-link"></span>
                 </div>
 
-                <!-- STARTNUMMER SUCHE (SICHTBAR + FUNKTIONAL!) -->
-                <div style="margin-top: 1.2rem; max-width: 460px;">
-                    <label for="fg-bib" style="display:block; margin: 0 0 0.45rem; font-size: 0.82rem; font-weight: 700; color: #e7ebef; letter-spacing: 0.01em;">
-                        <i class="fa-solid fa-hashtag" style="color: #ffc107;"></i> Suche nach Startnummer
+                <!-- STARTNUMMER SUCHE – ZENTRIERT, WEISS, RV HARD STIL! -->
+                <div style="margin: 1.4rem auto 0; max-width: 620px; width: 100%;">
+                    <label for="fg-bib" style="display:block; margin: 0 auto 0.65rem; text-align:center; font-size: 0.88rem; font-weight: 700; color: #1a1a1a; letter-spacing: 0.02em;">
+                        <i class="fa-solid fa-hashtag" style="color: #ffc107; margin-right:5px;"></i> Suche nach Startnummer
                     </label>
-                    <div style="display:flex; gap: 8px; align-items:stretch;">
-                        <div style="flex:1; position:relative;">
-                            <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#8893a3; font-size:14px;"></i>
-                            <input type="text" id="fg-bib" inputmode="numeric" placeholder="z.B. 42, 108, 256"
-                                style="width:100%; padding: 12px 14px 12px 40px; background:#232a33; border:1.5px solid #313b49; border-radius:10px; color:#f3f5f7; font-family:inherit; font-size:15px; font-weight:500; outline:none; transition: border-color .2s, box-shadow .2s;"
-                                onfocus="this.style.borderColor='#ffc107'; this.style.boxShadow='0 0 0 4px rgba(255,193,7,.15)'"
-                                onblur="this.style.borderColor='#313b49'; this.style.boxShadow='none'">
-                        </div>
-                        <button id="fg-bib-reset" type="button" title="Filter zurücksetzen"
-                            style="padding: 0 14px; background:#232a33; border:1.5px solid #313b49; border-radius:10px; color:#98a2b3; cursor:pointer; font-family:inherit; transition: all .2s;"
-                            onmouseover="this.style.background='#2a3240'; this.style.color='#e7ebef';"
-                            onmouseout="this.style.background='#232a33'; this.style.color='#98a2b3';">
-                            <i class="fa-solid fa-xmark" style="font-size:15px;"></i>
+
+                    <!-- 🔥 MODE TOGGLE: Exakt vs Teilweise! (RV Hard Pill Tabs) -->
+                    <div style="
+                        display:flex; align-items:center; justify-content:center;
+                        margin: 0 auto 0.85rem;
+                        background: #f3f4f6;
+                        border:1px solid #e5e7eb;
+                        padding: 5px;
+                        border-radius: 12px;
+                        width: fit-content;
+                        max-width: 100%;
+                    ">
+                        <button id="fg-bibmode-exact" type="button"
+                            data-css-base="flex:1 1 auto; padding: 7px 18px; border: 1.5px solid #e5e7eb; border-radius:9px; font-family:'Poppins',sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; display:inline-flex; align-items:center; gap:7px; margin-right:5px; transition: all .18s;"
+                            style=""
+                            title="Nur exakt gleiche Nummern finden (1 findet NUR #1, NICHT #10, #100 etc.)">
+                            <i class="fa-solid fa-crosshairs" style="font-size:13px;"></i>
+                            Exakte Nummer
+                        </button>
+                        <button id="fg-bibmode-partial" type="button"
+                            data-css-base="flex:1 1 auto; padding: 7px 18px; border: 1.5px solid #e5e7eb; border-radius:9px; font-family:'Poppins',sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; display:inline-flex; align-items:center; gap:7px; transition: all .18s;"
+                            style=""
+                            title="Teilweise Übereinstimmung finden (1 findet auch #10, #101, #12 etc.)">
+                            <i class="fa-solid fa-magnifying-glass-plus" style="font-size:13px;"></i>
+                            Teilweise
                         </button>
                     </div>
-                    <div style="margin-top: 6px; font-size: 11.5px; color:#7f8a9a; line-height:1.45;">
-                        <i class="fa-solid fa-circle-info" style="color:#5a6472; margin-right:4px;"></i>
-                        Mehrere Nummern durch <strong style="color:#9aa5b5;">Leerzeichen</strong> trennen (z.B. <code style="background:#1e242d; padding:1px 6px; border-radius:4px; color:#ffd24a; font-size:11px;">42 256</code>)
+
+                    <div style="
+                        display:flex; gap: 10px; align-items:stretch;
+                        background: #fff;
+                        border: 2px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 6px;
+                        box-shadow: 0 10px 28px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+                        transition: border-color .2s, box-shadow .2s;
+                    " id="fg-bib-wrap"
+                        onfocusin="document.getElementById('fg-bib-wrap').style.borderColor='#ffc107'; document.getElementById('fg-bib-wrap').style.boxShadow='0 10px 28px rgba(255,193,7,.18), 0 0 0 5px rgba(255,193,7,.12)';"
+                        onfocusout="document.getElementById('fg-bib-wrap').style.borderColor='#e5e7eb'; document.getElementById('fg-bib-wrap').style.boxShadow='0 10px 28px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04)';">
+
+                        <div style="flex:1; position:relative; display:flex; align-items:center;">
+                            <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:16px; color:#8b95a7; font-size:15px; z-index:1;"></i>
+                            <input type="text" id="fg-bib" inputmode="numeric" placeholder="Gib deine Startnummer ein … z.B. 42"
+                                style="
+                                    width:100%; padding: 14px 18px 14px 46px;
+                                    background: transparent !important; border: 0 !important; outline: none !important; box-shadow: none !important;
+                                    color: #111827;
+                                    font-family: 'Poppins', system-ui, sans-serif; font-size: 16px; font-weight: 600;
+                                    border-radius: 10px;
+                                ">
+                        </div>
+
+                        <button id="fg-bib-reset" type="button" title="Filter zurücksetzen"
+                            style="
+                                padding: 0 18px;
+                                background: #ffc107;
+                                background-image: linear-gradient(180deg, #ffd24a, #ffc107);
+                                color: #1a1600;
+                                border: 1px solid rgba(0,0,0,.08);
+                                border-radius: 10px;
+                                font-family: inherit; font-weight: 700; font-size: 13px;
+                                cursor: pointer;
+                                display:inline-flex; align-items:center; gap:7px;
+                                transition: filter .18s, transform .1s;
+                                box-shadow: 0 4px 10px rgba(255,193,7,.28), 0 1px 0 rgba(255,255,255,.35) inset;
+                            "
+                            onmouseover="this.style.filter='brightness(1.06)';"
+                            onmouseout="this.style.filter='brightness(1)';"
+                            onmousedown="this.style.transform='translateY(1px)';"
+                            onmouseup="this.style.transform='none';">
+                            <i class="fa-solid fa-filter-circle-xmark" style="font-size:15px;"></i>
+                            Zurücksetzen
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 10px; font-size: 12px; color:#6b7280; line-height:1.5; text-align:center;">
+                        <i class="fa-solid fa-circle-info" style="color:#9ca3af; margin-right:5px;"></i>
+                        Mehrere Nummern durch <strong style="color:#111827;">Leerzeichen</strong> trennen — z.B.
+                        <code style="background:#f3f4f6; padding:2px 8px; border-radius:6px; color:#111827; font-size:11.5px; margin:0 3px; border:1px solid #e5e7eb;">42 256</code>
+                        zeigt Bilder mit einer dieser Nummern.
                     </div>
                 </div>
 
