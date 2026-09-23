@@ -122,7 +122,7 @@ function fg2_csrf_check($k = 'csrf') {
     return (!empty($_SESSION['fg2_csrf']) && is_string($t) && hash_equals($_SESSION['fg2_csrf'], $t));
 }
 
-/* --- Fehlermeldung / Login Formular OHNE redirect! --- */
+/* --- Fehlermeldung / Login Formular – MINIMAL! (Nur das Nötigste) --- */
 function fg2_render_login_page($msg = '', $msgType = 'err') {
     $logoUrl = '../assets/img/logo/RV_Hard_Logo.webp';
     $csrfH = '<input type="hidden" name="csrf" value="' . htmlspecialchars(fg2_csrf_token()) . '">';
@@ -137,607 +137,194 @@ function fg2_render_login_page($msg = '', $msgType = 'err') {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>RV Hard · Foto-Galerie Administrator</title>
+<title>Anmelden · RV Hard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Slab:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
-/* ============ RV HARD DESIGN TOKENS (1:1 aus assets/style.css) ============ */
 :root{
-  --site-bg: #121417;
-  --site-text: #e7ebef;
-  --site-heading: #f3f5f7;
-  --site-muted: #c2c8cf;
-  --site-surface: #1b2027;
-  --site-surface-soft: #232a33;
-  --site-border: #313b49;
-  --accent-yellow: #ffc107;
-  --accent-yellow-hover: #ffd24a;
-  --accent-red: #e2001a;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --shadow-card: 0 20px 50px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.03) inset;
+  --bg: #121417;
+  --card: #1b2027;
+  --soft: #232a33;
+  --border: #313b49;
+  --text: #e7ebef;
+  --muted: #98a2b3;
+  --yellow: #ffc107;
+  --yellow-hover: #ffd24a;
+  --red: #e2001a;
+  --radius: 12px;
 }
-
-*,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%;width:100%}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;width:100%}
 body{
   font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
-  color:var(--site-text);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(255,193,7,.10), transparent 60%),
-    radial-gradient(800px 500px at 110% 110%, rgba(226,0,26,.06), transparent 55%),
-    var(--site-bg);
-  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  min-height:100vh;min-height:100svh;
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
 }
-
-/* ============ MAIN LAYOUT: Split Desktop / Stacked Mobile ============ */
-.rv-login{
-  min-height:100vh;
-  min-height:100svh;
-  display:grid;
-  grid-template-columns: 1.05fr .95fr;
-  max-width:1400px;
-  margin:0 auto;
-  padding:24px;
-  gap:24px;
-  align-items:center;
+.card{
+  width:100%;max-width:400px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px 26px 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.4);
 }
-@media (max-width: 980px){
-  .rv-login{grid-template-columns:1fr; padding:16px; gap:16px}
+.logo{
+  width:56px;height:56px;border-radius:14px;background:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+  box-shadow: 0 0 0 2px rgba(255,193,7,.25);
 }
-
-/* ============ LEFT PANEL (DESKTOP ONLY) – RV HARD BRANDING ============ */
-.rv-login__brand{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-height:620px;
-  padding:48px 48px 44px;
-  border-radius:var(--radius-xl);
-  background:
-    linear-gradient(160deg, rgba(255,193,7,.12), rgba(27,32,39,.98) 45%, rgba(18,20,23,1) 100%),
-    url('../assets/img/hero/Hero-img-medium.webp') center/cover no-repeat,
-    var(--site-surface);
-  box-shadow:var(--shadow-card);
-  border:1px solid rgba(255,193,7,.18);
-  overflow:hidden;
-  position:relative;
+.logo img{width:70%;height:70%;object-fit:contain}
+h1{
+  margin:0 0 22px;font-size:22px;font-weight:700;text-align:center;
+  letter-spacing:-.01em;color:var(--text);
 }
-@media (max-width: 980px){
-  .rv-login__brand{
-    min-height:0;
-    padding:28px 24px;
-    background:linear-gradient(160deg, rgba(255,193,7,.12), rgba(27,32,39,.98) 70%), var(--site-surface);
-  }
-}
-.rv-login__brand::before{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    linear-gradient(90deg, rgba(255,193,7,.0) 0%, rgba(255,193,7,.18) 50%, rgba(255,193,7,.0) 100%);
-  transform: translateX(-100%);
-  animation: rvShine 9s ease-in-out infinite;
-}
-@keyframes rvShine{
-  0%,100%{transform: translateX(-100%)}
-  50%{transform: translateX(100%)}
-}
-
-/* Brand – Logo + Headline */
-.rv-login__brand-top{position:relative; z-index:2}
-.rv-login__logo-row{display:flex;align-items:center;gap:16px;margin-bottom:34px}
-.rv-login__logo-wrap{
-  width:76px;height:76px;border-radius:20px;
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow: 0 8px 22px rgba(0,0,0,.3), 0 0 0 2px rgba(255,193,7,.25);
-}
-.rv-login__logo-wrap img{width:76%;height:76%;object-fit:contain}
-.rv-login__brand-title{
-  font-family:'Roboto Slab',serif;
-  font-weight:800;
-  font-size:30px;
-  line-height:1.1;
-  color:var(--site-heading);
-  margin:0;
-}
-.rv-login__brand-title span{color:var(--accent-yellow)}
-.rv-login__brand-sub{
-  font-size:13.5px;
-  color:var(--site-muted);
-  margin-top:6px;
-  font-weight:500;
-}
-
-.rv-login__headline{
-  position:relative; z-index:2;
-  font-family:'Roboto Slab',serif;
-  font-size: clamp(28px, 3.4vw, 44px);
-  line-height:1.12;
-  font-weight:800;
-  margin:14px 0 18px;
-  color:var(--site-heading);
-  max-width:520px;
-}
-.rv-login__headline em{
-  font-style:normal;
-  color:var(--accent-yellow);
-  position:relative;
-  display:inline-block;
-}
-.rv-login__headline em::after{
-  content:"";
-  position:absolute;left:-3px;right:-3px;bottom:4px;height:34%;
-  background:linear-gradient(180deg, transparent, rgba(255,193,7,.28));
-  z-index:-1;border-radius:4px;
-  transform: skewX(-8deg);
-}
-.rv-login__desc{
-  position:relative; z-index:2;
-  max-width:460px;
-  color:var(--site-text);
-  opacity:.86;
-  font-size:15px;
-  line-height:1.65;
-  margin:0;
-}
-
-/* Brand – Feature Liste */
-.rv-login__features{
-  position:relative; z-index:2;
-  list-style:none;
-  padding:0;margin:40px 0 0;
-  display:flex;flex-direction:column;gap:12px;
-}
-.rv-login__features li{
-  display:flex;align-items:center;gap:12px;
-  font-size:14px;color:var(--site-text);
-  background:rgba(35,42,51,.42);
-  backdrop-filter: blur(8px);
-  padding:12px 14px;
-  border:1px solid rgba(49,59,73,.6);
-  border-radius:var(--radius-md);
-  max-width:440px;
-}
-.rv-login__features i{
-  width:34px;height:34px;flex-shrink:0;
-  border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,193,7,.12);
-  color:var(--accent-yellow);
-  font-size:15px;
-  border:1px solid rgba(255,193,7,.22);
-}
-
-/* Brand – Footer */
-.rv-login__brand-foot{
-  position:relative; z-index:2;
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:16px;margin-top:30px;
-  color:var(--site-muted);
-  font-size:12.5px;
-}
-.rv-login__brand-foot strong{color:var(--site-heading);font-weight:700}
-@media (max-width: 980px){
-  .rv-login__features{display:none}
-  .rv-login__headline{margin-top:20px;font-size:28px}
-  .rv-login__desc{font-size:14px}
-  .rv-login__brand-foot{margin-top:28px}
-}
-
-/* ============ RIGHT PANEL – LOGIN FORM CARD ============ */
-.rv-login__form-wrap{
-  display:flex;align-items:center;justify-content:center;
-  padding:12px 0;
-}
-.rv-login__card{
-  width:100%;
-  max-width:460px;
-  background:var(--site-surface);
-  border:1px solid var(--site-border);
-  border-radius:var(--radius-xl);
-  box-shadow: var(--shadow-card);
-  overflow:hidden;
-  animation: rvFadeUp .5s cubic-bezier(.22,.61,.36,1) both;
-}
-@keyframes rvFadeUp{
-  from{opacity:0;transform: translateY(14px) scale(.985)}
-  to{opacity:1;transform:none}
-}
-@media (max-width: 980px){
-  .rv-login__card{max-width:100%}
-}
-
-/* Card – Header */
-.rv-login__card-top{
-  padding:30px 32px 20px;
-  border-bottom:1px solid var(--site-border);
-  background:
-    radial-gradient(500px 120px at 50% -40%, rgba(255,193,7,.12), transparent 70%),
-    var(--site-surface-soft);
-}
-.rv-login__card-top .eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
-  color:var(--accent-yellow);
-  background:rgba(255,193,7,.10);
-  padding:6px 12px;border-radius:999px;
-  border:1px solid rgba(255,193,7,.22);
-  margin-bottom:14px;
-}
-.rv-login__card-top .eyebrow i{font-size:12px}
-.rv-login__card-top h2{
-  margin:0 0 4px;
-  font-family:'Roboto Slab',serif;
-  font-weight:800;
-  font-size:26px;
-  line-height:1.15;
-  color:var(--site-heading);
-}
-.rv-login__card-top p{
-  margin:4px 0 0;
-  font-size:13.5px;color:var(--site-muted);line-height:1.5
-}
-
-/* Card – Body */
-.rv-login__card-body{padding:26px 32px 28px}
-@media (max-width: 480px){
-  .rv-login__card-body{padding:22px 20px 24px}
-  .rv-login__card-top{padding:24px 20px 16px}
-}
-
-/* Messages */
-.rv-msg{
-  border-radius:var(--radius-md);
-  padding:12px 14px;
+.msg{
+  border-radius:var(--radius);
+  padding:11px 13px;
   margin-bottom:18px;
-  font-size:13.5px;
-  line-height:1.55;
-  display:flex;align-items:flex-start;gap:10px;
-  animation: rvMsgIn .28s ease both;
+  font-size:13.5px;line-height:1.5;
+  display:flex;align-items:flex-start;gap:9px;
 }
-@keyframes rvMsgIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
-.rv-msg i{margin-top:2px;flex-shrink:0;font-size:15px}
-.rv-msg--err{
-  background:rgba(226,0,26,.10);
-  border:1px solid rgba(226,0,26,.3);
-  color:#ffcdd2;
-}
-.rv-msg--err i{color:#ff7a84}
-.rv-msg--ok{
-  background:rgba(255,193,7,.10);
-  border:1px solid rgba(255,193,7,.28);
-  color:#ffe9a7;
-}
-.rv-msg--ok i{color:var(--accent-yellow)}
-
-/* Config Warnung */
-.rv-msg--warn{
-  background:rgba(255,100,0,.10);
-  border:1px solid rgba(255,100,0,.3);
-  color:#ffd7b6;
-}
-.rv-msg--warn i{color:#ffa755}
-.rv-msg code{
-  font-family:'JetBrains Mono',Menlo,Consolas,monospace;
-  background:rgba(0,0,0,.35);
-  padding:1px 6px;
-  border-radius:4px;
-  border:1px solid rgba(255,255,255,.06);
-  font-size:12.5px;
-}
-
-/* Fields */
-.rv-field{margin-bottom:18px}
-.rv-field__label{
-  display:block;
-  margin:0 0 7px;
-  font-size:12.5px;font-weight:700;
-  color:var(--site-heading);
+.msg i{margin-top:2px;flex-shrink:0;font-size:15px}
+.msg.err{background:rgba(226,0,26,.1);border:1px solid rgba(226,0,26,.3);color:#ffcdd2}
+.msg.err i{color:#ff7a84}
+.msg.ok{background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.28);color:#ffe9a7}
+.msg.ok i{color:var(--yellow)}
+.msg.warn{background:rgba(255,100,0,.1);border:1px solid rgba(255,100,0,.3);color:#ffd7b6}
+.msg.warn i{color:#ffa755}
+.msg code{font-family:Menlo,Consolas,monospace;background:rgba(0,0,0,.35);padding:1px 5px;border-radius:4px;font-size:12px}
+.field{margin-bottom:14px}
+.field label{
+  display:block;margin:0 0 6px;font-size:12.5px;font-weight:700;color:var(--text);
   letter-spacing:.01em;
-  display:flex;align-items:center;justify-content:space-between;
 }
-.rv-field__label a{
-  font-size:12px;color:var(--accent-yellow);text-decoration:none;font-weight:600;
-  opacity:.9;transition:opacity .2s
+.input{position:relative}
+.input i{
+  position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  color:var(--muted);font-size:15px;width:17px;text-align:center;pointer-events:none;
+  transition:color .2s;
 }
-.rv-field__label a:hover{opacity:1;text-decoration:underline}
-
-.rv-input{
-  position:relative;
-}
-.rv-input i{
-  position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  color:var(--site-muted);
-  font-size:15px;
-  width:18px;text-align:center;
-  pointer-events:none;
-  transition:color .2s
-}
-.rv-input__right{
-  position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  display:flex;align-items:center;gap:4px;
-}
-.rv-input__right button{
-  background:transparent;
-  border:0;
-  width:34px;height:34px;border-radius:10px;
-  color:var(--site-muted);
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition: all .2s;
-}
-.rv-input__right button:hover{
-  background:var(--site-surface-soft);
-  color:var(--site-heading);
-}
-
-.rv-input input{
+.input input{
   width:100%;
-  padding:13px 14px 13px 42px;
-  background:var(--site-surface-soft);
-  border:1.5px solid var(--site-border);
-  color:var(--site-heading);
+  padding:12.5px 14px 12.5px 40px;
+  background:var(--soft);
+  border:1.5px solid var(--border);
+  color:var(--text);
   font-family:inherit;font-size:14.5px;font-weight:500;
-  border-radius:var(--radius-md);
+  border-radius:var(--radius);
   outline:none;
-  transition: border-color .2s, box-shadow .2s, background .2s;
+  transition:border-color .2s, box-shadow .2s, background .2s;
 }
-.rv-input input::placeholder{color:#8893a3;font-weight:400}
-.rv-input input:hover{border-color:#414c5b}
-.rv-input input:focus{
-  border-color:var(--accent-yellow);
-  background: #1e242d;
-  box-shadow: 0 0 0 4px rgba(255,193,7,.15);
+.input input:hover{border-color:#414c5b}
+.input input:focus{
+  border-color:var(--yellow);
+  background:#1e242d;
+  box-shadow:0 0 0 4px rgba(255,193,7,.15);
 }
-.rv-input input:focus + i,
-.rv-input:focus-within > i{color:var(--accent-yellow)}
-
-/* Submit Button */
-.rv-btn{
-  position:relative;
+.input:focus-within > i{color:var(--yellow)}
+.btn{
   width:100%;
-  border:0;
-  cursor:pointer;
-  padding:14px 18px;
-  font-family:inherit;font-weight:800;font-size:15px;
-  letter-spacing:.01em;
-  border-radius:var(--radius-md);
-  transition: transform .12s ease, background .2s, box-shadow .2s, filter .2s;
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  text-decoration:none;
-  user-select:none;
-}
-.rv-btn:focus-visible{outline:3px solid rgba(255,193,7,.4);outline-offset:2px}
-.rv-btn:active{transform: translateY(1px)}
-
-.rv-btn--primary{
-  background: linear-gradient(180deg, var(--accent-yellow-hover), var(--accent-yellow));
-  color: #1a1600;
-  box-shadow:
-    0 10px 0 rgba(255,193,7,.06),
-    0 8px 22px rgba(255,193,7,.18),
-    0 1px 0 rgba(255,255,255,.28) inset;
+  margin-top:4px;
+  padding:13px 18px;
+  background:linear-gradient(180deg, var(--yellow-hover), var(--yellow));
+  color:#1a1600;
   border:1px solid rgba(0,0,0,.08);
+  border-radius:var(--radius);
+  font-family:inherit;font-weight:700;font-size:15px;letter-spacing:.01em;
+  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  transition:filter .2s, transform .1s;
+  box-shadow:0 8px 20px rgba(255,193,7,.18);
 }
-.rv-btn--primary:hover{
-  filter:brightness(1.06);
-  box-shadow:
-    0 12px 0 rgba(255,193,7,.08),
-    0 12px 26px rgba(255,193,7,.28);
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.foot{
+  margin-top:22px;padding-top:14px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:11.5px;color:var(--muted);
 }
-.rv-btn--primary i{font-size:16px}
-
-/* Card – Footer Actions */
-.rv-login__card-foot{
-  margin-top:20px;
-  padding-top:18px;
-  border-top:1px dashed var(--site-border);
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
-}
-.rv-back-link{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:13px;font-weight:600;
-  color:var(--site-muted);
-  text-decoration:none;
-  padding:8px 12px;border-radius:10px;
-  transition: background .2s, color .2s, transform .15s;
-}
-.rv-back-link:hover{
-  background:var(--site-surface-soft);color:var(--site-text);
-  transform:translateX(-2px)
-}
-.rv-back-link i{font-size:12px;color:var(--accent-yellow)}
-
-.rv-login__mini-links{
-  display:flex;gap:10px;flex-wrap:wrap;
-  font-size:11.5px;
-}
-.rv-login__mini-links a{
-  color:#8590a0;text-decoration:none;transition:color .2s;padding:4px 2px;
-}
-.rv-login__mini-links a:hover{color:var(--accent-yellow)}
-
-/* Card – Foot Copyright */
-.rv-login__card-copy{
-  padding:14px 32px 20px;
-  text-align:center;
-  font-size:11.5px;
-  color:#6e7886;
-  border-top:1px solid var(--site-border);
-  background:rgba(0,0,0,.18);
-}
-.rv-login__card-copy span{color:var(--accent-yellow);font-weight:700}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-}
+.foot a{color:var(--muted);text-decoration:none;padding:3px 0;transition:color .2s}
+.foot a:hover{color:var(--yellow)}
+.foot .copy span{color:var(--yellow);font-weight:700}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
-<main class="rv-login" role="main">
+<main class="card">
+  <form method="post" novalidate autocomplete="on">
+    <?= $csrfH ?>
 
-  <!-- LEFT: BRANDING PANEL -->
-  <section class="rv-login__brand" aria-hidden="false">
-    <div>
-      <div class="rv-login__brand-top">
-        <div class="rv-login__logo-row">
-          <div class="rv-login__logo-wrap">
-            <img src="<?= htmlspecialchars($logoUrl) ?>" alt="RV Hard Logo" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-person-biking\' style=\'color:#121417;font-size:38px\'></i>'">
-          </div>
-          <div>
-            <h1 class="rv-login__brand-title">RV <span>Hard</span></h1>
-            <div class="rv-login__brand-sub">Radsport · Triathlon · Mountainbike</div>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="rv-login__headline">
-        Sommer Bike Series<br>
-        <em>Foto-Galerie</em> Administration
-      </h2>
-      <p class="rv-login__desc">
-        Bereich für Upload, Tagging und Veröffentlichung der offiziellen Fotos vom Stadtkriterium Kammgarn Hard, Bergrennen Wolfurt-Buch und EZF Rohrspitz Fußach.
-      </p>
-
-      <ul class="rv-login__features">
-        <li><i class="fa-solid fa-cloud-arrow-up"></i><span>Drag & Drop Upload direkt im Browser — kein FTP nötig</span></li>
-        <li><i class="fa-solid fa-tags"></i><span>Startnummern-Tagging pro Bild — automatische Filterung</span></li>
-        <li><i class="fa-solid fa-bolt"></i><span>Ein Klick Publish — Bilder sofort öffentlich sichtbar</span></li>
-      </ul>
+    <div class="logo">
+      <img src="<?= htmlspecialchars($logoUrl) ?>" alt="RV Hard" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-lock\' style=\'color:#121417;font-size:26px\'></i>'">
     </div>
+    <h1>Anmelden</h1>
 
-    <div class="rv-login__brand-foot">
-      <div>© <?= $year ?> <strong>RV Hard e.V.</strong><br>ZVR 855750678 · Hard, Vorarlberg</div>
-      <div style="text-align:right">
-        <strong>SBS <?= $year ?></strong><br>
-        Foto-Galerie v3.2
+    <?php if (!$configExists): ?>
+      <div class="msg warn">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div><strong>Fehlt: config.php</strong><br>Kopiere <code>config.example.php</code> nach <code>config.php</code>.</div>
+      </div>
+    <?php elseif (!$users): ?>
+      <div class="msg warn">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div><strong>Kein Benutzer</strong><br>Füge <code>RVHardAdmin</code> + bcrypt Hash in <code>config.php</code> ein.</div>
+      </div>
+    <?php endif ?>
+
+    <?php if ($msg && $msgType == 'err'): ?>
+      <div class="msg err"><i class="fa-solid fa-circle-exclamation"></i><div><?= htmlspecialchars($msg) ?></div></div>
+    <?php endif ?>
+    <?php if ($msg && $msgType == 'ok'): ?>
+      <div class="msg ok"><i class="fa-solid fa-circle-check"></i><div><?= htmlspecialchars($msg) ?></div></div>
+    <?php endif ?>
+
+    <div class="field">
+      <label for="un">Benutzername</label>
+      <div class="input">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="un" name="username" autocomplete="username"
+          spellcheck="false" inputmode="text" required aria-required="true">
       </div>
     </div>
-  </section>
 
-  <!-- RIGHT: LOGIN FORM CARD -->
-  <section class="rv-login__form-wrap" aria-label="Anmeldeformular">
-    <div class="rv-login__card">
-      <form method="post" novalidate autocomplete="on">
-        <?= $csrfH ?>
-
-        <div class="rv-login__card-top">
-          <span class="eyebrow"><i class="fa-solid fa-lock"></i> Administrator Bereich</span>
-          <h2>Mit Zugangsdaten anmelden</h2>
-          <p>Gib deine Zugangsdaten ein, um den Upload-Bereich zu öffnen.</p>
-        </div>
-
-        <div class="rv-login__card-body">
-
-          <?php if (!$configExists): ?>
-            <div class="rv-msg rv-msg--warn">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <div><strong>Fehlende Konfiguration!</strong><br>
-                Erstelle die Datei <code>admin/config.php</code> aus der Vorlage <code>config.example.php</code> und hinterlege Benutzer <code>RVHardAdmin</code> mit bcrypt-Passwort-Hash.</div>
-            </div>
-          <?php elseif (!$users): ?>
-            <div class="rv-msg rv-msg--warn">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <div><strong>Kein Benutzer hinterlegt!</strong><br>
-                Füge mindestens einen Benutzer (<code>RVHardAdmin</code> + bcrypt Hash) in <code>config.php</code> ein.</div>
-            </div>
-          <?php endif ?>
-
-          <?php if ($msg && $msgType == 'err'): ?>
-            <div class="rv-msg rv-msg--err"><i class="fa-solid fa-circle-exclamation"></i><div><?= htmlspecialchars($msg) ?></div></div>
-          <?php endif ?>
-          <?php if ($msg && $msgType == 'ok'): ?>
-            <div class="rv-msg rv-msg--ok"><i class="fa-solid fa-circle-check"></i><div><?= htmlspecialchars($msg) ?></div></div>
-          <?php endif ?>
-
-          <div class="rv-field">
-            <label class="rv-field__label" for="un">Benutzername</label>
-            <div class="rv-input">
-              <i class="fa-solid fa-user"></i>
-              <input type="text" id="un" name="username" autocomplete="username" inputmode="text" spellcheck="false"
-                value="RVHardAdmin" required aria-required="true">
-            </div>
-          </div>
-
-          <div class="rv-field">
-            <label class="rv-field__label" for="pw">Passwort
-              <a href="#" onclick="return false" title="Passwort vergessen? → Neuen Hash in config.php setzen!" aria-label="Passwort vergessen">
-                <i class="fa-solid fa-circle-question"></i> Vergessen?
-              </a>
-            </label>
-            <div class="rv-input">
-              <i class="fa-solid fa-key"></i>
-              <input type="password" id="pw" name="password" autocomplete="current-password"
-                placeholder="Dein Admin Passwort…" required aria-required="true">
-              <div class="rv-input__right">
-                <button type="button" id="rv-pw-toggle"
-                  aria-label="Passwort ein- oder ausblenden"
-                  aria-pressed="false" title="Passwort anzeigen / verstecken">
-                  <i class="fa-regular fa-eye" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="rv-btn rv-btn--primary" style="margin-top:2px">
-            <i class="fa-solid fa-right-to-bracket"></i> Anmelden
-          </button>
-
-          <div class="rv-login__card-foot">
-            <a href="../" class="rv-back-link">
-              <i class="fa-solid fa-arrow-left"></i> Zurück zur Galerie
-            </a>
-            <div class="rv-login__mini-links">
-              <a href="../impressum.html" rel="noopener">Impressum</a>
-              <span aria-hidden="true">·</span>
-              <a href="../datenschutz.html" rel="noopener">Datenschutz</a>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="rv-login__card-copy">
-          Powered by <span>RV Hard Dev Team</span> · Gesicherter Admin-Bereich
-        </div>
-      </form>
+    <div class="field">
+      <label for="pw">Passwort</label>
+      <div class="input">
+        <i class="fa-solid fa-key"></i>
+        <input type="password" id="pw" name="password" autocomplete="current-password"
+          required aria-required="true">
+      </div>
     </div>
-  </section>
 
+    <button type="submit" class="btn">
+      <i class="fa-solid fa-right-to-bracket"></i> Anmelden
+    </button>
+
+    <div class="foot">
+      <a href="../"><i class="fa-solid fa-arrow-left"></i> Zurück</a>
+      <div class="copy">© <?= $year ?> <span>RV Hard</span></div>
+      <div>
+        <a href="../impressum.html">Impressum</a>
+        <span aria-hidden="true"> · </span>
+        <a href="../datenschutz.html">DSGVO</a>
+      </div>
+    </div>
+  </form>
 </main>
 
 <script>
-/* Passwort Show/Hide Toggle */
-(function(){
-  const btn = document.getElementById('rv-pw-toggle');
-  const inp = document.getElementById('pw');
-  if (!btn || !inp) return;
-  const ic  = btn.querySelector('i');
-  btn.addEventListener('click', () => {
-    const show = inp.type === 'password';
-    inp.type = show ? 'text' : 'password';
-    btn.setAttribute('aria-pressed', show ? 'true' : 'false');
-    ic.classList.toggle('fa-regular', !show);
-    ic.classList.toggle('fa-solid',   show);
-    ic.classList.toggle('fa-eye',     !show);
-    ic.classList.toggle('fa-eye-slash', show);
-    btn.title = show ? 'Passwort verstecken' : 'Passwort anzeigen';
-    setTimeout(()=>inp.focus(), 10);
-  });
-  /* Enter von Username → springt in Passwort Feld */
-  document.getElementById('un').addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('pw').focus(); }
-  });
-})();
+document.getElementById('un').focus();
+document.getElementById('un').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('pw').focus(); }
+});
 </script>
 
 </body>
