@@ -1,0 +1,44 @@
+# ================================================================
+#   FOTO-GALERIE (fotos.rv-hard.at / rv-hard.at/fotos/)
+#   RewriteEngine AUS! Damit keine Regeln der Hauptdomain (Root .htaccess)
+#   die Galerie oder den Admin-Bereich beeinträchtigen!
+# ================================================================
+
+RewriteEngine Off
+Options -Indexes -MultiViews
+DirectoryIndex index.html index.php
+
+AddDefaultCharset UTF-8
+
+# Sicherheit: Zugriff auf .ht*, .git*, Konfigurationsdateien verbieten
+<FilesMatch "^\.(ht|git)|^(.env|composer\.(json|lock))$">
+  Require all denied
+</FilesMatch>
+
+# Cache für statische Assets (auch wenn Rewrite aus ist – das hier funktioniert immer!)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/json "access plus 7 days"
+  ExpiresByType image/avif "access plus 6 months"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/gif "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 6 months"
+  ExpiresByType font/woff "access plus 6 months"
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=2592000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(avif|webp|jpg|jpeg|png|gif|svg|woff2?|ico)$">
+    Header set Cache-Control "public, max-age=15552000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.json$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
