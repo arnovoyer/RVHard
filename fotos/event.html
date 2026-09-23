@@ -82,8 +82,31 @@
                     <span id="fg-external-link"></span>
                 </div>
 
-                <!-- FILTER (Startnummer) - unsichtbar versteckt, aber bleibt für Bib-URL-Filter erhalten -->
-                <input type="text" id="fg-bib" inputmode="numeric" style="display:none !important;" aria-hidden="true">
+                <!-- STARTNUMMER SUCHE (SICHTBAR + FUNKTIONAL!) -->
+                <div style="margin-top: 1.2rem; max-width: 460px;">
+                    <label for="fg-bib" style="display:block; margin: 0 0 0.45rem; font-size: 0.82rem; font-weight: 700; color: #e7ebef; letter-spacing: 0.01em;">
+                        <i class="fa-solid fa-hashtag" style="color: #ffc107;"></i> Suche nach Startnummer
+                    </label>
+                    <div style="display:flex; gap: 8px; align-items:stretch;">
+                        <div style="flex:1; position:relative;">
+                            <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#8893a3; font-size:14px;"></i>
+                            <input type="text" id="fg-bib" inputmode="numeric" placeholder="z.B. 42, 108, 256"
+                                style="width:100%; padding: 12px 14px 12px 40px; background:#232a33; border:1.5px solid #313b49; border-radius:10px; color:#f3f5f7; font-family:inherit; font-size:15px; font-weight:500; outline:none; transition: border-color .2s, box-shadow .2s;"
+                                onfocus="this.style.borderColor='#ffc107'; this.style.boxShadow='0 0 0 4px rgba(255,193,7,.15)'"
+                                onblur="this.style.borderColor='#313b49'; this.style.boxShadow='none'">
+                        </div>
+                        <button id="fg-bib-reset" type="button" title="Filter zurücksetzen"
+                            style="padding: 0 14px; background:#232a33; border:1.5px solid #313b49; border-radius:10px; color:#98a2b3; cursor:pointer; font-family:inherit; transition: all .2s;"
+                            onmouseover="this.style.background='#2a3240'; this.style.color='#e7ebef';"
+                            onmouseout="this.style.background='#232a33'; this.style.color='#98a2b3';">
+                            <i class="fa-solid fa-xmark" style="font-size:15px;"></i>
+                        </button>
+                    </div>
+                    <div style="margin-top: 6px; font-size: 11.5px; color:#7f8a9a; line-height:1.45;">
+                        <i class="fa-solid fa-circle-info" style="color:#5a6472; margin-right:4px;"></i>
+                        Mehrere Nummern durch <strong style="color:#9aa5b5;">Leerzeichen</strong> trennen (z.B. <code style="background:#1e242d; padding:1px 6px; border-radius:4px; color:#ffd24a; font-size:11px;">42 256</code>)
+                    </div>
+                </div>
 
                 <!-- GALLERY -->
                 <div id="fg-gallery" class="fg-gallery" style="margin-top: 1.5rem;">

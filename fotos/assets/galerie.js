@@ -695,6 +695,47 @@ function fgRenderEventPage(event) {
     const qBib = fgQueryParam('bib');
     if (qBib && bibInput) bibInput.value = qBib;
 
+    /* ============ STARTNUMMER SUCHE LIVE FILTER (INPUT + RESET BUTTON!) ============ */
+    if (bibInput) {
+        let bibDebounce = null;
+        bibInput.addEventListener('input', () => {
+            clearTimeout(bibDebounce);
+            bibDebounce = setTimeout(() => {
+                renderGallery();
+                /* Bib-Wert auch in die URL schreiben (ohne Neuladen!), damit man Link teilen kann */
+                try {
+                    const url = new URL(window.location.href);
+                    const val = String(bibInput.value || '').trim();
+                    if (val) url.searchParams.set('bib', val);
+                    else url.searchParams.delete('bib');
+                    window.history.replaceState({}, '', url.toString());
+                } catch(e) {}
+            }, 180);
+        });
+        /* Enter-Taste sofort filtern */
+        bibInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                renderGallery();
+                bibInput.blur();
+            }
+        });
+    }
+    /* Reset Button für Bib-Suche */
+    const bibReset = document.getElementById('fg-bib-reset');
+    if (bibReset && bibInput) {
+        bibReset.addEventListener('click', () => {
+            bibInput.value = '';
+            renderGallery();
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('bib');
+                window.history.replaceState({}, '', url.toString());
+            } catch(e) {}
+            bibInput.focus();
+        });
+    }
+
     function renderGallery() {
         const bib = (bibInput ? bibInput.value : '').trim();
 
