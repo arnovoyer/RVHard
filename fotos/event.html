@@ -67,53 +67,85 @@
                 </p>
                 <div id="fg-event-head-meta" style="margin-top: 0.85rem; display:flex; flex-wrap:wrap; gap: 14px 20px; font-size:0.88rem; color:#555;"></div>
 
-                <div style="margin-top: 1rem;">
+                <!-- 🔥 ZEILE 1: Links = Alle Events Button, Rechts = Such-Modus Toggle Buttons (GLEICHE HÖHE!) -->
+                <div style="
+                    margin-top: 1rem;
+                    display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    gap: 16px;
+                    flex-wrap: wrap;
+                ">
                     <!-- RELATIVER LINK zurück zur Übersicht (funktioniert auf Subdomain + Unterordner!) -->
-                    <script>
-                        (function(){
-                            const here = String(window.location.pathname || '/');
-                            const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
-                            const home = (b === '' ? './index.html' : b + '/');
-                            document.write(`<a href="${home}" class="fg-btn fg-btn--outline" style="margin-right: 0.5rem; margin-bottom: 0.5rem;">
-                                <i class="fa-solid fa-arrow-left"></i> Alle Events
-                            </a>`);
-                        })();
-                    </script>
-                    <span id="fg-external-link"></span>
-                </div>
+                    <div style="display:flex; align-items:center; gap: 8px; flex-wrap:wrap;">
+                        <script>
+                            (function(){
+                                const here = String(window.location.pathname || '/');
+                                const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
+                                const home = (b === '' ? './index.html' : b + '/');
+                                document.write(`<a href="${home}" class="fg-btn fg-btn--outline">
+                                    <i class="fa-solid fa-arrow-left"></i> Alle Events
+                                </a>`);
+                            })();
+                        </script>
+                        <span id="fg-external-link"></span>
+                    </div>
 
-                <!-- STARTNUMMER SUCHE – ZENTRIERT, WEISS, RV HARD STIL! -->
-                <div style="margin: 1.4rem auto 0; max-width: 620px; width: 100%;">
-                    <label for="fg-bib" style="display:block; margin: 0 auto 0.65rem; text-align:center; font-size: 0.88rem; font-weight: 700; color: #1a1a1a; letter-spacing: 0.02em;">
-                        <i class="fa-solid fa-hashtag" style="color: #ffc107; margin-right:5px;"></i> Suche nach Startnummer
-                    </label>
-
-                    <!-- 🔥 MODE TOGGLE: Exakt vs Teilweise! (RV Hard Pill Tabs) -->
-                    <div style="
-                        display:flex; align-items:center; justify-content:center;
-                        margin: 0 auto 0.85rem;
+                    <!-- SUCH-MODUS TOGGLE (SEGMENTED CONTROL, HÜBSCH!) – RECHTS in der selben Zeile -->
+                    <div id="fg-bibmode-wrap" style="
+                        display:flex; align-items:center; gap:4px;
                         background: #f3f4f6;
-                        border:1px solid #e5e7eb;
-                        padding: 5px;
-                        border-radius: 12px;
-                        width: fit-content;
-                        max-width: 100%;
+                        border: 1.5px solid #e5e7eb;
+                        padding: 4px;
+                        border-radius: 999px;
+                        box-shadow: 0 1px 2px rgba(0,0,0,.04);
                     ">
                         <button id="fg-bibmode-exact" type="button"
-                            data-css-base="flex:1 1 auto; padding: 7px 18px; border: 1.5px solid #e5e7eb; border-radius:9px; font-family:'Poppins',sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; display:inline-flex; align-items:center; gap:7px; margin-right:5px; transition: all .18s;"
-                            style=""
-                            title="Nur exakt gleiche Nummern finden (1 findet NUR #1, NICHT #10, #100 etc.)">
+                            title="Nur exakt gleiche Nummern finden (1 findet NUR #1, NICHT #10, #100!)"
+                            style="
+                                padding: 8px 18px;
+                                border: 0;
+                                border-radius: 999px;
+                                font-family:'Poppins',sans-serif;
+                                font-weight: 700;
+                                font-size: 12.5px;
+                                cursor: pointer;
+                                display:inline-flex;
+                                align-items:center;
+                                gap:7px;
+                                transition: all .2s ease;
+                                white-space: nowrap;
+                            ">
                             <i class="fa-solid fa-crosshairs" style="font-size:13px;"></i>
-                            Exakte Nummer
+                            Exakt
                         </button>
                         <button id="fg-bibmode-partial" type="button"
-                            data-css-base="flex:1 1 auto; padding: 7px 18px; border: 1.5px solid #e5e7eb; border-radius:9px; font-family:'Poppins',sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; display:inline-flex; align-items:center; gap:7px; transition: all .18s;"
-                            style=""
-                            title="Teilweise Übereinstimmung finden (1 findet auch #10, #101, #12 etc.)">
+                            title="Teilweise Übereinstimmung finden (1 findet auch #10, #101, #12 etc.)"
+                            style="
+                                padding: 8px 18px;
+                                border: 0;
+                                border-radius: 999px;
+                                font-family:'Poppins',sans-serif;
+                                font-weight: 700;
+                                font-size: 12.5px;
+                                cursor: pointer;
+                                display:inline-flex;
+                                align-items:center;
+                                gap:7px;
+                                transition: all .2s ease;
+                                white-space: nowrap;
+                            ">
                             <i class="fa-solid fa-magnifying-glass-plus" style="font-size:13px;"></i>
                             Teilweise
                         </button>
                     </div>
+                </div>
+
+                <!-- STARTNUMMER SUCHE – ZENTRIERT, WEISS, RV HARD STIL! -->
+                <div style="margin: 1.2rem auto 0; max-width: 620px; width: 100%;">
+                    <label for="fg-bib" style="display:block; margin: 0 auto 0.65rem; text-align:center; font-size: 0.88rem; font-weight: 700; color: #1a1a1a; letter-spacing: 0.02em;">
+                        <i class="fa-solid fa-hashtag" style="color: #ffc107; margin-right:5px;"></i> Suche nach Startnummer
+                    </label>
 
                     <div style="
                         display:flex; gap: 10px; align-items:stretch;

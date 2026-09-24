@@ -647,27 +647,55 @@ function fgPhotoMatchesBib(photo, bibQuery, mode /* 'exact' | 'partial' */) {
     const q = String(bibQuery).toLowerCase().trim();
     if (!q) return true;
 
-    // Default: EXAKTE SUCHE (sonst 1 → 10, 100!)
+    // ⛔ BUGFIX 23.09.26: Standard ist jetzt IMMER EXAKT! (sonst 1 findet 10, 100!)
+    // -> Mode nur bei explizit 'partial' = teilweise Suche
     const useExact = (mode === 'partial') ? false : true;
 
-    const photoBibs = (photo.bibNumbers || []).map(b => String(b).toLowerCase().trim());
+    const photoBibsRaw = (photo.bibNumbers || []);
+    // 🔒 ROBUSTHEIT: Nummern normalisieren (Integer + String Varianten!)
+    const photoBibs = new Set();
+    for (let i = 0; i < photoBibsRaw.length; i++) {
+        const raw = photoBibsRaw[i];
+        if (raw === null || raw === undefined) continue;
+        const s = String(raw).toLowerCase().trim();
+        if (!s) continue;
+        photoBibs.add(s);
+        // Falls Zahl: Auch nochmal ohne führende Nullen hinzufügen
+        if (/^\d+$/.test(s)) {
+            photoBibs.add(String(parseInt(s, 10)));
+        }
+    }
+    if (photoBibs.size === 0) {
+        // Keine Bibs am Foto? Dann NUR return true, wenn Suche leer (oben schon abgefangen) → return false
+        return false;
+    }
 
-    // 1) Multi-Suche: Mehrere Nummern durch Leerzeichen, Komma, Semikolon trennen
+    // 🔎 Multi-Suche: Mehrere Nummern durch Leerzeichen, Komma, Semikolon trennen
     const qTokens = q.split(/[\s,;]+/).map(t => t.trim()).filter(Boolean);
     if (qTokens.length === 0) return true;
 
     // Match if ANY Query-Token matches ANY Photo-Bib (ODER Logik)
-    return qTokens.some(tok => {
-        return photoBibs.some(pb => {
+    const anyMatch = qTokens.some(tok => {
+        // Query-Token ebenfalls normalisieren!
+        const tokNorm = tok.toLowerCase().trim();
+        if (!tokNorm) return false;
+        const tokInt = (/^\d+$/.test(tokNorm)) ? String(parseInt(tokNorm, 10)) : null;
+
+        for (const pb of photoBibs) {
             if (useExact) {
-                // 🔥 EXAKT: Token entspricht genau einer Bib! (Keine 1 → 10 Fehler!)
-                return pb === tok;
+                // 🎯 EXAKTER VERGLEICH (1 === 1, 1 !== 10, 1 !== 100)
+                if (pb === tokNorm) return true;
+                if (tokInt !== null && pb === tokInt) return true;
             } else {
-                // Teilweise: Token ist IN Bib enthalten (alte Logik, nur bei Toggle)
-                return pb.includes(tok);
+                // 🔍 TEILWEISE (nur bei Toggle "Teilweise" aktiv)
+                if (pb.includes(tokNorm)) return true;
+                if (tokInt !== null && pb.includes(tokInt)) return true;
             }
-        });
+        }
+        return false;
     });
+
+    return anyMatch;
 }
 
 function fgRenderEventPage(event) {
@@ -735,22 +763,52 @@ function fgRenderEventPage(event) {
             window.history.replaceState({}, '', url.toString());
         } catch(e){}
         fgApplyBibModeUI(mode);
+        // 🔒 DEBUG: Mode auf Button visuell bestätigen (Tooltip Text!)
+        try {
+            const ex = document.getElementById('fg-bibmode-exact');
+            const pt = document.getElementById('fg-bibmode-partial');
+            if (ex) ex.title = (mode === 'exact' ? '✅ AKTIV: Exakte Nummer (Standard)' : 'Exakt: Nur gleicher Name/Code');
+            if (pt) pt.title = (mode === 'partial' ? '✅ AKTIV: Teilweise (Findet 1 in 10,100)' : 'Teilweise: Teil-Übereinstimmung');
+        } catch(e){}
+        // 🔥 FORCE NEU BERECHNUNG (kein Cache!)
+        renderGallery.__forceBib = mode;
         renderGallery();
+        // Sichtbares Feedback: Buttons kurz pulsieren
+        try {
+            const wrap = document.getElementById('fg-bibmode-wrap');
+            if (wrap) {
+                wrap.style.transition = 'transform .15s ease';
+                wrap.style.transform = 'scale(1.03)';
+                setTimeout(()=> { if(wrap) wrap.style.transform='scale(1)'; }, 180);
+            }
+        } catch(e){}
     }
     function fgApplyBibModeUI(mode) {
         const btnExact = document.getElementById('fg-bibmode-exact');
         const btnPart  = document.getElementById('fg-bibmode-partial');
-        if (!btnExact || !btnPart) return;
+        if (!btnExact || !btnPart) return false;
         const IS_EXACT = mode !== 'partial';
-        // ACTIVE Button: Gelb wie RV Hard; INACTIVE: Grau/Weiss
-        const active = "background: linear-gradient(180deg, #ffd24a, #ffc107); background-image: linear-gradient(180deg, #ffd24a, #ffc107); color:#1a1600; border-color: rgba(0,0,0,.08); box-shadow: 0 4px 10px rgba(255,193,7,.28), 0 1px 0 rgba(255,255,255,.35) inset;";
-        const inactive = "background: #fff; color:#374151; border-color:#e5e7eb; box-shadow:none;";
-        btnExact.style.cssText = btnExact.getAttribute('data-css-base') + ';' + (IS_EXACT ? active : inactive);
-        btnPart.style.cssText  = btnPart.getAttribute('data-css-base')  + ';' + (IS_EXACT ? inactive : active);
+        // Base Styles (immer gleich):
+        const BASE = "padding:8px 18px;border:0;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s ease;white-space:nowrap;";
+        // ACTIVE Button = Gelb, INACTIVE = grau/transparent (Segmented Control wie iOS!)
+        const ACT = `background:#ffc107;background-image:linear-gradient(180deg,#ffd24a,#ffc107);color:#1a1600;box-shadow:0 4px 10px rgba(255,193,7,.25),0 1px 0 rgba(255,255,255,.35) inset;`;
+        const INA = `background:transparent;color:#4b5563;box-shadow:none;`;
+        try {
+            btnExact.style.cssText = BASE + (IS_EXACT ? ACT : INA);
+            btnPart.style.cssText  = BASE + (IS_EXACT ? INA : ACT);
+        } catch(e) {
+            // Fallback: direkt Eigenschaften setzen
+            btnExact.setAttribute('style', BASE + (IS_EXACT ? ACT : INA));
+            btnPart.setAttribute('style',  BASE + (IS_EXACT ? INA : ACT));
+        }
+        return true;
     }
     let bibMode = fgGetBibMode();
-    /* Initial UI State setzen, sobald DOM Ready (Buttons existieren, da sie in event.html stehen!) */
-    requestAnimationFrame(() => fgApplyBibModeUI(bibMode));
+    /* Debug Fallback: Mode nach 250ms und 1000ms nochmal anwenden (DOM Timing!) */
+    const _applyState = () => fgApplyBibModeUI(fgGetBibMode());
+    setTimeout(_applyState, 250);
+    setTimeout(_applyState, 1000);
+    requestAnimationFrame(_applyState);
     /* Button Listener (haken sich sobald die Elemente im DOM sind) */
     function fgAttachModeListeners() {
         const btnExact = document.getElementById('fg-bibmode-exact');
@@ -814,9 +872,21 @@ function fgRenderEventPage(event) {
 
     function renderGallery() {
         const bib = (bibInput ? bibInput.value : '').trim();
-        const mode = fgGetBibMode();
+        // 🚨 BUGFIX: Immer frisch holen! + __forceBib überschreibt falls gesetzt!
+        let mode = fgGetBibMode();
+        try { if (renderGallery.__forceBib) mode = String(renderGallery.__forceBib); } catch(e){}
 
         const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib, mode));
+        /* Optional Debug Console (nur im Dev sichtbar!) */
+        if (typeof console !== 'undefined' && bib && console && console.log) {
+            console.log('[Galerie] Filter:', {
+                query: bib,
+                mode: mode,
+                photosTotal: photos.length,
+                photosFiltered: filtered.length,
+                useExact: (mode !== 'partial') ? 'JA ✅ (Standard: KEINE 1 → 10!)' : 'NEIN (teilweise!)'
+            });
+        }
         /* 🔥 Memory Speicher statt data-photos-src JSON im HTML! (Riesige JSON im HTML Attribut löste Security Parser Error file:// aus!) */
         if (!window._fgPhotoBuckets) window._fgPhotoBuckets = {};
         window._fgPhotoBuckets.current = filtered;
