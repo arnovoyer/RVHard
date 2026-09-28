@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
     <html lang="de">
 
     <head>
@@ -381,623 +381,249 @@
                 }
             }
 
-            /* --- S B S   H I G H L I G H T   S E C T I O N --- */
-            .sbs-highlight {
-                max-width: 1200px;
-                margin: 2rem auto 1rem;
-                padding: 0 1rem;
-            }
-            .sbs-highlight__frame {
+            /* --- S B S   H E R V O R H E B U N G   (n u r   E r w e i t e r u n g e n) --- */
+            .sbs-fehler {
                 background: #fff;
-                border-radius: 20px;
+                border-radius: 10px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                padding: 2rem 1.75rem 1.75rem;
-                border-top: 5px solid var(--accent-yellow);
-                position: relative;
+                padding: 1.5rem 1.5rem 1.25rem;
+                overflow: hidden;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border-top: 4px solid var(--accent-yellow);
+                flex: 2 1 560px;
+                max-width: 760px;
+                min-width: 0;
             }
-            .sbs-highlight__frame:hover {
-                transform: translateY(-4px);
+            .sbs-fehler:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             }
-            .sbs-highlight__tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.4rem;
+            .sbs-fehler h3 {
+                color: #333;
+                margin-bottom: 0.35rem;
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.25rem;
+                font-weight: 700;
+            }
+            .sbs-fehler__sub {
+                color: #777;
+                font-size: 0.9rem;
+                margin: 0 0 1rem 0;
+            }
+            .sbs-fehler .sbs2026-banner__grid {
+                margin-bottom: 1.25rem;
+                gap: 0.9rem;
+            }
+            .sbs-fehler .sbs2026-card__icon {
                 background: var(--accent-yellow);
                 color: #111;
-                font-size: 0.78rem;
-                font-weight: 700;
-                letter-spacing: 0.03em;
-                text-transform: uppercase;
-                padding: 0.3rem 0.8rem;
-                border-radius: 999px;
-                margin-bottom: 0.85rem;
             }
-            .sbs-highlight__head {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                gap: 1.5rem;
-                flex-wrap: wrap;
-                margin-bottom: 1.5rem;
-            }
-            .sbs-highlight__titles {
-                flex: 1;
-                min-width: 260px;
-            }
-            .sbs-highlight__title {
-                font-size: clamp(1.4rem, 3.2vw, 2rem);
-                font-weight: 700;
-                color: #333;
-                margin: 0 0 0.35rem 0;
-                line-height: 1.2;
-                font-family: 'Poppins', sans-serif;
-            }
-            .sbs-highlight__title span {
-                color: var(--accent-yellow);
-            }
-            .sbs-highlight__subtitle {
-                font-size: 0.95rem;
-                color: #777;
-                margin: 0;
-                font-weight: 500;
-            }
-            .sbs-highlight__subtitle strong {
-                color: #333;
-                font-weight: 600;
-            }
-            .sbs-highlight__countdown {
-                flex-shrink: 0;
-                background: var(--site-surface-soft, #f9f9f9);
-                border-radius: 12px;
-                padding: 0.85rem 1rem;
-                min-width: 220px;
-                text-align: center;
-            }
-            .sbs-highlight__cd-label {
-                font-size: 0.8rem;
-                color: #555;
-                font-weight: 600;
-                margin: 0 0 0.55rem 0;
-            }
-            .sbs-highlight__cd-label strong {
-                color: var(--accent-yellow);
-            }
-            .sbs-highlight__cd-grid {
-                display: flex;
-                justify-content: center;
-                gap: 0.4rem;
-            }
-            .sbs-highlight__cd-unit {
-                background: #fff;
-                border-radius: 10px;
-                padding: 0.45rem 0.35rem 0.4rem;
-                min-width: 52px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-            }
-            .sbs-highlight__cd-num {
-                display: block;
-                font-size: 1.35rem;
-                font-weight: 700;
-                color: var(--accent-yellow);
-                font-family: 'Poppins', sans-serif;
-                line-height: 1;
-            }
-            .sbs-highlight__cd-unit-label {
-                display: block;
-                font-size: 0.6rem;
-                color: #777;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                font-weight: 600;
-                margin-top: 0.25rem;
-            }
-            .sbs-highlight__cd-done {
-                display: none;
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: #333;
-                padding: 0.5rem 0.7rem;
-                background: rgba(255, 193, 7, 0.12);
-                border-radius: 10px;
-            }
-            .sbs-highlight__disciplines {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-                margin-bottom: 1.75rem;
-            }
-            .sbs-disc {
-                background: var(--site-surface-soft, #f9f9f9);
-                border-radius: 14px;
-                padding: 1.1rem 0.95rem 1rem;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-            .sbs-disc:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
-            .sbs-disc__icon {
-                width: 44px;
-                height: 44px;
-                background: var(--accent-yellow);
-                border-radius: 10px;
-                display: grid;
-                place-items: center;
-                font-size: 1.35rem;
-                margin-bottom: 0.75rem;
-            }
-            .sbs-disc__name {
-                font-size: 1rem;
-                font-weight: 600;
-                color: #333;
-                margin: 0 0 0.4rem 0;
-                line-height: 1.3;
-                font-family: 'Poppins', sans-serif;
-            }
-            .sbs-disc__meta {
-                font-size: 0.85rem;
-                color: #555;
-                margin: 0 0 0.2rem 0;
-                font-weight: 500;
-            }
-            .sbs-disc__meta i {
-                color: var(--accent-yellow);
-                margin-right: 0.3rem;
-            }
-            .sbs-disc__detail {
-                font-size: 0.8rem;
-                color: #777;
-                margin: 0.35rem 0 0 0;
-                line-height: 1.45;
-            }
-            .sbs-highlight__actions {
+            .sbs-fehler__sponsor {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                gap: 1rem;
-                flex-wrap: wrap;
-                padding-top: 1.25rem;
+                gap: 0.65rem;
+                padding-top: 1rem;
                 border-top: 1px solid #eee;
+                flex-wrap: wrap;
+                justify-content: space-between;
             }
-            .sbs-highlight__sponsor {
+            .sbs-fehler__sponsor > div:first-child {
                 display: flex;
                 align-items: center;
-                gap: 0.75rem;
+                gap: 0.65rem;
+                flex-wrap: wrap;
             }
-            .sbs-highlight__sponsor img {
-                height: 30px;
+            .sbs-fehler__sponsor img {
+                height: 28px;
                 width: auto;
                 opacity: 0.85;
             }
-            .sbs-highlight__sponsor span {
+            .sbs-fehler__sponsor span {
                 font-size: 0.82rem;
                 color: #777;
                 font-weight: 500;
             }
-            .sbs-highlight__sponsor span strong {
+            .sbs-fehler__sponsor span strong {
                 color: #333;
                 font-weight: 700;
             }
-            .sbs-highlight__cta {
+            .sbs-fehler__actions {
                 display: flex;
-                gap: 0.7rem;
+                gap: 0.6rem;
                 flex-wrap: wrap;
             }
 
-            @media (min-width: 769px) and (max-width: 1024px) {
-                .sbs-highlight__frame {
-                    padding: 1.5rem 1.25rem 1.25rem;
-                }
-                .sbs-highlight__disciplines {
-                    gap: 0.8rem;
-                }
-                .sbs-disc {
-                    padding: 1rem 0.8rem;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .sbs-highlight {
-                    margin: 1.25rem auto 0.5rem;
-                    padding: 0 0.75rem;
-                }
-                .sbs-highlight__frame {
-                    border-radius: 16px;
-                    padding: 1.25rem 1rem 1.1rem;
-                    border-top-width: 4px;
-                }
-                .sbs-highlight__frame:hover {
-                    transform: none;
-                }
-                .sbs-highlight__tag {
-                    font-size: 0.7rem;
-                    padding: 0.25rem 0.65rem;
-                    margin-bottom: 0.6rem;
-                }
-                .sbs-highlight__head {
-                    flex-direction: column;
-                    gap: 0.9rem;
-                    margin-bottom: 1rem;
-                }
-                .sbs-highlight__titles {
-                    min-width: 0;
-                    width: 100%;
-                }
-                .sbs-highlight__subtitle {
-                    font-size: 0.88rem;
-                }
-                .sbs-highlight__countdown {
-                    width: 100%;
-                    min-width: 0;
-                    padding: 0.7rem 0.8rem;
-                }
-                .sbs-highlight__cd-grid {
-                    gap: 0.3rem;
-                }
-                .sbs-highlight__cd-unit {
-                    min-width: 46px;
-                    padding: 0.35rem 0.3rem 0.3rem;
-                    border-radius: 8px;
-                }
-                .sbs-highlight__cd-num {
-                    font-size: 1.1rem;
-                }
-                .sbs-highlight__cd-unit-label {
-                    font-size: 0.55rem;
-                }
-                .sbs-highlight__disciplines {
-                    grid-template-columns: 1fr;
-                    gap: 0.6rem;
-                    margin-bottom: 1rem;
-                }
-                .sbs-disc {
-                    display: flex;
-                    align-items: flex-start;
-                    gap: 0.75rem;
-                    padding: 0.85rem 0.8rem;
-                    border-radius: 12px;
-                }
-                .sbs-disc:hover {
-                    transform: none;
-                    box-shadow: none;
-                }
-                .sbs-disc__icon {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 10px;
-                    font-size: 1.15rem;
-                    flex-shrink: 0;
-                    margin-bottom: 0;
-                }
-                .sbs-disc__body {
-                    flex: 1;
-                }
-                .sbs-disc__name {
-                    font-size: 0.95rem;
-                }
-                .sbs-disc__meta {
-                    font-size: 0.8rem;
-                }
-                .sbs-disc__detail {
-                    display: none;
-                }
-                .sbs-highlight__actions {
-                    flex-direction: column-reverse;
-                    align-items: stretch;
-                    gap: 0.85rem;
-                    padding-top: 0.9rem;
-                }
-                .sbs-highlight__cta {
-                    width: 100%;
-                }
-                .sbs-highlight__cta .gelber-button {
-                    flex: 1;
-                    justify-content: center;
-                    text-align: center;
-                }
-                .sbs-highlight__sponsor {
-                    justify-content: center;
-                }
-                .sbs-highlight__sponsor img {
-                    height: 24px;
-                }
-                .sbs-highlight__sponsor span {
-                    font-size: 0.75rem;
-                }
-            }
-
-            /* --- E V E N T   O V E R V I E W --- */
-            .events-overview {
-                max-width: 1200px;
-                margin: 0.5rem auto;
-                padding: 1rem;
-                display: grid;
-                grid-template-columns: 2fr 1fr;
-                gap: 1.5rem;
-            }
-            .events-overview__card {
+            .termine-fehler {
                 background: #fff;
                 border-radius: 10px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 padding: 1.5rem;
-                transition: transform 0.3s ease;
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                flex: 1 1 320px;
+                max-width: 440px;
+                min-width: 280px;
             }
-            .events-overview__card:hover {
-                transform: translateY(-3px);
+            .termine-fehler:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             }
-            .events-overview__card h3 {
-                margin: 0 0 1rem 0;
-                font-size: 1.15rem;
+            .termine-fehler h3 {
                 color: #333;
+                margin-bottom: 1rem;
                 font-family: 'Poppins', sans-serif;
+                font-size: 1.15rem;
                 font-weight: 700;
                 display: flex;
                 align-items: center;
                 gap: 0.45rem;
             }
-            .events-overview__card h3 i {
+            .termine-fehler h3 i {
                 color: var(--accent-yellow);
             }
-            .termine-list {
+
+            .home-top-events-row {
                 display: flex;
-                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+                gap: 1.5rem;
+                padding: 1rem 1rem;
+                max-width: 1260px;
+                margin: 0 auto 1rem;
+                flex-wrap: wrap;
+            }
+
+            /* --- I M P R E S S I O N E N   (n u r   n e u e   G r i d - R e i h e n) --- */
+            .imp-fehler {
+                max-width: 1200px;
+                margin: 0 auto 2rem;
+                padding: 1rem 1rem;
+            }
+            .imp-fehler h2 {
+                text-align: center;
+                margin: 1rem 0 1.25rem 0;
+                color: #333;
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.6rem;
+                font-weight: 700;
+            }
+            .imp-fehler h2 i {
+                color: var(--accent-yellow);
+                margin-right: 0.4rem;
+            }
+            .imp-fehler__grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
                 margin-bottom: 1rem;
             }
-            .termine-list .termin-row + .termin-row {
-                border-top: 1px solid #eee;
-                margin-top: 0.5rem;
-                padding-top: 0.5rem;
-            }
-            .termin-row {
-                display: flex;
-                align-items: center;
-                gap: 0.85rem;
-                padding: 0.3rem 0.1rem;
-            }
-            .termin-row__date {
-                flex-shrink: 0;
-                text-align: center;
-                min-width: 48px;
-                color: #555;
-            }
-            .termin-row__day {
-                display: block;
-                font-size: 1.15rem;
-                font-weight: 700;
-                line-height: 1;
-                color: #333;
-                font-family: 'Poppins', sans-serif;
-            }
-            .termin-row__month {
-                display: block;
-                font-size: 0.7rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.04em;
-                margin-top: 0.1rem;
-                color: #777;
-            }
-            .termin-row__info {
-                flex: 1;
-                min-width: 0;
-            }
-            .termin-row__name {
-                font-size: 0.92rem;
-                font-weight: 600;
-                color: #333;
-                margin: 0;
-                line-height: 1.35;
-            }
-            .termin-row__sub {
-                font-size: 0.78rem;
-                color: #777;
-                margin: 0.1rem 0 0 0;
-            }
-            .quick-links {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 0.55rem;
-            }
-            .quick-link {
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                padding: 0.7rem 0.85rem;
-                background: var(--site-surface-soft, #f9f9f9);
+            .imp-fehler__tile {
+                background: #fff;
                 border-radius: 10px;
-                text-decoration: none;
-                color: #333;
-                transition: background 0.25s ease, color 0.25s ease;
-                font-weight: 500;
-                font-size: 0.88rem;
-            }
-            .quick-link:hover {
-                background: rgba(255, 193, 7, 0.1);
-                color: #111;
-            }
-            .quick-link i {
-                color: var(--accent-yellow);
-                font-size: 1rem;
-                width: 20px;
-                text-align: center;
-            }
-            .events-overview__footer {
-                margin-top: 0.5rem;
-                display: flex;
-                justify-content: flex-start;
-            }
-
-            @media (min-width: 769px) and (max-width: 1024px) {
-                .events-overview {
-                    grid-template-columns: 1fr 1fr;
-                    gap: 1.2rem;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .events-overview {
-                    grid-template-columns: 1fr;
-                    padding: 0.75rem;
-                    gap: 0.9rem;
-                }
-                .events-overview__card {
-                    padding: 1.2rem 1rem;
-                    border-radius: 12px;
-                }
-                .events-overview__card:hover {
-                    transform: none;
-                }
-                .events-overview__card h3 {
-                    font-size: 1.05rem;
-                }
-                .termin-row {
-                    padding: 0.2rem 0;
-                    gap: 0.7rem;
-                }
-                .termin-row__day {
-                    font-size: 1rem;
-                }
-                .termin-row__name {
-                    font-size: 0.88rem;
-                }
-                .termin-row__sub {
-                    font-size: 0.75rem;
-                }
-            }
-
-            /* --- F O T O   &   E V E N T   I M P R E S S I O N E N --- */
-            .impressionen {
-                max-width: 1200px;
-                margin: 0.5rem auto;
-                padding: 2rem 1rem;
-            }
-            .impressionen__head {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                gap: 1rem;
-                flex-wrap: wrap;
-                margin-bottom: 1.5rem;
-            }
-            .impressionen__title {
-                margin: 0;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #333;
-                font-family: 'Poppins', sans-serif;
-            }
-            .impressionen__title i {
-                color: var(--accent-yellow);
-                margin-right: 0.35rem;
-            }
-            .impressionen__sub {
-                font-size: 0.9rem;
-                color: #777;
-                margin: 0.3rem 0 0 0;
-            }
-            .impressionen__grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 1rem;
-            }
-            .imp-tile {
-                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 overflow: hidden;
                 aspect-ratio: 1 / 1;
-                background: var(--site-surface-soft, #f9f9f9);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                transition: transform 0.3s ease;
             }
-            .imp-tile:hover {
+            .imp-fehler__tile:hover {
                 transform: translateY(-4px);
             }
-            .imp-tile--wide {
-                grid-column: span 2;
-                grid-row: span 2;
-                aspect-ratio: auto;
-            }
-            .imp-tile img {
+            .imp-fehler__tile img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 display: block;
             }
-            .imp-tile__placeholder {
+            .imp-fehler__tile--wide {
+                grid-column: span 2;
+                aspect-ratio: 2 / 1;
+            }
+            .imp-fehler__placeholder {
                 width: 100%;
                 height: 100%;
                 display: grid;
                 place-items: center;
-                background: var(--site-surface-soft, #f9f9f9);
-                color: #777;
-                font-size: 0.78rem;
-                font-weight: 500;
                 text-align: center;
                 padding: 0.5rem;
-                line-height: 1.45;
+                background: var(--site-surface-soft, #f9f9f9);
+                color: #777;
+                font-size: 0.82rem;
+                font-weight: 500;
             }
-            .imp-tile__placeholder i {
+            .imp-fehler__placeholder i {
                 display: block;
-                font-size: 1.7rem;
+                font-size: 1.6rem;
                 color: var(--accent-yellow);
                 margin-bottom: 0.35rem;
             }
-            .impressionen__footer {
-                margin-top: 1rem;
-                display: flex;
-                justify-content: center;
-            }
-            .impressionen__footer a {
-                font-size: 0.88rem;
-                font-weight: 600;
-                color: #777;
-                text-decoration: underline;
-                text-underline-offset: 3px;
-            }
-
-            @media (min-width: 769px) and (max-width: 1024px) {
-                .impressionen__grid {
-                    grid-template-columns: repeat(3, 1fr);
-                }
-                .imp-tile--wide {
-                    grid-column: span 2;
-                    grid-row: span 1;
-                }
+            .imp-fehler__cta {
+                text-align: center;
+                margin-top: 0.5rem;
             }
 
             @media (max-width: 768px) {
-                .impressionen {
-                    padding: 1.25rem 0.75rem;
+                .home-top-events-row {
+                    gap: 1rem;
+                    padding: 0.5rem 0.75rem;
+                    margin-bottom: 0.5rem;
                 }
-                .impressionen__head {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 0.5rem;
-                    margin-bottom: 1rem;
+                .sbs-fehler {
+                    flex: 1 1 100%;
+                    max-width: 100%;
+                    padding: 1.2rem 1rem;
                 }
-                .impressionen__title {
-                    font-size: 1.2rem;
-                }
-                .impressionen__grid {
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 0.55rem;
-                }
-                .imp-tile {
-                    border-radius: 10px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-                }
-                .imp-tile:hover {
+                .sbs-fehler:hover,
+                .termine-fehler:hover,
+                .imp-fehler__tile:hover {
                     transform: none;
                 }
-                .imp-tile--wide {
+                .sbs-fehler h3 {
+                    font-size: 1.1rem;
+                }
+                .sbs-fehler__sub {
+                    font-size: 0.85rem;
+                }
+                .sbs-fehler .sbs2026-banner__grid {
+                    grid-template-columns: 1fr;
+                    gap: 0.6rem;
+                }
+                .termine-fehler {
+                    flex: 1 1 100%;
+                    max-width: 100%;
+                    padding: 1.2rem 1rem;
+                }
+                .sbs-fehler__sponsor {
+                    flex-direction: column-reverse;
+                    gap: 0.8rem;
+                    align-items: stretch;
+                }
+                .sbs-fehler__sponsor > div:first-child {
+                    justify-content: center;
+                }
+                .sbs-fehler__actions {
+                    width: 100%;
+                    justify-content: center;
+                }
+                .sbs-fehler__actions .gelber-button {
+                    flex: 1;
+                    text-align: center;
+                    justify-content: center;
+                }
+                .imp-fehler {
+                    padding: 0.5rem 0.75rem 1rem;
+                    margin-bottom: 1rem;
+                }
+                .imp-fehler h2 {
+                    font-size: 1.25rem;
+                    margin: 0.75rem 0 1rem;
+                }
+                .imp-fehler__grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.6rem;
+                }
+                .imp-fehler__tile--wide {
                     grid-column: span 2;
-                    grid-row: span 1;
-                }
-                .imp-tile__placeholder {
-                    font-size: 0.72rem;
-                }
-                .imp-tile__placeholder i {
-                    font-size: 1.3rem;
+                    aspect-ratio: 2 / 1;
                 }
             }
         </style>
@@ -1277,8 +903,8 @@
         <header>
             <div id="navigation-container"></div>
         </header>
-        <main style="padding-top:0">
-            <div class="hero-verein-wrapper" data-aos="fade-up" style="margin-top:1rem;">
+        <main>
+            <div class="hero-verein-wrapper" data-aos="fade-up">
                 <div class="hero-image img">
                     <img src="/assets/img/hero/Hero-img-medium.webp" srcset="/assets/img/hero/Hero-img-small.webp 640w,
                                 /assets/img/hero/Hero-img-medium.webp 960w,
@@ -1288,7 +914,7 @@
                 </div>
                 <section class="verein-vorstellung" style="margin-top:0px;">
                     <div data-aos="fade-up">
-                        <h1 style="margin-top:0;"><strong>Wir sind der RV DJ's Bikeshop Simplon Hard</strong></h1>
+                        <h1><strong>Wir sind der RV DJ's Bikeshop Simplon Hard</strong></h1>
                         <p>Wir sind deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon bei uns finden
                             Radsportlerinnen und Radsportler jeden Alters und Leistungsniveaus ein Zuhause. Wir fördern den
                             Nachwuchs, leben Gemeinschaft
@@ -1301,158 +927,67 @@
                 </section>
             </div>
 
-            <!-- ========= S B S   2 0 2 6   H I G H L I G H T ========= -->
-            <section class="sbs-highlight" data-aos="fade-up" data-aos-delay="100">
-                <div class="sbs-highlight__frame">
-                    <div class="sbs-highlight__inner">
-                        <span class="sbs-highlight__tag">
-                            <i class="fa-solid fa-trophy"></i>
-                            Landesmeisterschaften · 2 Tage
-                        </span>
+            <!-- ========= V E R A N S T A L T U N G E N ========= -->
+            <section class="container">
+                <h2 class="visually-hidden">Veranstaltungshighlights</h2>
+                <div class="home-top-events-row">
 
-                        <div class="sbs-highlight__head">
-                            <div class="sbs-highlight__titles">
-                                <h2 class="sbs-highlight__title">
-                                    Raiffeisen <span>Summer Bike Series</span> 2026
-                                </h2>
-                                <p class="sbs-highlight__subtitle">
-                                    📅 <strong>5. + 6. September 2026</strong> · Hard und Umgebung · 3 Disziplinen
-                                </p>
+                    <!-- SBS – grosse hervorgehobene Card (nutzt sbs2026-card Sub-Styles) -->
+                    <div class="sbs-fehler" data-aos="fade-up-right">
+                        <div>
+                            <h3>Raiffeisen Summer Bike Series 2026</h3>
+                            <p class="sbs-fehler__sub">
+                                📅 5. + 6. September 2026 · Hard und Umgebung · Landesmeisterschaften
+                            </p>
+
+                            <div class="sbs2026-banner__grid">
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">🏙️</div>
+                                    <h3>Kammgarn Kriterium Hard</h3>
+                            <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · Start ab 10:00</p>
+                            <p class="sbs2026-card__desc">Rundkurs Kammgarn · bis 30 Runden à 650 m</p>
+                            </div>
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">⏱️</div>
+                                    <h3>Einzelzeitfahren Rohrspitz</h3>
+                            <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · Start ab 17:00</p>
+                            <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot</p>
+                            </div>
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">⛰️</div>
+                                    <h3>Bergrennen Wolfurt – Buch</h3>
+                            <p><i class="fa-regular fa-calendar-days"></i> So, 06.09. · Start ab 10:00</p>
+                            <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                </div>
                             </div>
 
-                            <div class="sbs-highlight__countdown" id="sbs-inline-countdown">
-                                <p class="sbs-highlight__cd-label">
-                                    ⏳ Anmeldung schließt in <strong id="sbs-inline-cd-label">–</strong>
-                                </p>
-                                <div class="sbs-highlight__cd-grid" id="sbs-inline-cd-grid">
-                                    <div class="sbs-highlight__cd-unit">
-                                        <span class="sbs-highlight__cd-num" data-sbs-inline="days">00</span>
-                                        <span class="sbs-highlight__cd-unit-label">Tage</span>
-                                    </div>
-                                    <div class="sbs-highlight__cd-unit">
-                                        <span class="sbs-highlight__cd-num" data-sbs-inline="hours">00</span>
-                                        <span class="sbs-highlight__cd-unit-label">Stunden</span>
-                                    </div>
-                                    <div class="sbs-highlight__cd-unit">
-                                        <span class="sbs-highlight__cd-num" data-sbs-inline="minutes">00</span>
-                                        <span class="sbs-highlight__cd-unit-label">Min</span>
-                                    </div>
-                                    <div class="sbs-highlight__cd-unit">
-                                        <span class="sbs-highlight__cd-num" data-sbs-inline="seconds">00</span>
-                                        <span class="sbs-highlight__cd-unit-label">Sek</span>
-                                    </div>
+                            <div class="sbs-fehler__sponsor">
+                                <div>
+                                    <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Logo" loading="lazy" decoding="async">
+                                    <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
                                 </div>
-                                <div class="sbs-highlight__cd-done" id="sbs-inline-cd-done">
-                                    🏁 Anmeldung geschlossen – Ergebnisse folgen!
+                                <div class="sbs-fehler__actions">
+                                    <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
+                                    <a href="/events/sbs/summer-bike-series-2026.html#anmeldung" class="gelber-button">Anmelden</a>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="sbs-highlight__disciplines">
-                            <article class="sbs-disc">
-                                <div class="sbs-disc__icon">🏙️</div>
-                                <div class="sbs-disc__body">
-                                    <h3 class="sbs-disc__name">Kammgarn Kriterium Hard</h3>
-                                    <p class="sbs-disc__meta">
-                                        <i class="fa-regular fa-calendar"></i>
-                                        Sa, 05.09. · Start ab 10:00 Uhr
-                                    </p>
-                                    <p class="sbs-disc__detail">
-                                        Rundkurs Kammgarn-Areal · bis 30 Runden à 650 m · Tempo pur!
-                                    </p>
-                                </div>
-                            </article>
-                            <article class="sbs-disc">
-                                <div class="sbs-disc__icon">⏱️</div>
-                                <div class="sbs-disc__body">
-                                    <h3 class="sbs-disc__name">Einzelzeitfahren Rohrspitz</h3>
-                                    <p class="sbs-disc__meta">
-                                        <i class="fa-regular fa-calendar"></i>
-                                        Sa, 05.09. · Start ab 17:00 Uhr
-                                    </p>
-                                    <p class="sbs-disc__detail">
-                                        2,86 km flach & schnell · Windschattenverbot · Wer hat die Nase vorn?
-                                    </p>
-                                </div>
-                            </article>
-                            <article class="sbs-disc">
-                                <div class="sbs-disc__icon">⛰️</div>
-                                <div class="sbs-disc__body">
-                                    <h3 class="sbs-disc__name">Bergrennen Wolfurt – Buch</h3>
-                                    <p class="sbs-disc__meta">
-                                        <i class="fa-regular fa-calendar"></i>
-                                        So, 06.09. · Start ab 10:00 Uhr
-                                    </p>
-                                    <p class="sbs-disc__detail">
-                                        Bis 6,6 km · bis 308 Höhenmeter · Hier zeigen sich die Kletterer!
-                                    </p>
-                                </div>
-                            </article>
-                        </div>
-
-                        <div class="sbs-highlight__actions">
-                            <div class="sbs-highlight__sponsor">
-                                <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Logo" loading="lazy" decoding="async">
-                                <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
-                            </div>
-                            <div class="sbs-highlight__cta">
-                                <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">
-                                    <i class="fa-regular fa-circle-info"></i>
-                                    Alle Infos
-                                </a>
-                                <a href="/events/sbs/summer-bike-series-2026.html#anmeldung" class="gelber-button">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    Jetzt anmelden
-                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- ========= E V E N T S   &   T E R M I N E   Ü B E R B L I C K ========= -->
-            <section class="events-overview" data-aos="fade-up" data-aos-delay="150">
-                <div class="events-overview__card">
-                    <h3><i class="fa-regular fa-calendar-check"></i> Kommende Termine</h3>
-                    <div class="termine-list" id="home-termine-list">
-                        <div class="termin-row">
-                            <div class="termin-row__date">
-                                <span class="termin-row__day">–</span>
-                                <span class="termin-row__month">Laden</span>
+                    <!-- Termine 2026 – normale Card daneben -->
+                    <div class="termine-fehler" data-aos="fade-up-left">
+                        <div>
+                            <h3><i class="fa-regular fa-calendar-check"></i> Termine 2026</h3>
+                            <div id="home-termine-list">
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Lade Termine...</p>
+                                    <p class="event-name">Bitte warten</p>
+                                </div>
                             </div>
-                            <div class="termin-row__info">
-                                <p class="termin-row__name">Termine werden geladen…</p>
-                                <p class="termin-row__sub">Bitte warten</p>
+                            <div class="gelber-button-container" style="margin-top:0.5rem;justify-content:flex-start;">
+                                <a href="/termine.html" class="gelber-button">Alle Termine</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="events-overview__footer">
-                        <a href="/termine.html" class="gelber-button">
-                            <i class="fa-solid fa-list"></i>
-                            Alle Termine 2026
-                        </a>
-                    </div>
-                </div>
-
-                <div class="events-overview__card">
-                    <h3><i class="fa-solid fa-link"></i> Schnellzugriff</h3>
-                    <div class="quick-links">
-                        <a href="/events/sbs/summer-bike-series-2026.html" class="quick-link">
-                            <i class="fa-solid fa-medal"></i>
-                            Summer Bike Series
-                        </a>
-                        <a href="/training.html" class="quick-link">
-                            <i class="fa-solid fa-person-biking"></i>
-                            Trainingszeiten
-                        </a>
-                        <a href="/verein/gemeinschaft.html" class="quick-link">
-                            <i class="fa-solid fa-users"></i>
-                            Gemeinschaft
-                        </a>
-                        <a href="/fotos/" class="quick-link">
-                            <i class="fa-regular fa-images"></i>
-                            Foto-Galerie
-                        </a>
                     </div>
                 </div>
             </section>
@@ -1464,12 +999,39 @@
                 <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/news">News-Seite</a>.</p>
             </section>
 
+            <!-- ========= I M P R E S S I O N E N ========= -->
+            <section class="imp-fehler" data-aos="fade-up">
+                <h2><i class="fa-regular fa-images"></i> Impressionen</h2>
+                <div class="imp-fehler__grid">
+                    <div class="imp-fehler__tile imp-fehler__tile--wide">
+                        <img src="/assets/img/hero/Hero-img-medium.webp" loading="lazy" decoding="async" alt="Gruppenbild Radwoche">
+                    </div>
+                    <div class="imp-fehler__tile">
+                        <div class="imp-fehler__placeholder">
+                            <div>
+                                <i class="fa-solid fa-medal"></i>
+                                Siegerehrung
+                            </div>
+                        </div>
+                    </div>
+                    <div class="imp-fehler__tile">
+                        <div class="imp-fehler__placeholder">
+                            <div>
+                                <i class="fa-solid fa-person-biking"></i>
+                                Event-Foto
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="imp-fehler__cta">
+                    <a href="/fotos/" class="gelber-button">Zur Galerie</a>
+                </div>
+            </section>
+
             <script>
                 (function () {
                     const CONTAINER_ID = 'home-termine-list';
                     const EVENTS_URL = '/data/termine/termine.json';
-                    const MONATE_SHORT = ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ'];
-                    const WEEKDAYS_SHORT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
                     document.addEventListener('DOMContentLoaded', async () => {
                         const container = document.getElementById(CONTAINER_ID);
@@ -1485,21 +1047,15 @@
 
                             const payload = await response.json();
                             const events = normalizeEventsPayload(payload);
-                            const nextEvents = getNextEvents(events, 4);
+                            const nextEvents = getNextEvents(events, 3);
                             renderEvents(container, nextEvents);
                         } catch (error) {
                             console.error('[HomeTermine] Fehler beim Laden:', error);
                             container.innerHTML = '';
                             container.insertAdjacentHTML('beforeend', `
-                                <div class="termin-row">
-                                    <div class="termin-row__date">
-                                        <span class="termin-row__day">–</span>
-                                        <span class="termin-row__month">Fehler</span>
-                                    </div>
-                                    <div class="termin-row__info">
-                                        <p class="termin-row__name">Keine Termine verfügbar</p>
-                                        <p class="termin-row__sub">Bitte später erneut versuchen</p>
-                                    </div>
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Keine Termine verfügbar</p>
+                                    <p class="event-name">Bitte später erneut versuchen</p>
                                 </div>
                             `);
                         }
@@ -1532,25 +1088,15 @@
                             .slice(0, limit);
                     }
 
-                    function formatDateFull(datumString) {
+                    function formatDate(datumString) {
                         const parsed = parseDateOnly(datumString);
-                        if (!parsed) return '';
+                        if (!parsed) {
+                            return '';
+                        }
                         const day = String(parsed.getDate()).padStart(2, '0');
                         const month = String(parsed.getMonth() + 1).padStart(2, '0');
                         const year = parsed.getFullYear();
                         return `${day}.${month}.${year}`;
-                    }
-
-                    function getDayNum(d) { return String(d.getDate()).padStart(2, '0'); }
-                    function getMonthShort(d) { return MONATE_SHORT[d.getMonth()]; }
-                    function getWeekdayShort(d) { return WEEKDAYS_SHORT[d.getDay()]; }
-
-                    function extractLocationOrSub(event) {
-                        const raw = String(event.ort || event.beschreibung || event.kategorie || '').trim();
-                        if (raw) return escapeHtml(raw.substring(0, 60));
-                        const datum = parseDateOnly(event.datum);
-                        if (datum) return getWeekdayShort(datum) + ', ' + formatDateFull(event.datum);
-                        return '';
                     }
 
                     function renderEvents(container, events) {
@@ -1558,39 +1104,20 @@
 
                         if (!events.length) {
                             container.insertAdjacentHTML('beforeend', `
-                                <div class="termin-row">
-                                    <div class="termin-row__date">
-                                        <span class="termin-row__day">–</span>
-                                        <span class="termin-row__month">–</span>
-                                    </div>
-                                    <div class="termin-row__info">
-                                        <p class="termin-row__name">Aktuell keine bevorstehenden Termine</p>
-                                        <p class="termin-row__sub">Schau bald wieder vorbei</p>
-                                    </div>
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Aktuell keine bevorstehenden Termine</p>
+                                    <p class="event-name">Schau bald wieder vorbei</p>
                                 </div>
                             `);
                             return;
                         }
 
                         events.forEach((event) => {
-                            const parsed = parseDateOnly(event.datum);
-                            const dayNum = parsed ? getDayNum(parsed) : '–';
-                            const monthShort = parsed ? getMonthShort(parsed) : '–';
-                            const weekday = parsed ? getWeekdayShort(parsed) : '';
-                            const subText = weekday
-                                ? weekday + ', ' + formatDateFull(event.datum) + (extractLocationOrSub(event) ? ' · ' + extractLocationOrSub(event) : '')
-                                : extractLocationOrSub(event);
-
+                            const dateLabel = formatDate(event.datum);
                             container.insertAdjacentHTML('beforeend', `
-                                <div class="termin-row">
-                                    <div class="termin-row__date">
-                                        <span class="termin-row__day">${dayNum}</span>
-                                        <span class="termin-row__month">${monthShort}</span>
-                                    </div>
-                                    <div class="termin-row__info">
-                                        <p class="termin-row__name">${escapeHtml(String(event.titel || 'Termin'))}</p>
-                                        <p class="termin-row__sub">${subText}</p>
-                                    </div>
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>${escapeHtml(dateLabel)}</p>
+                                    <p class="event-name">${escapeHtml(String(event.titel || 'Termin'))}</p>
                                 </div>
                             `);
                         });
@@ -2066,9 +1593,6 @@
                 // ANMERKUNG: Ziel-Datum unten bei `TARGET_DATE` bei Bedarf ändern!
                 var TARGET_DATE = new Date('2026-09-04T18:00:00+02:00'); // Fr, 4. Sept 2026 · 18:00 MESZ
 
-                function pad2(n) { return n < 10 ? '0' + n : '' + n; }
-
-                // --- (1) Countdown im auskommentierten Popup-Banner ---
                 var cdEl = document.getElementById('sbs2026-countdown');
                 if (cdEl) {
                     var cdDays = cdEl.querySelector('[data-sbs-cd="days"]');
@@ -2080,89 +1604,44 @@
                     var cdGrid = cdEl.querySelector('.sbs2026-countdown__grid');
                     var cdLabel = cdEl.querySelector('.sbs2026-countdown__label');
 
-                    function applyBanner(values) {
-                        if (values.done) {
+                    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+                    function updateCountdown() {
+                        var now = new Date().getTime();
+                        var diff = TARGET_DATE.getTime() - now;
+
+                        if (diff <= 0) {
                             if (cdGrid) cdGrid.style.display = 'none';
                             if (cdLabel) cdLabel.style.display = 'none';
                             if (cdDone) cdDone.style.display = 'block';
                             return;
                         }
-                        if (cdDays) cdDays.textContent = pad2(values.days);
-                        if (cdHours) cdHours.textContent = pad2(values.hours);
-                        if (cdMinutes) cdMinutes.textContent = pad2(values.minutes);
-                        if (cdSeconds) cdSeconds.textContent = pad2(values.seconds);
+
+                        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        if (cdDays) cdDays.textContent = pad2(days);
+                        if (cdHours) cdHours.textContent = pad2(hours);
+                        if (cdMinutes) cdMinutes.textContent = pad2(minutes);
+                        if (cdSeconds) cdSeconds.textContent = pad2(seconds);
 
                         if (cdLabelNum) {
-                            if (values.days > 0) {
+                            if (days > 0) {
                                 cdLabelNum.textContent =
-                                    values.days + (values.days === 1 ? ' Tag' : ' Tagen') +
-                                    ' ' + pad2(values.hours) + ':' + pad2(values.minutes) + 'h';
+                                    days + (days === 1 ? ' Tag' : ' Tagen') +
+                                    ' ' + pad2(hours) + ':' + pad2(minutes) + 'h';
                             } else {
                                 cdLabelNum.textContent =
-                                    pad2(values.hours) + ':' + pad2(values.minutes) + ':' + pad2(values.seconds);
+                                    pad2(hours) + ':' + pad2(minutes) + ':' + pad2(seconds);
                             }
                         }
                     }
+
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
                 }
-
-                // --- (2) Countdown IN der SBS-Highlight-Section (prominent unter dem Hero) ---
-                var inlineCd = document.getElementById('sbs-inline-countdown');
-                if (inlineCd) {
-                    var iDays = inlineCd.querySelector('[data-sbs-inline="days"]');
-                    var iHours = inlineCd.querySelector('[data-sbs-inline="hours"]');
-                    var iMinutes = inlineCd.querySelector('[data-sbs-inline="minutes"]');
-                    var iSeconds = inlineCd.querySelector('[data-sbs-inline="seconds"]');
-                    var iLabelNum = document.getElementById('sbs-inline-cd-label');
-                    var iDone = document.getElementById('sbs-inline-cd-done');
-                    var iGrid = document.getElementById('sbs-inline-cd-grid');
-                    var iLabel = inlineCd.querySelector('.sbs-highlight__cd-label');
-
-                    function applyInline(values) {
-                        if (values.done) {
-                            if (iGrid) iGrid.style.display = 'none';
-                            if (iLabel) iLabel.style.display = 'none';
-                            if (iDone) iDone.style.display = 'block';
-                            return;
-                        }
-                        if (iDays) iDays.textContent = pad2(values.days);
-                        if (iHours) iHours.textContent = pad2(values.hours);
-                        if (iMinutes) iMinutes.textContent = pad2(values.minutes);
-                        if (iSeconds) iSeconds.textContent = pad2(values.seconds);
-
-                        if (iLabelNum) {
-                            if (values.days > 0) {
-                                iLabelNum.textContent =
-                                    values.days + (values.days === 1 ? ' Tag' : ' Tagen') +
-                                    ' ' + pad2(values.hours) + ':' + pad2(values.minutes) + 'h';
-                            } else {
-                                iLabelNum.textContent =
-                                    pad2(values.hours) + ':' + pad2(values.minutes) + ':' + pad2(values.seconds);
-                            }
-                        }
-                    }
-                }
-
-                function computeValues() {
-                    var now = new Date().getTime();
-                    var diff = TARGET_DATE.getTime() - now;
-                    if (diff <= 0) return { done: true };
-                    return {
-                        done: false,
-                        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-                        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-                        seconds: Math.floor((diff % (1000 * 60)) / 1000)
-                    };
-                }
-
-                function tickAll() {
-                    var v = computeValues();
-                    if (typeof applyBanner === 'function') applyBanner(v);
-                    if (typeof applyInline === 'function') applyInline(v);
-                }
-
-                tickAll();
-                setInterval(tickAll, 1000);
             })();
         </script>
     </body>
