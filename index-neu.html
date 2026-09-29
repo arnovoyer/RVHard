@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
     <html lang="de">
 
     <head>
@@ -381,250 +381,42 @@
                 }
             }
 
-            /* --- S B S   H E R V O R H E B U N G   (n u r   E r w e i t e r u n g e n) --- */
-            .sbs-fehler {
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                padding: 1.5rem 1.5rem 1.25rem;
-                overflow: hidden;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                border-top: 4px solid var(--accent-yellow);
-                flex: 2 1 560px;
-                max-width: 760px;
-                min-width: 0;
-            }
-            .sbs-fehler:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
-            .sbs-fehler h3 {
-                color: #333;
-                margin-bottom: 0.35rem;
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.25rem;
-                font-weight: 700;
-            }
-            .sbs-fehler__sub {
-                color: #777;
-                font-size: 0.9rem;
-                margin: 0 0 1rem 0;
-            }
-            .sbs-fehler .sbs2026-banner__grid {
-                margin-bottom: 1.25rem;
-                gap: 0.9rem;
-            }
-            .sbs-fehler .sbs2026-card__icon {
-                background: var(--accent-yellow);
-                color: #111;
-            }
-            .sbs-fehler__sponsor {
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                padding-top: 1rem;
-                border-top: 1px solid #eee;
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-            .sbs-fehler__sponsor > div:first-child {
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                flex-wrap: wrap;
-            }
-            .sbs-fehler__sponsor img {
-                height: 28px;
-                width: auto;
-                opacity: 0.85;
-            }
-            .sbs-fehler__sponsor span {
-                font-size: 0.82rem;
-                color: #777;
-                font-weight: 500;
-            }
-            .sbs-fehler__sponsor span strong {
-                color: #333;
-                font-weight: 700;
-            }
-            .sbs-fehler__actions {
-                display: flex;
-                gap: 0.6rem;
-                flex-wrap: wrap;
-            }
-
-            .termine-fehler {
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                padding: 1.5rem;
-                overflow: hidden;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                flex: 1 1 320px;
-                max-width: 440px;
-                min-width: 280px;
-            }
-            .termine-fehler:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
-            .termine-fehler h3 {
-                color: #333;
-                margin-bottom: 1rem;
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.15rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-                gap: 0.45rem;
-            }
-            .termine-fehler h3 i {
-                color: var(--accent-yellow);
-            }
-
-            .home-top-events-row {
+            /* --- E r w e i t e r u n g e n   f ü r   d e n   v o r h a n d e n e n   S t i l --- */
+            .top-events-container {
                 display: flex;
                 justify-content: center;
                 align-items: stretch;
                 gap: 1.5rem;
-                padding: 1rem 1rem;
-                max-width: 1260px;
-                margin: 0 auto 1rem;
                 flex-wrap: wrap;
+                padding: 0.5rem 0;
             }
-
-            /* --- I M P R E S S I O N E N   (n u r   n e u e   G r i d - R e i h e n) --- */
-            .imp-fehler {
-                max-width: 1200px;
-                margin: 0 auto 2rem;
-                padding: 1rem 1rem;
+            .top-events-container .event-card.summer-series {
+                flex: 2 1 520px;
+                max-width: 720px;
+                min-width: 0;
             }
-            .imp-fehler h2 {
-                text-align: center;
-                margin: 1rem 0 1.25rem 0;
-                color: #333;
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.6rem;
-                font-weight: 700;
-            }
-            .imp-fehler h2 i {
-                color: var(--accent-yellow);
-                margin-right: 0.4rem;
-            }
-            .imp-fehler__grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-                margin-bottom: 1rem;
-            }
-            .imp-fehler__tile {
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                overflow: hidden;
-                aspect-ratio: 1 / 1;
-                transition: transform 0.3s ease;
-            }
-            .imp-fehler__tile:hover {
-                transform: translateY(-4px);
-            }
-            .imp-fehler__tile img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-            }
-            .imp-fehler__tile--wide {
-                grid-column: span 2;
-                aspect-ratio: 2 / 1;
-            }
-            .imp-fehler__placeholder {
-                width: 100%;
-                height: 100%;
-                display: grid;
-                place-items: center;
-                text-align: center;
-                padding: 0.5rem;
-                background: var(--site-surface-soft, #f9f9f9);
-                color: #777;
-                font-size: 0.82rem;
-                font-weight: 500;
-            }
-            .imp-fehler__placeholder i {
-                display: block;
-                font-size: 1.6rem;
-                color: var(--accent-yellow);
+            .top-events-container .event-card.summer-series h3 {
                 margin-bottom: 0.35rem;
             }
-            .imp-fehler__cta {
-                text-align: center;
-                margin-top: 0.5rem;
+            .top-events-container .event-card.summer-series .sbs-summary {
+                color: #777;
+                font-size: 0.9rem;
+                margin: 0 0 1rem 0;
             }
-
-            @media (max-width: 768px) {
-                .home-top-events-row {
-                    gap: 1rem;
-                    padding: 0.5rem 0.75rem;
-                    margin-bottom: 0.5rem;
-                }
-                .sbs-fehler {
-                    flex: 1 1 100%;
-                    max-width: 100%;
-                    padding: 1.2rem 1rem;
-                }
-                .sbs-fehler:hover,
-                .termine-fehler:hover,
-                .imp-fehler__tile:hover {
-                    transform: none;
-                }
-                .sbs-fehler h3 {
-                    font-size: 1.1rem;
-                }
-                .sbs-fehler__sub {
-                    font-size: 0.85rem;
-                }
-                .sbs-fehler .sbs2026-banner__grid {
-                    grid-template-columns: 1fr;
-                    gap: 0.6rem;
-                }
-                .termine-fehler {
-                    flex: 1 1 100%;
-                    max-width: 100%;
-                    padding: 1.2rem 1rem;
-                }
-                .sbs-fehler__sponsor {
-                    flex-direction: column-reverse;
-                    gap: 0.8rem;
-                    align-items: stretch;
-                }
-                .sbs-fehler__sponsor > div:first-child {
-                    justify-content: center;
-                }
-                .sbs-fehler__actions {
-                    width: 100%;
-                    justify-content: center;
-                }
-                .sbs-fehler__actions .gelber-button {
-                    flex: 1;
-                    text-align: center;
-                    justify-content: center;
-                }
-                .imp-fehler {
-                    padding: 0.5rem 0.75rem 1rem;
-                    margin-bottom: 1rem;
-                }
-                .imp-fehler h2 {
-                    font-size: 1.25rem;
-                    margin: 0.75rem 0 1rem;
-                }
-                .imp-fehler__grid {
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 0.6rem;
-                }
-                .imp-fehler__tile--wide {
-                    grid-column: span 2;
-                    aspect-ratio: 2 / 1;
-                }
+            .top-events-container .event-card.summer-series .sbs2026-banner__grid {
+                margin-bottom: 1.1rem;
+            }
+            .top-events-container .event-card.summer-series .sbs-footer {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+            .top-events-container .event-card.nightrace {
+                flex: 1 1 320px;
+                max-width: 420px;
+                min-width: 260px;
             }
         </style>
         <script type="application/ld+json">
@@ -927,65 +719,64 @@
                 </section>
             </div>
 
-            <!-- ========= V E R A N S T A L T U N G E N ========= -->
             <section class="container">
                 <h2 class="visually-hidden">Veranstaltungshighlights</h2>
-                <div class="home-top-events-row">
+                <div class="top-events-container">
 
-                    <!-- SBS – grosse hervorgehobene Card (nutzt sbs2026-card Sub-Styles) -->
-                    <div class="sbs-fehler" data-aos="fade-up-right">
+                    <!-- SBS – hervorgehoben (erweiterte summer-series Card) -->
+                    <div class="event-card summer-series" data-aos="fade-up-right">
                         <div>
                             <h3>Raiffeisen Summer Bike Series 2026</h3>
-                            <p class="sbs-fehler__sub">
-                                📅 5. + 6. September 2026 · Hard und Umgebung · Landesmeisterschaften
+                            <p class="sbs-summary">
+                                <i class="fa-regular fa-calendar-days"></i> 5. + 6. September 2026 · Hard und Umgebung · Landesmeisterschaften
                             </p>
 
                             <div class="sbs2026-banner__grid">
                                 <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">🏙️</div>
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-city"></i>
+                                    </div>
                                     <h3>Kammgarn Kriterium Hard</h3>
-                            <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · Start ab 10:00</p>
-                            <p class="sbs2026-card__desc">Rundkurs Kammgarn · bis 30 Runden à 650 m</p>
-                            </div>
+                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 10:00</p>
+                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn · bis 30 Runden à 650 m</p>
+                                </div>
                                 <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">⏱️</div>
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-stopwatch"></i>
+                                    </div>
                                     <h3>Einzelzeitfahren Rohrspitz</h3>
-                            <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · Start ab 17:00</p>
-                            <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot</p>
-                            </div>
+                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 17:00</p>
+                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot</p>
+                                </div>
                                 <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">⛰️</div>
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-mountain"></i>
+                                    </div>
                                     <h3>Bergrennen Wolfurt – Buch</h3>
-                            <p><i class="fa-regular fa-calendar-days"></i> So, 06.09. · Start ab 10:00</p>
-                            <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                    <p><i class="fa-regular fa-calendar-days"></i> So, 06.09. · ab 10:00</p>
+                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
                                 </div>
                             </div>
 
-                            <div class="sbs-fehler__sponsor">
-                                <div>
-                                    <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Logo" loading="lazy" decoding="async">
-                                    <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
-                                </div>
-                                <div class="sbs-fehler__actions">
-                                    <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
-                                    <a href="/events/sbs/summer-bike-series-2026.html#anmeldung" class="gelber-button">Anmelden</a>
-                                </div>
+                            <div class="sbs-footer">
+                                <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
+                                <a href="/events/sbs/summer-bike-series-2026.html#anmeldung" class="gelber-button">Anmelden</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Termine 2026 – normale Card daneben -->
-                    <div class="termine-fehler" data-aos="fade-up-left">
+                    <!-- Termine 2026 – nightrace Card -->
+                    <div class="event-card nightrace" data-aos="fade-up-left">
                         <div>
-                            <h3><i class="fa-regular fa-calendar-check"></i> Termine 2026</h3>
+                            <h3>Termine 2026</h3>
                             <div id="home-termine-list">
                                 <div class="single-event">
                                     <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Lade Termine...</p>
                                     <p class="event-name">Bitte warten</p>
                                 </div>
                             </div>
-                            <div class="gelber-button-container" style="margin-top:0.5rem;justify-content:flex-start;">
-                                <a href="/termine.html" class="gelber-button">Alle Termine</a>
+                            <div>
+                                <a href="/termine.html" class="gelber-button">Termine 2026</a>
                             </div>
                         </div>
                     </div>
@@ -997,35 +788,6 @@
             <section id="home-news-container" class="news-container" data-aos="zoom-out-right">
                 <h2><a href="/news/news">Neueste Nachrichten</a></h2>
                 <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/news">News-Seite</a>.</p>
-            </section>
-
-            <!-- ========= I M P R E S S I O N E N ========= -->
-            <section class="imp-fehler" data-aos="fade-up">
-                <h2><i class="fa-regular fa-images"></i> Impressionen</h2>
-                <div class="imp-fehler__grid">
-                    <div class="imp-fehler__tile imp-fehler__tile--wide">
-                        <img src="/assets/img/hero/Hero-img-medium.webp" loading="lazy" decoding="async" alt="Gruppenbild Radwoche">
-                    </div>
-                    <div class="imp-fehler__tile">
-                        <div class="imp-fehler__placeholder">
-                            <div>
-                                <i class="fa-solid fa-medal"></i>
-                                Siegerehrung
-                            </div>
-                        </div>
-                    </div>
-                    <div class="imp-fehler__tile">
-                        <div class="imp-fehler__placeholder">
-                            <div>
-                                <i class="fa-solid fa-person-biking"></i>
-                                Event-Foto
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="imp-fehler__cta">
-                    <a href="/fotos/" class="gelber-button">Zur Galerie</a>
-                </div>
             </section>
 
             <script>
@@ -1239,67 +1001,6 @@
                     }
                 })();
             </script>
-
-            <!-- ========= E V E N T - I M P R E S S I O N E N   &   F O T O S ========= -->
-            <section class="impressionen" data-aos="fade-up" data-aos-delay="100">
-                <div class="impressionen__head">
-                    <div>
-                        <h2 class="impressionen__title">
-                            <i class="fa-regular fa-images"></i>
-                            Impressionen
-                        </h2>
-                        <p class="impressionen__sub">Einblicke aus Events, Training und Vereinsleben</p>
-                    </div>
-                    <a href="/fotos/" class="gelber-button" style="font-size:0.85rem;padding:0.6rem 1.1rem;">
-                        <i class="fa-solid fa-camera-retro"></i>
-                        Zur Galerie
-                    </a>
-                </div>
-
-                <div class="impressionen__grid">
-                    <div class="imp-tile imp-tile--wide">
-                        <img src="/assets/img/hero/Hero-img-medium.webp" loading="lazy" decoding="async" alt="Gruppenbild Radwoche">
-                    </div>
-                    <div class="imp-tile">
-                        <div class="imp-tile__placeholder">
-                            <div>
-                                <i class="fa-solid fa-person-biking"></i>
-                                Event-Foto<br>hier einfügen
-                            </div>
-                        </div>
-                    </div>
-                    <div class="imp-tile">
-                        <div class="imp-tile__placeholder">
-                            <div>
-                                <i class="fa-solid fa-medal"></i>
-                                Siegerehrung<br>Platzhalter
-                            </div>
-                        </div>
-                    </div>
-                    <div class="imp-tile">
-                        <div class="imp-tile__placeholder">
-                            <div>
-                                <i class="fa-solid fa-people-group"></i>
-                                Team-Foto<br>Platzhalter
-                            </div>
-                        </div>
-                    </div>
-                    <div class="imp-tile">
-                        <div class="imp-tile__placeholder">
-                            <div>
-                                <i class="fa-solid fa-mountain-sun"></i>
-                                MTB-Tour<br>Platzhalter
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="impressionen__footer">
-                    <a href="/fotos/" style="font-size:0.88rem;font-weight:600;color:var(--site-muted);text-decoration:underline;text-underline-offset:3px;">
-                        Alle Fotos und Alben ansehen →
-                    </a>
-                </div>
-            </section>
 
             <section class="fakten">
                 <h2>Unsere Fakten</h2>
