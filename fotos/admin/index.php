@@ -583,18 +583,73 @@ $currentName = fg2_displayname();
     ];
 
     let currentEventId = '';
-    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, _selected }] */
-    let _objectUrls = new Set(); /* Tracking für URL.revokeObjectURL (Memory Leak verhindern!) */
+    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, _selected, _wasExisting, src }] */
+    let _objectUrls = new Set(); /* Tracking für URL.revokeObjectURL (Memory Leak verhindern!) — NUR Blob: URLs! */
     let idCounter = 0;
     let lbCurrentIndex = -1;
     let lbCurrentList = [];
+    let _fgEventsCachePromise = null; /* events.json Cache-Promise → nur 1x laden */
+
+    /* ===== Helper: Server events.json 1x laden (für bestehende Fotos!) ===== */
+    function fgLoadEventsJson() {
+        if (_fgEventsCachePromise) return _fgEventsCachePromise;
+        _fgEventsCachePromise = (async () => {
+            try {
+                const r = await fetch('../data/events.json?_=' + Date.now(), { cache: 'no-store' });
+                if (!r.ok) return [];
+                const raw = await r.json();
+                if (!Array.isArray(raw)) return [];
+                return raw.filter(e => e && !e._schemaVersion);
+            } catch (e) { console.warn('[Admin] events.json konnte nicht geladen werden:', e); return []; }
+        })();
+        return _fgEventsCachePromise;
+    }
+    function basename(path) { return String(path||'').split(/[\\/]/).filter(Boolean).pop() || String(path||''); }
+    /* Bestehende Fotos aus events.json zum aktuellen Event in uploadedPhotos anhängen (OHNE Duplikate!) */
+    async function fgAttachExistingPhotos(eventId) {
+        if (!eventId) return 0;
+        const events = await fgLoadEventsJson();
+        const ev = events.find(e => e.id === eventId);
+        if (!ev || !Array.isArray(ev.photos) || ev.photos.length === 0) return 0;
+        const currentForEvent = uploadedPhotos.filter(p => p._event === eventId);
+        let added = 0;
+        for (const ph of ev.photos) {
+            if (!ph || !ph.src) continue;
+            const fname = basename(ph.src);
+            const already = currentForEvent.find(p => {
+                const pf = basename(p.filename || '');
+                const ps = basename(p.src || '');
+                return (pf && pf === fname) || (ps && ps === fname);
+            });
+            if (already) continue; /* Bereits drin (als Upload oder alt!) → nicht doppelt! */
+            const preview = ph.thumbnail || ph.src;
+            uploadedPhotos.push({
+                id: `p${++idCounter}`, _event: eventId,
+                file: null, /* KEIN Upload! Schon auf Server! */
+                previewUrl: preview,
+                filename: fname,
+                src: ph.src, /* WICHTIG für photosMeta! */
+                thumbnail: ph.thumbnail || null,
+                display: ph.display || null,
+                bibNumbers: Array.isArray(ph.bibNumbers) ? ph.bibNumbers.slice() : [],
+                _selected: true,
+                _wasExisting: true
+            });
+            added++;
+        }
+        return added;
+    }
 
     /* ============ SAUBERER MEMORY CLEANUP (Page Hide / Unload) ============ */
     const _revokeAll = () => {
         try {
-            _objectUrls.forEach(u => URL.revokeObjectURL(u));
+            _objectUrls.forEach(u => { if (String(u).startsWith('blob:')) URL.revokeObjectURL(u); });
             _objectUrls.clear();
-            uploadedPhotos.forEach(p => { if (p.previewUrl) URL.revokeObjectURL(p.previewUrl); });
+            uploadedPhotos.forEach(p => {
+                if (p.previewUrl && String(p.previewUrl).startsWith('blob:')) {
+                    try { URL.revokeObjectURL(p.previewUrl); } catch(e){}
+                }
+            });
         } catch(e){}
     };
     window.addEventListener('pagehide', _revokeAll);
@@ -624,15 +679,28 @@ $currentName = fg2_displayname();
             `;
         }).join('');
         $grid.querySelectorAll('.fg-event-pick').forEach(el => {
-            el.addEventListener('click', () => {
+            el.addEventListener('click', async () => {
                 currentEventId = el.getAttribute('data-id');
                 renderEvents();
+                /* Bestehende Fotos aus events.json automatisch zu uploadedPhotos dazuladen (Merge!) */
+                try {
+                    const n = await fgAttachExistingPhotos(currentEventId);
+                    if (n > 0) {
+                        console.log(`[Admin] ${n} bestehende Fotos aus events.json zu "${currentEventId}" geladen.`);
+                    }
+                } catch (e) { console.warn('[Admin] Fotos laden fehlgeschlagen:', e); }
+                renderPhotos();
                 updatePublishBtn();
             });
         });
-        if (!currentEventId) $grid.querySelector('.fg-event-pick')?.click();
+        if (!currentEventId) {
+            const first = $grid.querySelector('.fg-event-pick');
+            if (first) first.click();
+        }
     }
     $yearSel.addEventListener('change', renderEvents);
+    /* Load: events.json im Hintergrund vorladen, damit fgAttachExistingPhotos schnell ist! */
+    fgLoadEventsJson();
     renderEvents();
 
     /* ===== BILDER REINZIEHEN — OHNE FileReader! (100x schneller + wenig RAM) ===== */
@@ -685,12 +753,16 @@ $currentName = fg2_displayname();
         const bibStr = (p.bibNumbers||[]).join(', ');
         const sel = p._selected ? 'selected' : '';
         const hasBibs = (p.bibNumbers||[]).length > 0;
+        const existingBadge = p._wasExisting
+            ? `<div style="position:absolute;top:6px;left:6px;background:#198754;color:#fff;padding:3px 7px;border-radius:5px;font-size:0.68rem;font-weight:700;"><i class="fa-solid fa-server"></i> Bereits auf Server</div>`
+            : '';
         return `
             <div class="fg-photo-card ${sel}" data-id="${p.id}" style="contain: layout paint style;">
                 <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="öffnen + bearbeiten" data-id="${p.id}">
                     <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
                     <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" decoding="async" fetchpriority="auto" style="pointer-events:none; width:100%;">
                     ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 #${bibStr}</div>` : ''}
+                    ${existingBadge || ''}
                     <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:600;"><i class="fa-solid fa-expand"></i> öffnen</div>
                 </div>
                 <div class="fg-photo-card__body">
@@ -1025,13 +1097,20 @@ $currentName = fg2_displayname();
         fgAdminAppendCsrf(fd);
         if (!fd.has('csrf')) { console.warn('CSRF Token fehlt!'); }
         const photosMeta = list.map(p => {
-            /* 🔴 SICHERHEIT: Wir senden NUR DIE 3 FELDER!
-               Keine src, keine previews, keine blob URLs! NUR id + Dateiname + Nummern! */
-            return {
+            const bibNums = Array.isArray(p.bibNumbers)
+                ? p.bibNumbers
+                : parseBibs(String(p.bibNumbers || ''));
+            const entry = {
                 id: p.id,
                 originalName: String(p.filename || p.originalName || 'img.jpg').trim(),
-                bibNumbers: Array.isArray(p.bibNumbers) ? p.bibNumbers : parseBibs(p.bibNumbers)
+                bibNumbers: bibNums
             };
+            /* 🔥 WICHTIG: Bestehende Fotos (aus events.json) MÜSSEN .src senden!
+               Sonst erkennt upload.php nicht dass Foto schon existiert und würde es nicht mergen! */
+            if (p.src) entry.src = String(p.src).trim();
+            if (p.thumbnail) entry.thumbnail = String(p.thumbnail).trim();
+            if (p.display)   entry.display   = String(p.display).trim();
+            return entry;
         });
         fd.append('metadata', JSON.stringify({
             eventId: currentEventId, folder, year, discKey: discObj.key, photos: photosMeta

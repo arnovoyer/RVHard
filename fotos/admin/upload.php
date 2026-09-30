@@ -594,6 +594,57 @@ if ($action === 'publish') {
         ];
     }
 
+    /* ========== 🔥 ALTE FOTOS BEWAHREN (MERGE!) – Früher wurden alte Fotos gelöscht! ========== */
+    $oldPhotos = [];
+    $oldEvent = null;
+    foreach ($allEvents as $e) {
+        if (is_array($e) && ($e['id'] ?? '') === $eventId) { $oldEvent = $e; break; }
+    }
+    if (is_array($oldEvent) && !empty($oldEvent['photos']) && is_array($oldEvent['photos'])) {
+        $oldPhotos = $oldEvent['photos'];
+    }
+    $mergedPhotosFinal = [];
+    $seenSrcs = [];
+    foreach ([$photosJson, $oldPhotos] as $batch) {
+        if (!is_array($batch)) continue;
+        foreach ($batch as $ph) {
+            if (!is_array($ph) || empty($ph['src'])) continue;
+            $s = (string)$ph['src'];
+            if (isset($seenSrcs[$s])) {
+                $existIdx = $seenSrcs[$s];
+                $existBibs = $mergedPhotosFinal[$existIdx]['bibNumbers'] ?? [];
+                $newBibs   = $ph['bibNumbers'] ?? [];
+                if (is_array($newBibs) && count($newBibs) > 0) {
+                    $combined = array_values(array_unique(
+                        array_merge(is_array($existBibs) ? $existBibs : [], $newBibs),
+                        SORT_REGULAR
+                    ));
+                    $mergedPhotosFinal[$existIdx]['bibNumbers'] = $combined;
+                }
+                foreach (['thumbnail','display'] as $extraField) {
+                    if (!empty($ph[$extraField]) && empty($mergedPhotosFinal[$existIdx][$extraField])) {
+                        $mergedPhotosFinal[$existIdx][$extraField] = $ph[$extraField];
+                    }
+                }
+                continue;
+            }
+            $entry = [
+                'src'        => $s,
+                'bibNumbers' => array_values(is_array($ph['bibNumbers'] ?? null) ? $ph['bibNumbers'] : [])
+            ];
+            if (!empty($ph['thumbnail'])) $entry['thumbnail'] = $ph['thumbnail'];
+            if (!empty($ph['display']))   $entry['display']   = $ph['display'];
+            $seenSrcs[$s] = count($mergedPhotosFinal);
+            $mergedPhotosFinal[] = $entry;
+        }
+    }
+    $countOld = count($oldPhotos);
+    $countNew = count($photosJson);
+    $countFinal = count($mergedPhotosFinal);
+    if ($countOld > 0 && $countFinal > $countNew) {
+        $warnings[] = "🔗 MERGE ERFOLG! Alte Fotos erhalten: $countOld vorherige + $countNew neu hochgeladene → gesamt $countFinal Fotos. Früher wurden alte Fotos hier automatisch GELÖSCHT – jetzt nicht mehr!";
+    }
+
     $thisEvent = [
         'id'          => $eventId,
         'parentId'    => 'sbs-' . $year,
@@ -608,11 +659,9 @@ if ($action === 'publish') {
         'organizer'   => 'RV Hard',
         'distance'    => $disc['distance'],
         'folder'      => $folder,
-        /* User Wunsch: KEINE KI Images!
-           Cover: ERSTES echtes Foto falls vorhanden, sonst NULL (lassen wir im JS nachträglich sanitizen) */
-        'coverPhoto'  => $photosJson[0]['src'] ?? null,
+        'coverPhoto'  => $mergedPhotosFinal[0]['src'] ?? null,
         'tags'        => ['SBS', (string)$year, $disc['short'], explode(',', $disc['location'])[0]],
-        'photos'      => $photosJson
+        'photos'      => $mergedPhotosFinal
     ];
 
     /* 6) Merge: altes Event entfernen + neues + sortieren */
