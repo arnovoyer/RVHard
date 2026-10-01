@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News | RV Hard</title>
+    <meta name="description" content="News und Rennberichte des RV Hard." />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+    </noscript>
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+
+    <main class="news-detail-page">
+        <section class="container">
+            <div class="news-layout">
+                <div id="news-detail-container">
+                    <h1 id="news-title">Artikel wird geladen â€¦</h1>
+                    <p id="news-date" class="date"></p>
+                    <div id="news-content" class="news-content-detail"></div>
+                </div>
+                <div class="news-sidebar">
+                    <aside id="related-news" class="more-news">
+                        <h2>Weitere Neuigkeiten</h2>
+                        <div class="related-news-list"></div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        function normalizeNewsPayload(payload) {
+            if (Array.isArray(payload)) return payload;
+            if (payload && Array.isArray(payload.items)) return payload.items;
+            return [];
+        }
+
+        async function fetchNewsData() {
+            const urls = ['/data/news/news-cms.json', '/data/news/news.json'];
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const payload = await response.json();
+                    const list = normalizeNewsPayload(payload);
+                    if (list.length) return list;
+                } catch (_) {
+                }
+            }
+            throw new Error('News-Daten konnten nicht geladen werden.');
+        }
+
+        async function fetchLegacySlugs() {
+            try {
+                const response = await fetch('/data/news/legacy-slugs.json');
+                if (!response.ok) return new Set();
+                const payload = await response.json();
+                if (!Array.isArray(payload)) return new Set();
+                return new Set(payload.map(s => String(s || '').trim()).filter(Boolean));
+            } catch (_) {
+                return new Set();
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, m => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m]));
+        }
+
+        function renderBody(article) {
+            if (article.body && window.marked) {
+                return window.marked.parse(article.body);
+            }
+            const fallbackText = article.body || article.content || '';
+            return `<p>${escapeHtml(fallbackText).replace(/\n/g, '<br>')}</p>`;
+        }
+
+        function normalizeImageList(article) {
+            const images = [];
+            if (typeof article.image === 'string' && article.image.trim()) {
+                images.push(article.image.trim());
+            }
+            if (Array.isArray(article.images)) {
+                article.images.forEach(item => {
+                    if (typeof item === 'string' && item.trim()) {
+                        images.push(item.trim());
+                        return;
+                    }
+                    if (item && typeof item.image === 'string' && item.image.trim()) {
+                        images.push(item.image.trim());
+                    }
+                });
+            }
+            return [...new Set(images)];
+        }
+
+        function renderImageSection(article) {
+            const images = normalizeImageList(article);
+            if (!images.length) return '';
+
+            const slidesHtml = images
+                .map(src => `<div class="gallery-slide" style="background-image: url('${src}');"></div>`)
+                .join('');
+
+            return `
+                <div class="news-detail-gallery-wrapper" data-aos="fade-up">
+                    <div class="news-detail-gallery">
+                        ${slidesHtml}
+                    </div>
+                    <button class="gallery-control prev">&lt;</button>
+                    <button class="gallery-control next">&gt;</button>
+                </div>
+            `;
+        }
+
+        function articleSlugFromUrl() {
+            const url = new URL(window.location.href);
+            return url.searchParams.get('slug');
+        }
+
+        async function loadNavigation() {
+            const response = await fetch('/assets/navigationneu.html');
+            if (!response.ok) throw new Error(`Status: ${response.status}`);
+            document.getElementById('navigation-container').innerHTML = await response.text();
+            initNavigationMenu();
+        }
+
+        async function loadFooter() {
+            const response = await fetch('/assets/footer.html');
+            if (!response.ok) throw new Error(`Status: ${response.status}`);
+            document.getElementById('site-footer').innerHTML = await response.text();
+        }
+
+        async function loadArticle() {
+            const slug = articleSlugFromUrl();
+            const titleEl = document.getElementById('news-title');
+            const contentEl = document.getElementById('news-content');
+
+            if (!slug) {
+                titleEl.textContent = 'Kein Artikel-Slug übergeben';
+                contentEl.innerHTML = '<p>Bitte über einen gültigen News-Link öffnen.</p>';
+                return;
+            }
+
+            window.location.replace(`/news/${encodeURIComponent(slug)}.html`);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tasks = [loadNavigation(), loadFooter(), loadArticle()];
+            const [navRes, footerRes] = await Promise.allSettled(tasks);
+            if (navRes?.status === 'rejected') console.error('Navigation-Fehler:', navRes.reason);
+            if (footerRes?.status === 'rejected') console.error('Footer-Fehler:', footerRes.reason);
+        });
+    </script>
+
+    <script src="/assets/news/news.js" defer></script>
+    <script src="/assets/news/related-news-loader.js" defer></script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+</body>
+
+</html>
+
+

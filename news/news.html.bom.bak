@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News | Aktuelle Nachrichten vom RV Hard</title>
+    <meta name="description" content="Aktuelle Nachrichten, Rennberichte und Vereinsupdates vom RV Hard aus den Bereichen Mountainbike, Rennrad und Triathlon.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="RV Hard">
+    <link rel="canonical" href="https://rv-hard.at/news/news">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RV Hard">
+    <meta property="og:title" content="News | Aktuelle Nachrichten vom RV Hard">
+    <meta property="og:description"
+        content="Aktuelle Nachrichten, Rennberichte und Vereinsupdates vom RV Hard aus den Bereichen Mountainbike, Rennrad und Triathlon.">
+    <meta property="og:url" content="https://rv-hard.at/news/news">
+    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
+    <meta property="og:image:alt" content="Logo des RV Hard">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="News | Aktuelle Nachrichten vom RV Hard">
+    <meta name="twitter:description"
+        content="Aktuelle Nachrichten, Rennberichte und Vereinsupdates vom RV Hard aus den Bereichen Mountainbike, Rennrad und Triathlon.">
+    <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
+    <meta name="twitter:image:alt" content="Logo des RV Hard">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: 'Poppins', system-ui, sans-serif;
+            font-weight: 500;
+            color: #222;
+            background-color: #f7f7f7;
+            line-height: 1.6;
+        }
+        
+        body {
+            padding-top: 70px;
+        }
+        
+        header {
+            height: 70px;
+            margin-bottom: 0;
+        }
+        
+        #navigation-container:empty {
+            min-height: 70px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+        }
+        
+        #site-footer:empty {
+            min-height: 150px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            margin-top: 3rem;
+        }
+        
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        main {
+            padding-top: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #111;
+            margin-bottom: 2rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .news-content {
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: calc(var(--item-index, 0) * 0.1s);
+        }
+        
+        .news-archiv-wrapper {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        .gelber-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ffc107, #f5b301);
+            color: #1a1a1a;
+            padding: 0.65rem 1.2rem;
+            font-weight: 600;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav id="navigation-container"></nav>
+    </header>
+    <main class="news-page">
+        <section class="container">
+            <h1 class="section-title">Aktuelle Nachrichten</h1>
+            <div id="news-container" class="news-container"></div>
+        </section>
+    </main>
+    <footer id="site-footer"></footer>
+    <script src="/assets/navigation-loader.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const [navResult, newsResult, footerResult] = await Promise.allSettled([
+                loadNavigation(),
+                loadNews(),
+                loadFooter()
+            ]);
+
+            if (navResult.status === 'rejected') console.error('Navigation-Fehler:', navResult.reason);
+            if (newsResult.status === 'rejected') console.error('News-Fehler:', newsResult.reason);
+            if (footerResult.status === 'rejected') console.error('Footer-Fehler:', footerResult.reason);
+        });
+
+        async function loadNavigation() {
+            const response = await fetch('/assets/navigationneu.html');
+            if (!response.ok) throw new Error(`Status: ${response.status}`);
+            document.getElementById('navigation-container').innerHTML = await response.text();
+            initNavigationMenu();
+        }
+
+        function normalizeNewsPayload(payload) {
+            if (Array.isArray(payload)) return payload;
+            if (payload && Array.isArray(payload.items)) return payload.items;
+            return [];
+        }
+
+        async function fetchNewsData() {
+            const urls = ['/data/news/news-cms.json', '/data/news/news-latest.json', '/data/news/news.json'];
+            for (const url of urls) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const payload = await response.json();
+                    const news = normalizeNewsPayload(payload);
+                    if (news.length) return news;
+                } catch (_) {
+                }
+            }
+            throw new Error('Keine News-Daten gefunden.');
+        }
+
+        function resolveArticleLink(article) {
+            const slug = String(article.slug || '').trim();
+            const external = typeof article.link === 'string' ? article.link.trim() : '';
+
+            if (slug) return `/news/${encodeURIComponent(slug)}.html`;
+            if (external && !external.toLowerCase().startsWith('externer link')) {
+                if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
+            }
+            return '/news/news';
+        }
+
+        async function loadNews() {
+            const newsContainer = document.getElementById('news-container');
+            try {
+                const allNews = await fetchNewsData();
+                allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                const latestNews = allNews.slice(0, 6);
+
+                latestNews.forEach((article, index) => {
+                    const articleEl = document.createElement('article');
+                    articleEl.className = 'news-item';
+                    const articleLink = resolveArticleLink(article);
+
+                    articleEl.innerHTML = `
+                        <div class="news-content" style="--item-index: ${index}">
+                            <h3>${article.title}</h3>
+                            <div class="news-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span class="news-date">${formatDate(article.date)}</span>
+                            </div>
+                            <p>${article.content}</p>
+                            <a class="gelber-button" style="align-self: flex-start;margin-top: auto;" href="${articleLink}">Weiterlesen</a>
+                        </div>
+                    `;
+                    newsContainer.appendChild(articleEl);
+                });
+
+                const archivButton = document.createElement('div');
+                archivButton.className = "news-archiv-wrapper";
+                archivButton.innerHTML = `
+        <a href="/news-archiv.html" class="gelber-button">
+            Zum News-Archiv
+        </a>
+    `;
+                newsContainer.appendChild(archivButton);
+            } catch (error) {
+                console.error('Fehler beim Laden der Nachrichten:', error);
+                newsContainer.textContent = 'Fehler beim Laden der Nachrichten.';
+                throw error;
+            }
+        }
+
+        async function loadFooter() {
+            const response = await fetch("/assets/footer.html");
+            const html = await response.text();
+            document.getElementById("site-footer").innerHTML = html;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE');
+        }
+    </script>
+    <script src="/assets/header-scroll.js" defer></script>
+    <script src="/assets/cookie-banner.js" defer></script>
+</body>
+
+</html>
+

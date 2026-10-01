@@ -1,0 +1,1290 @@
+﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+    <html lang="de">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="RV Hard - dein Verein für Mountainbike, Rennrad und Triathlon in Hard. Training, Termine, News und Vereinsleben auf einen Blick.">
+        <meta name="robots" content="index, follow">
+        <meta name="author" content="RV Hard">
+        <title>RV Hard | Radsport- und Triathlonverein in Hard</title>
+        <link rel="canonical" href="https://rv-hard.at/">
+        <meta property="og:locale" content="de_AT">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="RV Hard">
+        <meta property="og:title" content="RV Hard | Radsport- und Triathlonverein in Hard">
+        <meta property="og:description"
+            content="Training, Termine, News und Vereinsleben beim RV Hard - Mountainbike, Rennrad und Triathlon in Vorarlberg.">
+        <meta property="og:url" content="https://rv-hard.at/">
+        <meta property="og:image" content="https://rv-hard.at/assets/img/social/og-home-1200x630.png">
+        <meta property="og:image:alt" content="RV Hard - Radsport- und Triathlonverein in Hard">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="RV Hard | Radsport- und Triathlonverein in Hard">
+        <meta name="twitter:description"
+            content="Training, Termine, News und Vereinsleben beim RV Hard - Mountainbike, Rennrad und Triathlon in Vorarlberg.">
+        <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-home-1200x630.png">
+        <meta name="twitter:image:alt" content="RV Hard - Radsport- und Triathlonverein in Hard">
+        <link rel="stylesheet" href="assets/style.css">
+        <link rel="stylesheet" href="/assets/home-fonts.css">
+        <link rel="preload" as="image" href="/assets/img/hero/Hero-img-medium.webp"
+            imagesrcset="/assets/img/hero/Hero-img-small.webp 640w, /assets/img/hero/Hero-img-medium.webp 960w, /assets/img/hero/Hero-img.webp 1600w"
+            imagesizes="(max-width: 600px) 92vw, (max-width: 1200px) 50vw, 620px" fetchpriority="high">
+        <link rel="preload" href="/assets/events/index.css" as="style" onload="this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="/assets/events/index.css">
+        </noscript>
+        <link rel="stylesheet" href="assets/navigation.css">
+        <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet" media="print"
+            onload="this.media='all'">
+        <noscript>
+            <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+        </noscript>
+        <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+        <style>
+            .sbs2026-banner {
+                position: fixed;
+                inset: 0;
+                z-index: 9998;
+                font-family: 'Poppins', sans-serif;
+                transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+                opacity: 1;
+                visibility: visible;
+                perspective: 1200px;
+            }
+            .sbs2026-banner--hidden {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            .sbs2026-banner--hidden .sbs2026-banner__wrap {
+                transform: rotate(-3deg) scale(0.94);
+                opacity: 0;
+            }
+
+            .sbs2026-banner__backdrop {
+                position: absolute;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .sbs2026-banner__wrap {
+                width: min(980px, 100%);
+                transform: rotate(-3deg);
+                transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.55s ease;
+                opacity: 1;
+                will-change: transform;
+            }
+
+            .sbs2026-banner__box {
+                position: relative;
+                background: var(--site-surface);
+                color: var(--site-text);
+                border-radius: 14px;
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+                padding: 2.75rem 2.25rem 2.25rem;
+                transform: rotate(3deg);
+            }
+
+            .sbs2026-banner__close {
+                position: absolute;
+                top: 1rem;
+                right: 1.2rem;
+                background: var(--site-surface-soft);
+                color: var(--site-muted);
+                border: 1px solid var(--site-border);
+                font-size: 1.5rem;
+                line-height: 1;
+                cursor: pointer;
+                padding: 0.4rem 0.75rem;
+                border-radius: 8px;
+                transition: background 0.3s ease, color 0.3s ease;
+                font-family: inherit;
+                z-index: 2;
+            }
+            .sbs2026-banner__close:hover {
+                background: var(--accent-yellow);
+                color: #111;
+                border-color: transparent;
+            }
+
+            .sbs2026-banner__label {
+                display: inline-block;
+                color: var(--accent-yellow);
+                font-weight: 700;
+                font-size: 0.85rem;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                margin-bottom: 0.75rem;
+            }
+
+            .sbs2026-banner__title {
+                margin: 0 0 0.5rem 0 !important;
+                font-size: clamp(1.6rem, 4vw, 2.25rem);
+                font-weight: 700;
+                color: var(--site-heading) !important;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.15;
+            }
+
+            .sbs2026-banner__date {
+                margin: 0 0 1.75rem 0;
+                font-size: 1rem;
+                color: var(--site-muted);
+                font-weight: 500;
+            }
+
+            .sbs2026-countdown {
+                margin: 0 0 2rem 0;
+                text-align: center;
+            }
+            .sbs2026-countdown__label {
+                margin: 0 0 0.75rem 0;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-heading);
+            }
+            .sbs2026-countdown__label strong {
+                color: var(--accent-yellow, #ffc107);
+            }
+            .sbs2026-countdown__grid {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+            }
+            .sbs2026-cd-unit {
+                min-width: 78px;
+                background: var(--site-surface, #fff);
+                border: 1px solid var(--site-border, #e5e5e5);
+                border-radius: 10px;
+                padding: 0.75rem 0.6rem 0.55rem;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            }
+            .sbs2026-cd-unit__num {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--accent-yellow, #ffc107);
+                font-family: 'Poppins', sans-serif;
+                line-height: 1;
+                display: block;
+            }
+            .sbs2026-cd-unit__label {
+                display: block;
+                margin-top: 0.45rem;
+                font-size: 0.7rem;
+                color: var(--site-muted, #555);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                font-weight: 600;
+            }
+            .sbs2026-countdown__done {
+                display: none;
+                margin-top: 0.5rem;
+                padding: 0.75rem 1rem;
+                background: rgba(255, 193, 7, 0.12);
+                border: 1px dashed var(--accent-yellow, #ffc107);
+                border-radius: 8px;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-heading);
+            }
+
+            .sbs2026-banner__grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.25rem;
+                margin-bottom: 2rem;
+            }
+
+            .sbs2026-card {
+                background: var(--site-surface);
+                border: 1px solid var(--site-border);
+                border-radius: 12px;
+                padding: 1.2rem 1rem 1rem;
+                transition: transform 0.35s ease, box-shadow 0.35s ease;
+            }
+            .sbs2026-card:hover {
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            }
+            .sbs2026-card__icon {
+                font-size: 1.7rem;
+                width: 44px;
+                height: 44px;
+                background: var(--site-surface-soft);
+                border-radius: 10px;
+                display: grid;
+                place-items: center;
+                margin-bottom: 0.85rem;
+            }
+            .sbs2026-card h3 {
+                margin: 0 0 0.45rem 0 !important;
+                font-size: 1.02rem;
+                font-weight: 600;
+                color: var(--site-heading) !important;
+                line-height: 1.3;
+                font-family: 'Poppins', sans-serif;
+            }
+            .sbs2026-card p {
+                margin: 0.1rem 0;
+                font-size: 0.85rem;
+                color: var(--site-text);
+            }
+            .sbs2026-card__desc {
+                margin-top: 0.5rem !important;
+                color: var(--site-muted) !important;
+                font-size: 0.8rem !important;
+            }
+
+            .sbs2026-banner__actions {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+
+            .sbs2026-banner__sponsor {
+                margin-top: 1.85rem;
+                padding-top: 1.4rem;
+                border-top: 1px solid var(--site-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.9rem 1.1rem;
+            }
+            .sbs2026-banner__sponsor img {
+                height: 34px;
+                width: auto;
+                display: block;
+            }
+            .sbs2026-banner__sponsor span {
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-muted);
+                letter-spacing: 0.01em;
+            }
+            .sbs2026-banner__sponsor span strong {
+                color: var(--site-heading);
+                font-weight: 700;
+            }
+
+            /* --- K O M P A K T E   M O B I L - V E R S I O N --- */
+            @media (max-width: 720px) {
+                .sbs2026-banner__backdrop { padding: 0.6rem; }
+                .sbs2026-banner__wrap {
+                    transform: rotate(0deg);
+                    width: 100%;
+                }
+                .sbs2026-banner--hidden .sbs2026-banner__wrap {
+                    transform: translateY(40px) scale(0.96);
+                }
+                .sbs2026-banner__box {
+                    transform: rotate(0deg);
+                    padding: 1.4rem 1.1rem 1.1rem;
+                    max-height: 92vh;
+                    border-radius: 12px;
+                    overflow-y: auto;
+                }
+                .sbs2026-banner__close {
+                    top: 0.7rem;
+                    right: 0.8rem;
+                    font-size: 1.3rem;
+                    padding: 0.3rem 0.55rem;
+                }
+                .sbs2026-banner__label {
+                    font-size: 0.72rem;
+                    margin-bottom: 0.4rem;
+                }
+                .sbs2026-banner__title {
+                    font-size: 1.35rem !important;
+                    margin-bottom: 0.3rem !important;
+                }
+                .sbs2026-banner__date {
+                    font-size: 0.82rem;
+                    margin-bottom: 1rem;
+                }
+                .sbs2026-countdown { margin-bottom: 1.15rem; }
+                .sbs2026-countdown__label { font-size: 0.78rem; margin-bottom: 0.55rem; }
+                .sbs2026-countdown__grid { gap: 0.35rem; }
+                .sbs2026-cd-unit {
+                    min-width: 58px;
+                    padding: 0.55rem 0.4rem 0.45rem;
+                    border-radius: 8px;
+                }
+                .sbs2026-cd-unit__num { font-size: 1.3rem; }
+                .sbs2026-cd-unit__label {
+                    font-size: 0.6rem;
+                    letter-spacing: 0.05em;
+                    margin-top: 0.3rem;
+                }
+                .sbs2026-countdown__done { font-size: 0.8rem; padding: 0.6rem 0.8rem; }
+                .sbs2026-banner__grid {
+                    grid-template-columns: 1fr;
+                    gap: 0.5rem;
+                    margin-bottom: 1.1rem;
+                }
+                .sbs2026-card {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.75rem;
+                    padding: 0.65rem 0.7rem;
+                    border-radius: 10px;
+                }
+                .sbs2026-card:hover {
+                    transform: none;
+                    box-shadow: none;
+                }
+                .sbs2026-card__icon {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                    font-size: 1.25rem;
+                    flex-shrink: 0;
+                    margin-bottom: 0;
+                }
+                .sbs2026-card > div:last-child { flex: 1; }
+                .sbs2026-card h3 {
+                    font-size: 0.92rem !important;
+                    margin-bottom: 0.2rem !important;
+                }
+                .sbs2026-card p {
+                    font-size: 0.75rem;
+                    line-height: 1.35;
+                }
+                .sbs2026-card__desc { display: none; }
+                .gelber-button {
+                    padding: 0.6rem 1.05rem !important;
+                    font-size: 0.85rem !important;
+                }
+                .sbs2026-banner__sponsor {
+                    margin-top: 1.15rem;
+                    padding-top: 0.9rem;
+                    gap: 0.55rem 0.75rem;
+                }
+                .sbs2026-banner__sponsor img {
+                    height: 26px;
+                }
+                .sbs2026-banner__sponsor span {
+                    font-size: 0.78rem;
+                    text-align: center;
+                }
+            }
+        </style>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebSite",
+                        "@id": "https://rv-hard.at/#website",
+                        "url": "https://rv-hard.at/",
+                        "name": "RV Hard",
+                        "inLanguage": "de-AT"
+                    },
+                    {
+                        "@type": "WebPage",
+                        "@id": "https://rv-hard.at/#webpage",
+                        "url": "https://rv-hard.at/",
+                        "name": "RV Hard | Radsport- und Triathlonverein in Hard",
+                        "description": "RV Hard - dein Verein für Mountainbike, Rennrad und Triathlon in Hard. Training, Termine, News und Vereinsleben auf einen Blick.",
+                        "inLanguage": "de-AT",
+                        "isPartOf": {
+                            "@id": "https://rv-hard.at/#website"
+                        },
+                        "about": {
+                            "@id": "https://rv-hard.at/#organization"
+                        }
+                    },
+                    {
+                        "@type": "SportsOrganization",
+                        "@id": "https://rv-hard.at/#organization",
+                        "name": "RV Hard",
+                        "url": "https://rv-hard.at/",
+                        "email": "vorstand@rv-hard.at",
+                        "logo": "https://rv-hard.at/assets/img/logo/Logo-RVHard.png",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "Kohlplatzstraße 2a",
+                            "postalCode": "6971",
+                            "addressLocality": "Hard",
+                            "addressCountry": "AT"
+                        },
+                        "sport": [
+                            "Mountainbike",
+                            "Rennrad",
+                            "Triathlon"
+                        ]
+                    }
+                ]
+            }
+        </script>
+        <style>
+            .visually-hidden {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            @keyframes slide {
+                from {
+                    transform: translateX(0);
+                }
+
+                to {
+                    transform: translateX(-100%);
+                }
+            }
+
+            .logos {
+                overflow: hidden;
+                padding: 60px 0;
+                background: var(--site-surface-soft, #f9fafb);
+                white-space: nowrap;
+                position: relative;
+                border-radius: 14px;
+            }
+
+            .logos:before,
+            .logos:after {
+                position: absolute;
+                top: 0;
+                width: 250px;
+                height: 100%;
+                content: "";
+                z-index: 2;
+            }
+
+            .logos:before {
+                left: 0;
+                background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
+            }
+
+            .logos:after {
+                right: 0;
+                background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
+            }
+
+            .logos:hover .logos-slide {
+                animation-play-state: paused;
+            }
+
+            .logos-slide {
+                display: inline-block;
+                animation: 35s slide infinite linear;
+            }
+
+            .logos-slide img {
+                height: 50px;
+                width: auto;
+                margin: 0 40px;
+                opacity: 0.7;
+                transition: opacity .3s ease;
+            }
+
+            .logos-slide img:hover {
+                opacity: 1;
+            }
+
+            @media (max-width: 768px) {
+                .logos {
+                    width: calc(100% - 0.5rem);
+                    margin: 0 auto;
+                    padding: 42px 0;
+                    border-radius: 16px;
+                }
+
+                .logos:before,
+                .logos:after {
+                    width: 38px;
+                }
+
+                .logos:before {
+                    left: 0;
+                    background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
+                }
+
+                .logos:after {
+                    right: 0;
+                    background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--site-surface-soft, white));
+                }
+            }
+
+            .gemeinschaft {
+                text-align: center;
+                margin: 4rem auto;
+                max-width: 100%;
+                padding: 0 1rem;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .gemeinschaft h2 {
+                margin-bottom: 1rem;
+            }
+
+            .gemeinschaft-grid {
+                margin: 0 auto !important;
+                display: grid !important;
+                justify-items: center;
+            }
+
+            .gemeinschaft .gemeinschaft-teaser {
+                font-size: 1.2rem;
+                color: var(--site-text, #333);
+            }
+
+            .fakten {
+                text-align: center;
+                margin: 4rem auto;
+                padding: 0 1rem;
+            }
+
+            .fakten h2 {
+                margin-bottom: 2rem;
+                font-size: 2rem;
+            }
+
+            .fakten-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 2rem;
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            .fakt {
+                background: var(--site-surface-soft, #f9f9f9);
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                transition: none;
+            }
+
+            .fakt:hover {
+                transform: none;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            .fakt .icon {
+                font-size: 2.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .fakt h3 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: bold;
+                color: var(--site-heading, #111);
+            }
+
+            .fakt p {
+                margin: 0;
+                font-size: 1rem;
+                color: var(--site-text, #555);
+            }
+
+            /* Medium screens (750px - 1200px) */
+            @media (min-width: 750px) and (max-width: 1199px) {
+                .fakten-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    max-width: 600px;
+                }
+
+                .fakt h3 {
+                    font-size: 1.5rem;
+                }
+
+                .fakt p {
+                    font-size: 0.95rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .gemeinschaft {
+                    padding: 0 1.25rem;
+                }
+
+                .gemeinschaft-grid {
+                    grid-template-columns: 1fr;
+                    max-width: 100%;
+                    margin: 2rem 0 0 0;
+                    gap: 1rem;
+                }
+
+                .gemeinschaft-item h3 {
+                    font-size: 1.4rem;
+                }
+
+                .gemeinschaft-item p {
+                    font-size: 1rem;
+                }
+
+                .fakten-grid {
+                    grid-template-columns: 1fr;
+                    max-width: 360px;
+                    margin: 0 auto;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+
+                .fakt {
+                    padding: 1.5rem;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <div id="navigation-container"></div>
+        </header>
+        <main style="padding-top:20px">
+            <div class="hero-verein-wrapper" data-aos="fade-up">
+                <div class="hero-image img">
+                    <img src="/assets/img/hero/Hero-img-medium.webp" srcset="/assets/img/hero/Hero-img-small.webp 640w,
+                                /assets/img/hero/Hero-img-medium.webp 960w,
+                                /assets/img/hero/Hero-img.webp 1600w" sizes="(max-width: 600px) 92vw,
+                                (max-width: 1200px) 50vw,
+                                620px" alt="Aufstellung Radwoche 2026" width="900" height="675" fetchpriority="high" decoding="async">
+                </div>
+                <section class="verein-vorstellung" style="margin-top:0px;">
+                    <div data-aos="fade-up">
+                        <h1><strong>Wir sind der RV DJ's Bikeshop Simplon Hard</strong></h1>
+                        <p>Wir sind deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon bei uns finden
+                            Radsportlerinnen und Radsportler jeden Alters und Leistungsniveaus ein Zuhause. Wir fördern den
+                            Nachwuchs, leben Gemeinschaft
+                            und
+                            lieben den Radsport in all seinen Facetten.</p>
+                        <div class="gelber-button-container" style="margin-top:10px;">
+                            <a href="/verein/unser-verein.html" class="gelber-button">Mehr erfahren</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <section class="container">
+                <h2 class="visually-hidden">Veranstaltungshighlights</h2>
+                <div class="top-events-container">
+
+                    <div class="event-card summer-series">
+                        <div data-aos="fade-up-right">
+                            <h3>Raiffeisen Summer Bike Series 2026</h3>
+                            <div class="single-event">
+                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.09.2026</p>
+                                <p class="event-name">Kammgarn Kriterium Hard</p>
+                            </div>
+                            <div class="single-event">
+                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.09.2026</p>
+                                <p class="event-name">Einzelzeitfahren Rohrspitz Fußach</p>
+                            </div>
+                            <div class="single-event">
+                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>06.09.2026</p>
+                                <p class="event-name">Bergrennen Wolfurt–Buch</p>
+                            </div>
+                            <div>
+                                <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="event-card nightrace">
+                        <div data-aos="fade-up-left">
+                            <h3>Termine 2026</h3>
+                            <div id="home-termine-list">
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Lade Termine...</p>
+                                    <p class="event-name">Bitte warten</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="/termine.html" class="gelber-button">Termine 2026</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="instagram-placeholder"></section>
+
+            <section id="home-news-container" class="news-container" data-aos="zoom-out-right">
+                <h2><a href="/news/news">Neueste Nachrichten</a></h2>
+                <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/news">News-Seite</a>.</p>
+            </section>
+
+            <script>
+                (function () {
+                    const CONTAINER_ID = 'home-termine-list';
+                    const EVENTS_URL = '/data/termine/termine.json';
+
+                    document.addEventListener('DOMContentLoaded', async () => {
+                        const container = document.getElementById(CONTAINER_ID);
+                        if (!container) {
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch(EVENTS_URL);
+                            if (!response.ok) {
+                                throw new Error('Termine konnten nicht geladen werden');
+                            }
+
+                            const payload = await response.json();
+                            const events = normalizeEventsPayload(payload);
+                            const nextEvents = getNextEvents(events, 3);
+                            renderEvents(container, nextEvents);
+                        } catch (error) {
+                            console.error('[HomeTermine] Fehler beim Laden:', error);
+                            container.innerHTML = '';
+                            container.insertAdjacentHTML('beforeend', `
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Keine Termine verfügbar</p>
+                                    <p class="event-name">Bitte später erneut versuchen</p>
+                                </div>
+                            `);
+                        }
+                    });
+
+                    function normalizeEventsPayload(payload) {
+                        if (Array.isArray(payload)) return payload;
+                        if (payload && Array.isArray(payload.events)) return payload.events;
+                        return [];
+                    }
+
+                    function parseDateOnly(datumString) {
+                        const [year, month, day] = String(datumString || '').split('-').map(Number);
+                        if (!year || !month || !day) {
+                            return null;
+                        }
+                        return new Date(year, month - 1, day);
+                    }
+
+                    function getNextEvents(events, limit) {
+                        const today = new Date();
+                        const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+                        return events
+                            .filter(event => {
+                                const parsed = parseDateOnly(event?.datum);
+                                return parsed && parsed >= todayDateOnly;
+                            })
+                            .sort((a, b) => parseDateOnly(a.datum) - parseDateOnly(b.datum))
+                            .slice(0, limit);
+                    }
+
+                    function formatDate(datumString) {
+                        const parsed = parseDateOnly(datumString);
+                        if (!parsed) {
+                            return '';
+                        }
+                        const day = String(parsed.getDate()).padStart(2, '0');
+                        const month = String(parsed.getMonth() + 1).padStart(2, '0');
+                        const year = parsed.getFullYear();
+                        return `${day}.${month}.${year}`;
+                    }
+
+                    function renderEvents(container, events) {
+                        container.innerHTML = '';
+
+                        if (!events.length) {
+                            container.insertAdjacentHTML('beforeend', `
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>Aktuell keine bevorstehenden Termine</p>
+                                    <p class="event-name">Schau bald wieder vorbei</p>
+                                </div>
+                            `);
+                            return;
+                        }
+
+                        events.forEach((event) => {
+                            const dateLabel = formatDate(event.datum);
+                            container.insertAdjacentHTML('beforeend', `
+                                <div class="single-event">
+                                    <p class="event-date"><i class="fa-regular fa-calendar-days"></i>${escapeHtml(dateLabel)}</p>
+                                    <p class="event-name">${escapeHtml(String(event.titel || 'Termin'))}</p>
+                                </div>
+                            `);
+                        });
+                    }
+
+                    function escapeHtml(str) {
+                        return String(str).replace(/[&<>"']/g, ch => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            '"': '&quot;',
+                            "'": '&#039;'
+                        }[ch]));
+                    }
+                })();
+            </script>
+
+            <script>
+                (function () {
+                    const CONTAINER_ID = 'home-news-container';
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const el = document.getElementById(CONTAINER_ID);
+                        if (!el) { console.warn('[HomeNews] Container nicht gefunden'); return; }
+                        loadLatestNews(el);
+                    });
+
+                    async function fetchFirst(urls) {
+                        for (const url of urls) {
+                            try {
+                                const res = await fetch(url, { cache: 'no-store' });
+                                if (res.ok) { return await res.json(); }
+                            } catch (_) {
+                            }
+                        }
+                        throw new Error('Keine news.json gefunden (alle Pfade fehlgeschlagen)');
+                    }
+
+                    function normalizeNewsPayload(payload) {
+                        if (Array.isArray(payload)) return payload;
+                        if (payload && Array.isArray(payload.items)) return payload.items;
+                        return [];
+                    }
+
+                    function resolveArticleLink(article) {
+                        const slug = String(article.slug || '').trim();
+                        const external = typeof article.link === 'string' ? article.link.trim() : '';
+
+                        if (slug) return `/news/${encodeURIComponent(slug)}.html`;
+                        if (external && !external.toLowerCase().startsWith('externer link')) {
+                            if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
+                        }
+                        return '/news/news';
+                    }
+
+                    async function loadLatestNews(container) {
+                        try {
+                            const payload = await fetchFirst([
+                                '/data/news/news-cms.json',
+                                '/data/News/news.json',
+                                '/data/news/news.json',
+                                '/news.json',
+                                'data/News/news.json',
+                                'news.json'
+                            ]);
+
+                            const news = normalizeNewsPayload(payload);
+
+                            news.sort((a, b) => {
+                                const dateA = new Date(a?.date || 0).getTime();
+                                const dateB = new Date(b?.date || 0).getTime();
+                                if (dateA !== dateB) return dateB - dateA;
+                                return (Number(b?.id) || 0) - (Number(a?.id) || 0);
+                            });
+                            const latest = news.slice(0, 2);
+
+                            container.innerHTML = `
+                    <h2><a href="/news/news">Neueste Nachrichten</a></h2>
+                `;
+
+                            latest.forEach(article => {
+                                const author =
+                                    article.author ||
+                                    (Array.isArray(article.tags)
+                                        ? (article.tags.find(t => t === 'Moritz' || t === 'Ralf') || '')
+                                        : '');
+
+                                const link = resolveArticleLink(article);
+                                const date = formatDateAT(article.date);
+
+                                container.insertAdjacentHTML('beforeend', `
+            <div class="news-item">
+                <div class="news-content">
+                <h3>${escapeHtml(article.title)}</h3>
+                <p class="news-meta">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                    <span class="news-date">${date}</span>${author ? ` | <span class="news-author">${escapeHtml(author)}</span>` : ''}
+                </p>
+                <p>${escapeHtml(article.content)}</p>
+                <a href="${link}" class="gelber-button" style="align-self: flex-start;margin-top: auto;">Weiterlesen</a>
+                </div>
+            </div>
+            `);
+                            });
+
+                        } catch (err) {
+                            console.error('Fehler beim Laden der Startseiten-News:', err);
+                            container.innerHTML += `<p>Fehler beim Laden der neuesten Nachrichten.</p>`;
+                        }
+                    }
+
+                    function formatDateAT(s) {
+                        const d = new Date(s);
+                        return isNaN(d) ? s : d.toLocaleDateString('de-AT', { day: '2-digit', month: 'long', year: 'numeric' });
+                    }
+
+                    function escapeHtml(str) {
+                        return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+                    }
+                })();
+            </script>
+
+            <section class="fakten">
+                <h2>Unsere Fakten</h2>
+                <div class="fakten-grid">
+                    <div class="fakt" data-aos="flip-right">
+                        <div class="icon">&#128101;</div>
+                        <h3>250+</h3>
+                        <p>Mitglieder</p>
+                    </div>
+                    <div class="fakt" data-aos="flip-right" data-aos-delay="600">
+                        <div class="icon">&#127942;</div>
+                        <h3>100+</h3>
+                        <p>Jahre Tradition <br> Seit 1922</p>
+                    </div>
+                    <div class="fakt" data-aos="flip-right" data-aos-delay="1200">
+                        <div class="icon">&#128118;</div>
+                        <h3>50+</h3>
+                        <p>Kinder & Jugendliche</p>
+                    </div>
+                    <div class="fakt" data-aos="flip-right" data-aos-delay="1800">
+                        <div class="icon">&#128692;</div>
+                        <h3>3</h3>
+                        <p>Sparten:<br>Rennrad, MTB, Triathlon</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="gemeinschaft">
+                <h2>Erlebe unsere Gemeinschaft</h2>
+                <p class="gemeinschaft-teaser" style="margin-bottom:2.5rem;">
+                    Du möchtest unsere Gemeinschaft erleben?<br>
+                    <a href="/verein/gemeinschaft.html" class="gelber-button" target="_blank" style="margin-top:10px">Mehr
+                        Gemeinschaft</a>
+                </p>
+
+                <div class="gemeinschaft-grid"
+                    style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5rem;">
+                    <div class="gemeinschaft-item" data-aos="fade-up">
+                        <img src="/assets/img/gemeinschaft/Rennrad.webp" loading="lazy" decoding="async"
+                            alt="Rennrad Sparte" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                        <h3>Rennrad</h3>
+                        <p>Gemeinsam auf der Straße unterwegs, Training & Rennen.</p>
+                    </div>
+
+                    <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="100">
+                        <img src="/assets/img/gemeinschaft/MTB1.webp" loading="lazy" decoding="async" alt="MTB Sparte"
+                            style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                        <h3>MTB</h3>
+                        <p>Abenteuer im Gelände, Techniktraining und Teamfahrten.</p>
+                    </div>
+
+                    <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="200">
+                        <img src="/assets/img/gemeinschaft/Triathlon4.webp" loading="lazy" decoding="async"
+                            alt="Triathlon Sparte" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                        <h3>Triathlon</h3>
+                        <p>Schwimmen, Radfahren, Laufen - gemeinsam ans Ziel.</p>
+                    </div>
+
+                    <div class="gemeinschaft-item" data-aos="fade-up" data-aos-delay="300">
+                        <img src="/assets/img/gemeinschaft/Gemeinschaft9.webp" loading="lazy" decoding="async"
+                            alt="Gemeinschaft" style="width:100%; border-radius:10px; object-fit:cover; height:180px;">
+                        <h3>Gemeinschaft</h3>
+                        <p>Gemeinsam Sport, Freundschaften und Erlebnisse erleben.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-mitglied" data-aos="zoom-out-up"
+                style="text-align:center; max-width:800px; margin:0 auto; width:100%; padding:2rem 1rem;">
+                <h2>Werde Teil unserer Radsport-Familie</h2>
+                <p>Ob Rennrad, MTB oder Triathlon - wir freuen uns auf dich!</p>
+                <a href="/verein/mitglied-werden.html" class="gelber-button" style="margin-top:10px">Jetzt Mitglied
+                    werden</a>
+            </section>
+
+            <section class="sponsoren-dank" data-aos="fade-up">
+                <h2>Ein herzliches Dankeschön an unsere Sponsoren</h2>
+                <div class="logos">
+                    <div class="logos-slide">
+                        <a href="https://www.alpla.com/de" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/alpla.webp" alt="Alpla Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.becker-installationen.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/becker.webp" alt="Becker Installationen Logo" width="340"
+                                height="50" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.djs.bike" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/dj.webp" alt="DJ's Bikeshop Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.faigle.com/de" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/faigle.webp" alt="Faigle Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.tierklinik-fuerst.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/fuerst.webp" alt="Tierklinik Fürst Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.generali.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/generali-medium.webp" alt="Generali Logo" width="907"
+                                height="100" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://lang-schiller.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/lang und schiller.webp" alt="Lang & Schiller Logo" width="340"
+                                height="50" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://oeamtc.at" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/Öamtc.webp" alt="ÖAMTC Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.profimed.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/profimed.webp" alt="Profimed Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="/">
+                            <img src="/assets/sponsoren/img/Ronchese.webp" alt="Fußpflege Ronchese Logo" width="454"
+                                height="150" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.raiffeisen.at/de/privatkunden.html" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/raiffeisen.webp" alt="Raiffeisen Logo" width="340" height="50"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://schaffer-dachbau.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/schffer.webp" alt="Dachbau Schaffer Logo" width="340"
+                                height="50" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://simplon.com/de" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/simplon-svg-.webp" alt="Simplon Logo" width="1417" height="300"
+                                loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://www.vn.at/" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/vn.webp" alt="Vorarlberger Nachrichten Logo" width="340"
+                                height="50" loading="eager" decoding="async" fetchpriority="low" />
+                        </a>
+                        <a href="https://vkw.at" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/sponsoren/img/vkw.webp" alt="VKW Logo" width="340" height="50" loading="eager"
+                                decoding="async" fetchpriority="low" />
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Summer Bike Series 2026 Banner 
+        <div id="sbs2026-banner" class="sbs2026-banner sbs2026-banner--hidden" role="dialog" aria-modal="true" aria-label="Summer Bike Series 2026 Ankündigung">
+            <div class="sbs2026-banner__backdrop">
+                <div class="sbs2026-banner__wrap">
+                    <div class="sbs2026-banner__box">
+                        <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
+                        <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
+                        <h2 class="sbs2026-banner__title">Raiffeisen Summer Bike Series 2026</h2>
+                        <p class="sbs2026-banner__date">📅 5. + 6. September 2026 · Hard und Umgebung</p>
+
+                        <div class="sbs2026-countdown" id="sbs2026-countdown">
+                            <p class="sbs2026-countdown__label">
+                                ⏳ Anmeldung schließt in <strong id="sbs2026-cd-label-num">–</strong>
+                            </p>
+                            <div class="sbs2026-countdown__grid">
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="days">00</span>
+                                    <span class="sbs2026-cd-unit__label">Tage</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="hours">00</span>
+                                    <span class="sbs2026-cd-unit__label">Stunden</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="minutes">00</span>
+                                    <span class="sbs2026-cd-unit__label">Minuten</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="seconds">00</span>
+                                    <span class="sbs2026-cd-unit__label">Sekunden</span>
+                                </div>
+                            </div>
+                            <div class="sbs2026-countdown__done" id="sbs2026-cd-done">
+                                🏁 Anmeldung ist geschlossen – Ergebnisse folgen in Kürze!
+                            </div>
+                        </div>
+
+                        <div class="sbs2026-banner__grid">
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">🏙️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Kammgarn Kriterium Hard</h3>
+                                    <p>📅 Samstag, 05.09. · Start ab 10:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn-Areal · bis 30 Runden à 650 m</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⏱️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Einzelzeitfahren Rohrspitz – Fußach</h3>
+                                    <p>📅 Samstag, 05.09. · Start ab 17:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot!</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⛰️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Bergrennen Wolfurt – Buch</h3>
+                                    <p>📅 Sonntag, 06.09. · Start ab 10:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sbs2026-banner__actions">
+                            <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
+                        </div>
+                        <div class="sbs2026-banner__sponsor">
+                            <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="lazy" decoding="async">
+                            <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <footer id="site-footer"></footer>
+
+        <script src="/assets/navigation-loader.js" defer></script>
+        <script>
+            var copy = document.querySelector(".logos-slide").cloneNode(true);
+            document.querySelector(".logos").appendChild(copy);
+        </script>
+        <script src="/assets/cookie-banner.js" defer></script>
+        <script src="/assets/header-scroll.js" defer></script>
+        <script>
+            fetch("/assets/footer.html")
+                .then(r => r.text())
+                .then(html => {
+                    document.getElementById("site-footer").innerHTML = html;
+                });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+        </script>
+        <script>
+            (function () {
+                var STORAGE_KEY = 'sbs2026_banner_closed';
+                var banner = document.getElementById('sbs2026-banner');
+                if (!banner) return;
+
+                try {
+                    if (localStorage.getItem(STORAGE_KEY)) return;
+                } catch (e) {}
+
+                var closeBtn = banner.querySelector('.sbs2026-banner__close');
+
+                function showBanner() {
+                    if (window.requestAnimationFrame) {
+                        requestAnimationFrame(function () {
+                            banner.classList.remove('sbs2026-banner--hidden');
+                        });
+                    } else {
+                        banner.classList.remove('sbs2026-banner--hidden');
+                    }
+                }
+
+                function hideBanner() {
+                    banner.classList.add('sbs2026-banner--hidden');
+                    try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+                }
+
+                closeBtn.addEventListener('click', hideBanner);
+
+                function tryShow() {
+                    if (document.getElementById('cookie-overlay')) {
+                        setTimeout(tryShow, 600);
+                    } else {
+                        showBanner();
+                    }
+                }
+
+                function startScheduler() {
+                    setTimeout(tryShow, 1800);
+                }
+
+                if (document.readyState === 'complete') {
+                    startScheduler();
+                } else {
+                    window.addEventListener('load', startScheduler);
+                }
+
+                // --- C O U N T D O W N – Anmeldeschluss SBS 2026 ---
+                // ANMERKUNG: Ziel-Datum unten bei `TARGET_DATE` bei Bedarf ändern!
+                var TARGET_DATE = new Date('2026-09-04T18:00:00+02:00'); // Sa, 5. Sept 2026 · 09:00 MESZ
+
+                var cdEl = document.getElementById('sbs2026-countdown');
+                if (cdEl) {
+                    var cdDays = cdEl.querySelector('[data-sbs-cd="days"]');
+                    var cdHours = cdEl.querySelector('[data-sbs-cd="hours"]');
+                    var cdMinutes = cdEl.querySelector('[data-sbs-cd="minutes"]');
+                    var cdSeconds = cdEl.querySelector('[data-sbs-cd="seconds"]');
+                    var cdLabelNum = document.getElementById('sbs2026-cd-label-num');
+                    var cdDone = document.getElementById('sbs2026-cd-done');
+                    var cdGrid = cdEl.querySelector('.sbs2026-countdown__grid');
+                    var cdLabel = cdEl.querySelector('.sbs2026-countdown__label');
+
+                    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+                    function updateCountdown() {
+                        var now = new Date().getTime();
+                        var diff = TARGET_DATE.getTime() - now;
+
+                        if (diff <= 0) {
+                            if (cdGrid) cdGrid.style.display = 'none';
+                            if (cdLabel) cdLabel.style.display = 'none';
+                            if (cdDone) cdDone.style.display = 'block';
+                            return;
+                        }
+
+                        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        if (cdDays) cdDays.textContent = pad2(days);
+                        if (cdHours) cdHours.textContent = pad2(hours);
+                        if (cdMinutes) cdMinutes.textContent = pad2(minutes);
+                        if (cdSeconds) cdSeconds.textContent = pad2(seconds);
+
+                        if (cdLabelNum) {
+                            if (days > 0) {
+                                cdLabelNum.textContent =
+                                    days + (days === 1 ? ' Tag' : ' Tagen') +
+                                    ' ' + pad2(hours) + ':' + pad2(minutes) + 'h';
+                            } else {
+                                cdLabelNum.textContent =
+                                    pad2(hours) + ':' + pad2(minutes) + ':' + pad2(seconds);
+                            }
+                        }
+                    }
+
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
+                }
+            })();
+        </script>
+    </body>
+
+    </html>

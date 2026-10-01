@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gemeinschaft beim RV Hard - Radsport, Triathlon, Training, Termine und Vereinsinfos.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rv-hard.at/verein/gemeinschaft">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:site_name" content="RV Hard">
+    <meta property="og:title" content="Gemeinschaft | RV Hard">
+    <meta property="og:description" content="Gemeinschaft beim RV Hard - Radsport, Triathlon, Training, Termine und Vereinsinfos.">
+    <meta property="og:url" content="https://rv-hard.at/verein/gemeinschaft">
+    <meta property="og:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
+    <meta property="og:image:alt" content="Logo des RV Hard">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gemeinschaft | RV Hard">
+    <meta name="twitter:description" content="Gemeinschaft beim RV Hard - Radsport, Triathlon, Training, Termine und Vereinsinfos.">
+    <meta name="twitter:image" content="https://rv-hard.at/assets/img/logo/Logo-RVHard.png">
+    <meta name="twitter:image:alt" content="Logo des RV Hard">
+  <title>Gemeinschaft | RV Hard</title>
+  <meta name="author" content="RV Hard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/navigation.css">
+  <link rel="stylesheet" href="/assets/gemeinschaft.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+  </noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print"
+    onload="this.media='all'"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </noscript>
+  <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+</head>
+
+<body>
+  <header>
+    <nav id="navigation-container"></nav>
+  </header>
+
+  <main class="gemeinschaft-seite">
+    <h1 data-aos="fade-up">Gemeinschaft</h1>
+    <p data-aos="fade-up">Der RV Hard lebt von seiner starken Gemeinschaft. Neben dem Sport steht
+      das Miteinander im
+      Vordergrund. Wir
+      veranstalten Ausfahrten, Radwochen und gemeinsame Feste, die für alle Vereinsmitglieder offen sind.</p>
+
+    <section class="mtb-section">
+      <h2 data-aos="zoom-in">MTB</h2>
+      <p data-aos="zoom-in"><i class="fa-solid fa-mountain" style="margin-right:5px"></i> Gemeinsame Trainings,
+        Ausfahrten, Trainings und
+        Vereinsradwoche.<!--TODO-->.</p>
+      <div class="slider">
+        <div class="slide-track" id="mtb-track">
+          <img src="/assets/img/gemeinschaft/MTB1.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB2.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB3.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB4.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB5.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB6.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB7.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB8.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB9.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB10.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB11.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB12.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB13.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB14.webp" loading="lazy" alt="MTB Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB15.webp" loading="lazy" alt="MTB Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB16.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB17.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <!--Duplizierung-->
+          <img src="/assets/img/gemeinschaft/MTB1.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB2.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB3.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB4.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB5.webp" loading="eager" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB6.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB7.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB8.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB9.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB10.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB11.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB12.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB13.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB14.webp" loading="lazy" alt="MTB Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB15.webp" loading="lazy" alt="MTB Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB16.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/MTB17.webp" loading="lazy" alt="MTB Ausfahrt" width="300" height="200">
+        </div>
+      </div>
+    </section>
+
+    <section class="rennrad-section">
+      <h2 data-aos="zoom-in">Rennrad</h2>
+      <p data-aos="zoom-in"><i class="fa-solid fa-person-biking" style="margin-right:5px"></i>Ausfahrten, Rennen und
+        Vereinsradwoche in Italien.<!--TODO: bearbeiten--></p>
+      <div class="slider">
+        <div class="slide-track" id="rennrad-track">
+          <img src="/assets/img/gemeinschaft/Rennrad.webp" loading="eager" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad1.webp" loading="eager" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad2.webp" loading="eager" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad4.webp" loading="eager" alt="Radwoche 2025" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad5.webp" loading="eager" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad7.webp" loading="lazy" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad8.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad9.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad10.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad11.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad12.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad13.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad14.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad15.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad16.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad17.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad18.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad19.webp" loading="lazy" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad20.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad21.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad22.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad23.webp" loading="lazy" alt="Bergrennen" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad24.webp" loading="lazy" alt="Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad25.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad26.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad27.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad28.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad29.webp" loading="lazy" alt="Pfänderrennen" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad30.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad31.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad32.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad33.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad34.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad35.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad36.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad37.webp" loading="lazy" alt="Ausfahrt GP Vorarlberg" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad38.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad39.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+          <!--Duplizierung-->
+          <img src="/assets/img/gemeinschaft/Rennrad.webp" loading="eager" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad1.webp" loading="eager" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad2.webp" loading="eager" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad4.webp" loading="eager" alt="Radwoche 2025" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad5.webp" loading="eager" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad7.webp" loading="lazy" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad8.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad9.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad10.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad11.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad12.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad13.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad14.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad15.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad16.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad17.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad18.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad19.webp" loading="lazy" alt="Italien Radwoche" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad20.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad21.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad22.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad23.webp" loading="lazy" alt="Bergrennen" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad24.webp" loading="lazy" alt="Training" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad25.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad26.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad27.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad28.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad29.webp" loading="lazy" alt="Pfänderrennen" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad30.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad31.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad32.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad33.webp" loading="lazy" alt="Radwoche Italien" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad34.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad35.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad36.webp" loading="lazy" alt="Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad37.webp" loading="lazy" alt="Ausfahrt GP Vorarlberg" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad38.webp" loading="lazy" alt="Radwoche" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Rennrad39.webp" loading="lazy" alt="Kriterium" width="300" height="200">
+        </div>
+      </div>
+    </section>
+
+    <section class="triathlon-section">
+      <h2 data-aos="zoom-in">Triathlon</h2>
+      <p data-aos="zoom-in"><i class="fa-solid fa-person-running" style="margin-right:5px"></i> Gemeinsame Wettkämpfe,
+        Staffelteilnahmen und
+        Freude am Sport.<!--TODO: bearbeiten--></p>
+      <div class="slider" id="triathlon-slider">
+        <div class="slide-track">
+          <img src="/assets/img/gemeinschaft/Triathlon1.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon2.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon3.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon4.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon5.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon6.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon8.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon9.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon10.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon11.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon12.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon13.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon14.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon15.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon16.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon17.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon18.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <!--Duplizierung-->
+          <img src="/assets/img/gemeinschaft/Triathlon1.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon2.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon3.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon4.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon5.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon6.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon8.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon9.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon10.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon11.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon12.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon13.webp" loading="lazy" alt="Schwimmtraining" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon14.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon15.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon16.webp" loading="lazy" alt="Laufbewerb" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon17.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Triathlon18.webp" loading="lazy" alt="Wettkampf" width="300" height="200">
+        </div>
+      </div>
+    </section>
+
+    <section class="gemeinschaft-allgemein">
+      <h2 data-aos="zoom-in">Gemeinschaft abseits des Rads</h2>
+      <p data-aos="zoom-in"><i class="fa-solid fa-users" style="margin-right:5px"></i> Neben dem
+        Sport treffen wir uns für
+        Stammtische,
+        Vereinsfeste, Ausflüge und gesellige Abende.<!--TODO: bearbeiten--></p>
+      <div class="slider">
+        <div class="slide-track" id="gemeinschaft-track">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft9.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft10.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft15.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft17.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft21.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft6.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft7.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft1.webp" loading="lazy" alt="Gemeinschaft abseits des Rads"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft13.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft24.webp" loading="lazy"
+            alt="Gemeinsammes Essen nach der Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft3.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft25.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft4.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft5.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft8.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft11.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft12.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft14.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft16.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft18.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft19.webp" loading="lazy" alt="Während des Radfahrens"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft20.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft22.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft23.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft26.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft27.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft28.webp" loading="lazy" alt="Essen nach der Ausfahrt"
+            width="300" height="200">
+          <!--Duplizierung-->
+          <img src="/assets/img/gemeinschaft/Gemeinschaft9.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft10.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft15.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft17.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft21.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft6.webp" loading="lazy"
+            alt="Gemeinschaftlich Essen während einer Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft7.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft1.webp" loading="lazy" alt="Gemeinschaft abseits des Rads"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft13.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft24.webp" loading="lazy"
+            alt="Gemeinsammes Essen nach der Ausfahrt" width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft3.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft25.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft4.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft5.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft8.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft11.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft12.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft14.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft16.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft18.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft19.webp" loading="lazy" alt="Während des Radfahrens"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft20.webp" loading="lazy" alt="Pause während einer Ausfahrt"
+            width="300" height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft22.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft23.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft26.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft27.webp" loading="lazy" alt="Gemeinsames Bild" width="300"
+            height="200">
+          <img src="/assets/img/gemeinschaft/Gemeinschaft28.webp" loading="lazy" alt="Essen nach der Ausfahrt"
+            width="300" height="200">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script>
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("site-footer").innerHTML = html;
+      });
+  </script>
+  <script>
+    document.querySelectorAll('.slider').forEach(slider => {
+      const track = slider.querySelector('.slide-track');
+      const imgs = track.querySelectorAll('img');
+
+      track.innerHTML += track.innerHTML;
+
+      let x = 0;
+      const speed = 0.5;
+
+      function animate() {
+        x -= speed;
+        if (x <= -track.scrollWidth / 2) x = 0;
+        track.style.transform = `translateX(${x}px)`;
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    });
+  </script>
+  <script src="/assets/nav.js" defer></script>
+  <script src="/assets/navigation-loader.js" defer></script>
+  <script src="/assets/header-scroll.js" defer></script>
+  <script src="/assets/cookie-banner.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({
+        duration: 1000,
+        once: true
+      });
+    });
+  </script>
+</body>
+
+</html>
+
+
