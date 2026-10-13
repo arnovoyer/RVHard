@@ -43,6 +43,11 @@
         <noscript>
             <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
         </noscript>
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" rel="stylesheet"
+            media="print" onload="this.media='all'">
+        <noscript>
+            <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" rel="stylesheet">
+        </noscript>
         <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
         <style>
             .sbs2026-banner {
@@ -218,7 +223,7 @@
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             }
             .sbs2026-card__icon {
-                font-size: 1.7rem;
+                font-size: 1.3rem;
                 width: 44px;
                 height: 44px;
                 background: var(--site-surface-soft);
@@ -377,6 +382,54 @@
                 }
                 .sbs2026-banner__sponsor span {
                     font-size: 0.78rem;
+                    text-align: center;
+                }
+            }
+
+            /* --- E r w e i t e r u n g e n   f ü r   d e n   v o r h a n d e n e n   S t i l --- */
+            .top-events-container {
+                display: flex;
+                justify-content: center;
+                align-items: stretch;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                padding: 0.5rem 0;
+            }
+            .top-events-container .event-card.summer-series {
+                flex: 2 1 520px;
+                max-width: 720px;
+                min-width: 0;
+            }
+            .top-events-container .event-card.summer-series h3 {
+                margin-bottom: 0.35rem;
+            }
+            .top-events-container .event-card.summer-series .sbs-summary {
+                color: #777;
+                font-size: 0.9rem;
+                margin: 0 0 1rem 0;
+            }
+            .top-events-container .event-card.summer-series .sbs2026-banner__grid {
+                margin-bottom: 1.1rem;
+            }
+            .top-events-container .event-card.summer-series .sbs-footer {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+            .top-events-container .event-card.nightrace {
+                flex: 1 1 320px;
+                max-width: 420px;
+                min-width: 260px;
+            }
+
+            /* --- Mobile: Event-Buttons zentrieren (MUSS nach den Desktop-Regeln kommen!) --- */
+            @media (max-width: 720px) {
+                .top-events-container .event-card.summer-series .sbs-footer {
+                    justify-content: center;
+                }
+                .top-events-container .event-card.nightrace > div > div:last-child {
                     text-align: center;
                 }
             }
@@ -657,7 +710,7 @@
         <header>
             <div id="navigation-container"></div>
         </header>
-        <main style="padding-top:20px">
+        <main>
             <div class="hero-verein-wrapper" data-aos="fade-up">
                 <div class="hero-image img">
                     <img src="/assets/img/hero/Hero-img-medium.webp" srcset="/assets/img/hero/Hero-img-small.webp 640w,
@@ -680,34 +733,56 @@
                     </div>
                 </section>
             </div>
-            
+
             <section class="container">
                 <h2 class="visually-hidden">Veranstaltungshighlights</h2>
                 <div class="top-events-container">
 
-                    <div class="event-card summer-series">
-                        <div data-aos="fade-up-right">
+                    <!-- SBS – hervorgehoben (erweiterte summer-series Card) -->
+                    <div class="event-card summer-series" data-aos="fade-up-right">
+                        <div>
                             <h3>Raiffeisen Summer Bike Series 2026</h3>
-                            <div class="single-event">
-                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.09.2026</p>
-                                <p class="event-name">Kammgarn Kriterium Hard</p>
+                            <p class="sbs-summary">
+                                <i class="fa-regular fa-calendar-days"></i> 5. + 6. September 2026 · Hard und Umgebung · Landesmeisterschaften
+                            </p>
+
+                            <div class="sbs2026-banner__grid">
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-building"></i>
+                                    </div>
+                                    <h3>Kammgarn Kriterium Hard</h3>
+                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 10:00</p>
+                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn · bis 30 Runden à 650 m</p>
+                                </div>
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-flag-checkered"></i>
+                                    </div>
+                                    <h3>Einzelzeitfahren Rohrspitz</h3>
+                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 17:00</p>
+                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot</p>
+                                </div>
+                                <div class="sbs2026-card">
+                                    <div class="sbs2026-card__icon">
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                    </div>
+                                    <h3>Bergrennen Wolfurt – Buch</h3>
+                                    <p><i class="fa-regular fa-calendar-days"></i> So, 06.09. · ab 10:00</p>
+                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                </div>
                             </div>
-                            <div class="single-event">
-                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>05.09.2026</p>
-                                <p class="event-name">Einzelzeitfahren Rohrspitz Fußach</p>
-                            </div>
-                            <div class="single-event">
-                                <p class="event-date"><i class="fa-regular fa-calendar-days"></i>06.09.2026</p>
-                                <p class="event-name">Bergrennen Wolfurt–Buch</p>
-                            </div>
-                            <div>
+
+                            <div class="sbs-footer">
                                 <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
+                                <a href="/events/sbs/summer-bike-series-2026.html#anmeldung" class="gelber-button">Anmelden</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="event-card nightrace">
-                        <div data-aos="fade-up-left">
+                    <!-- Termine 2026 – nightrace Card -->
+                    <div class="event-card nightrace" data-aos="fade-up-left">
+                        <div>
                             <h3>Termine 2026</h3>
                             <div id="home-termine-list">
                                 <div class="single-event">
@@ -1232,7 +1307,7 @@
 
                 // --- C O U N T D O W N – Anmeldeschluss SBS 2026 ---
                 // ANMERKUNG: Ziel-Datum unten bei `TARGET_DATE` bei Bedarf ändern!
-                var TARGET_DATE = new Date('2026-09-04T18:00:00+02:00'); // Sa, 5. Sept 2026 · 09:00 MESZ
+                var TARGET_DATE = new Date('2026-09-04T18:00:00+02:00'); // Fr, 4. Sept 2026 · 18:00 MESZ
 
                 var cdEl = document.getElementById('sbs2026-countdown');
                 if (cdEl) {

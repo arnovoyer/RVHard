@@ -12,12 +12,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-/* ---------- KONFIGURATION ---------- */
+/* ---------- KONFIGURATION AUS config.php ---------- */
+$CFG = file_exists(__DIR__ . '/config.php') ? include(__DIR__ . '/config.php') : [];
 $UPLOAD_ROOT = realpath(__DIR__ . '/../fotos/data/uploads') . '/';
 $INDEX_FILE  = $UPLOAD_ROOT . 'index.json';
-$MAX_FILES   = 20;
-$MAX_IMG_SIZE = 15 * 1024 * 1024;  // 15 MB pro Bild
-$MAX_VID_SIZE = 50 * 1024 * 1024;  // 50 MB pro Video
+$MAX_FILES   = $CFG['max_files']  ?? 20;
+$MAX_IMG_SIZE = ($CFG['max_img_mb'] ?? 15) * 1024 * 1024;
+$MAX_VID_SIZE = ($CFG['max_vid_mb'] ?? 50) * 1024 * 1024;
 
 $ALLOWED_IMG = ['image/jpeg','image/jpg','image/png','image/webp','image/gif'];
 $ALLOWED_VID = ['video/mp4','video/quicktime','video/webm','video/x-matroska'];
@@ -25,10 +26,10 @@ $ALLOWED_EXT = ['jpg','jpeg','png','webp','gif','mp4','mov','webm','mkv'];
 
 /* Benachrichtigungen */
 $NOTIFY = [
-    'ntfy_topic' => 'rvhard-bildereingang',   // ← Topic-Name (ntfy App abonnieren)
-    'ntfy_server' => 'https://ntfy.sh',
-    'email_to'   => 'vorstand@rv-hard.at',     // ← Deine E-Mail
-    'email_from' => 'noreply@rv-hard.at',
+    'ntfy_topic' => $CFG['ntfy_topic']  ?? '',
+    'ntfy_server'=> $CFG['ntfy_server'] ?? 'https://ntfy.sh',
+    'email_to'   => $CFG['email_to']    ?? '',
+    'email_from' => $CFG['email_from']  ?? 'noreply@rv-hard.at',
 ];
 
 /* ---------- HILFSFUNKTIONEN ---------- */

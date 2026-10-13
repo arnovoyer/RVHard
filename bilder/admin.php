@@ -2,16 +2,57 @@
 /* ============================================================
  *  RV HARD – BILDER-UPLOAD ADMIN INBOX (UI)
  *  Zeigt alle eingegangenen Uploads, ermöglicht Download (ZIP)
- *  und Löschen.
+ *  und Löschen. Außerdem Einstellungen für E-Mail/ntfy.
  * ============================================================ */
-require_once(__DIR__ . '/../fotos/admin/auth2.php');
+
+/* Fehlermeldungen einschalten zum Debuggen (nur wenn nicht eingeloggt, zeigen wir nichts) */
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
+$authPath = __DIR__ . '/../fotos/admin/auth2.php';
+if (!file_exists($authPath)) {
+    http_response_code(500);
+    die('Admin-Auth nicht gefunden: ' . htmlspecialchars($authPath));
+}
+require_once($authPath);
+
 if (!fg2_logged()) {
-    /* Weiterleitung zum Login */
     header('Location: /fotos/admin/login.php');
     exit;
 }
+
 $currentUser = fg2_user();
 $currentName = fg2_displayname();
+
+/* ---------- CONFIG ---------- */
+$configFile = __DIR__ . '/config.php';
+$CFG = file_exists($configFile) ? include($configFile) : [];
+
+/* ---------- EINSTELLUNGEN SPEICHERN ---------- */
+$saveMsg = '';
+$saveOk  = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_settings') {
+    $newEmail = trim($_POST['email_to'] ?? '');
+    $newTopic = trim($_POST['ntfy_topic'] ?? '');
+    $newCfg = [
+        'email_to'    => $newEmail,
+        'email_from'  => $CFG['email_from'] ?? 'noreply@rv-hard.at',
+        'ntfy_topic'  => $newTopic,
+        'ntfy_server' => $CFG['ntfy_server'] ?? 'https://ntfy.sh',
+        'max_files'   => (int)($CFG['max_files']  ?? 20),
+        'max_img_mb'  => (int)($CFG['max_img_mb'] ?? 15),
+        'max_vid_mb'  => (int)($CFG['max_vid_mb'] ?? 50),
+    ];
+    $content = "<?php\nreturn " . var_export($newCfg, true) . ";\n";
+    if (@file_put_contents($configFile, $content)) {
+        $CFG = $newCfg;
+        $saveMsg = 'Einstellungen gespeichert!';
+        $saveOk  = true;
+    } else {
+        $saveMsg = 'Konnte config.php nicht speichern (Schreibrechte fehlen?).';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -47,6 +88,17 @@ $currentName = fg2_displayname();
     h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
     .subtitle { color: #666; margin-bottom: 1.5rem; font-size: 0.92rem; }
 
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+    .tab {
+      padding: 0.55rem 1rem; background: #ddd; border: none; border-radius: 8px;
+      cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.9rem;
+    }
+    .tab.active { background: #ffc400; color: #1a1a1a; }
+    .tab:hover:not(.active) { background: #ccc; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
     .upload-card {
       background: #fff; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.06);
       margin-bottom: 1.2rem; overflow: hidden;
@@ -69,6 +121,8 @@ $currentName = fg2_displayname();
     .btn-delete:hover { background: #c70018; }
     .btn-refresh { background: #333; color: #fff; margin-bottom: 1rem; }
     .btn-refresh:hover { background: #111; }
+    .btn-save { background: #28a745; color: #fff; }
+    .btn-save:hover { background: #218838; }
 
     .thumb-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -116,6 +170,25 @@ $currentName = fg2_displayname();
       cursor: pointer;
     }
 
+    /* Einstellungen */
+    .settings-card {
+      background: #fff; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+      padding: 1.5rem; max-width: 600px;
+    }
+    .field { margin-bottom: 1.1rem; }
+    .field label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.92rem; }
+    .field input {
+      width: 100%; padding: 0.7rem 0.9rem; border: 2px solid #ddd; border-radius: 8px;
+      font-size: 0.95rem; font-family: inherit;
+    }
+    .field input:focus { outline: none; border-color: #ffc400; }
+    .field .hint { font-size: 0.78rem; color: #888; margin-top: 0.3rem; }
+    .save-msg {
+      padding: 0.7rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem;
+    }
+    .save-msg.ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .save-msg.err { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
     @media (max-width: 520px) {
       body { padding-top: 90px; }
       .thumb-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
@@ -135,8 +208,41 @@ $currentName = fg2_displayname();
   <main>
     <h1><i class="fa-solid fa-inbox" style="color:#ffc400;"></i> Bild-Eingang</h1>
     <p class="subtitle">Eingegangene Uploads von externen Wettkämpfen. Gruppiert nach Veranstaltung.</p>
-    <button class="btn btn-refresh" onclick="loadUploads()"><i class="fa-solid fa-rotate"></i> Aktualisieren</button>
-    <div id="uploads"></div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('uploads')"><i class="fa-solid fa-images"></i> Uploads</button>
+      <button class="tab" onclick="showTab('settings')"><i class="fa-solid fa-gear"></i> Einstellungen</button>
+    </div>
+
+    <div id="tab-uploads" class="panel active">
+      <button class="btn btn-refresh" onclick="loadUploads()"><i class="fa-solid fa-rotate"></i> Aktualisieren</button>
+      <div id="uploads"></div>
+    </div>
+
+    <div id="tab-settings" class="panel">
+      <div class="settings-card">
+        <?php if ($saveMsg): ?>
+          <div class="save-msg <?= $saveOk ? 'ok' : 'err' ?>">
+            <i class="fa-solid fa-<?= $saveOk ? 'circle-check' : 'triangle-exclamation' ?>"></i>
+            <?= htmlspecialchars($saveMsg) ?>
+          </div>
+        <?php endif; ?>
+        <form method="post">
+          <input type="hidden" name="action" value="save_settings">
+          <div class="field">
+            <label for="email_to">E-Mail für Benachrichtigungen</label>
+            <input type="email" id="email_to" name="email_to" value="<?= htmlspecialchars($CFG['email_to'] ?? '') ?>" placeholder="deine@email.at">
+            <div class="hint">Hier bekommst du eine E-Mail, sobald jemand Bilder hochlädt.</div>
+          </div>
+          <div class="field">
+            <label for="ntfy_topic">ntfy.sh Topic (Push)</label>
+            <input type="text" id="ntfy_topic" name="ntfy_topic" value="<?= htmlspecialchars($CFG['ntfy_topic'] ?? '') ?>" placeholder="rvhard-bildereingang">
+            <div class="hint">Topic-Name, den du in der ntfy-App abonniert hast. Leer = kein Push.</div>
+          </div>
+          <button type="submit" class="btn btn-save"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+        </form>
+      </div>
+    </div>
   </main>
 
   <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLB()">
@@ -146,6 +252,13 @@ $currentName = fg2_displayname();
   </div>
 
   <script>
+    function showTab(name) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+
     const LB = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbVid = document.getElementById('lbVid');
@@ -169,6 +282,7 @@ $currentName = fg2_displayname();
       wrap.innerHTML = '<p style="text-align:center;color:#888;padding:2rem;">Lade…</p>';
       try {
         const r = await fetch('inbox.php?action=list');
+        if (!r.ok) throw new Error('Server antwortet mit Status ' + r.status);
         const data = await r.json();
         if (!data.ok) throw new Error(data.msg || 'Fehler');
         const ups = data.uploads || [];
@@ -204,7 +318,7 @@ $currentName = fg2_displayname();
             </div>`;
         }).join('');
       } catch (e) {
-        wrap.innerHTML = `<p style="color:#e2001a;padding:1rem;">Fehler: ${escapeHtml(e.message)}</p>`;
+        wrap.innerHTML = `<p style="color:#e2001a;padding:1rem;background:#fff;border-radius:8px;">Fehler beim Laden: ${escapeHtml(e.message)}</p>`;
       }
     }
 
