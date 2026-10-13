@@ -71,7 +71,7 @@
       margin-top: 1px;
       width: 100%;
       min-width: 0;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
     }
 
     .training-seite ul {
@@ -83,12 +83,15 @@
     .training-seite li {
       margin-bottom: 0.5rem;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.5rem;
+      min-width: 0;
     }
 
     .training-seite li i {
       color: #ffc400;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
     }
 
     .training-seite section {
@@ -234,6 +237,11 @@
       zum leistungsorientierten Training. Unsere Sparten decken alle Bereiche des Radsports
       und Triathlons ab.
     </p>
+    <p style="font-weight:600;color:#333;">
+      <i class="fa-regular fa-calendar-check" style="color:#ffc400;"></i>
+      Trainingsstart: <strong>5. November</strong> – das Erwachsenentraining findet
+      <strong>immer ab 19:30 Uhr</strong> statt.
+    </p>
 
     <div class="training-seite" style="padding-top: 0px;">
 
@@ -373,7 +381,7 @@
           <p><i class="fa-solid fa-location-dot"></i> Sporthalle Schule am See (Hard)</p>
           <ul>
             <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 17:00-18:00 Uhr - Kinder</li>
-            <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 19:00-21:00 Uhr - Erwachsene</li>
+            <li><i class="fa-regular fa-calendar"></i> <strong>Mittwoch:</strong> 19:30-21:00 Uhr - Erwachsene (immer)</li>
           </ul>
           <p class="training-kontakt">
             <i class="fa-solid fa-user"></i> Kontakt:
