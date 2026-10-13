@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Bilder senden | RV Hard</title>
+  <meta name="description" content="Sende uns schnell und einfach Fotos und Videos von Radsport-Events.">
+  <meta name="theme-color" content="#111">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="/assets/img/logo/RV_Hard_Logo.webp">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 0.9rem 1rem;
+      text-align: center;
+      border-bottom: 3px solid #ffc400;
+    }
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    header h1 i { color: #ffc400; }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    .field-label .req { color: #e2001a; }
+    .event-input {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .event-input:focus {
+      outline: none;
+      border-color: #ffc400;
+    }
+    .hint {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 0.35rem;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2.5px dashed #bbb;
+      border-radius: 14px;
+      padding: 1.6rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fafafa;
+      margin-top: 0.5rem;
+    }
+    .dropzone:hover, .dropzone.drag {
+      border-color: #ffc400;
+      background: #fff9e6;
+    }
+    .dropzone i {
+      font-size: 2.2rem;
+      color: #ffc400;
+      margin-bottom: 0.5rem;
+    }
+    .dropzone p {
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+    .dropzone small {
+      display: block;
+      color: #888;
+      font-size: 0.78rem;
+      margin-top: 0.3rem;
+    }
+
+    /* File list */
+    .file-list {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+      gap: 0.5rem;
+    }
+    .file-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #eee;
+    }
+    .file-item img, .file-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .file-item .rm {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .file-item .type-badge {
+      position: absolute;
+      bottom: 3px;
+      left: 3px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 0.6rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* Progress */
+    .progress-wrap {
+      margin-top: 0.9rem;
+      display: none;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-bar > div {
+      height: 100%;
+      background: linear-gradient(90deg, #ffc400, #f5b301);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .progress-text {
+      font-size: 0.82rem;
+      color: #555;
+      margin-top: 0.4rem;
+      text-align: center;
+    }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, #ffc400, #f5b301);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(245,179,1,0.35);
+      transition: transform 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .submit-btn:not(:disabled):active {
+      transform: scale(0.98);
+    }
+
+    .status-msg {
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      margin-top: 0.8rem;
+      display: none;
+    }
+    .status-msg.ok {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    .status-msg.err {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.78rem;
+      color: #999;
+    }
+    footer a { color: #777; }
+
+    @media (min-width: 600px) {
+      main { padding: 1.5rem; }
+      .card { padding: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><i class="fa-solid fa-camera-retro"></i> Bilder &amp; Videos senden</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <label class="field-label" for="event">Name der Veranstaltung <span class="req">*</span></label>
+      <input type="text" id="event" class="event-input" placeholder="z.B. Vorarlberger Radsport-Tag 2026" maxlength="80">
+      <p class="hint">Damit wir die Bilder richtig zuordnen können. Danke! 🙏</p>
+    </div>
+
+    <div class="card">
+      <div class="dropzone" id="dropzone">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p>Hier tippen zum Auswählen</p>
+        <small>Bilder &amp; Videos · max. 20 Dateien · bis 50 MB pro Video</small>
+      </div>
+      <input type="file" id="fileinput" multiple accept="image/*,video/*" hidden>
+      <div class="file-list" id="filelist"></div>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">Wird gesendet…</div>
+      </div>
+      <button class="submit-btn" id="submitBtn" disabled>
+        <i class="fa-solid fa-paper-plane"></i> Senden
+      </button>
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+  </main>
+
+  <footer>
+    RV Hard · Bilder werden nur für Vereinszwecke genutzt ·
+    <a href="/fotos/datenschutz.html">Datenschutz</a>
+  </footer>
+
+  <script>
+    const MAX_FILES = 20;
+    const dropzone = document.getElementById('dropzone');
+    const fileinput = document.getElementById('fileinput');
+    const filelist = document.getElementById('filelist');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    const eventInput = document.getElementById('event');
+
+    let files = [];
+
+    function setStatus(text, type) {
+      statusMsg.className = 'status-msg ' + type;
+      statusMsg.innerHTML = text;
+      if (type) statusMsg.style.display = 'block';
+      else statusMsg.style.display = 'none';
+    }
+
+    function renderList() {
+      filelist.innerHTML = '';
+      files.forEach((f, i) => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        const isVideo = f.type.startsWith('video/');
+        if (isVideo) {
+          const v = document.createElement('video');
+          v.src = URL.createObjectURL(f);
+          v.muted = true;
+          div.appendChild(v);
+          const badge = document.createElement('span');
+          badge.className = 'type-badge';
+          badge.textContent = 'VIDEO';
+          div.appendChild(badge);
+        } else {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(f);
+          div.appendChild(img);
+        }
+        const btn = document.createElement('button');
+        btn.className = 'rm';
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        btn.onclick = (e) => { e.stopPropagation(); files.splice(i, 1); renderList(); };
+        div.appendChild(btn);
+        filelist.appendChild(div);
+      });
+      submitBtn.disabled = files.length === 0;
+    }
+
+    function addFiles(newFiles) {
+      const arr = Array.from(newFiles);
+      const remaining = MAX_FILES - files.length;
+      if (remaining <= 0) {
+        setStatus(`Maximal ${MAX_FILES} Dateien möglich.`, 'err');
+        return;
+      }
+      if (arr.length > remaining) {
+        setStatus(`Es wurden nur die ersten ${remaining} Dateien hinzugefügt (Limit ${MAX_FILES}).`, 'err');
+      }
+      files = files.concat(arr.slice(0, remaining));
+      renderList();
+      if (statusMsg.classList.contains('err')) setStatus('', '');
+    }
+
+    dropzone.addEventListener('click', () => fileinput.click());
+    fileinput.addEventListener('change', (e) => addFiles(e.target.files));
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      dropzone.addEventListener(ev, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drag');
+      });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+      dropzone.addEventListener(ev, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drag');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => addFiles(e.dataTransfer.files));
+
+    submitBtn.addEventListener('click', async () => {
+      const eventName = eventInput.value.trim();
+      if (!eventName) {
+        setStatus('Bitte gib zuerst den Namen der Veranstaltung ein.', 'err');
+        eventInput.focus();
+        return;
+      }
+      if (files.length === 0) {
+        setStatus('Bitte wähle mindestens ein Bild oder Video aus.', 'err');
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append('event', eventName);
+      files.forEach(f => fd.append('files[]', f));
+
+      submitBtn.disabled = true;
+      setStatus('', '');
+      document.getElementById('progressWrap').style.display = 'block';
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'upload.php');
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          document.getElementById('progressBar').style.width = pct + '%';
+          document.getElementById('progressText').textContent = pct + '% gesendet…';
+        }
+      };
+      xhr.onload = () => {
+        document.getElementById('progressWrap').style.display = 'none';
+        document.getElementById('progressBar').style.width = '0%';
+        let res;
+        try { res = JSON.parse(xhr.responseText); } catch { res = { ok: false, msg: 'Serverfehler. Bitte versuche es erneut.' }; }
+        if (res.ok) {
+          setStatus('<i class="fa-solid fa-circle-check"></i> Danke! Deine Dateien wurden erfolgreich gesendet. 🎉', 'ok');
+          files = [];
+          fileinput.value = '';
+          eventInput.value = '';
+          renderList();
+        } else {
+          setStatus('<i class="fa-solid fa-triangle-exclamation"></i> ' + (res.msg || 'Upload fehlgeschlagen.'), 'err');
+        }
+        submitBtn.disabled = false;
+      };
+      xhr.onerror = () => {
+        document.getElementById('progressWrap').style.display = 'none';
+        setStatus('<i class="fa-solid fa-triangle-exclamation"></i> Netzwerkfehler. Bitte versuche es erneut.', 'err');
+        submitBtn.disabled = false;
+      };
+      xhr.send(fd);
+    });
+  </script>
+</body>
+</html>

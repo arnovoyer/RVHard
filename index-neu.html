@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="de">
 
     <head>
@@ -372,13 +372,6 @@
                     padding: 0.6rem 1.05rem !important;
                     font-size: 0.85rem !important;
                 }
-                /* Event-Buttons auf Mobile zentrieren */
-                .top-events-container .event-card.summer-series .sbs-footer {
-                    justify-content: center;
-                }
-                .top-events-container .event-card.nightrace > div > div:last-child {
-                    text-align: center;
-                }
                 .sbs2026-banner__sponsor {
                     margin-top: 1.15rem;
                     padding-top: 0.9rem;
@@ -429,6 +422,16 @@
                 flex: 1 1 320px;
                 max-width: 420px;
                 min-width: 260px;
+            }
+
+            /* --- Mobile: Event-Buttons zentrieren (MUSS nach den Desktop-Regeln kommen!) --- */
+            @media (max-width: 720px) {
+                .top-events-container .event-card.summer-series .sbs-footer {
+                    justify-content: center;
+                }
+                .top-events-container .event-card.nightrace > div > div:last-child {
+                    text-align: center;
+                }
             }
         </style>
         <script type="application/ld+json">

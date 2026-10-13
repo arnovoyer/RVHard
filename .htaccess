@@ -14,6 +14,7 @@ AddDefaultCharset UTF-8
 #    *.php Dateien – Admin Login etc. (SONST ENDLOSSCHLEIFE!)
 # ================================================================
 RewriteCond %{REQUEST_URI} ^/fotos/ [OR]
+RewriteCond %{REQUEST_URI} ^/bilder/ [OR]
 RewriteCond %{REQUEST_URI} ^/cms/   [OR]
 RewriteCond %{REQUEST_URI} ^/update/ [OR]
 RewriteCond %{REQUEST_FILENAME} \.php$
