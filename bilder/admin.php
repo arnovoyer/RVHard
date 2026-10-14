@@ -1,8 +1,8 @@
 <?php
 /* ============================================================
  *  RV HARD – BILDER-UPLOAD ADMIN INBOX (UI)
- *  Extrem defensiv geschrieben – KEIN 500er, sondern
- *  Klartext-Fehlermeldung falls etwas schiefgeht.
+ *  Eigenes Login-System (Session auf dieser Subdomain)
+ *  Passwort steht in config.php unter 'admin_password'
  * ============================================================ */
 
 @ob_start();
@@ -10,56 +10,107 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-/* ---- ZUERST CONFIG LADEN (für auth_path) ---- */
+session_start();
+
+/* ---- CONFIG LADEN ---- */
 $configFile = __DIR__ . '/config.php';
 $CFG = file_exists($configFile) ? (include $configFile) : [];
 if (!is_array($CFG)) $CFG = [];
 
-/* ---- AUTH FINDEN (config > mehrere Fallback-Pfade!) ---- */
-$authCandidates = [];
-if (!empty($CFG['auth_path']) && file_exists($CFG['auth_path'])) {
-    $authCandidates[] = $CFG['auth_path'];
-}
-$authCandidates = array_merge($authCandidates, [
-    __DIR__ . '/../fotos/admin/auth2.php',
-    __DIR__ . '/../../fotos/admin/auth2.php',
-    __DIR__ . '/../../../fotos/admin/auth2.php',
-    '/www/htdocs/w007ee49/fotos.rv-hard.at/admin/auth2.php',
-    '/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php',
-    '/www/htdocs/w007ee49/neu.rv-hard.at/fotos/admin/auth2.php',
-]);
-$authPath = null;
-foreach ($authCandidates as $c) {
-    if (file_exists($c)) { $authPath = $c; break; }
-}
+/* ---- EIGENES LOGIN-SYSTEM ---- */
+$loginError = '';
+$loggedIn = !empty($_SESSION['bilder_admin_logged_in']);
 
-if (!$authPath) {
-    http_response_code(500);
-    echo '<h2>Fehler: auth2.php nicht gefunden</h2>';
-    echo '<p>Bitte trage den korrekten Pfad in <code>bilder/config.php</code> unter <code>auth_path</code> ein.</p>';
-    echo '<p>Ausprobiert wurden:</p><ul>';
-    foreach ($authCandidates as $c) echo '<li>' . htmlspecialchars($c) . '</li>';
-    echo '</ul>';
-    echo '<p>Tipp: Auf All-Inkl sieht der Pfad meist so aus: <code>/www/htdocs/DEIN_LOGIN/rv-hard.at/fotos/admin/auth2.php</code></p>';
+/* Logout */
+if (isset($_GET['logout'])) {
+    $_SESSION = [];
+    session_destroy();
+    header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
 }
 
-require_once($authPath);
+/* Login versuchen */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'login') {
+    $pw = $_POST['password'] ?? '';
+    if (!empty($CFG['admin_password']) && hash_equals($CFG['admin_password'], $pw)) {
+        $_SESSION['bilder_admin_logged_in'] = true;
+        $loggedIn = true;
+    } else {
+        $loginError = 'Falsches Passwort.';
+    }
+}
 
-/* Prüfe ob Auth-Funktionen verfügbar sind */
-if (!function_exists('fg2_logged') || !function_exists('fg2_user')) {
-    http_response_code(500);
-    echo '<h2>Fehler: Auth-Funktionen nicht verfügbar</h2>';
+/* Wenn nicht eingeloggt → Login-Seite anzeigen */
+if (!$loggedIn) {
+    ?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | RV Hard Bild-Eingang</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: #f4f4f4;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 1rem;
+    }
+    .login-box {
+      background: #fff; border-radius: 16px; padding: 2.5rem 2rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      width: 100%; max-width: 380px; text-align: center;
+    }
+    .login-box .icon {
+      font-size: 2.5rem; color: #ffc400; margin-bottom: 0.8rem;
+    }
+    .login-box h1 { font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .login-box .sub { color: #888; font-size: 0.88rem; margin-bottom: 1.5rem; }
+    .login-box label { display: block; text-align: left; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; }
+    .login-box input[type="password"] {
+      width: 100%; padding: 0.85rem 1rem; border: 2px solid #ddd; border-radius: 10px;
+      font-size: 1rem; font-family: inherit; margin-bottom: 1rem;
+    }
+    .login-box input:focus { outline: none; border-color: #ffc400; }
+    .login-box button {
+      width: 100%; padding: 0.9rem; background: #ffc400; color: #1a1a1a;
+      border: none; border-radius: 10px; font-weight: 700; font-size: 1rem;
+      cursor: pointer; font-family: inherit;
+    }
+    .login-box button:hover { background: #f5b301; }
+    .error {
+      background: #f8d7da; color: #721c24; padding: 0.7rem 1rem;
+      border-radius: 8px; margin-bottom: 1rem; font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="icon"><i class="fa-solid fa-lock"></i></div>
+    <h1>RV Hard Bild-Eingang</h1>
+    <p class="sub">Bitte mit dem Admin-Passwort anmelden</p>
+    <?php if ($loginError): ?>
+      <div class="error"><i class="fa-solid fa-triangle-exclamation"></i> <?= htmlspecialchars($loginError) ?></div>
+    <?php endif; ?>
+    <form method="post">
+      <input type="hidden" name="action" value="login">
+      <label for="pw">Passwort</label>
+      <input type="password" id="pw" name="password" autofocus required>
+      <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Anmelden</button>
+    </form>
+  </div>
+</body>
+</html>
+    <?php
     exit;
 }
 
-if (!fg2_logged()) {
-    header('Location: /fotos/admin/login.php');
-    exit;
-}
-
-$currentUser = function_exists('fg2_user') ? fg2_user() : 'Admin';
-$currentName = function_exists('fg2_displayname') ? fg2_displayname() : $currentUser;
+/* Ab hier: eingeloggt */
+$currentName = 'Admin';
+$currentUser = 'Admin';
 
 /* ---------- EINSTELLUNGEN SPEICHERN ---------- */
 $saveMsg = '';
@@ -68,7 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
     $newEmail = trim($_POST['email_to'] ?? '');
     $newTopic = trim($_POST['ntfy_topic'] ?? '');
     $newAuthPath = trim($_POST['auth_path'] ?? '');
+    $newPw = trim($_POST['admin_password'] ?? '');
     $newCfg = [
+        'admin_password' => $newPw !== '' ? $newPw : ($CFG['admin_password'] ?? ''),
         'auth_path'   => $newAuthPath,
         'email_to'    => $newEmail,
         'email_from'  => $CFG['email_from'] ?? 'noreply@rv-hard.at',
@@ -233,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
     <div class="right">
       <a href="/fotos/admin/"><i class="fa-solid fa-grip"></i> Galerie-Admin</a>
       <a href="/bilder/" target="_blank"><i class="fa-solid fa-upload"></i> Upload-Seite</a>
-      <a href="/fotos/admin/?logout=1" class="logout" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
+      <a href="?logout=1" class="logout" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
     </div>
   </div>
 
@@ -262,9 +315,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
         <form method="post">
           <input type="hidden" name="action" value="save_settings">
           <div class="field">
-            <label for="auth_path">Pfad zur Galerie-Admin <code>auth2.php</code></label>
-            <input type="text" id="auth_path" name="auth_path" value="<?= htmlspecialchars($CFG['auth_path'] ?? '') ?>" placeholder="/www/htdocs/DEIN_LOGIN/rv-hard.at/fotos/admin/auth2.php">
-            <div class="hint">Voller Server-Pfad zur auth2.php des Galerie-Admins. Auf All-Inkl z.B. <code>/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php</code></div>
+            <label for="admin_password">Admin-Passwort ändern</label>
+            <input type="password" id="admin_password" name="admin_password" placeholder="• • • • • • • •">
+            <div class="hint">Leer lassen, um das aktuelle Passwort beizubehalten.</div>
           </div>
           <div class="field">
             <label for="email_to">E-Mail für Benachrichtigungen</label>

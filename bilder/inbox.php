@@ -13,33 +13,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-/* ZUERST CONFIG LADEN für auth_path */
-$configFile = __DIR__ . '/config.php';
-$CFG = file_exists($configFile) ? (include $configFile) : [];
-if (!is_array($CFG)) $CFG = [];
+session_start();
 
-/* ADMIN AUTH (gleiche Session wie fotos/admin) – mit Fallback-Pfaden */
-$authCandidates = [];
-if (!empty($CFG['auth_path']) && file_exists($CFG['auth_path'])) {
-    $authCandidates[] = $CFG['auth_path'];
-}
-$authCandidates = array_merge($authCandidates, [
-    __DIR__ . '/../fotos/admin/auth2.php',
-    __DIR__ . '/../../fotos/admin/auth2.php',
-    '/www/htdocs/w007ee49/fotos.rv-hard.at/admin/auth2.php',
-    '/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php',
-    '/www/htdocs/w007ee49/neu.rv-hard.at/fotos/admin/auth2.php',
-]);
-$authPath = null;
-foreach ($authCandidates as $c) { if (file_exists($c)) { $authPath = $c; break; } }
-if (!$authPath) {
-    http_response_code(500);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['ok' => false, 'msg' => 'auth2.php nicht gefunden. Bitte Pfad in bilder/config.php eintragen.']);
-    exit;
-}
-require_once($authPath);
-if (!function_exists('fg2_logged') || !fg2_logged()) {
+/* EIGENES LOGIN-SYSTEM (Session auf dieser Subdomain) */
+if (empty($_SESSION['bilder_admin_logged_in'])) {
     http_response_code(401);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['ok' => false, 'msg' => 'Nicht eingeloggt.']);
