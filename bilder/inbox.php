@@ -13,16 +13,43 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-/* ADMIN AUTH (gleiche Session wie fotos/admin) */
-require_once(__DIR__ . '/../fotos/admin/auth2.php');
-if (!fg2_logged()) {
+/* ZUERST CONFIG LADEN für auth_path */
+$configFile = __DIR__ . '/config.php';
+$CFG = file_exists($configFile) ? (include $configFile) : [];
+if (!is_array($CFG)) $CFG = [];
+
+/* ADMIN AUTH (gleiche Session wie fotos/admin) – mit Fallback-Pfaden */
+$authCandidates = [];
+if (!empty($CFG['auth_path']) && file_exists($CFG['auth_path'])) {
+    $authCandidates[] = $CFG['auth_path'];
+}
+$authCandidates = array_merge($authCandidates, [
+    __DIR__ . '/../fotos/admin/auth2.php',
+    __DIR__ . '/../../fotos/admin/auth2.php',
+    '/www/htdocs/w007ee49/fotos.rv-hard.at/admin/auth2.php',
+    '/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php',
+    '/www/htdocs/w007ee49/neu.rv-hard.at/fotos/admin/auth2.php',
+]);
+$authPath = null;
+foreach ($authCandidates as $c) { if (file_exists($c)) { $authPath = $c; break; } }
+if (!$authPath) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok' => false, 'msg' => 'auth2.php nicht gefunden. Bitte Pfad in bilder/config.php eintragen.']);
+    exit;
+}
+require_once($authPath);
+if (!function_exists('fg2_logged') || !fg2_logged()) {
     http_response_code(401);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['ok' => false, 'msg' => 'Nicht eingeloggt.']);
     exit;
 }
 
-$UPLOAD_ROOT = realpath(__DIR__ . '/../fotos/data/uploads') . '/';
+/* UPLOAD_ROOT – Uploads liegen im bilder/data/uploads/ Ordner (selbe Subdomain) */
+$UPLOAD_ROOT = __DIR__ . '/data/uploads/';
+if (!is_dir($UPLOAD_ROOT)) { @mkdir($UPLOAD_ROOT, 0755, true); }
+$UPLOAD_ROOT = realpath($UPLOAD_ROOT) . '/';
 $INDEX_FILE  = $UPLOAD_ROOT . 'index.json';
 
 function load_index() {
@@ -95,6 +122,23 @@ if ($action === 'download') {
     if ($i === null) { http_response_code(404); exit('Upload nicht gefunden.'); }
     $entry = $idx[$i];
     $eventDir = $UPLOAD_ROOT . $entry['eventSlug'] . '/';
+
+    /* Fallback: falls ZipArchive nicht verfügbar, einzelne Datei ausliefern */
+    if (!class_exists('ZipArchive')) {
+        /* Einfach erste Datei ausliefern (besser als 500) */
+        $first = $entry['files'][0] ?? null;
+        if ($first) {
+            $fp = $eventDir . $first['file'];
+            if (file_exists($fp)) {
+                header('Content-Type: ' . ($first['mime'] ?? 'application/octet-stream'));
+                header('Content-Disposition: attachment; filename="' . ($first['original'] ?? $first['file']) . '"');
+                readfile($fp);
+                exit;
+            }
+        }
+        http_response_code(500);
+        exit('ZipArchive auf diesem Server nicht verfügbar.');
+    }
 
     $zipName = $entry['eventSlug'] . '_' . $entry['id'] . '.zip';
     $tmpZip = tempnam(sys_get_temp_dir(), 'rvh_') . '.zip';

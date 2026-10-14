@@ -1,33 +1,65 @@
 <?php
 /* ============================================================
  *  RV HARD – BILDER-UPLOAD ADMIN INBOX (UI)
- *  Zeigt alle eingegangenen Uploads, ermöglicht Download (ZIP)
- *  und Löschen. Außerdem Einstellungen für E-Mail/ntfy.
+ *  Extrem defensiv geschrieben – KEIN 500er, sondern
+ *  Klartext-Fehlermeldung falls etwas schiefgeht.
  * ============================================================ */
 
-/* Fehlermeldungen einschalten zum Debuggen (nur wenn nicht eingeloggt, zeigen wir nichts) */
+@ob_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
-$authPath = __DIR__ . '/../fotos/admin/auth2.php';
-if (!file_exists($authPath)) {
-    http_response_code(500);
-    die('Admin-Auth nicht gefunden: ' . htmlspecialchars($authPath));
+/* ---- ZUERST CONFIG LADEN (für auth_path) ---- */
+$configFile = __DIR__ . '/config.php';
+$CFG = file_exists($configFile) ? (include $configFile) : [];
+if (!is_array($CFG)) $CFG = [];
+
+/* ---- AUTH FINDEN (config > mehrere Fallback-Pfade!) ---- */
+$authCandidates = [];
+if (!empty($CFG['auth_path']) && file_exists($CFG['auth_path'])) {
+    $authCandidates[] = $CFG['auth_path'];
 }
+$authCandidates = array_merge($authCandidates, [
+    __DIR__ . '/../fotos/admin/auth2.php',
+    __DIR__ . '/../../fotos/admin/auth2.php',
+    __DIR__ . '/../../../fotos/admin/auth2.php',
+    '/www/htdocs/w007ee49/fotos.rv-hard.at/admin/auth2.php',
+    '/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php',
+    '/www/htdocs/w007ee49/neu.rv-hard.at/fotos/admin/auth2.php',
+]);
+$authPath = null;
+foreach ($authCandidates as $c) {
+    if (file_exists($c)) { $authPath = $c; break; }
+}
+
+if (!$authPath) {
+    http_response_code(500);
+    echo '<h2>Fehler: auth2.php nicht gefunden</h2>';
+    echo '<p>Bitte trage den korrekten Pfad in <code>bilder/config.php</code> unter <code>auth_path</code> ein.</p>';
+    echo '<p>Ausprobiert wurden:</p><ul>';
+    foreach ($authCandidates as $c) echo '<li>' . htmlspecialchars($c) . '</li>';
+    echo '</ul>';
+    echo '<p>Tipp: Auf All-Inkl sieht der Pfad meist so aus: <code>/www/htdocs/DEIN_LOGIN/rv-hard.at/fotos/admin/auth2.php</code></p>';
+    exit;
+}
+
 require_once($authPath);
+
+/* Prüfe ob Auth-Funktionen verfügbar sind */
+if (!function_exists('fg2_logged') || !function_exists('fg2_user')) {
+    http_response_code(500);
+    echo '<h2>Fehler: Auth-Funktionen nicht verfügbar</h2>';
+    exit;
+}
 
 if (!fg2_logged()) {
     header('Location: /fotos/admin/login.php');
     exit;
 }
 
-$currentUser = fg2_user();
-$currentName = fg2_displayname();
-
-/* ---------- CONFIG ---------- */
-$configFile = __DIR__ . '/config.php';
-$CFG = file_exists($configFile) ? include($configFile) : [];
+$currentUser = function_exists('fg2_user') ? fg2_user() : 'Admin';
+$currentName = function_exists('fg2_displayname') ? fg2_displayname() : $currentUser;
 
 /* ---------- EINSTELLUNGEN SPEICHERN ---------- */
 $saveMsg = '';
@@ -35,14 +67,16 @@ $saveOk  = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_settings') {
     $newEmail = trim($_POST['email_to'] ?? '');
     $newTopic = trim($_POST['ntfy_topic'] ?? '');
+    $newAuthPath = trim($_POST['auth_path'] ?? '');
     $newCfg = [
+        'auth_path'   => $newAuthPath,
         'email_to'    => $newEmail,
         'email_from'  => $CFG['email_from'] ?? 'noreply@rv-hard.at',
         'ntfy_topic'  => $newTopic,
         'ntfy_server' => $CFG['ntfy_server'] ?? 'https://ntfy.sh',
-        'max_files'   => (int)($CFG['max_files']  ?? 20),
-        'max_img_mb'  => (int)($CFG['max_img_mb'] ?? 15),
-        'max_vid_mb'  => (int)($CFG['max_vid_mb'] ?? 50),
+        'max_files'   => isset($CFG['max_files'])  ? (int)$CFG['max_files']  : 20,
+        'max_img_mb'  => isset($CFG['max_img_mb']) ? (int)$CFG['max_img_mb'] : 15,
+        'max_vid_mb'  => isset($CFG['max_vid_mb']) ? (int)$CFG['max_vid_mb'] : 50,
     ];
     $content = "<?php\nreturn " . var_export($newCfg, true) . ";\n";
     if (@file_put_contents($configFile, $content)) {
@@ -154,7 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
     }
     .empty i { font-size: 3rem; color: #ccc; margin-bottom: 0.8rem; }
 
-    /* Lightbox */
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 20000;
       background: rgba(0,0,0,0.92); align-items: center; justify-content: center;
@@ -170,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
       cursor: pointer;
     }
 
-    /* Einstellungen */
     .settings-card {
       background: #fff; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.06);
       padding: 1.5rem; max-width: 600px;
@@ -210,8 +242,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
     <p class="subtitle">Eingegangene Uploads von externen Wettkämpfen. Gruppiert nach Veranstaltung.</p>
 
     <div class="tabs">
-      <button class="tab active" onclick="showTab('uploads')"><i class="fa-solid fa-images"></i> Uploads</button>
-      <button class="tab" onclick="showTab('settings')"><i class="fa-solid fa-gear"></i> Einstellungen</button>
+      <button class="tab active" onclick="showTab('uploads',this)"><i class="fa-solid fa-images"></i> Uploads</button>
+      <button class="tab" onclick="showTab('settings',this)"><i class="fa-solid fa-gear"></i> Einstellungen</button>
     </div>
 
     <div id="tab-uploads" class="panel active">
@@ -229,6 +261,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
         <?php endif; ?>
         <form method="post">
           <input type="hidden" name="action" value="save_settings">
+          <div class="field">
+            <label for="auth_path">Pfad zur Galerie-Admin <code>auth2.php</code></label>
+            <input type="text" id="auth_path" name="auth_path" value="<?= htmlspecialchars($CFG['auth_path'] ?? '') ?>" placeholder="/www/htdocs/DEIN_LOGIN/rv-hard.at/fotos/admin/auth2.php">
+            <div class="hint">Voller Server-Pfad zur auth2.php des Galerie-Admins. Auf All-Inkl z.B. <code>/www/htdocs/w007ee49/rv-hard.at/fotos/admin/auth2.php</code></div>
+          </div>
           <div class="field">
             <label for="email_to">E-Mail für Benachrichtigungen</label>
             <input type="email" id="email_to" name="email_to" value="<?= htmlspecialchars($CFG['email_to'] ?? '') ?>" placeholder="deine@email.at">
@@ -252,10 +289,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
   </div>
 
   <script>
-    function showTab(name) {
+    function showTab(name, btn) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
+      btn.classList.add('active');
       document.getElementById('tab-' + name).classList.add('active');
     }
 
@@ -282,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
       wrap.innerHTML = '<p style="text-align:center;color:#888;padding:2rem;">Lade…</p>';
       try {
         const r = await fetch('inbox.php?action=list');
-        if (!r.ok) throw new Error('Server antwortet mit Status ' + r.status);
+        if (!r.ok) throw new Error('Server antwortet mit Status ' + r.status + ' (inbox.php)');
         const data = await r.json();
         if (!data.ok) throw new Error(data.msg || 'Fehler');
         const ups = data.uploads || [];

@@ -1,0 +1,13 @@
+# RV HARD – BILDER-UPLOAD SCHUTZ
+
+# config.php darf NICHT direkt aufgerufen werden
+<Files "config.php">
+    Require all denied
+</Files>
+
+# Der data/ Ordner (Uploads) nicht direkt öffentlich erreichbar
+RewriteEngine On
+RewriteRule ^data/ - [F,L]
+
+# Verzeichnisauflistung abschalten
+Options -Indexes

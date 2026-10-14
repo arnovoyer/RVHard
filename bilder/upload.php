@@ -14,7 +14,8 @@ ini_set('log_errors', 1);
 
 /* ---------- KONFIGURATION AUS config.php ---------- */
 $CFG = file_exists(__DIR__ . '/config.php') ? include(__DIR__ . '/config.php') : [];
-$UPLOAD_ROOT = realpath(__DIR__ . '/../fotos/data/uploads') . '/';
+/* Uploads werden im bilder/data/uploads/ Ordner gespeichert (auf derselben Subdomain) */
+$UPLOAD_ROOT = __DIR__ . '/data/uploads/';
 $INDEX_FILE  = $UPLOAD_ROOT . 'index.json';
 $MAX_FILES   = $CFG['max_files']  ?? 20;
 $MAX_IMG_SIZE = ($CFG['max_img_mb'] ?? 15) * 1024 * 1024;
