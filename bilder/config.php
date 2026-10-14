@@ -16,7 +16,7 @@ return [
     'auth_path'   => '/www/htdocs/w007ee49/fotos.rv-hard.at/admin/auth2.php',
 
     /* Benachrichtigungs-Empfänger */
-    'email_to'    => 'vorstand@rv-hard.at',   /* ← DEINE E-Mail-Adresse */
+    'email_to'    => 'mediateam@rv-hard.at',   /* ← DEINE E-Mail-Adresse */
     'email_from'  => 'noreply@rv-hard.at',
 
     /* ntfy.sh Push-Benachrichtigung */
