@@ -271,6 +271,23 @@ $currentName = fg2_displayname();
         .admin-lb__navbtn.prev { left: 1.5rem;}
         .admin-lb__navbtn.next { right: 1.5rem;}
 
+        /* ---- Startnummern-Modus: Fortschritt + Speicher-Status ---- */
+        .admin-lb__progress { margin-top: 0.5rem; }
+        .admin-lb__progressbar { height: 8px; background: #e9ecef; border-radius: 999px; overflow: hidden; }
+        .admin-lb__progressbar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg,#ffc107,#f5b301); transition: width .25s ease; }
+        .admin-lb__progresstext { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.75rem; color: #666; margin-top: 0.35rem; }
+        .admin-lb__savestatus { font-weight: 700; }
+        .admin-lb__savestatus.ok { color: #198754; }
+        .admin-lb__savestatus.warn { color: #b8860b; }
+
+        /* ---- Einstieg in den Startnummern-Modus ---- */
+        .fg-bibmode { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin: 0.9rem 0 0.2rem; }
+        .fg-bibmode__hint { font-size: 0.8rem; color: #666; }
+        .fg-bibmode__hint kbd, .admin-lb__sidebar .hint kbd {
+            background: #f1f1f1; border: 1px solid #ccc; border-bottom-width: 2px;
+            border-radius: 5px; padding: 1px 6px; font-size: 0.78rem; font-family: inherit; color: #333;
+        }
+
         /* ===== UPLOAD / PUBLISH STATUS BOX ===== */
         .fg-publish {
             padding: 1.5rem;
@@ -447,6 +464,16 @@ $currentName = fg2_displayname();
                 </div>
             </div>
 
+            <!-- 🎯 Startnummern-Modus: reiner Tastatur-Workflow (Bild groß + Nummer tippen) -->
+            <div class="fg-bibmode">
+                <button class="fg-btn" id="bib-mode-btn" type="button">
+                    <i class="fa-solid fa-keyboard"></i> 🎯 Startnummern-Modus starten
+                </button>
+                <span class="fg-bibmode__hint">
+                    Bild groß · Nummer tippen · <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern
+                </span>
+            </div>
+
             <div id="photo-grid" class="fg-photo-grid"></div>
             <div id="empty-msg" class="fg-empty" style="margin-top:1rem;">
                 <strong>Keine Bilder geladen.</strong><br>Bilder hier reinziehen!
@@ -534,8 +561,15 @@ $currentName = fg2_displayname();
                         <i class="fa-solid fa-floppy-disk"></i> Speichern &amp; Weiter
                     </button>
                 </div>
+                <div class="admin-lb__progress">
+                    <div class="admin-lb__progressbar"><span id="lb-progress-fill"></span></div>
+                    <div class="admin-lb__progresstext">
+                        <span id="lb-progress-text">0 / 0 getaggt</span>
+                        <span id="lb-savestatus" class="admin-lb__savestatus"></span>
+                    </div>
+                </div>
                 <div class="hint" style="margin-top:0;">
-                    💡 ← → blättern · ESC schließen · Strg+S speichern
+                    ⌨️ <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern · <kbd>ESC</kbd> schließen
                 </div>
             </div>
         </div>
@@ -913,6 +947,70 @@ $currentName = fg2_displayname();
     const $lbFilename = document.getElementById('lb-filename');
     const $lbPosition = document.getElementById('lb-position');
     const $lbBib = document.getElementById('lb-bib');
+    const $lbProgressFill = document.getElementById('lb-progress-fill');
+    const $lbProgressText = document.getElementById('lb-progress-text');
+    const $lbSaveStatus = document.getElementById('lb-savestatus');
+
+    /* ---- Speicher-Status (unten rechts in der Sidebar) ---- */
+    let _lbStatusTimer = null;
+    function lbSetStatus(kind, text) {
+        if (!$lbSaveStatus) return;
+        $lbSaveStatus.className = 'admin-lb__savestatus' + (kind ? ' ' + kind : '');
+        $lbSaveStatus.textContent = text || '';
+        if (_lbStatusTimer) { clearTimeout(_lbStatusTimer); _lbStatusTimer = null; }
+        if (kind === 'ok') {
+            _lbStatusTimer = setTimeout(() => { if ($lbSaveStatus) $lbSaveStatus.textContent = ''; }, 1800);
+        }
+    }
+
+    /* ---- Fortschritt: welches Bild + wie viele schon getaggt ---- */
+    function lbUpdateProgress() {
+        const total = lbCurrentList.length;
+        const tagged = lbCurrentList.filter(p => (p.bibNumbers || []).length > 0).length;
+        const pct = total ? Math.round(tagged / total * 100) : 0;
+        if ($lbProgressFill) $lbProgressFill.style.width = pct + '%';
+        if ($lbProgressText) $lbProgressText.textContent = `${tagged} / ${total} getaggt (${pct}%)`;
+        if ($lbPosition) $lbPosition.textContent = total ? `Bild ${lbCurrentIndex + 1}/${total}` : '';
+    }
+
+    /* ---- Hintergrund-Speichern: schreibt NUR die Startnummer in events.json ----
+     * Requests laufen STRIKT NACHEINANDER (Queue) → keine Race-Condition beim
+     * Schreiben der events.json bei sehr schnellem Tippen! */
+    const _bibSaveQueue = [];
+    let _bibSaveBusy = false;
+    function lbQueueServerSave(p) {
+        /* Nur Fotos, die SCHON am Server liegen (neue Bilder kommen erst beim Veröffentlichen rauf) */
+        if (!p || !p.src || p.file) return;
+        const filename = basename(p.src || p.filename);
+        const job = { eventId: currentEventId, filename, bibNumbers: (p.bibNumbers || []).slice() };
+        /* Gleiches Foto erneut geändert → alten Job ersetzen (nicht doppelt schreiben) */
+        for (let i = _bibSaveQueue.length - 1; i >= 0; i--) {
+            if (_bibSaveQueue[i].filename === filename) _bibSaveQueue.splice(i, 1);
+        }
+        _bibSaveQueue.push(job);
+        lbSaveDrain();
+    }
+    async function lbSaveDrain() {
+        if (_bibSaveBusy) return;
+        _bibSaveBusy = true;
+        while (_bibSaveQueue.length) {
+            const job = _bibSaveQueue.shift();
+            try {
+                const res = await fetch('save_bib.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.assign({ csrf: fgAdminCsrf() }, job))
+                });
+                const data = await res.json().catch(() => ({ ok: false }));
+                if (data && data.ok) lbSetStatus('ok', '✓ Auf Server gespeichert');
+                else lbSetStatus('warn', '⚠ ' + ((data && data.message) || 'nicht gespeichert'));
+            } catch (e) {
+                lbSetStatus('warn', '⚠ Offline – Änderung nur lokal');
+            }
+        }
+        _bibSaveBusy = false;
+    }
 
     function lbOpenById(photoId) {
         lbCurrentList = getCurrentPhotoList();
@@ -933,14 +1031,18 @@ $currentName = fg2_displayname();
         $lbImg.src = p.previewUrl;
         $lbImg.alt = p.filename;
         $lbFilename.textContent = p.filename;
-        $lbPosition.textContent = `(${lbCurrentIndex + 1}/${lbCurrentList.length})`;
-        $lbBib.value = (p.bibNumbers||[]).join(', ');
-        setTimeout(() => $lbBib.focus(), 80);
+        $lbBib.value = (p.bibNumbers || []).join(', ');
+        lbUpdateProgress();
+        lbSetStatus('', '');
+        /* Fokus IMMER zurück ins Nummern-Feld → unterbrechungsfreies Tippen am Ziffernblock! */
+        requestAnimationFrame(() => { try { $lbBib.focus(); $lbBib.select(); } catch (e) {} });
+        setTimeout(() => { try { if (document.activeElement !== $lbBib) { $lbBib.focus(); $lbBib.select(); } } catch (e) {} }, 90);
     }
     function lbSaveCurrent() {
         const p = lbCurrentList[lbCurrentIndex];
         if (!p) return null;
         p.bibNumbers = parseBibs($lbBib.value);
+        lbQueueServerSave(p); /* im Hintergrund auf den Server schreiben (ohne Seiten-Reload!) */
         return p;
     }
     function lbNext() {
@@ -966,9 +1068,10 @@ $currentName = fg2_displayname();
             lbCurrentIndex++;
             lbRender();
         } else {
-            lbClose();
+            lbUpdateProgress();
             updateBulk(); renderEvents();
-            alert(`✅ Alle ${lbCurrentList.length} Bilder gespeichert!`);
+            alert(`✅ Alle ${lbCurrentList.length} Bilder durchgesehen!`);
+            lbClose();
         }
     }
 
@@ -990,17 +1093,47 @@ $currentName = fg2_displayname();
         lbClose(); updateBulk(); renderEvents();
     });
 
-    /* Tastatur-Shortcuts */
+    /* ================================================================
+     *  🎯 STARTNUMMERN-MODUS: reine Tastatur-Steuerung
+     *    Enter        → speichern & nächstes Bild
+     *    → (Rechts)   → nächstes Bild   (speichert ebenfalls → nichts geht verloren)
+     *    ← (Links)    → vorheriges Bild (falls man sich vertippt hat)
+     *    ESC          → schließen
+     *  Alles funktioniert AUCH während der Fokus im Nummern-Feld liegt!
+     * ================================================================ */
     document.addEventListener('keydown', e => {
         if (!$lb.classList.contains('show')) return;
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); lbSaveAndNext(); }
+        const isField = (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA'));
+        const k = e.key;
+
+        /* Strg/Cmd + S → Speichern & Weiter */
+        if ((e.ctrlKey || e.metaKey) && (k === 's' || k === 'S')) { e.preventDefault(); lbSaveAndNext(); return; }
+
+        /* Enter → Speichern & Weiter (auch direkt im Nummern-Feld!) */
+        if (k === 'Enter') { e.preventDefault(); lbSaveAndNext(); return; }
+
+        /* ESC → schließen (letzte Eingabe wird gespeichert) */
+        if (k === 'Escape') {
+            const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id);
+            lbClose(); updateBulk(); renderEvents();
             return;
         }
-        if (e.key === 'Escape') { const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id); lbClose(); updateBulk(); renderEvents(); }
-        if (e.key === 'ArrowRight') lbNext();
-        if (e.key === 'ArrowLeft') lbPrev();
-        if (e.key === 's' || e.key === 'S') lbSaveAndNext();
+
+        /* Pfeiltasten → blättern (funktioniert auch im Nummern-Feld = schneller Workflow!) */
+        if (k === 'ArrowRight') { e.preventDefault(); lbNext(); return; }
+        if (k === 'ArrowLeft')  { e.preventDefault(); lbPrev(); return; }
+
+        /* Außerhalb von Feldern: S = Speichern & Weiter */
+        if (!isField && (k === 's' || k === 'S')) lbSaveAndNext();
+    });
+
+    /* 🎯 Einstieg: Startnummern-Modus beim ersten noch nicht getaggten Bild starten */
+    const $bibModeBtn = document.getElementById('bib-mode-btn');
+    if ($bibModeBtn) $bibModeBtn.addEventListener('click', () => {
+        const list = getCurrentPhotoList();
+        if (!list.length) { alert('Keine Bilder geladen – bitte zuerst Bilder reinziehen oder ein Event wählen.'); return; }
+        const firstUntagged = list.find(p => !(p.bibNumbers || []).length) || list[0];
+        lbOpenById(firstUntagged.id);
     });
 
     /* ================================================================
