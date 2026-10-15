@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
+r"""
 RV Hard – Startnummern-Erkennung (detect_bibs.py)
 ==================================================
 Scant alle .jpg/.jpeg/.png Bilder in einem Ordner per OCR
@@ -53,7 +53,20 @@ except ImportError:
     sys.exit(1)
 
 
-# Falls tesseract nicht im PATH ist, hier den Pfad eintragen:
+# ---- Tesseract automatisch finden (Windows) ----
+import os
+_tess_candidates = [
+    r"C:\Program Files\Tesseract-OCR",
+    r"C:\Program Files (x86)\Tesseract-OCR",
+]
+for _tp in _tess_candidates:
+    if os.path.isfile(os.path.join(_tp, "tesseract.exe")):
+        os.environ["PATH"] = _tp + os.pathsep + os.environ.get("PATH", "")
+        pytesseract.pytesseract.tesseract_cmd = os.path.join(_tp, "tesseract.exe")
+        break
+
+
+# Falls tesseract trotzdem nicht im PATH ist, hier den Pfad eintragen:
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Regex für Startnummern: 1–4 Ziffern
