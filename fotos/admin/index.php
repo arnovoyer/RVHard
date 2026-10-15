@@ -102,8 +102,7 @@ $currentName = fg2_displayname();
         }
         .fg-photo-card.selected { border-color: #ffc107; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25); }
         .fg-photo-card__header { position: relative; background: #111; }
-        /* Ganze Bildvorschau – NICHT mehr beschnitten (natürliches Seitenverhältnis) */
-        .fg-photo-card__header img { width: 100%; height: auto; display: block; }
+        .fg-photo-card__header img { width:100%; height: 180px; object-fit:cover; display:block; }
         .fg-photo-card__select { position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; cursor:pointer; accent-color: #f5b301; }
         .fg-photo-card__body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .fg-photo-card__body label { display:block; font-size:0.7rem; color:#666; letter-spacing:0.04em; font-weight:600; margin-bottom: 0.15rem; }
@@ -149,16 +148,12 @@ $currentName = fg2_displayname();
         .fg-dropzone strong { font-size: 1.05rem; color: #111; display: block; margin-bottom: 0.25rem; }
         .fg-dropzone small { color: #888; }
 
-        /* Foto Grid – Masonry-Spalten: alle Bilder in voller Größe, kompakter Abstand */
+        /* Foto Grid */
         .fg-photo-grid {
-            column-width: 280px;
-            column-gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 14px;
             margin-top: 1rem;
-        }
-        .fg-photo-grid .fg-photo-card {
-            break-inside: avoid;
-            -webkit-column-break-inside: avoid;
-            margin: 0 0 10px;
         }
 
         /* Export */
@@ -348,8 +343,8 @@ $currentName = fg2_displayname();
         }
 
         @media (max-width: 600px) {
-            .fg-photo-grid { column-width: 160px; column-gap: 8px; }
-            .fg-photo-grid .fg-photo-card { margin-bottom: 8px; }
+            .fg-photo-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .fg-photo-card__header img { height: 140px; }
         }
     </style>
 </head>
