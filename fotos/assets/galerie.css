@@ -236,8 +236,8 @@ body {
 /* ================= FOTO-GRID ================= */
 .fg-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
     margin: 1.25rem 0;
 }
 .fg-photo {
@@ -587,7 +587,7 @@ body {
     .fg-section h1 { font-size: 1.6rem; }
     .fg-section h2 { font-size: 1.25rem; }
     .fg-events-grid { grid-template-columns: 1fr; gap: 16px; }
-    .fg-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .fg-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
     .fg-search-row { gap: 10px; }
     .fg-search-row input[type="search"],
     .fg-search-row input[type="text"],
