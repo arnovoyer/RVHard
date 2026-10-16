@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="/assets/home-fonts.css">
     <link rel="stylesheet" href="assets/navigation.css">
     <link rel="stylesheet" href="/assets/events/nightrace.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +99,188 @@
             .sketchfab-embed-wrapper iframe {
                 height: 420px;
             }
+        }
+
+        /* ===== BESTELLFORMULAR ===== */
+        .bestell-status {
+            display: none;
+            margin: 0 0 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .bestell-status.erfolg {
+            display: block;
+            background: #d3f9d8;
+            border: 1px solid #8ce99a;
+            color: #2b8a3e;
+        }
+        .bestell-status.fehler {
+            display: block;
+            background: #ffe3e3;
+            border: 1px solid #ffa8a8;
+            color: #c92a2a;
+        }
+
+        .bestell-zeile {
+            display: grid;
+            grid-template-columns: 1fr 130px 110px 38px;
+            gap: 0.85rem;
+            align-items: end;
+            padding-bottom: 0.85rem;
+            margin-bottom: 0.85rem;
+            border-bottom: 1px dashed #eee;
+        }
+        .bestell-zeile-entfernen {
+            height: 42px;
+            width: 38px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .bestell-zeile-entfernen:hover {
+            border-color: #ffa8a8;
+            background: #fff0f0;
+            color: #c92a2a;
+        }
+
+        .bestell-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.25rem 0 1.75rem;
+            padding: 0.6rem 1.1rem;
+            border: 1px dashed #ffc107;
+            border-radius: 8px;
+            background: #fffdf5;
+            color: #b8860b;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .bestell-add:hover {
+            background: #fff8db;
+            border-style: solid;
+        }
+
+        .bestell-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+        @media (max-width: 600px) {
+            .bestell-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .bestell-zeile {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+            .bestell-zeile .bestell-group:first-child {
+                grid-column: 1 / -1;
+            }
+            .bestell-zeile-entfernen {
+                width: 100%;
+                grid-column: 1 / -1;
+            }
+        }
+
+        .bestell-group {
+            margin-bottom: 1.25rem;
+        }
+        .bestell-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .bestell-group label .pflicht {
+            color: #dc3545;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+        .bestell-group input,
+        .bestell-group select,
+        .bestell-group textarea {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            color: #333;
+        }
+        .bestell-group input::placeholder,
+        .bestell-group textarea::placeholder {
+            color: #aaa;
+        }
+        .bestell-group input:focus,
+        .bestell-group select:focus,
+        .bestell-group textarea:focus {
+            outline: none;
+            border-color: #ffc107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+        }
+        .bestell-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .bestell-datenschutz {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin-top: 1.1rem;
+            margin-bottom: 1.75rem;
+            padding: 0.8rem 0.35rem 0.3rem 0.35rem;
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.45;
+            border-top: 1px dashed #eee;
+            cursor: pointer;
+            user-select: none;
+        }
+        .bestell-datenschutz input[type="checkbox"] {
+            margin-top: 0.1rem;
+            width: 15px;
+            height: 15px;
+            accent-color: #ffc107;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .bestell-datenschutz .pflicht {
+            color: #dc3545;
+            font-weight: 700;
+        }
+        .bestell-datenschutz a {
+            color: #ffc107;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.35);
+        }
+        .bestell-datenschutz a:hover {
+            border-bottom-color: #ffc107;
+        }
+
+        .bestell-submit-row {
+            text-align: center;
+        }
+        .bestell-submit-row .gelber-button {
+            min-width: 220px;
+        }
+        .bestell-submit-row .gelber-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -197,13 +382,6 @@
                     </div>
                 </div>
             </div>
-            <div class="rr-mobile-box" style="padding: 2rem; text-align: center; background: #f9f9f9;
-                    border: 1px solid #ea800e; border-radius: 8px;">
-                <p>Fragen zum Tri-Anzug oder direkt bestellen? Kontaktiere unseren Bekleidungsbeauftragten!</p>
-                <a href="/verein/vorstand.html" target="_blank" rel="noopener" class="rr-btn">
-                    Kontakt öffnen
-                </a>
-            </div>
         </section>
 
         <section class="anmeldung-section" data-aos="fade-up">
@@ -222,13 +400,6 @@
                         </iframe>
                     </div>
                 </div>
-            </div>
-            <div class="rr-mobile-box" style="padding: 2rem; text-align: center; background: #f9f9f9;
-                    border: 1px solid #ea800e; border-radius: 8px;">
-                <p>Fragen zum Laufshirt oder direkt bestellen? Kontaktiere unseren Bekleidungsbeauftragten!</p>
-                <a href="/verein/vorstand.html" target="_blank" rel="noopener" class="rr-btn">
-                    Kontakt öffnen
-                </a>
             </div>
         </section>
 
@@ -262,13 +433,6 @@
                     </div>
                 </div>
             </div>
-            <div class="rr-mobile-box" style="padding: 2rem; text-align: center; background: #f9f9f9;
-                    border: 1px solid #ea800e; border-radius: 8px;">
-                <p>Fragen zur Weste oder direkt bestellen? Kontaktiere unseren Bekleidungsbeauftragten!</p>
-                <a href="/verein/vorstand.html" target="_blank" rel="noopener" class="rr-btn">
-                    Kontakt öffnen
-                </a>
-            </div>
         </section>
 
         <section class="info-section" data-aos="fade-up">
@@ -278,8 +442,9 @@
                 organisiert. So läuft es ab:
             </p>
             <ul>
-                <li><strong>Anfrage:</strong> Kontaktiere unseren Bekleidungsbeauftragten (Kontakt auf der
-                    Vorstand-Seite) mit deiner Bestellung – gib Artikel, Größe und Menge an.</li>
+                <li><strong>Bestellung:</strong> Nutze das <a href="#bestellformular">Bestellformular</a> unten
+                    oder kontaktiere unseren Bekleidungsbeauftragten (Kontakt auf der Vorstand-Seite) – gib
+                    Artikel, Größe und Menge an.</li>
                 <li><strong>Bestätigung:</strong> Du bekommst eine Rückmeldung zu Verfügbarkeit, Preis und
                     Lieferzeit.</li>
                 <li><strong>Bezahlung:</strong> Meist per Überweisung oder Barzahlung.</li>
@@ -289,6 +454,65 @@
             <a href="/verein/vorstand.html" target="_blank" class="gelber-button" style="margin-top: 1rem;">
                 📞 Kontakt Vorstand &amp; Bestellung
             </a>
+        </section>
+
+        <section class="anmeldung-section" id="bestellformular" data-aos="fade-up">
+            <h2>Bestellformular</h2>
+            <p>
+                Wähle unten deine Artikel mit Größe und Menge aus. Du kannst mehrere Kleidungsstücke in
+                einer Bestellung zusammenstellen. Wir melden uns anschließend mit Verfügbarkeit, Preis und
+                Abholung bei dir.
+            </p>
+
+            <div id="bestell-status" class="bestell-status" role="status" aria-live="polite"></div>
+
+            <form id="bestell-form" method="POST" action="/bekleidung-send.php" novalidate>
+                <div id="bestell-zeilen"></div>
+
+                <button type="button" id="zeile-hinzufuegen" class="bestell-add">
+                    <i class="fa-solid fa-plus"></i> Weiteren Artikel hinzufügen
+                </button>
+
+                <div class="bestell-row">
+                    <div class="bestell-group">
+                        <label for="b-name">Dein Name<span class="pflicht">*</span></label>
+                        <input type="text" id="b-name" name="name" required placeholder="Max Mustermann" maxlength="100">
+                    </div>
+                    <div class="bestell-group">
+                        <label for="b-email">E-Mail (für Rückmeldung)<span class="pflicht">*</span></label>
+                        <input type="email" id="b-email" name="email" required placeholder="name@example.com" maxlength="120">
+                    </div>
+                </div>
+
+                <div class="bestell-row">
+                    <div class="bestell-group">
+                        <label for="b-telefon">Telefon (optional)</label>
+                        <input type="tel" id="b-telefon" name="telefon" pattern="[0-9+\s()-]{8,25}"
+                            placeholder="+43 664 123 45 67" maxlength="30">
+                    </div>
+                    <div class="bestell-group">
+                        <label for="b-bemerkung">Bemerkung (optional)</label>
+                        <input type="text" id="b-bemerkung" name="bemerkung" placeholder="z.B. Wunschtermin, Rückfragen ..." maxlength="200">
+                    </div>
+                </div>
+
+                <label class="bestell-datenschutz" for="b-datenschutz">
+                    <input type="checkbox" id="b-datenschutz" name="datenschutz" value="1" required>
+                    <span>
+                        <strong>Ich stimme zu</strong>, dass meine eingegebenen personenbezogenen Daten (Name, E-Mail,
+                        ggf. Telefonnummer, Bestellung) sowie meine IP-Adresse zur Bearbeitung der Bestellung
+                        verarbeitet und temporär gespeichert werden.<span class="pflicht">*</span><br>
+                        Mehr Infos findest du in der <a href="/datenschutz.html" target="_blank"
+                            rel="noopener noreferrer">Datenschutzerklärung</a>.
+                    </span>
+                </label>
+
+                <div class="bestell-submit-row">
+                    <button type="submit" id="bestell-submit" class="gelber-button">
+                        <i class="fa-solid fa-paper-plane"></i> Bestellung absenden
+                    </button>
+                </div>
+            </form>
         </section>
     </main>
 
@@ -310,6 +534,153 @@
             duration: 1000,
             once: true,
         });
+    </script>
+    <script>
+        (function () {
+            const form = document.getElementById('bestell-form');
+            if (!form) return;
+
+            const container = document.getElementById('bestell-zeilen');
+            const addBtn = document.getElementById('zeile-hinzufuegen');
+            const statusEl = document.getElementById('bestell-status');
+            const submitBtn = document.getElementById('bestell-submit');
+
+            const ARTIKEL = ['Trikot', 'Hose (Trägerhose)', 'MTB-Hose', 'Tri-Anzug Kurz', 'Tri-Anzug Lang',
+                'Laufshirt / T-Shirt', 'Weste', 'Jacke'];
+            const GROESSEN = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+            function optionen(liste, platzhalter) {
+                let h = '<option value="">' + platzhalter + '</option>';
+                liste.forEach(function (v) { h += '<option value="' + v + '">' + v + '</option>'; });
+                return h;
+            }
+
+            function zeileErstellen() {
+                const z = document.createElement('div');
+                z.className = 'bestell-zeile';
+                z.innerHTML =
+                    '<div class="bestell-group">' +
+                        '<label>Artikel<span class="pflicht">*</span></label>' +
+                        '<select name="artikel[]" required>' + optionen(ARTIKEL, '-- Artikel wählen --') + '</select>' +
+                    '</div>' +
+                    '<div class="bestell-group">' +
+                        '<label>Größe<span class="pflicht">*</span></label>' +
+                        '<select name="groesse[]" required>' + optionen(GROESSEN, '-- Größe --') + '</select>' +
+                    '</div>' +
+                    '<div class="bestell-group">' +
+                        '<label>Menge<span class="pflicht">*</span></label>' +
+                        '<input type="number" name="menge[]" min="1" max="50" value="1" required>' +
+                    '</div>' +
+                    '<button type="button" class="bestell-zeile-entfernen" aria-label="Zeile entfernen" title="Zeile entfernen">' +
+                        '<i class="fa-solid fa-trash-can"></i>' +
+                    '</button>';
+                return z;
+            }
+
+            function aktualisiereEntfernenBtn() {
+                const zeilen = container.querySelectorAll('.bestell-zeile');
+                zeilen.forEach(function (z) {
+                    const btn = z.querySelector('.bestell-zeile-entfernen');
+                    btn.style.visibility = (zeilen.length > 1) ? 'visible' : 'hidden';
+                });
+            }
+
+            function zeileHinzufuegen() {
+                const z = zeileErstellen();
+                container.appendChild(z);
+                aktualisiereEntfernenBtn();
+                return z;
+            }
+
+            addBtn.addEventListener('click', function () {
+                const z = zeileHinzufuegen();
+                const sel = z.querySelector('select');
+                if (sel) sel.focus();
+            });
+
+            container.addEventListener('click', function (e) {
+                const btn = e.target.closest('.bestell-zeile-entfernen');
+                if (!btn) return;
+                if (container.querySelectorAll('.bestell-zeile').length <= 1) return;
+                btn.closest('.bestell-zeile').remove();
+                aktualisiereEntfernenBtn();
+            });
+
+            function zeigeStatus(typ, text) {
+                statusEl.className = 'bestell-status ' + (typ === 'ok' ? 'erfolg' : 'fehler');
+                statusEl.innerHTML = '';
+                const icon = document.createElement('i');
+                icon.className = typ === 'ok' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
+                icon.style.marginRight = '0.5rem';
+                statusEl.appendChild(icon);
+                statusEl.appendChild(document.createTextNode(text));
+                statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const dse = document.getElementById('b-datenschutz');
+                if (dse && !dse.checked) {
+                    zeigeStatus('fehler', 'Bitte klicke die Datenschutz-Checkbox an, um deine Einwilligung zu geben.');
+                    dse.focus();
+                    return;
+                }
+                if (!form.checkValidity()) {
+                    zeigeStatus('fehler', 'Bitte fülle alle Pflichtfelder (mit * markiert) korrekt aus.');
+                    form.reportValidity();
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                const orig = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird gesendet...';
+
+                try {
+                    const resp = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    let data = null, raw = '';
+                    try {
+                        raw = await resp.text();
+                        try { data = JSON.parse(raw); } catch (_) { }
+                    } catch (_) { }
+
+                    const isOk = (resp.ok && (
+                        (data && (data.ok === true || data.status === 'success')) ||
+                        (raw.includes('✅') && raw.includes('Danke'))
+                    ));
+
+                    if (isOk) {
+                        zeigeStatus('ok', (data && (data.msg || data.html)) ||
+                            'Danke! Deine Bestellung wurde erfolgreich versendet. Wir melden uns per E-Mail zurück.');
+                        form.reset();
+                        container.innerHTML = '';
+                        zeileHinzufuegen();
+                    } else {
+                        let fehler = 'Unbekannter Server-Fehler.';
+                        if (data && data.msg) fehler = data.msg;
+                        else if (resp.status === 400) fehler = 'Server hat die Anfrage (HTTP 400) abgelehnt. Bitte Cookies + Cache löschen und erneut probieren.';
+                        else if (!resp.ok) fehler = 'Server-Fehler (HTTP ' + resp.status + '). Bitte kurz warten und erneut senden.';
+                        zeigeStatus('fehler', fehler + ' Alternativ: Direkte E-Mail an vorstand@rv-hard.at.');
+                    }
+                } catch (err) {
+                    zeigeStatus('fehler', 'Verbindungsfehler. Bitte prüfe deine Internetverbindung oder schreibe direkt an vorstand@rv-hard.at.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = orig;
+                }
+            });
+
+            // Startzeile
+            zeileHinzufuegen();
+        })();
     </script>
 </body>
 
