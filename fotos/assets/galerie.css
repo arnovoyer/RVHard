@@ -33,9 +33,15 @@ body {
 
 /* ================= CONTAINER & TITEL (wie nightrace-container) ================= */
 .fg-container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2.5rem 1rem;
+    padding: 2.5rem 1.5rem;
+}
+
+/* Browser-Standard-Margin von <figure> zurücksetzen
+   (sonst 40px links/rechts pro Bild und 1em oben/unten → riesige Lücken) */
+figure {
+    margin: 0;
 }
 
 .fg-section {
