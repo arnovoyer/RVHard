@@ -251,7 +251,8 @@ figure {
     overflow: hidden;
     border-radius: 12px;
     background: #eee;
-    aspect-ratio: 4 / 3;
+    /* Hochformat-Kachel: hochkante Handyfotos werden kaum noch beschnitten */
+    aspect-ratio: 3 / 4;
     cursor: zoom-in;
     transition: transform .25s ease, box-shadow .25s ease;
 }
@@ -599,7 +600,8 @@ figure {
     .fg-search-row input[type="text"],
     .fg-search-row select { width: 100%; flex: 1 1 auto; min-width: unset; }
     .fg-btn { width: 100%; }
-    .fg-photo__overlay { opacity: 1; padding: 6px 8px; }
+    /* Startnummern-Overlay auf Mobil ausblenden – verdeckte sonst die Bilder */
+    .fg-photo__overlay { display: none; }
     .fg-lightbox { padding: 8px; }
     .fg-lightbox__nav { width: 38px; height: 38px; }
 
