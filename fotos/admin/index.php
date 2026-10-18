@@ -104,6 +104,16 @@ $currentName = fg2_displayname();
         .fg-photo-card__header { position: relative; background: #111; }
         .fg-photo-card__header img { width:100%; height: 180px; object-fit:cover; display:block; }
         .fg-photo-card__select { position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; cursor:pointer; accent-color: #f5b301; }
+        .fg-photo-card__del {
+            position: absolute; top: 8px; right: 8px; z-index: 3;
+            width: 30px; height: 30px; border-radius: 8px; border: 0;
+            background: rgba(220,53,69,0.92); color: #fff; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 13px; box-shadow: 0 2px 6px rgba(0,0,0,.35);
+            transition: background .15s, transform .1s;
+        }
+        .fg-photo-card__del:hover { background: #dc3545; transform: scale(1.06); }
+        .fg-photo-card__del:active { transform: scale(.96); }
         .fg-photo-card__body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .fg-photo-card__body label { display:block; font-size:0.7rem; color:#666; letter-spacing:0.04em; font-weight:600; margin-bottom: 0.15rem; }
         .fg-photo-card__body input {
@@ -227,6 +237,8 @@ $currentName = fg2_displayname();
         .admin-lb__btn:hover { background: rgba(255,193,7,0.25); border-color: #ffc107; color:#ffc107;}
         .admin-lb__btn.primary { background: #ffc107; color:#111; border-color:#ffc107; font-weight: 700;}
         .admin-lb__btn.primary:hover { background:#f5b301; color:#000;}
+        .admin-lb__btn.danger { background: #dc3545; border-color:#dc3545; color:#fff; font-weight: 700;}
+        .admin-lb__btn.danger:hover { background:#bb2d3b; border-color:#bb2d3b; color:#fff;}
 
         .admin-lb__body {
             display:flex; gap: 1.2rem; max-width: 1600px; width:100%;
@@ -561,6 +573,11 @@ $currentName = fg2_displayname();
                         <i class="fa-solid fa-floppy-disk"></i> Speichern &amp; Weiter
                     </button>
                 </div>
+                <div style="padding-top:4px;">
+                    <button class="admin-lb__btn danger" id="lb-delete" style="width:100%;">
+                        <i class="fa-solid fa-trash"></i> Bild löschen
+                    </button>
+                </div>
                 <div class="admin-lb__progress">
                     <div class="admin-lb__progressbar"><span id="lb-progress-fill"></span></div>
                     <div class="admin-lb__progresstext">
@@ -569,7 +586,7 @@ $currentName = fg2_displayname();
                     </div>
                 </div>
                 <div class="hint" style="margin-top:0;">
-                    ⌨️ <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern · <kbd>ESC</kbd> schließen
+                    ⌨️ <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern · <kbd>Entf</kbd> löschen · <kbd>ESC</kbd> schließen
                 </div>
             </div>
         </div>
@@ -797,6 +814,7 @@ $currentName = fg2_displayname();
             <div class="fg-photo-card ${sel}" data-id="${p.id}" style="contain: layout paint style;">
                 <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="öffnen + bearbeiten" data-id="${p.id}">
                     <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
+                    <button class="fg-photo-card__del js-del" data-id="${p.id}" title="Bild löschen (Original + Vorschau + Display)" onclick="event.stopPropagation();"><i class="fa-solid fa-trash"></i></button>
                     <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" decoding="async" fetchpriority="auto" style="pointer-events:none; width:100%;">
                     ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 ${bibBadge}</div>` : ''}
                     ${existingBadge || ''}
@@ -839,6 +857,50 @@ $currentName = fg2_displayname();
         wireSingleCardEvents(newCard);
     }
 
+    /* ===== FOTO LÖSCHEN =====
+     * Server-Fotos: löscht events.json-Eintrag + Original + Thumbnail + Display-Datei.
+     * Neu gezogene (noch nicht hochgeladene) Fotos: nur aus der Liste entfernen. */
+    async function fgDeletePhoto(photoId) {
+        const p = uploadedPhotos.find(x => x.id === photoId);
+        if (!p) return false;
+        const label = p.filename || 'Bild';
+        if (p.src) {
+            const okDel = confirm(`„${label}" endgültig vom Server löschen?\n\nEntfernt werden: Original, Vorschau (Thumbnail) und Display-Version.`);
+            if (!okDel) return false;
+            try {
+                const res = await fetch('delete_photo.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        csrf: fgAdminCsrf(),
+                        eventId: p._event,
+                        filename: basename(p.src || p.filename)
+                    })
+                });
+                const data = await res.json().catch(() => ({ ok: false }));
+                if (!data || !data.ok) {
+                    alert('Löschen fehlgeschlagen:\n' + ((data && data.message) || 'Unbekannter Fehler'));
+                    return false;
+                }
+            } catch (e) {
+                alert('Netzwerkfehler beim Löschen: ' + (e.message || e));
+                return false;
+            }
+        } else {
+            if (!confirm(`„${label}" aus der Liste entfernen? (noch nicht hochgeladen)`)) return false;
+        }
+        const idx = uploadedPhotos.findIndex(x => x.id === photoId);
+        if (idx !== -1) uploadedPhotos.splice(idx, 1);
+        _fgEventsCachePromise = null; /* events.json beim nächsten Mal frisch einlesen */
+        return true;
+    }
+    async function fgDeletePhotoFromCard(photoId) {
+        if (await fgDeletePhoto(photoId)) {
+            renderPhotos(); updateBulk(); updatePublishBtn(); renderEvents();
+        }
+    }
+
     /* Alle Cards im Grid mit Event-Listenern versehen (einmal nach großem Re-Render) */
     function wireCardEvents() {
         /* Checkboxen: KEIN renderPhotos() mehr — nur toggeln + bulk update */
@@ -867,6 +929,13 @@ $currentName = fg2_displayname();
             if (p) { p.bibNumbers = parseBibs(e.target.value); updatePhotoCard(id); }
             updateBulk();
         }));
+        /* Löschen (1 Klick) */
+        $pg.querySelectorAll('.js-del').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault(); e.stopPropagation();
+                fgDeletePhotoFromCard(btn.getAttribute('data-id'));
+            });
+        });
     }
 
     /* Event-Listener nur auf EINE neu erstellte Karte (nach updatePhotoCard()) */
@@ -888,6 +957,11 @@ $currentName = fg2_displayname();
             const id = bibInput.getAttribute('data-id');
             const p = uploadedPhotos.find(x => x.id === id);
             if (p) { p.bibNumbers = parseBibs(bibInput.value); updatePhotoCard(id); updateBulk(); }
+        });
+        const delBtn = cardEl.querySelector('.js-del');
+        if (delBtn) delBtn.addEventListener('click', e => {
+            e.preventDefault(); e.stopPropagation();
+            fgDeletePhotoFromCard(delBtn.getAttribute('data-id'));
         });
     }
 
@@ -1077,6 +1151,18 @@ $currentName = fg2_displayname();
         }
     }
 
+    /* Bild löschen (Datei + alle Auflösungen) direkt aus der Lightbox */
+    async function lbDeleteCurrent() {
+        const p = lbCurrentList[lbCurrentIndex];
+        if (!p) return;
+        if (!(await fgDeletePhoto(p.id))) return;
+        lbCurrentList.splice(lbCurrentIndex, 1);
+        renderPhotos(); updateBulk(); updatePublishBtn(); renderEvents();
+        if (lbCurrentList.length === 0) { lbClose(); return; }
+        if (lbCurrentIndex >= lbCurrentList.length) lbCurrentIndex = lbCurrentList.length - 1;
+        lbRender();
+    }
+
     document.getElementById('lb-close').addEventListener('click', () => {
         const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id);
         lbClose(); updateBulk(); renderEvents();
@@ -1089,6 +1175,7 @@ $currentName = fg2_displayname();
     document.getElementById('lb-copy-bib').addEventListener('click', async () => {
         try { await navigator.clipboard.writeText($lbBib.value); } catch(e){}
     });
+    document.getElementById('lb-delete').addEventListener('click', lbDeleteCurrent);
     $lb.addEventListener('click', e => {
         if (e.target !== $lb) return;
         const s = lbSaveCurrent(); if (s) updatePhotoCard(s.id);
@@ -1124,6 +1211,9 @@ $currentName = fg2_displayname();
         /* Pfeiltasten → blättern (funktioniert auch im Nummern-Feld = schneller Workflow!) */
         if (k === 'ArrowRight') { e.preventDefault(); lbNext(); return; }
         if (k === 'ArrowLeft')  { e.preventDefault(); lbPrev(); return; }
+
+        /* Delete/Entf → aktuelles Bild löschen (nur außerhalb des Eingabefelds, damit Text-Löschen funktioniert) */
+        if ((k === 'Delete' || k === 'Entf') && !isField) { e.preventDefault(); lbDeleteCurrent(); return; }
 
         /* Außerhalb von Feldern: S = Speichern & Weiter */
         if (!isField && (k === 's' || k === 'S')) lbSaveAndNext();
