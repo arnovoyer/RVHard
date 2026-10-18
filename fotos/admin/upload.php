@@ -930,6 +930,7 @@ if ($action === 'publish') {
     $responseData = [
         'photos_saved_count'  => count($savedImages),
         'photos_json_count'   => count($photosJson),
+        'photos_total'        => count($mergedPhotosFinal),
         'target_folder'       => $folder,
         'preview_url'         => fg_event_public_url($eventId),
         'events_file_size'    => filesize(EVENTS_FILE),

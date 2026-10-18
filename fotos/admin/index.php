@@ -1317,12 +1317,8 @@ $currentName = fg2_displayname();
             if (!jn) return;
         }
 
-        /* 1) FormData — STRUKTUR FIX: NIE src oder previewUrl mitschicken! */
-        const fd = new FormData();
-        fd.append('action', 'publish');
-        fgAdminAppendCsrf(fd);
-        if (!fd.has('csrf')) { console.warn('CSRF Token fehlt!'); }
-        const photosMeta = list.map(p => {
+        /* Metadaten-Eintrag für EIN Foto bauen — NIE src(previewUrl) als Datei mitschicken! */
+        const photoMeta = p => {
             const bibNums = Array.isArray(p.bibNumbers)
                 ? p.bibNumbers
                 : parseBibs(String(p.bibNumbers || ''));
@@ -1337,14 +1333,17 @@ $currentName = fg2_displayname();
             if (p.thumbnail) entry.thumbnail = String(p.thumbnail).trim();
             if (p.display)   entry.display   = String(p.display).trim();
             return entry;
-        });
-        fd.append('metadata', JSON.stringify({
-            eventId: currentEventId, folder, year, discKey: discObj.key, photos: photosMeta
-        }));
-        const countBefore = fd.getAll('images[]').length;
-        list.forEach(p => { if (p.file && typeof p.file.arrayBuffer === 'function') fd.append('images[]', p.file, p.filename); });
-        const countAfter = fd.getAll('images[]').length - countBefore;
-        console.log(`[Publish] Sending ${countAfter} files for ${list.length} photo entries (${withoutFile} merged-only)`);
+        };
+
+        /* 🔥 BATCHING: PHP nimmt standardmäßig nur max_file_uploads (20) Dateien pro
+           Request an und verwirft den Rest still! Deshalb in kleinen Häppchen senden.
+           Jeder Batch wird einzeln in events.json gemergt (upload.php bewahrt Alte auf). */
+        const BATCH_SIZE = 12;
+        const withFileList = list.filter(p => p.file && typeof p.file.arrayBuffer === 'function');
+        const batches = [];
+        for (let i = 0; i < withFileList.length; i += BATCH_SIZE) batches.push(withFileList.slice(i, i + BATCH_SIZE));
+        if (batches.length === 0) batches.push([]); /* nur Metadaten (Merge bestehender Fotos) */
+        console.log(`[Publish] ${withFileList.length} Datei(en) in ${batches.length} Batch(es), ${list.length} Einträge gesamt (${withoutFile} ohne Datei)`);
 
         /* 2) UI sperren + Progress */
         $publishBtn.disabled = true;
@@ -1353,40 +1352,65 @@ $currentName = fg2_displayname();
         const $pb = document.getElementById('progress-bar');
         const $pt = document.getElementById('progress-text');
         $pt.style.display = 'block';
+        $pt.style.color = '';
         document.getElementById('success-msg').style.display = 'none';
 
+        /* FormData für einen Batch (erster Batch sichert ALLE Startnummern) */
+        const buildForm = (batch, firstBatch) => {
+            const fd = new FormData();
+            fd.append('action', 'publish');
+            fgAdminAppendCsrf(fd);
+            if (!fd.has('csrf')) { console.warn('CSRF Token fehlt!'); }
+            const metaSource = firstBatch ? list : batch;
+            fd.append('metadata', JSON.stringify({
+                eventId: currentEventId, folder, year, discKey: discObj.key,
+                photos: metaSource.map(photoMeta)
+            }));
+            batch.forEach(p => fd.append('images[]', p.file, p.filename));
+            return fd;
+        };
+
+        const sendBatch = (fd, batchIdx) => new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', './upload.php', true); /* 🔥 SUBDOMAIN KOMPATIBEL: RELATIV! */
+            xhr.upload.onprogress = e => {
+                if (e.lengthComputable) {
+                    const per = 100 / batches.length;
+                    const pct = Math.min(100, Math.round(batchIdx * per + (e.loaded / e.total) * per));
+                    $pb.style.width = pct + '%';
+                    $pt.textContent = `📤 Batch ${batchIdx + 1}/${batches.length} · ${pct}% (${(e.loaded/1024/1024).toFixed(1)} von ${(e.total/1024/1024).toFixed(1)} MB)…`;
+                }
+            };
+            xhr.onload = () => {
+                try {
+                    if (xhr.status === 401) { fgAdminSessionExpired(xhr.responseText); return reject(new Error('Sitzung abgelaufen – bitte neu anmelden!')); }
+                    const j = JSON.parse(xhr.responseText);
+                    if (!j.ok) return reject(new Error(j.msg || 'Fehler'));
+                    resolve(j);
+                } catch(err) { reject(new Error('Ungültige Antwort vom Server: ' + xhr.responseText.slice(0, 300))); }
+            };
+            xhr.onerror = () => reject(new Error('Netzwerkfehler während Upload!'));
+            xhr.onabort = () => reject(new Error('Upload abgebrochen!'));
+            xhr.send(fd);
+        });
+
         try {
-            await new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', './upload.php', true); /* 🔥 SUBDOMAIN KOMPATIBEL: RELATIV! */
-                xhr.upload.onprogress = e => {
-                    if (e.lengthComputable) {
-                        const pct = Math.round((e.loaded / e.total) * 100);
-                        $pb.style.width = pct + '%';
-                        $pt.textContent = `📤 ${pct}% hochgeladen (${(e.loaded/1024/1024).toFixed(1)} von ${(e.total/1024/1024).toFixed(1)} MB)…`;
-                    }
-                };
-                xhr.onload = () => {
-                    try {
-                        if (xhr.status === 401) { fgAdminSessionExpired(xhr.responseText); return reject(new Error('Sitzung abgelaufen – bitte neu anmelden!')); }
-                        const j = JSON.parse(xhr.responseText);
-                        resolve(j);
-                    } catch(err) { reject(new Error('Ungültige Antwort vom Server: ' + xhr.responseText.slice(0, 300))); }
-                };
-                xhr.onerror = () => reject(new Error('Netzwerkfehler während Upload!'));
-                xhr.onabort = () => reject(new Error('Upload abgebrochen!'));
-                xhr.send(fd);
-            }).then(j => {
-                if (!j.ok) throw new Error(j.msg || 'Fehler');
-                $pb.style.width = '100%';
-                $pt.textContent = `✅ ${j.photos_saved_count} Bilder, ${j.photos_json_count} Einträge – Ordner ${j.target_folder || ''}`;
-                const sucMsg = document.getElementById('success-msg');
-                sucMsg.style.display = 'block';
-                if (j.preview_url) document.getElementById('success-link').href = j.preview_url;
-                $publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> Nochmal veröffentlichen`;
-                $publishBtn.disabled = false;
-                setTimeout(pingServer, 500);
-            }).catch(err => { throw err; });
+            let savedTotal = 0, lastJ = null;
+            for (let i = 0; i < batches.length; i++) {
+                const j = await sendBatch(buildForm(batches[i], i === 0), i);
+                lastJ = j;
+                savedTotal += (j.photos_saved_count || 0);
+                $pt.textContent = `📤 Batch ${i + 1}/${batches.length} fertig…`;
+            }
+            const total = (lastJ && typeof lastJ.photos_total === 'number') ? lastJ.photos_total : savedTotal;
+            $pb.style.width = '100%';
+            $pt.textContent = `✅ ${savedTotal} Datei(en) hochgeladen · ${total} Fotos im Event`;
+            const sucMsg = document.getElementById('success-msg');
+            sucMsg.style.display = 'block';
+            if (lastJ && lastJ.preview_url) document.getElementById('success-link').href = lastJ.preview_url;
+            $publishBtn.innerHTML = `<i class="fa-solid fa-check"></i> Nochmal veröffentlichen`;
+            $publishBtn.disabled = false;
+            setTimeout(pingServer, 500);
         } catch(err) {
             console.error(err);
             $pb.style.width = '0%';
