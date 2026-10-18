@@ -47,7 +47,7 @@ figure {
 .fg-section {
     background: #fff;
     padding: 25px;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
 }
@@ -158,12 +158,12 @@ figure {
 .fg-events-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 22px;
+    gap: 12px;
     margin: 1rem 0 0;
 }
 .fg-event-card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
@@ -242,14 +242,14 @@ figure {
 /* ================= FOTO-GRID ================= */
 .fg-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
     margin: 1.25rem 0;
 }
 .fg-photo {
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 12px;
     background: #eee;
     aspect-ratio: 4 / 3;
     cursor: zoom-in;
@@ -588,12 +588,12 @@ figure {
     .fg-lightbox__img-wrap { max-height: 55vh; }
 }
 @media (max-width: 600px) {
-    .fg-container { padding: 1.75rem 0.9rem; }
-    .fg-section { padding: 18px; border-radius: 8px; }
+    .fg-container { padding: 1.5rem 0.6rem; }
+    .fg-section { padding: 14px; border-radius: 12px; }
     .fg-section h1 { font-size: 1.6rem; }
     .fg-section h2 { font-size: 1.25rem; }
-    .fg-events-grid { grid-template-columns: 1fr; gap: 16px; }
-    .fg-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+    .fg-events-grid { grid-template-columns: 1fr; gap: 10px; }
+    .fg-gallery { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
     .fg-search-row { gap: 10px; }
     .fg-search-row input[type="search"],
     .fg-search-row input[type="text"],
