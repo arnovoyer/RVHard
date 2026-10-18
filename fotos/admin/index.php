@@ -549,8 +549,8 @@ $currentName = fg2_displayname();
             <div class="admin-lb__sidebar">
                 <h3><i class="fa-solid fa-tags" style="color:#f5b301;"></i> Bild bearbeiten</h3>
                 <div>
-                    <label>🏁 STARTNUMMERN (Komma getrennt!)</label>
-                    <input type="text" id="lb-bib" class="bibs" placeholder="42, 12, 88" autocomplete="off">
+                    <label>🏁 STARTNUMMER ODER KATEGORIE</label>
+                    <input type="text" id="lb-bib" class="bibs" placeholder="42, 12 oder U7-U9" autocomplete="off">
                 </div>
 
                 <div style="display:flex; gap:8px; padding-top:4px;">
@@ -786,6 +786,8 @@ $currentName = fg2_displayname();
     /* Ein einzelnes Foto-Karten HTML erzeugen (wird von beiden Render Pfaden genutzt) */
     function _photoCardHTML(p) {
         const bibStr = (p.bibNumbers||[]).join(', ');
+        /* Badge: Startnummern mit # , Kategorien (z. B. U7-U9) ohne # */
+        const bibBadge = (p.bibNumbers||[]).map(b => /^\d+$/.test(String(b).trim()) ? '#' + b : b).join(' ');
         const sel = p._selected ? 'selected' : '';
         const hasBibs = (p.bibNumbers||[]).length > 0;
         const existingBadge = p._wasExisting
@@ -796,15 +798,15 @@ $currentName = fg2_displayname();
                 <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="öffnen + bearbeiten" data-id="${p.id}">
                     <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
                     <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" decoding="async" fetchpriority="auto" style="pointer-events:none; width:100%;">
-                    ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 #${bibStr}</div>` : ''}
+                    ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 ${bibBadge}</div>` : ''}
                     ${existingBadge || ''}
                     <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:600;"><i class="fa-solid fa-expand"></i> öffnen</div>
                 </div>
                 <div class="fg-photo-card__body">
                     <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
                     <div>
-                        <label>🏁 STARTNUMMERN</label>
-                        <input type="text" class="bibs js-bib" placeholder="42, 12, 88" value="${bibStr}" data-id="${p.id}" autocomplete="off">
+                        <label>🏁 STARTNUMMER / KATEGORIE</label>
+                        <input type="text" class="bibs js-bib" placeholder="42, 12 oder U7-U9" value="${bibStr}" data-id="${p.id}" autocomplete="off">
                     </div>
                 </div>
             </div>

@@ -698,6 +698,37 @@ function fgPhotoMatchesBib(photo, bibQuery, mode /* 'exact' | 'partial' */) {
     return anyMatch;
 }
 
+/* ================= KATEGORIE / NICHT GETAGGT =================
+   bibNumbers darf neben Startnummern auch Altersklassen-Strings
+   enthalten (z. B. "U7-U9"). Alles was KEINE reine Zahl ist = Kategorie. */
+function fgBibIsNumeric(b) {
+    return /^\d+$/.test(String(b == null ? '' : b).trim());
+}
+/* Foto hat mind. eine echte Startnummer → gilt als "getaggt" */
+function fgPhotoHasNumericBib(photo) {
+    return (photo.bibNumbers || []).some(fgBibIsNumeric);
+}
+/* Foto trägt eine bestimmte Kategorie (Groß-/Kleinschreibung egal) */
+function fgPhotoHasCategory(photo, cat) {
+    const want = String(cat == null ? '' : cat).toLowerCase().trim();
+    if (!want) return true;
+    return (photo.bibNumbers || []).some(b => {
+        const s = String(b == null ? '' : b).toLowerCase().trim();
+        return s && !fgBibIsNumeric(s) && s === want;
+    });
+}
+/* Alle vorhandenen Kategorien (alphabetisch, Duplikate entfernt) */
+function fgCollectCategories(photos) {
+    const map = new Map();
+    (photos || []).forEach(p => (p.bibNumbers || []).forEach(b => {
+        const s = String(b == null ? '' : b).trim();
+        if (!s || fgBibIsNumeric(s)) return;
+        const k = s.toLowerCase();
+        if (!map.has(k)) map.set(k, s);
+    }));
+    return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'de', { numeric: true }));
+}
+
 function fgRenderEventPage(event) {
     if (!event) {
         document.getElementById('fg-event-content').innerHTML =
@@ -738,6 +769,37 @@ function fgRenderEventPage(event) {
     const photos = Array.isArray(event.photos) ? event.photos : [];
     const allBibs = new Set();
     photos.forEach(p => (p.bibNumbers || []).forEach(b => allBibs.add(String(b))));
+
+    /* ============ KATEGORIE-FILTER (Altersklassen) ============
+       Vorhandene Kategorien ins Dropdown füllen. Die Zeile wird nur gezeigt,
+       wenn es Kategorien ODER noch nicht getaggte Bilder gibt. */
+    const catRow = document.getElementById('fg-cat-row');
+    const catWrap = document.getElementById('fg-cat-select-wrap');
+    const catSelect = document.getElementById('fg-cat-select');
+    const untaggedBtn = document.getElementById('fg-untagged-btn');
+    const categories = fgCollectCategories(photos);
+    const hasUntagged = photos.some(p => !fgPhotoHasNumericBib(p));
+    if (catRow && (categories.length || hasUntagged)) catRow.style.display = '';
+    if (catSelect && categories.length) {
+        const qCat = fgQueryParam('cat');
+        catSelect.innerHTML = `<option value="">Alle Kategorien</option>` +
+            categories.map(c => `<option value="${fgEscapeHtml(c)}">${fgEscapeHtml(c)}</option>`).join('');
+        if (qCat) {
+            const hit = categories.find(c => c.toLowerCase() === String(qCat).toLowerCase());
+            if (hit) catSelect.value = hit;
+        }
+        if (catWrap) catWrap.style.display = 'flex';
+    }
+    /* "Nicht getaggt" = nur Bilder OHNE Startnummer (Kategorie-Tags zählen nicht) */
+    let untaggedActive = (fgQueryParam('untagged') === '1');
+    const FG_UNTAGGED_BASE = "padding:12px 20px;border:2px solid #e5e7eb;border-radius:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;transition:all .2s ease;box-shadow:0 2px 6px rgba(0,0,0,.04);";
+    const FG_UNTAGGED_ACT = "background:#ffc107;background-image:linear-gradient(180deg,#ffd24a,#ffc107);color:#1a1600;border-color:rgba(0,0,0,.08);box-shadow:0 4px 10px rgba(255,193,7,.28),0 1px 0 rgba(255,255,255,.35) inset;";
+    const FG_UNTAGGED_INA = "background:#fff;color:#4b5563;";
+    function fgApplyUntaggedUI() {
+        if (!untaggedBtn) return;
+        untaggedBtn.style.cssText = FG_UNTAGGED_BASE + (untaggedActive ? FG_UNTAGGED_ACT : FG_UNTAGGED_INA);
+    }
+    fgApplyUntaggedUI();
 
     /* ============ STARTNUMMER SUCH-MODUS (Standard: Exakt!) ============ */
     // Speichert dauerhaft pro User im localStorage, zusätzlich in URL (für geteilte Links)
@@ -855,15 +917,46 @@ function fgRenderEventPage(event) {
             }
         });
     }
+    /* Kategorie-Dropdown */
+    if (catSelect) {
+        catSelect.addEventListener('change', () => {
+            renderGallery();
+            try {
+                const url = new URL(window.location.href);
+                const v = String(catSelect.value || '').trim();
+                if (v) url.searchParams.set('cat', v); else url.searchParams.delete('cat');
+                window.history.replaceState({}, '', url.toString());
+            } catch(e) {}
+        });
+    }
+    /* "Nicht getaggt" an/aus */
+    if (untaggedBtn) {
+        untaggedBtn.addEventListener('click', () => {
+            untaggedActive = !untaggedActive;
+            fgApplyUntaggedUI();
+            renderGallery();
+            try {
+                const url = new URL(window.location.href);
+                if (untaggedActive) url.searchParams.set('untagged', '1');
+                else url.searchParams.delete('untagged');
+                window.history.replaceState({}, '', url.toString());
+            } catch(e) {}
+        });
+    }
     /* Reset Button für Bib-Suche */
     const bibReset = document.getElementById('fg-bib-reset');
     if (bibReset && bibInput) {
         bibReset.addEventListener('click', () => {
             bibInput.value = '';
+            if (catSelect) catSelect.value = '';
+            untaggedActive = false;
+            fgApplyUntaggedUI();
             renderGallery();
             try {
                 const url = new URL(window.location.href);
                 url.searchParams.delete('bib');
+                url.searchParams.delete('cat');
+                url.searchParams.delete('untagged');
                 window.history.replaceState({}, '', url.toString());
             } catch(e) {}
             bibInput.focus();
@@ -876,7 +969,13 @@ function fgRenderEventPage(event) {
         let mode = fgGetBibMode();
         try { if (renderGallery.__forceBib) mode = String(renderGallery.__forceBib); } catch(e){}
 
-        const filtered = photos.filter(p => fgPhotoMatchesBib(p, bib, mode));
+        const cat = (catSelect ? String(catSelect.value || '') : '');
+        const filtered = photos.filter(p => {
+            if (!fgPhotoMatchesBib(p, bib, mode)) return false;
+            if (cat && !fgPhotoHasCategory(p, cat)) return false;
+            if (untaggedActive && fgPhotoHasNumericBib(p)) return false;
+            return true;
+        });
         /* Optional Debug Console (nur im Dev sichtbar!) */
         if (typeof console !== 'undefined' && bib && console && console.log) {
             console.log('[Galerie] Filter:', {
@@ -902,7 +1001,24 @@ function fgRenderEventPage(event) {
                     Tipp: Suche nach <em style="color:#111;">${fgEscapeHtml(bib)}</em> ohne Ergebnisse.
                     <button onclick="document.getElementById('fg-bibmode-partial')&&document.getElementById('fg-bibmode-partial').click();" style="margin-left:.4rem; padding:4px 10px; font-size:12px; font-weight:700; border-radius:8px; background:#ffc107; color:#1a1600; border:0; cursor:pointer;">Oder: Teilweise-Suche aktivieren</button>
                 </div>` : ''}
+                ${(cat || untaggedActive) ? `<div style="margin-top:.6rem; font-size:.85rem; color:#6b7280;">
+                    ${cat ? `Kategorie <em style="color:#111;">${fgEscapeHtml(cat)}</em>` : 'Nur nicht getaggte Bilder'}${untaggedActive && cat ? ' ohne Startnummer' : ''} – keine Bilder gefunden.
+                    <button id="fg-empty-reset" style="margin-left:.4rem; padding:4px 10px; font-size:12px; font-weight:700; border-radius:8px; background:#ffc107; color:#1a1600; border:0; cursor:pointer;">Filter zurücksetzen</button>
+                </div>` : ''}
             </div>`;
+            const er = document.getElementById('fg-empty-reset');
+            if (er) er.addEventListener('click', () => {
+                if (catSelect) catSelect.value = '';
+                untaggedActive = false;
+                fgApplyUntaggedUI();
+                renderGallery();
+                try {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('cat');
+                    url.searchParams.delete('untagged');
+                    window.history.replaceState({}, '', url.toString());
+                } catch(e) {}
+            });
             return;
         }
 
@@ -923,7 +1039,7 @@ function fgRenderEventPage(event) {
             const sanitizedThumb = rawThumb ? fgSanitizePhotoSrc(rawThumb, null) : safeSrc;
             let thumb = fgSafeUrl(sanitizedThumb, safeSrc, `gallery-thumb-${idx}`);
             if (!thumb) thumb = safeSrc;
-            const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">#${fgEscapeHtml(b)}</span>`).join('');
+            const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">${fgBibIsNumeric(b) ? '#' : ''}${fgEscapeHtml(b)}</span>`).join('');
             const brokenBadge = broken
                 ? `<span class="fg-tag" style="background:#dc3545;color:#fff;margin-right:4px;"><i class="fa-solid fa-triangle-exclamation"></i> Lokaler Pfad! Neu publ.</span>`
                 : '';

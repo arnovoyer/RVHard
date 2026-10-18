@@ -200,6 +200,42 @@
                         <code style="background:#f3f4f6; padding:2px 8px; border-radius:6px; color:#111827; font-size:11.5px; margin:0 3px; border:1px solid #e5e7eb;">42 256</code>
                         zeigt Bilder mit einer dieser Nummern.
                     </div>
+
+                    <!-- NICHT GETAGGT / KATEGORIE (JS blendet die Zeile bei Bedarf ein) -->
+                    <div id="fg-cat-row" style="display:none; margin: 1.1rem auto 0; max-width: 620px; width:100%;">
+                        <div style="display:flex; align-items:stretch; gap:10px; flex-wrap:wrap; justify-content:center;">
+                            <div id="fg-cat-select-wrap" style="display:none; position:relative; align-items:center; flex:1 1 190px; min-width:160px;">
+                                <i class="fa-solid fa-tags" style="position:absolute; left:14px; color:#8b95a7; font-size:13px; pointer-events:none;"></i>
+                                <select id="fg-cat-select" title="Nach Altersklasse filtern"
+                                    style="
+                                        width:100%; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+                                        padding: 12px 36px 12px 38px;
+                                        background:#fff; border:2px solid #e5e7eb; border-radius:14px;
+                                        color:#111827; font-family:inherit; font-size:14px; font-weight:600;
+                                        cursor:pointer; outline:none;
+                                        box-shadow: 0 2px 6px rgba(0,0,0,.04);
+                                    ">
+                                    <option value="">Alle Kategorien</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down" style="position:absolute; right:14px; color:#8b95a7; font-size:12px; pointer-events:none;"></i>
+                            </div>
+                            <button id="fg-untagged-btn" type="button"
+                                title="Nur Bilder anzeigen, die noch keine Startnummer haben"
+                                style="
+                                    padding: 12px 20px;
+                                    border:2px solid #e5e7eb; border-radius:14px;
+                                    background:#fff; color:#4b5563;
+                                    font-family:inherit; font-size:14px; font-weight:700;
+                                    cursor:pointer; white-space:nowrap;
+                                    display:inline-flex; align-items:center; gap:8px;
+                                    transition: all .2s ease;
+                                    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+                                ">
+                                <i class="fa-solid fa-tag" style="font-size:13px;"></i>
+                                Nicht getaggt
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- GALLERY -->
@@ -237,7 +273,7 @@
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20260918" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261018" defer><\/script>`);
         })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
