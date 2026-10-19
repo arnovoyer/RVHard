@@ -27,7 +27,7 @@ $currentName = fg2_displayname();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔒 SBS Admin – Bilder taggen & events.json erzeugen | RV Hard</title>
+    <title>🔒 Foto Admin – Bilder taggen & events.json erzeugen | RV Hard</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,6 +93,26 @@ $currentName = fg2_displayname();
         .fg-event-pick h3 { margin: 0.15rem 0; font-size: 1rem; color:#111; }
         .fg-event-pick small { color:#777; font-size:0.8rem; display:block; margin-top:2px;}
         .fg-event-pick .count { margin-top: 0.5rem; font-size: 0.85rem; color:#555; font-weight:600; }
+        .fg-event-pick { position: relative; }
+        .fg-event-pick.is-hidden { opacity: 0.6; border-style: dashed; }
+        .fg-event-pick .hidebtn {
+            position: absolute; top: 8px; right: 8px; z-index: 3;
+            width: 30px; height: 30px; border-radius: 8px; border: 1px solid #ddd;
+            background: #fff; color: #555; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
+            transition: all .15s;
+        }
+        .fg-event-pick .hidebtn:hover { border-color: #dc3545; color: #dc3545; }
+        .fg-event-pick .hidebtn.on { background: #dc3545; border-color: #dc3545; color: #fff; }
+        .fg-event-pick .hidebtn.on:hover { background:#bb2d3b; color:#fff; }
+        .fg-event-pick .hiddenbadge {
+            display:inline-block; margin-left:6px; padding: 1px 7px; border-radius: 999px;
+            background:#dc3545; color:#fff; font-size:0.68rem; font-weight:700;
+        }
+        .fg-ne { background:#f7f7f7; border-radius:8px; padding:1rem; margin-bottom:1rem; }
+        .fg-ne .row { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
+        @media (max-width: 800px) { .fg-ne .row { grid-template-columns: 1fr; } }
+        .fg-ne .actions { margin-top:0.75rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
 
         /* Foto-Karte - VERBESSERT */
         .fg-photo-card {
@@ -428,14 +448,63 @@ $currentName = fg2_displayname();
         <div class="fg-section fg-step">
             <div class="fg-step__header">
                 <div class="fg-step__num">1</div>
-                <h2>Welche SBS-Disziplin möchtest du jetzt bearbeiten?</h2>
+                <h2>Welches Event möchtest du jetzt bearbeiten?</h2>
             </div>
-            <div style="padding: 0.75rem 1rem 1rem; background: #f7f7f7; border-radius: 8px; margin-bottom: 1rem;">
-                <label class="fg-label" for="year-select">SBS Jahr</label>
-                <select class="fg-input" id="year-select" style="max-width:240px;">
-                    <option value="2026" selected>2026</option>
-                </select>
+            <div style="padding: 0.75rem 1rem 1rem; background: #f7f7f7; border-radius: 8px; margin-bottom: 1rem; display:flex; align-items:flex-end; gap:0.75rem; flex-wrap:wrap;">
+                <div>
+                    <label class="fg-label" for="year-select">Jahr</label>
+                    <select class="fg-input" id="year-select" style="max-width:240px;">
+                        <option value="2026" selected>2026</option>
+                    </select>
+                </div>
+                <button class="fg-btn fg-btn--outline" id="new-event-btn" type="button" style="padding:0.6rem 1rem;">
+                    <i class="fa-solid fa-plus"></i> Neues Event erstellen
+                </button>
             </div>
+
+            <!-- Formular: eigenes Event anlegen -->
+            <div class="fg-ne" id="new-event-form" style="display:none;">
+                <div class="row">
+                    <div>
+                        <label class="fg-label" for="ne-name">Name *</label>
+                        <input class="fg-input" id="ne-name" type="text" placeholder="z. B. Mountainbike Rennen Bregenzerwald" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="fg-label" for="ne-date">Datum</label>
+                        <input class="fg-input" id="ne-date" type="date">
+                    </div>
+                    <div>
+                        <label class="fg-label" for="ne-location">Ort</label>
+                        <input class="fg-input" id="ne-location" type="text" placeholder="z. B. Alberschwende" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="fg-label" for="ne-distance">Distanz (optional)</label>
+                        <input class="fg-input" id="ne-distance" type="text" placeholder="z. B. 45 km · 900 Hm" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="fg-label" for="ne-subtype">Disziplin/Typ</label>
+                        <select class="fg-input" id="ne-subtype">
+                            <option value="">Allgemein</option>
+                            <option value="bergrennen">Bergrennen</option>
+                            <option value="ezf">Einzelzeitfahren</option>
+                            <option value="kriterium">Stadtkriterium</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="fg-label" for="ne-year">Jahr</label>
+                        <input class="fg-input" id="ne-year" type="number" min="2000" max="2100">
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem;">
+                    <label class="fg-label" for="ne-desc">Beschreibung (optional)</label>
+                    <input class="fg-input" id="ne-desc" type="text" placeholder="Kurzer Text für die Event-Karte" autocomplete="off">
+                </div>
+                <div class="actions">
+                    <button class="fg-btn" id="ne-save" type="button"><i class="fa-solid fa-check"></i> Event anlegen</button>
+                    <button class="fg-btn fg-btn--outline" id="ne-cancel" type="button">Abbrechen</button>
+                </div>
+            </div>
+
             <div id="discipline-grid" class="fg-grid-3"></div>
         </div>
 
@@ -714,24 +783,102 @@ $currentName = fg2_displayname();
     function eventIdFor(year, key) { return `sbs-${year}-${key}`; }
     function folderFor(year, key) { return `sbs-${year}-${key}`; }
 
-    function renderEvents() {
-        const year = $yearSel.value;
-        $grid.innerHTML = DISCS.map(d => {
+    const SUBTYPE_ICON = { bergrennen: 'fa-mountain-sun', ezf: 'fa-stopwatch', kriterium: 'fa-flag-checkered' };
+
+    let serverEventsById = {};   /* id → Event-Objekt aus events.json */
+    let _pickerItems = [];       /* aktuelle Auswahl-Liste (Standard + eigene Events) */
+    let _busyEvent = false;      /* verhindert Doppel-Klicks beim Anlegen/Toggeln */
+
+    function fgEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    /* Server-Events (events.json) NEU einlesen */
+    async function fgRefreshServerEvents() {
+        _fgEventsCachePromise = null;
+        const events = await fgLoadEventsJson();
+        serverEventsById = {};
+        (events || []).forEach(ev => { if (ev && ev.id) serverEventsById[String(ev.id)] = ev; });
+    }
+
+    /* Jahres-Dropdown mit allen vorhandenen Jahren füllen */
+    function fgSyncYearOptions(prefer) {
+        const cur = prefer || $yearSel.value || String(new Date().getFullYear());
+        const years = new Set();
+        Array.from($yearSel.options).forEach(o => years.add(o.value));
+        Object.values(serverEventsById).forEach(ev => {
+            const y = String(ev.parentId || ev.id || '').match(/20\d{2}/)?.[0];
+            if (y) years.add(y);
+        });
+        years.add(cur);
+        const sorted = Array.from(years).filter(Boolean).sort((a, b) => String(b).localeCompare(String(a)));
+        $yearSel.innerHTML = sorted.map(y => `<option value="${y}"${y === cur ? ' selected' : ''}>${y}</option>`).join('');
+    }
+
+    /* Auswahlliste bauen: Server-Events des Jahres + noch nicht angelegte Standard-Disziplinen */
+    function buildPickerItems() {
+        const year = String($yearSel.value);
+        const items = [];
+        const seen = new Set();
+        const discByKey = {};
+        DISCS.forEach(d => { discByKey[d.key] = d; });
+
+        Object.values(serverEventsById).forEach(ev => {
+            const y = String(ev.parentId || ev.id || '').match(/20\d{2}/)?.[0] || '';
+            if (y !== year) return;
+            const key = String(ev.slug || ev.id).replace(/^sbs-\d{4}-/, '');
+            const d = discByKey[key];
+            seen.add(String(ev.id));
+            items.push({
+                id: String(ev.id), key: key, folder: ev.folder || ev.id,
+                custom: !!ev.custom, hidden: !!ev.hidden,
+                name: ev.name || ev.shortName || ev.id,
+                short: ev.shortName || ev.name || ev.id,
+                cat: d ? d.cat : (ev.custom ? 'EVENT' : 'SBS'),
+                color: d ? d.color : (ev.custom ? '#6f42c1' : '#343a40'),
+                icon: d ? d.icon : (SUBTYPE_ICON[ev.subtype] || 'fa-camera-retro'),
+                location: ev.location || '', distance: ev.distance || '',
+                desc: ev.description || '',
+                serverPhotos: Array.isArray(ev.photos) ? ev.photos.length : 0,
+                onServer: true
+            });
+        });
+        DISCS.forEach(d => {
             const id = eventIdFor(year, d.key);
-            const active = (id === currentEventId) ? 'active' : '';
-            const folder = folderFor(year, d.key);
+            if (seen.has(id)) return;
+            items.push({
+                id: id, key: d.key, folder: folderFor(year, d.key),
+                custom: false, hidden: false, name: d.name, short: d.short,
+                cat: d.cat, color: d.color, icon: d.icon, location: d.location,
+                distance: d.distance, desc: d.desc, serverPhotos: 0, onServer: false
+            });
+        });
+        return items;
+    }
+
+    function renderEvents() {
+        _pickerItems = buildPickerItems();
+        $grid.innerHTML = _pickerItems.map(it => {
+            const active = (it.id === currentEventId) ? 'active' : '';
+            const hidden = it.hidden;
+            const toggleBtn = it.onServer
+                ? `<button class="hidebtn ${hidden ? 'on' : ''}" data-hide="${fgEsc(it.id)}" data-hidden="${hidden ? 1 : 0}" title="${hidden ? 'Einblenden' : 'Ausblenden'}"><i class="fa-solid ${hidden ? 'fa-eye-slash' : 'fa-eye'}"></i></button>`
+                : '';
+            const badge = hidden ? '<span class="hiddenbadge">AUSGEBLENDET</span>' : '';
+            const loaded = uploadedPhotos.filter(p => p._event === it.id).length;
+            const total = Math.max(loaded, it.serverPhotos || 0);
             return `
-                <div class="fg-event-pick ${active}" data-id="${id}" data-key="${d.key}">
-                    <span class="cat" style="background:${d.color};">${d.cat}</span>
-                    <h3><i class="fa-solid ${d.icon}" style="color:#f5b301;"></i> ${d.short}</h3>
-                    <small>${d.location}</small>
-                    <small style="color:#0d6efd; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${folder}</small>
-                    <div class="count"><i class="fa-regular fa-image"></i> ${uploadedPhotos.filter(p => p._event === id).length} Bilder geladen</div>
+                <div class="fg-event-pick ${active} ${hidden ? 'is-hidden' : ''}" data-id="${fgEsc(it.id)}">
+                    ${toggleBtn}
+                    <span class="cat" style="background:${it.color};">${it.cat}</span>${badge}
+                    <h3><i class="fa-solid ${it.icon}" style="color:#f5b301;"></i> ${fgEsc(it.short)}</h3>
+                    ${it.location ? `<small>${fgEsc(it.location)}</small>` : ''}
+                    <small style="color:${it.custom ? '#6f42c1' : '#0d6efd'}; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${fgEsc(it.folder)}</small>
+                    <div class="count"><i class="fa-regular fa-image"></i> ${total} Bilder${it.onServer ? ' im Event' : ' geladen'}</div>
                 </div>
             `;
         }).join('');
         $grid.querySelectorAll('.fg-event-pick').forEach(el => {
-            el.addEventListener('click', async () => {
+            el.addEventListener('click', async (ev) => {
+                if (ev.target.closest('.hidebtn')) return; /* Toggle nicht als Auswahl werten */
                 currentEventId = el.getAttribute('data-id');
                 renderEvents();
                 /* Bestehende Fotos aus events.json automatisch zu uploadedPhotos dazuladen (Merge!) */
@@ -745,15 +892,109 @@ $currentName = fg2_displayname();
                 updatePublishBtn();
             });
         });
-        if (!currentEventId) {
+        $grid.querySelectorAll('.hidebtn').forEach(btn => {
+            btn.addEventListener('click', async (ev) => {
+                ev.preventDefault(); ev.stopPropagation();
+                if (_busyEvent) return;
+                _busyEvent = true;
+                await fgSetEventHidden(btn.getAttribute('data-hide'), btn.getAttribute('data-hidden') !== '1');
+                _busyEvent = false;
+            });
+        });
+        if (!currentEventId || !_pickerItems.some(i => i.id === currentEventId)) {
             const first = $grid.querySelector('.fg-event-pick');
             if (first) first.click();
         }
     }
+
+    /* Event ein-/ausblenden (hidden-Flag in events.json) */
+    async function fgSetEventHidden(eventId, hidden) {
+        try {
+            const res = await fetch('event_admin.php', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'set_hidden', csrf: fgAdminCsrf(), eventId: eventId, hidden: hidden ? 1 : 0 })
+            });
+            const j = await res.json().catch(() => ({ ok: false }));
+            if (!j || !j.ok) { alert('Fehlgeschlagen:\n' + ((j && j.message) || 'Unbekannter Fehler')); return; }
+            await fgRefreshServerEvents();
+            renderEvents();
+        } catch (e) { alert('Netzwerkfehler: ' + (e.message || e)); }
+    }
+
+    /* Neues Event anlegen */
+    async function fgCreateEvent() {
+        const name = (document.getElementById('ne-name').value || '').trim();
+        if (name.length < 2) { alert('Bitte einen Namen eintragen.'); return; }
+        const btn = document.getElementById('ne-save');
+        if (_busyEvent) return;
+        _busyEvent = true;
+        const old = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird angelegt…';
+        try {
+            const res = await fetch('event_admin.php', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'create', csrf: fgAdminCsrf(), name: name,
+                    year: (document.getElementById('ne-year').value || $yearSel.value || '').trim(),
+                    date: document.getElementById('ne-date').value || '',
+                    location: document.getElementById('ne-location').value || '',
+                    distance: document.getElementById('ne-distance').value || '',
+                    description: document.getElementById('ne-desc').value || '',
+                    subtype: document.getElementById('ne-subtype').value || ''
+                })
+            });
+            const j = await res.json().catch(() => ({ ok: false }));
+            if (!j || !j.ok) { alert('Anlegen fehlgeschlagen:\n' + ((j && j.message) || 'Unbekannter Fehler')); return; }
+            await fgRefreshServerEvents();
+            const newId = String(j.event.id);
+            const newYear = String(newId).match(/20\d{2}/)?.[0] || $yearSel.value;
+            fgSyncYearOptions(newYear);
+            $yearSel.value = newYear;
+            currentEventId = newId;
+            document.getElementById('new-event-form').style.display = 'none';
+            ['ne-name','ne-date','ne-location','ne-distance','ne-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            renderEvents();
+            renderPhotos();
+            updatePublishBtn();
+        } catch (e) {
+            alert('Netzwerkfehler: ' + (e.message || e));
+        } finally {
+            _busyEvent = false;
+            btn.disabled = false;
+            btn.innerHTML = old;
+        }
+    }
+
+    /* Formular ein-/ausblenden + Jahr vorbelegen */
+    (function initNewEventForm() {
+        const form = document.getElementById('new-event-form');
+        const btnOpen = document.getElementById('new-event-btn');
+        if (!form || !btnOpen) return;
+        const toggle = (show) => {
+            form.style.display = show ? 'block' : 'none';
+            if (show) {
+                const y = document.getElementById('ne-year');
+                if (y && !y.value) y.value = $yearSel.value || String(new Date().getFullYear());
+                const n = document.getElementById('ne-name');
+                if (n) n.focus();
+            }
+        };
+        btnOpen.addEventListener('click', () => toggle(form.style.display === 'none'));
+        document.getElementById('ne-cancel').addEventListener('click', () => toggle(false));
+        document.getElementById('ne-save').addEventListener('click', fgCreateEvent);
+        document.getElementById('ne-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); fgCreateEvent(); } });
+    })();
+
     $yearSel.addEventListener('change', renderEvents);
-    /* Load: events.json im Hintergrund vorladen, damit fgAttachExistingPhotos schnell ist! */
-    fgLoadEventsJson();
-    renderEvents();
+    /* Load: events.json laden, dann Auswahl rendern */
+    (async () => {
+        await fgRefreshServerEvents();
+        fgSyncYearOptions();
+        renderEvents();
+    })();
 
     /* ===== BILDER REINZIEHEN — OHNE FileReader! (100x schneller + wenig RAM) ===== */
     const $drop = document.getElementById('dropzone');
@@ -765,7 +1006,7 @@ $currentName = fg2_displayname();
 
     function addFiles(files) {
         if (!files || files.length === 0) return;
-        if (!currentEventId) { alert('Bitte zuerst SBS-Jahr + Disziplin auswählen!'); return; }
+        if (!currentEventId) { alert('Bitte zuerst ein Event auswählen!'); return; }
         let added = 0;
         for (const file of files) {
             try {
@@ -892,7 +1133,7 @@ $currentName = fg2_displayname();
         }
         const idx = uploadedPhotos.findIndex(x => x.id === photoId);
         if (idx !== -1) uploadedPhotos.splice(idx, 1);
-        _fgEventsCachePromise = null; /* events.json beim nächsten Mal frisch einlesen */
+        try { await fgRefreshServerEvents(); } catch (e) {} /* events.json + Kachel-Zähler aktualisieren */
         return true;
     }
     async function fgDeletePhotoFromCard(photoId) {
@@ -1292,10 +1533,10 @@ $currentName = fg2_displayname();
     $publishBtn.addEventListener('click', async () => {
         const list = getCurrentPhotoList();
         if (list.length === 0) return alert('Keine Bilder!');
-        const year = $yearSel.value;
-        const discObj = DISCS.find(d => eventIdFor(year, d.key) === currentEventId);
-        if (!discObj) return alert('Unbekannte Disziplin!');
-        const folder = folderFor(year, discObj.key);
+        const pickItem = buildPickerItems().find(i => i.id === currentEventId);
+        if (!pickItem) return alert('Unbekanntes Event – bitte oben ein Event auswählen!');
+        const year = String(pickItem.id).match(/20\d{2}/)?.[0] || $yearSel.value;
+        const folder = pickItem.folder;
 
         const ohne = list.filter(p => !p.bibNumbers || p.bibNumbers.length === 0).length;
         if (ohne > 0) {
@@ -1363,7 +1604,7 @@ $currentName = fg2_displayname();
             if (!fd.has('csrf')) { console.warn('CSRF Token fehlt!'); }
             const metaSource = firstBatch ? list : batch;
             fd.append('metadata', JSON.stringify({
-                eventId: currentEventId, folder, year, discKey: discObj.key,
+                eventId: currentEventId, folder, year, discKey: pickItem.custom ? '' : pickItem.key,
                 photos: metaSource.map(photoMeta)
             }));
             batch.forEach(p => fd.append('images[]', p.file, p.filename));

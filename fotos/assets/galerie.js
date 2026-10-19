@@ -403,11 +403,11 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
         discipline: (filterDiscipline && filterDiscipline.value) || 'all'
     };
 
-    /* Filter anwenden: nur SBS Events, keine _readme Objekte */
-    const sbsEvents = events.filter(ev => !ev._schemaVersion && (!ev.category || ev.category === 'SBS'));
-    const filtered = sbsEvents.filter(ev => {
+    /* Filter anwenden: keine Schema-Objekte, keine ausgeblendeten Events */
+    const visibleEvents = events.filter(ev => !ev._schemaVersion && !ev.hidden);
+    const filtered = visibleEvents.filter(ev => {
         if (state.year !== 'all') {
-            const evYear = String(ev.parentId || '').replace('sbs-', '');
+            const evYear = String(ev.parentId || ev.id || '').match(/20\d{2}/)?.[0] || '';
             if (evYear !== state.year) return false;
         }
         if (state.discipline !== 'all' && String(ev.subtype || '') !== state.discipline) return false;
@@ -426,7 +426,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     if (info) info.innerHTML = '';
 
     if (!filtered.length) {
-        container.innerHTML = `<div class="fg-empty"><strong>Keine SBS-Events gefunden.</strong><br>Versuche es mit einem anderen Jahr oder Disziplin.</div>`;
+        container.innerHTML = `<div class="fg-empty"><strong>Keine Events gefunden.</strong><br>Versuche es mit einem anderen Jahr oder Disziplin.</div>`;
         return;
     }
 
@@ -459,8 +459,8 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     Object.keys(byYear).sort((a,b) => (b > a ? 1 : -1)).forEach(year => {
         html.push(`<div style="grid-column: 1/-1; margin: 1.5rem 0 0.5rem;">
             <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:0.75rem;">
-                <span style="background:#111; color:#ffc107; padding:0.25rem 0.85rem; border-radius: 8px; font-weight: 800;">SBS ${year}</span>
-                <span style="font-size:0.9rem; color:#777; font-weight: 500;">${byYear[year].length} Disziplinen</span>
+                <span style="background:#111; color:#ffc107; padding:0.25rem 0.85rem; border-radius: 8px; font-weight: 800;">Events ${year}</span>
+                <span style="font-size:0.9rem; color:#777; font-weight: 500;">${byYear[year].length} Einträge</span>
             </h2>
             <hr style="border:none; border-top: 2px dashed #eee; margin:0.5rem 0 0;">
         </div>`);
@@ -483,7 +483,11 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
             const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
             const uniqueBibs = new Set();
             (ev.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => uniqueBibs.add(String(b))));
-            const badge = ev.subtype ? disciplineBadge[ev.subtype] : { label:'SBS', bg:'#ffc107' };
+            const badge = (ev.subtype && disciplineBadge[ev.subtype])
+                ? disciplineBadge[ev.subtype]
+                : ((!!ev.custom || String(ev.category || '').toUpperCase() !== 'SBS')
+                    ? { label: 'Event', bg: '#6f42c1' }
+                    : { label: 'SBS', bg: '#ffc107' });
             const icon = disciplineIcon[ev.subtype || ''] || 'fa-bicycle';
             /* Wenn KEIN echtes Bild da → style leer lassen (CSS zeigt automatisch Gradient Background!) */
             const coverBgStyle = safeCover ? `style="background-image:url('${fgEscapeHtml(safeCover)}')"` : '';
@@ -532,14 +536,14 @@ async function fgInitEventsOverview() {
         if (window.__FGBG) window.__FGBG.setPhase('Lade events.json für Overview…');
 
         const events = await fgLoadEvents();
-        if (window.__FGBG) window.__FGBG.log('info', `✅ events.json geladen (${events.length}). Filtere SBS Events…`);
+        if (window.__FGBG) window.__FGBG.log('info', `✅ events.json geladen (${events.length}). Filtere sichtbare Events…`);
 
-        const sbsEvents = events.filter(e => !e._schemaVersion && (!e.category || e.category === 'SBS'));
-        if (window.__FGBG) window.__FGBG.setPhase(`${sbsEvents.length} SBS Events geladen. Sanitize CoverPhotos…`);
+        const visibleEvents = events.filter(e => !e._schemaVersion && !e.hidden);
+        if (window.__FGBG) window.__FGBG.setPhase(`${visibleEvents.length} sichtbare Events geladen. Sanitize CoverPhotos…`);
 
         /* Fallback: Cover Photo auf gültiges Bild prüfen (404 = Platzhalter) — NUR SANITIZE + KEINE KI PLATZHALTER! */
         const fallbackCoverLocal = () => null; /* User Wunsch: NUR echte Bilder! Keine KI Placeholder! */
-        sbsEvents.forEach(e => {
+        visibleEvents.forEach(e => {
             /* Backticks entfernen! (Sonst file:// Security Fehler!) */
             if (typeof e.coverPhoto === 'string') {
                 e.coverPhoto = e.coverPhoto.replace(/^[`\s"'“”‘’]+|[`\s"'“”‘’]+$/g, '');
@@ -552,11 +556,11 @@ async function fgInitEventsOverview() {
 
         /* Jahres-Filter befüllen */
         if (filterYear && filterYear.children.length <= 1) {
-            const years = [...new Set(sbsEvents.map(e => (String(e.parentId || e.id || '').match(/20\d{2}/) || [])[0]).filter(Boolean))]
+            const years = [...new Set(visibleEvents.map(e => (String(e.parentId || e.id || '').match(/20\d{2}/) || [])[0]).filter(Boolean))]
                 .sort((a,b) => String(b).localeCompare(String(a)));
             years.forEach(y => {
                 const o = document.createElement('option');
-                o.value = y; o.textContent = `SBS ${y}`;
+                o.value = y; o.textContent = y;
                 filterYear.appendChild(o);
             });
         }

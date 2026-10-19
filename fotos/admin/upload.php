@@ -376,7 +376,25 @@ $ALLOWED_FOLDERS = [
 /* ---------- HELPER: Sicherer Ordnername (kein Path Traversal) ---------- */
 function sanitizeFolder($f) {
     global $ALLOWED_FOLDERS;
-    if (!in_array($f, $ALLOWED_FOLDERS, true)) die_json(false, 'Ungültiger Ordner: ' . htmlspecialchars($f));
+    $f = trim((string)$f);
+    if ($f === '') die_json(false, 'Ungültiger Ordner: leer');
+    if (in_array($f, $ALLOWED_FOLDERS, true)) return $f;
+    if (!preg_match('/^[a-z0-9][a-z0-9\-]{1,120}$/', $f)) {
+        die_json(false, 'Ungültiger Ordner: ' . htmlspecialchars($f));
+    }
+    if (is_file(EVENTS_FILE)) {
+        $raw = @file_get_contents(EVENTS_FILE);
+        $all = json_decode((string)$raw, true);
+        if (is_array($all)) {
+            foreach ($all as $ev) {
+                if (!is_array($ev) || isset($ev['_schemaVersion'])) continue;
+                if ((string)($ev['folder'] ?? '') === $f || (string)($ev['id'] ?? '') === $f) {
+                    return $f;
+                }
+            }
+        }
+    }
+    die_json(false, 'Ungültiger Ordner: ' . htmlspecialchars($f));
     return $f;
 }
 /* ---------- HELPER: Sicherer Dateiname ---------- */
@@ -645,6 +663,31 @@ if ($action === 'publish') {
         $warnings[] = "🔗 MERGE ERFOLG! Alte Fotos erhalten: $countOld vorherige + $countNew neu hochgeladene → gesamt $countFinal Fotos. Früher wurden alte Fotos hier automatisch GELÖSCHT – jetzt nicht mehr!";
     }
 
+    /* 🔥 EIGENE EVENTS: Wenn das Event bereits existiert UND KEINE der fest
+       hinterlegten SBS-Disziplinen ist (also im Admin selbst angelegt wurde),
+       bleiben ALLE Metadaten erhalten (Name, Ort, Datum, hidden-Flag …).
+       Es werden nur Fotos + Cover aktualisiert. */
+    $existingEvent = null;
+    foreach ($allEvents as $e) {
+        if (is_array($e) && (string)($e['id'] ?? '') === (string)$eventId) { $existingEvent = $e; break; }
+    }
+
+    if ($existingEvent && !isset($discDefs[$discKey])) {
+        $thisEvent = $existingEvent;
+        $thisEvent['photos'] = $mergedPhotosFinal;
+        if (!empty($mergedPhotosFinal[0]['src'])) $thisEvent['coverPhoto'] = $mergedPhotosFinal[0]['src'];
+        if (!isset($thisEvent['hidden'])) $thisEvent['hidden'] = false;
+        if (!empty($thisEvent['custom'])) {
+            $thisEvent['category'] = 'EVENT';
+            $thisEvent['parentId'] = 'events-' . $year;
+            $tags = isset($thisEvent['tags']) && is_array($thisEvent['tags']) ? $thisEvent['tags'] : [];
+            $tags = array_values(array_filter($tags, function($tag) {
+                return strtoupper(trim((string)$tag)) !== 'SBS';
+            }));
+            if (!in_array((string)$year, $tags, true)) $tags[] = (string)$year;
+            $thisEvent['tags'] = $tags;
+        }
+    } else {
     $thisEvent = [
         'id'          => $eventId,
         'parentId'    => 'sbs-' . $year,
@@ -663,6 +706,7 @@ if ($action === 'publish') {
         'tags'        => ['SBS', (string)$year, $disc['short'], explode(',', $disc['location'])[0]],
         'photos'      => $mergedPhotosFinal
     ];
+    }
 
     /* 6) Merge: altes Event entfernen + neues + sortieren */
     $others = array_values(array_filter($allEvents, function($e) use ($eventId) {
