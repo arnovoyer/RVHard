@@ -89,6 +89,7 @@ ul {
     justify-content: space-between;
     align-items: center;
     padding-inline: 3vw;
+    gap: clamp(18px, 2vw, 32px);
     height: 70px;
     background: var(--bg-color);
     color: var(--primary-color);
@@ -102,8 +103,12 @@ ul {
     z-index: 100;
 }
 
+.logo {
+    flex: 0 0 auto;
+}
+
 .logo img {
-    height: 70px;
+    height: 60px;
     width: auto;
     max-width: 100%;
     display: block;
@@ -115,11 +120,16 @@ ul {
 
 .nav-main-menu {
     display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 980px;
+    margin-left: auto;
     height: auto;
     overflow: visible;
     flex-direction: row;
     position: static;
-    width: auto;
     background: transparent;
     box-shadow: none;
     z-index: auto;
@@ -131,8 +141,9 @@ ul {
 }
 
 .nav-link {
-    padding: 26px 10px;
-    margin-inline: 10px;
+    padding: 24px 8px;
+    margin-inline: 0;
+    font-size: 0.98rem;
     transition: .3s;
     display: block;
     transition: color .2s ease, opacity .2s ease;
@@ -306,14 +317,17 @@ ul {
         padding-inline: 1.5vw;
     }
 
+    .nav-main-menu {
+        max-width: 860px;
+    }
+
     .nav-link {
-        padding: 26px 8px;
-        margin-inline: 5px;
-        font-size: 0.95rem;
+        padding: 24px 6px;
+        font-size: 0.92rem;
     }
 
     .logo img {
-        height: 60px;
+        height: 54px;
     }
 
 }
@@ -484,4 +498,5 @@ header.hidden {
 
 .nav-main-menu a {
     position: relative;
+    white-space: nowrap;
 }
