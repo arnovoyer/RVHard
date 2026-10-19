@@ -382,6 +382,13 @@ function sanitizeFolder($f) {
     if (!preg_match('/^[a-z0-9][a-z0-9\-]{1,120}$/', $f)) {
         die_json(false, 'Ungültiger Ordner: ' . htmlspecialchars($f));
     }
+    /* Standard-Disziplin in JEDEM Jahr erlauben (sbs-<jahr>-<key>),
+       damit z. B. 2027 nicht an der fest verdrahteten Ordnerliste scheitert. */
+    $knownKeys = [];
+    foreach ($ALLOWED_FOLDERS as $af) {
+        if (preg_match('/^sbs-\d{4}-(.+)$/', (string)$af, $mm)) $knownKeys[$mm[1]] = true;
+    }
+    if (preg_match('/^sbs-\d{4}-(.+)$/', $f, $m) && isset($knownKeys[$m[1]])) return $f;
     if (is_file(EVENTS_FILE)) {
         $raw = @file_get_contents(EVENTS_FILE);
         $all = json_decode((string)$raw, true);
