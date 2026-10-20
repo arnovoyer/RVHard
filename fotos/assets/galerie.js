@@ -431,12 +431,10 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     /* Filter Zustand */
     const searchInput = document.getElementById('fg-search');
     const filterYear = document.getElementById('fg-filter-year');
-    const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     const state = {
         search: (searchInput && searchInput.value) ? searchInput.value.toLowerCase() : '',
-        year: (filterYear && filterYear.value) || 'all',
-        discipline: (filterDiscipline && filterDiscipline.value) || 'all'
+        year: (filterYear && filterYear.value) || 'all'
     };
 
     /* Filter anwenden: keine Schema-Objekte, keine ausgeblendeten Events */
@@ -446,7 +444,6 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
             const evYear = String(ev.parentId || ev.id || '').match(/20\d{2}/)?.[0] || '';
             if (evYear !== state.year) return false;
         }
-        if (state.discipline !== 'all' && String(ev.subtype || '') !== state.discipline) return false;
         if (!state.search) return true;
         const hay = [
             ev.name, ev.shortName, ev.location, ev.description, ev.distance,
@@ -462,7 +459,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
     if (info) info.innerHTML = '';
 
     if (!filtered.length) {
-        container.innerHTML = `<div class="fg-empty"><strong>Keine Events gefunden.</strong><br>Versuche es mit einem anderen Jahr oder Disziplin.</div>`;
+        container.innerHTML = `<div class="fg-empty"><strong>Keine Events gefunden.</strong><br>Versuche es mit einem anderen Suchbegriff oder Jahr.</div>`;
         return;
     }
 
@@ -519,18 +516,14 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
             const count = (ev.photos && Array.isArray(ev.photos)) ? ev.photos.length : 0;
             const uniqueBibs = new Set();
             (ev.photos || []).forEach(p => (p.bibNumbers || []).forEach(b => uniqueBibs.add(String(b))));
-            const badge = (ev.subtype && disciplineBadge[ev.subtype])
-                ? disciplineBadge[ev.subtype]
-                : ((!!ev.custom || String(ev.category || '').toUpperCase() !== 'SBS')
-                    ? { label: 'Event', bg: '#6f42c1' }
-                    : { label: 'SBS', bg: '#ffc107' });
+            const badge = (ev.subtype && disciplineBadge[ev.subtype]) ? disciplineBadge[ev.subtype] : null;
             const icon = disciplineIcon[ev.subtype || ''] || 'fa-bicycle';
             /* Wenn KEIN echtes Bild da → style leer lassen (CSS zeigt automatisch Gradient Background!) */
             const coverBgStyle = safeCover ? `style="background-image:url('${fgEscapeHtml(safeCover)}')"` : '';
             html.push(`
                 <a class="fg-event-card" href="${link}" data-aos="fade-up">
                     <div class="fg-event-card__cover" ${coverBgStyle}>
-                        <span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>
+                        ${badge ? `<span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>` : ''}
                         <div class="fg-event-card__count">
                             <i class="fa-regular fa-image"></i> ${count}
                         </div>
@@ -568,7 +561,6 @@ async function fgInitEventsOverview() {
     const info = document.getElementById('fg-info');
     const searchInput = document.getElementById('fg-search');
     const filterYear = document.getElementById('fg-filter-year');
-    const filterDiscipline = document.getElementById('fg-filter-discipline');
 
     try {
         if (info) info.innerHTML = '';
@@ -607,7 +599,6 @@ async function fgInitEventsOverview() {
         const render = () => fgRenderEventsOverview(events, 'fg-events');
         if (searchInput) searchInput.addEventListener('input', render);
         if (filterYear) filterYear.addEventListener('change', render);
-        if (filterDiscipline) filterDiscipline.addEventListener('change', render);
         render();
     } catch (err) {
         console.error('Fehler Galerie Init:', err);
@@ -1168,7 +1159,7 @@ async function fgInitEventPage() {
 
         const event = fgFindEventById(events, id);
         if (!event) {
-            const allIds = events.filter(e => !e._schemaVersion).map(e => `${e.id} (${e.shortName||'SBS'})`).slice(0,10).join(', ');
+            const allIds = events.filter(e => !e._schemaVersion).map(e => `${e.id} (${e.shortName||e.name||e.id})`).slice(0,10).join(', ');
             throw new Error(
                 `Event mit ID "${id}" nicht in events.json gefunden! ` +
                 `Verfügbare IDs (Auszug): ${allIds || '(keine Events vorhanden)'}. ` +

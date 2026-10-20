@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Summer Bike Series – Foto-Galerie | RV Hard</title>
-    <meta name="description" content="Summer Bike Series Foto-Galerie – alle Bilder der SBS Events.">
+    <title>Foto-Galerie | RV Hard</title>
+    <meta name="description" content="Foto-Galerie des RV Hard – Bilder unserer Veranstaltungen.">
     <meta name="robots" content="index, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,32 +52,21 @@
         <section class="fg-container">
 
             <div class="fg-section" data-aos="fade-up">
-                <h1 style="display:flex; align-items:center; gap: 0.75rem; flex-wrap: wrap;">
-                    <span style="background: linear-gradient(135deg, #ffc107, #f5b301); color: #111; padding: 0.35rem 0.75rem; border-radius: 12px; font-size: 1.25rem;">
-                        SBS
-                    </span>
-                    <span>Summer Bike Series – Foto-Galerie</span>
-                </h1>
+                <h1>Foto-Galerie</h1>
 
                 <p class="lead" style="margin-top: 0.75rem;">
-                    Alle Bilder der <strong style="color:#111;">Summer Bike Series</strong> auf einen Blick.
+                    Bilder unserer Veranstaltungen auf einen Blick.
                 </p>
 
                 <div class="fg-search-row" style="margin-top: 1.5rem;">
-                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Jahr…" aria-label="SBS Events durchsuchen" style="min-width: 260px;">
-                    <select id="fg-filter-year" aria-label="SBS Jahr Filter">
-                        <option value="all">Alle SBS Jahre</option>
-                    </select>
-                    <select id="fg-filter-discipline" aria-label="Disziplin Filter">
-                        <option value="all">Alle Disziplinen</option>
-                        <option value="bergrennen">🏔️ Bergrennen</option>
-                        <option value="ezf">⏱️ Einzelzeitfahren (EZF)</option>
-                        <option value="kriterium">🏁 Stadtkriterium</option>
+                    <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Jahr…" aria-label="Events durchsuchen" style="min-width: 260px;">
+                    <select id="fg-filter-year" aria-label="Jahr Filter">
+                        <option value="all">Alle Jahre</option>
                     </select>
                 </div>
 
                 <div id="fg-events" class="fg-events-grid" style="margin-top:10px;">
-                    <div class="fg-empty"><strong>SBS Foto-Galerie wird geladen…</strong></div>
+                    <div class="fg-empty"><strong>Foto-Galerie wird geladen…</strong></div>
                 </div>
             </div>
         </section>
@@ -94,7 +83,7 @@
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261018d" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261020b" defer><\/script>`);
         })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>

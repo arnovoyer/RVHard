@@ -109,6 +109,12 @@ $currentName = fg2_displayname();
             display:inline-block; margin-left:6px; padding: 1px 7px; border-radius: 999px;
             background:#dc3545; color:#fff; font-size:0.68rem; font-weight:700;
         }
+        .fg-event-pick .managebtn {
+            display:inline-flex; align-items:center; gap:6px; margin-top:0.6rem;
+            padding: 5px 10px; border-radius: 8px; border: 1px solid #ddd; background:#fff;
+            color:#0d6efd; font-size:0.8rem; font-weight:600; text-decoration:none;
+        }
+        .fg-event-pick .managebtn:hover { border-color:#0d6efd; background:#f0f6ff; }
         .fg-ne { background:#f7f7f7; border-radius:8px; padding:1rem; margin-bottom:1rem; }
         .fg-ne .row { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
         @media (max-width: 800px) { .fg-ne .row { grid-template-columns: 1fr; } }
@@ -393,6 +399,7 @@ $currentName = fg2_displayname();
   </div>
   <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <a href="stats.php" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-chart-simple"></i> Statistik</a>
+    <a href="verwalten.php" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-list-check"></i> Bilder verwalten</a>
     <a href="../" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-image"></i> Galerie</a>
     <a href="/bilder/admin.php" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-inbox"></i> Bild-Eingang</a>
     <a href="?logout=1" style="background:#e2001a;color:#fff;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600"
@@ -705,7 +712,7 @@ $currentName = fg2_displayname();
     ];
 
     let currentEventId = '';
-    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, _selected, _wasExisting, src }] */
+    let uploadedPhotos = []; /* [{ id, file, previewUrl, filename, bibNumbers, _selected }] */
     let _objectUrls = new Set(); /* Tracking für URL.revokeObjectURL (Memory Leak verhindern!) — NUR Blob: URLs! */
     let idCounter = 0;
     let lbCurrentIndex = -1;
@@ -727,40 +734,6 @@ $currentName = fg2_displayname();
         return _fgEventsCachePromise;
     }
     function basename(path) { return String(path||'').split(/[\\/]/).filter(Boolean).pop() || String(path||''); }
-    /* Bestehende Fotos aus events.json zum aktuellen Event in uploadedPhotos anhängen (OHNE Duplikate!) */
-    async function fgAttachExistingPhotos(eventId) {
-        if (!eventId) return 0;
-        const events = await fgLoadEventsJson();
-        const ev = events.find(e => e.id === eventId);
-        if (!ev || !Array.isArray(ev.photos) || ev.photos.length === 0) return 0;
-        const currentForEvent = uploadedPhotos.filter(p => p._event === eventId);
-        let added = 0;
-        for (const ph of ev.photos) {
-            if (!ph || !ph.src) continue;
-            const fname = basename(ph.src);
-            const already = currentForEvent.find(p => {
-                const pf = basename(p.filename || '');
-                const ps = basename(p.src || '');
-                return (pf && pf === fname) || (ps && ps === fname);
-            });
-            if (already) continue; /* Bereits drin (als Upload oder alt!) → nicht doppelt! */
-            const preview = ph.thumbnail || ph.src;
-            uploadedPhotos.push({
-                id: `p${++idCounter}`, _event: eventId,
-                file: null, /* KEIN Upload! Schon auf Server! */
-                previewUrl: preview,
-                filename: fname,
-                src: ph.src, /* WICHTIG für photosMeta! */
-                thumbnail: ph.thumbnail || null,
-                display: ph.display || null,
-                bibNumbers: Array.isArray(ph.bibNumbers) ? ph.bibNumbers.slice() : [],
-                _selected: true,
-                _wasExisting: true
-            });
-            added++;
-        }
-        return added;
-    }
 
     /* ============ SAUBERER MEMORY CLEANUP (Page Hide / Unload) ============ */
     const _revokeAll = () => {
@@ -865,7 +838,9 @@ $currentName = fg2_displayname();
                 : '';
             const badge = hidden ? '<span class="hiddenbadge">AUSGEBLENDET</span>' : '';
             const loaded = uploadedPhotos.filter(p => p._event === it.id).length;
-            const total = Math.max(loaded, it.serverPhotos || 0);
+            const countLabel = it.onServer
+                ? `${it.serverPhotos || 0} Bilder im Event`
+                : `${loaded} Bilder geladen`;
             return `
                 <div class="fg-event-pick ${active} ${hidden ? 'is-hidden' : ''}" data-id="${fgEsc(it.id)}">
                     ${toggleBtn}
@@ -873,22 +848,16 @@ $currentName = fg2_displayname();
                     <h3><i class="fa-solid ${it.icon}" style="color:#f5b301;"></i> ${fgEsc(it.short)}</h3>
                     ${it.location ? `<small>${fgEsc(it.location)}</small>` : ''}
                     <small style="color:${it.custom ? '#6f42c1' : '#0d6efd'}; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${fgEsc(it.folder)}</small>
-                    <div class="count"><i class="fa-regular fa-image"></i> ${total} Bilder${it.onServer ? ' im Event' : ' geladen'}</div>
+                    <div class="count"><i class="fa-regular fa-image"></i> ${countLabel}</div>
+                    ${(it.onServer && it.serverPhotos > 0) ? `<a class="managebtn" href="verwalten.php?event=${encodeURIComponent(it.id)}" onclick="event.stopPropagation()" title="Bilder dieses Events löschen oder bearbeiten"><i class="fa-solid fa-list-check"></i> Bilder verwalten</a>` : ''}
                 </div>
             `;
         }).join('');
         $grid.querySelectorAll('.fg-event-pick').forEach(el => {
             el.addEventListener('click', async (ev) => {
-                if (ev.target.closest('.hidebtn')) return; /* Toggle nicht als Auswahl werten */
+                if (ev.target.closest('.hidebtn') || ev.target.closest('.managebtn')) return; /* Buttons nicht als Auswahl werten */
                 currentEventId = el.getAttribute('data-id');
                 renderEvents();
-                /* Bestehende Fotos aus events.json automatisch zu uploadedPhotos dazuladen (Merge!) */
-                try {
-                    const n = await fgAttachExistingPhotos(currentEventId);
-                    if (n > 0) {
-                        console.log(`[Admin] ${n} bestehende Fotos aus events.json zu "${currentEventId}" geladen.`);
-                    }
-                } catch (e) { console.warn('[Admin] Fotos laden fehlgeschlagen:', e); }
                 renderPhotos();
                 updatePublishBtn();
             });
@@ -1049,9 +1018,6 @@ $currentName = fg2_displayname();
         const bibBadge = (p.bibNumbers||[]).map(b => /^\d+$/.test(String(b).trim()) ? '#' + b : b).join(' ');
         const sel = p._selected ? 'selected' : '';
         const hasBibs = (p.bibNumbers||[]).length > 0;
-        const existingBadge = p._wasExisting
-            ? `<div style="position:absolute;top:6px;left:6px;background:#198754;color:#fff;padding:3px 7px;border-radius:5px;font-size:0.68rem;font-weight:700;"><i class="fa-solid fa-server"></i> Bereits auf Server</div>`
-            : '';
         return `
             <div class="fg-photo-card ${sel}" data-id="${p.id}" style="contain: layout paint style;">
                 <div class="fg-photo-card__header js-lb-open" style="cursor: zoom-in;" title="öffnen + bearbeiten" data-id="${p.id}">
@@ -1059,7 +1025,6 @@ $currentName = fg2_displayname();
                     <button class="fg-photo-card__del js-del" data-id="${p.id}" title="Bild löschen (Original + Vorschau + Display)" onclick="event.stopPropagation();"><i class="fa-solid fa-trash"></i></button>
                     <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" decoding="async" fetchpriority="auto" style="pointer-events:none; width:100%;">
                     ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 ${bibBadge}</div>` : ''}
-                    ${existingBadge || ''}
                     <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:600;"><i class="fa-solid fa-expand"></i> öffnen</div>
                 </div>
                 <div class="fg-photo-card__body">

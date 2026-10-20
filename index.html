@@ -724,13 +724,16 @@
             }
 
             .fotos-teaser__grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
                 gap: 12px;
                 margin: 0 auto 1.5rem auto;
             }
 
             .fotos-tile {
+                flex: 0 1 220px;
+                max-width: 220px;
                 display: block;
                 border-radius: 12px;
                 overflow: hidden;
@@ -760,8 +763,8 @@
 
             .fotos-tile__label {
                 display: block;
-                padding: 0.6rem 0.75rem;
-                font-size: 0.92rem;
+                padding: 0.5rem 0.6rem;
+                font-size: 0.82rem;
                 font-weight: 600;
                 color: var(--site-heading, #111);
                 white-space: nowrap;
@@ -770,8 +773,22 @@
             }
 
             @media (max-width: 640px) {
-                .fotos-teaser__grid {
-                    grid-template-columns: repeat(2, 1fr);
+                .fotos-teaser {
+                    margin: 2.5rem auto;
+                }
+
+                .fotos-teaser__sub {
+                    margin-bottom: 1.25rem;
+                }
+
+                .fotos-tile {
+                    flex: 0 1 150px;
+                    max-width: 150px;
+                }
+
+                .fotos-tile__label {
+                    font-size: 0.74rem;
+                    padding: 0.4rem 0.5rem;
                 }
 
                 .fotos-teaser h2 {
