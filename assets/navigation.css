@@ -119,6 +119,7 @@ ul {
     overflow: visible;
     flex-direction: row;
     position: static;
+    width: auto;
     background: transparent;
     box-shadow: none;
     z-index: auto;
