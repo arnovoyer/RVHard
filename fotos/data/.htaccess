@@ -1,0 +1,19 @@
+# ================================================================
+#  RV HARD – FOTO-GALERIE: DATEN-ORDNER
+# ================================================================
+#  events.json und die Bilder MÜSSEN öffentlich erreichbar bleiben
+#  (die Galerie lädt sie direkt im Browser).
+#  Nur die internen Statistik-Dateien werden gesperrt.
+# ================================================================
+
+# Statistik-Daten + Salz niemals ausliefern
+<FilesMatch "^stats\.(json|salt)$">
+  Require all denied
+  Deny from all
+</FilesMatch>
+
+# Temporäre/Arbeitsdateien (atomares Schreiben) sperren
+<FilesMatch "(\.tmp\.|\.lock$)">
+  Require all denied
+  Deny from all
+</FilesMatch>

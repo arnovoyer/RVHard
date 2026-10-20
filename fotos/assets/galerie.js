@@ -45,6 +45,42 @@ let _fgEventsCachePromise = null;   /* Promise Cache → fetch läuft NUR 1x! */
 let _fgEventsCacheArray = null;     /* Sync Cache → zweiter Aufruf instant! */
 const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung */
 
+/* ================ REICHWEITEN-MESSUNG (anonym, ohne Cookies) ================
+   Schickt einen kleinen Zähler an admin/track.php. Ohne Cookies, ohne
+   personenbezogene Daten — IP wird serverseitig NICHT gespeichert.
+   Schlägt der Aufruf fehl, passiert einfach nichts. */
+const FG_TRACK_URL = (FG_BASE ? FG_BASE : '') + '/admin/track.php';
+let _fgTrackCurrentEvent = '';
+
+function fgTrack(type, data) {
+    try {
+        const payload = { t: String(type || '') };
+        if (data && data.e) payload.e = String(data.e).slice(0, 120);
+        if (data && data.f) payload.f = String(data.f).slice(0, 160);
+        const body = JSON.stringify(payload);
+        if (navigator.sendBeacon) {
+            const blob = new Blob([body], { type: 'application/json' });
+            if (navigator.sendBeacon(FG_TRACK_URL, blob)) return;
+        }
+        fetch(FG_TRACK_URL, {
+            method: 'POST',
+            body: body,
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'omit',
+            keepalive: true
+        }).catch(() => {});
+    } catch (e) { /* Messung darf NIE die Galerie stören */ }
+}
+
+/* Dateiname aus einer Bild-URL ziehen ("/data/x/foto.jpg" → "foto.jpg") */
+function fgTrackFileName(src) {
+    try {
+        const s = String(src || '').split('?')[0].split('#')[0];
+        const parts = s.split('/');
+        return parts[parts.length - 1] || '';
+    } catch (e) { return ''; }
+}
+
 /* ================ 🔥 ULTIMATIVES DEBUG-PANEL (SICHTBAR!) ================ */
 /* Zeigt ALLES an! Phasen, Fehler, böse URLs! User soll mir Screenshot schicken können! */
 (function fgDebugBootstrap() {
@@ -525,6 +561,9 @@ async function fgInitEventsOverview() {
         return;
     }
     if (window.__FGBG) window.__FGBG.log('info', '✅ #fg-events Container vorhanden.');
+
+    /* Reichweite: Galerie-Startseite wurde aufgerufen */
+    fgTrack('view');
 
     const info = document.getElementById('fg-info');
     const searchInput = document.getElementById('fg-search');
@@ -1137,6 +1176,9 @@ async function fgInitEventPage() {
             );
         }
         if (window.__FGBG) window.__FGBG.log('info', `✅ Event gefunden: ${event.name} (${event.photos && event.photos.length} Bilder). Rendere Seite…`);
+        /* Reichweite: Welches Event wurde geöffnet? */
+        _fgTrackCurrentEvent = String(event.id || event.slug || '');
+        fgTrack('event', { e: _fgTrackCurrentEvent });
         fgRenderEventPage(event);
         if (window.__FGBG) window.__FGBG.setPhase(`✅ ${event.shortName} Galerie geladen!`);
 
@@ -1268,6 +1310,9 @@ function _fgRenderLightboxItem() {
     const { photos, index } = _fgLightboxState;
     const p = photos[index];
     if (!p) return;
+
+    /* Reichweite: Welches Foto wurde geöffnet? */
+    if (_fgTrackCurrentEvent) fgTrack('photo', { e: _fgTrackCurrentEvent, f: fgTrackFileName(p.src) });
 
     const FALLBACK_LB = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="100%" height="100%" fill="#f5f5f5"/><path fill="#eee" d="M200 200h800v400H200z" stroke="#ccc" stroke-width="8"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#999" font-family="Arial" font-size="80">Bild nicht verfügbar</text><text x="50%" y="62%" text-anchor="middle" dy=".3em" fill="#bbb" font-family="Arial" font-size="44">Im Admin nochmals veröffentlichen!</text></svg>');
 

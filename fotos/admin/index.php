@@ -392,6 +392,7 @@ $currentName = fg2_displayname();
     <span style="color:#888;font-weight:400">(<?= htmlspecialchars($currentUser) ?>)</span>
   </div>
   <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <a href="stats.php" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-chart-simple"></i> Statistik</a>
     <a href="../" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-image"></i> Galerie</a>
     <a href="/bilder/admin.php" style="color:#ddd;text-decoration:none;padding:5px 9px;border-radius:6px"><i class="fa-solid fa-inbox"></i> Bild-Eingang</a>
     <a href="?logout=1" style="background:#e2001a;color:#fff;text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600"

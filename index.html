@@ -703,6 +703,81 @@
                     padding: 1.5rem;
                 }
             }
+
+            /* ---- Fotos-Teaser (Startseite) ---- */
+            .fotos-teaser {
+                text-align: center;
+                margin: 4rem auto;
+                padding: 0 1rem;
+                max-width: 1200px;
+                box-sizing: border-box;
+            }
+
+            .fotos-teaser h2 {
+                margin-bottom: 0.4rem;
+                font-size: 2rem;
+            }
+
+            .fotos-teaser__sub {
+                margin: 0 0 2rem 0;
+                color: var(--site-text, #555);
+            }
+
+            .fotos-teaser__grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 12px;
+                margin: 0 auto 1.5rem auto;
+            }
+
+            .fotos-tile {
+                display: block;
+                border-radius: 12px;
+                overflow: hidden;
+                background: var(--site-surface-soft, #f2f2f2);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .fotos-tile__imgwrap {
+                display: block;
+                aspect-ratio: 4 / 3;
+                overflow: hidden;
+            }
+
+            .fotos-tile__imgwrap img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.35s ease;
+            }
+
+            .fotos-tile:hover .fotos-tile__imgwrap img {
+                transform: scale(1.04);
+            }
+
+            .fotos-tile__label {
+                display: block;
+                padding: 0.6rem 0.75rem;
+                font-size: 0.92rem;
+                font-weight: 600;
+                color: var(--site-heading, #111);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            @media (max-width: 640px) {
+                .fotos-teaser__grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .fotos-teaser h2 {
+                    font-size: 1.6rem;
+                }
+            }
         </style>
     </head>
 
@@ -796,6 +871,13 @@
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section id="fotos-teaser" class="fotos-teaser" hidden>
+                <h2>Fotos</h2>
+                <p class="fotos-teaser__sub">Impressionen aus unseren Veranstaltungen</p>
+                <div class="fotos-teaser__grid" id="fotos-teaser-grid"></div>
+                <a class="gelber-button" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener">Zur Fotogalerie</a>
             </section>
 
             <section id="instagram-placeholder"></section>
@@ -1243,6 +1325,7 @@
             document.querySelector(".logos").appendChild(copy);
         </script>
         <script src="/assets/cookie-banner.js" defer></script>
+        <script src="/assets/fotos-home.js?v=1" defer></script>
         <script src="/assets/header-scroll.js" defer></script>
         <script>
             fetch("/assets/footer.html")
