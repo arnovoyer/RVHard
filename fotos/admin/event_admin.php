@@ -120,11 +120,10 @@ if ($action === 'create') {
     $subtype = isset($in['subtype']) ? trim((string)$in['subtype']) : '';
     if (!in_array($subtype, $allowedSubtypes, true)) $subtype = '';
 
-    /* Eindeutige ID/Slug bilden */
-    $slug = ea_slug($name);
+    /* Eindeutige ID/Slug bilden – direkt aus dem Event-Namen, ohne technisches Präfix! */
     $takenIds = [];
     foreach ($all as $e) { if (is_array($e) && !empty($e['id'])) $takenIds[(string)$e['id']] = true; }
-    $baseId = 'event-' . $year . '-' . $slug;
+    $baseId = ea_slug($name);
     $id = $baseId;
     $n = 2;
     while (isset($takenIds[$id])) { $id = $baseId . '-' . $n; $n++; }

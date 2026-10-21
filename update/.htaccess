@@ -7,7 +7,7 @@ RewriteCond %{REQUEST_URI} !^/update/
 RewriteRule ^ - [R=503,L]
 
 # Show custom maintenance page for 503 responses
-ErrorDocument 503 /update/wartung.html
+ErrorDocument 503 /wartung.html
 
 # Tell crawlers this is temporary (1 hour)
 Header always set Retry-After "3600"
