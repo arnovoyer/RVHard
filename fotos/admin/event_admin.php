@@ -9,7 +9,14 @@
  *    { "action":"create", "csrf":"…", "year":"2026", "name":"…",
  *      "date":"2026-09-06", "location":"…", "distance":"…",
  *      "description":"…", "subtype":"" }
+ *    { "action":"update", "csrf":"…", "eventId":"…", "name":"…",
+ *      "date":"…", "location":"…", "distance":"…",
+ *      "description":"…", "subtype":"" }
+ *    { "action":"delete", "csrf":"…", "eventId":"…", "deleteFiles":0|1 }
  *    { "action":"set_hidden", "csrf":"…", "eventId":"…", "hidden":1 }
+ *
+ *  Wichtig: Beim Bearbeiten bleibt die ID unverändert bestehen, damit
+ *  bestehende Links und Foto-Ordner weiter funktionieren.
  *
  *  Antwort (JSON): { ok: true|false, message: "…", event: {…} }
  * ================================================================ */
@@ -161,6 +168,110 @@ if ($action === 'create') {
 
     $ea_save($out);
     ea_out(true, 'Event "' . $name . '" angelegt.', ['event' => $event]);
+}
+
+/* ================= UPDATE ================= */
+if ($action === 'update') {
+    $eventId = isset($in['eventId']) ? trim((string)$in['eventId']) : '';
+    if ($eventId === '') ea_out(false, 'Kein eventId übergeben.');
+
+    $name = isset($in['name']) ? trim((string)$in['name']) : '';
+    if (mb_strlen($name) < 2) ea_out(false, 'Bitte einen Event-Namen angeben (mind. 2 Zeichen).');
+
+    $date = isset($in['date']) ? trim((string)$in['date']) : '';
+    if ($date !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) $date = '';
+
+    $location    = isset($in['location'])    ? mb_substr(trim((string)$in['location']), 0, 120)    : '';
+    $distance    = isset($in['distance'])    ? mb_substr(trim((string)$in['distance']), 0, 80)     : '';
+    $description = isset($in['description']) ? mb_substr(trim((string)$in['description']), 0, 300) : '';
+
+    $allowedSubtypes = ['', 'bergrennen', 'ezf', 'kriterium'];
+    $subtype = isset($in['subtype']) ? trim((string)$in['subtype']) : '';
+    if (!in_array($subtype, $allowedSubtypes, true)) $subtype = '';
+
+    $found = false;
+    foreach ($all as $i => $e) {
+        if (!is_array($e) || isset($e['_schemaVersion'])) continue;
+        /* ID bleibt unangetastet – Links und Foto-Ordner müssen weiter funktionieren! */
+        if ((string)($e['id'] ?? '') !== $eventId) continue;
+
+        $all[$i]['name']        = $name;
+        $all[$i]['shortName']   = $name;
+        $all[$i]['description'] = $description;
+        $all[$i]['date']        = $date;
+        $all[$i]['location']    = $location;
+        $all[$i]['distance']    = $distance;
+        $all[$i]['subtype']     = $subtype;
+
+        /* Tags mitziehen (Jahr + Name), Rest erhalten */
+        $keepTags = [];
+        $oldTags = (isset($e['tags']) && is_array($e['tags'])) ? $e['tags'] : [];
+        foreach ($oldTags as $t) {
+            $t = (string)$t;
+            if ($t !== '' && !preg_match('/^\d{4}$/', $t) && $t !== (string)($e['name'] ?? '')) $keepTags[] = $t;
+        }
+        $year = '';
+        if (preg_match('/(20\d{2})/', (string)($e['parentId'] ?? '') . ' ' . $date . ' ' . $eventId, $m)) $year = $m[1];
+        $all[$i]['tags'] = array_values(array_unique(array_filter(array_merge($year !== '' ? [$year] : [], [$name], $keepTags))));
+
+        $found = true;
+        break;
+    }
+    if (!$found) { flock($fp, LOCK_UN); fclose($fp); ea_out(false, 'Event nicht gefunden.'); }
+
+    foreach ($all as $i => $e) {
+        if (is_array($e) && isset($e['_schemaVersion'])) { $all[$i]['_lastModified'] = date('c'); break; }
+    }
+
+    $ea_save($all);
+    ea_out(true, 'Event "' . $name . '" gespeichert.');
+}
+
+/* ================= DELETE ================= */
+if ($action === 'delete') {
+    $eventId = isset($in['eventId']) ? trim((string)$in['eventId']) : '';
+    if ($eventId === '') ea_out(false, 'Kein eventId übergeben.');
+    $deleteFiles = !empty($in['deleteFiles']);
+
+    $folder = '';
+    $out = [];
+    $found = false;
+    foreach ($all as $e) {
+        if (!is_array($e)) { $out[] = $e; continue; }
+        if (isset($e['_schemaVersion'])) { $e['_lastModified'] = date('c'); $out[] = $e; continue; }
+        if ((string)($e['id'] ?? '') === $eventId) {
+            $folder = (string)($e['folder'] ?? '');
+            $found = true;
+            continue; /* Eintrag weglassen = gelöscht */
+        }
+        $out[] = $e;
+    }
+    if (!$found) { flock($fp, LOCK_UN); fclose($fp); ea_out(false, 'Event nicht gefunden.'); }
+
+    $ea_save($out);
+
+    /* ---- Optional: Bild-Ordner mit entfernen ---- */
+    if ($deleteFiles && $folder !== '') {
+        $folder = basename(str_replace('\\', '/', $folder)); /* kein Pfad-Trick möglich */
+        $dir = $dataDir . '/' . $folder;
+        $realDir = realpath($dir);
+        $realData = realpath($dataDir);
+        /* Nur löschen, wenn der Ordner wirklich unter data/ liegt und nicht data/ selbst ist! */
+        if ($realDir !== false && $realData !== false && $realDir !== $realData
+            && strpos($realDir, $realData . DIRECTORY_SEPARATOR) === 0) {
+            $items = @scandir($realDir);
+            if (is_array($items)) {
+                foreach ($items as $it) {
+                    if ($it === '.' || $it === '..') continue;
+                    $p = $realDir . DIRECTORY_SEPARATOR . $it;
+                    if (is_file($p)) @unlink($p);
+                }
+            }
+            @rmdir($realDir);
+        }
+    }
+
+    ea_out(true, $deleteFiles ? 'Event und Bilder gelöscht.' : 'Event gelöscht.');
 }
 
 /* ================= SET_HIDDEN ================= */

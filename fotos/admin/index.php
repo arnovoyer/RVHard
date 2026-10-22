@@ -109,12 +109,22 @@ $currentName = fg2_displayname();
             display:inline-block; margin-left:6px; padding: 1px 7px; border-radius: 999px;
             background:#dc3545; color:#fff; font-size:0.68rem; font-weight:700;
         }
+        .fg-event-pick .pickactions {
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 0.6rem;
+        }
         .fg-event-pick .managebtn {
-            display:inline-flex; align-items:center; gap:6px; margin-top:0.6rem;
+            display: inline-flex; align-items: center; gap: 6px; margin-top: 0;
             padding: 5px 10px; border-radius: 8px; border: 1px solid #ddd; background:#fff;
             color:#0d6efd; font-size:0.8rem; font-weight:600; text-decoration:none;
         }
         .fg-event-pick .managebtn:hover { border-color:#0d6efd; background:#f0f6ff; }
+        .fg-event-pick .iconbtn {
+            display: inline-flex; align-items: center; gap: 6px; margin-top: 0;
+            padding: 5px 9px; border-radius: 8px; border: 1px solid #ddd; background:#fff;
+            color:#555; font-size:0.8rem; font-weight:600; cursor: pointer; font-family: inherit;
+        }
+        .fg-event-pick .iconbtn:hover { border-color:#0d6efd; color:#0d6efd; }
+        .fg-event-pick .iconbtn.danger:hover { border-color:#dc3545; color:#dc3545; background:#fff5f5; }
         .fg-ne { background:#f7f7f7; border-radius:8px; padding:1rem; margin-bottom:1rem; }
         .fg-ne .row { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
         @media (max-width: 800px) { .fg-ne .row { grid-template-columns: 1fr; } }
@@ -470,8 +480,9 @@ $currentName = fg2_displayname();
                 </button>
             </div>
 
-            <!-- Formular: eigenes Event anlegen -->
+            <!-- Formular: eigenes Event anlegen ODER bestehendes bearbeiten -->
             <div class="fg-ne" id="new-event-form" style="display:none;">
+                <h3 id="ne-title" style="margin:0 0 0.75rem; font-size:1rem; color:#111;">Neues Event anlegen</h3>
                 <div class="row">
                     <div>
                         <label class="fg-label" for="ne-name">Name *</label>
@@ -498,15 +509,18 @@ $currentName = fg2_displayname();
                             <option value="kriterium">Stadtkriterium</option>
                         </select>
                     </div>
-                    <div>
+                    <div id="ne-year-wrap">
                         <label class="fg-label" for="ne-year">Jahr</label>
                         <input class="fg-input" id="ne-year" type="number" min="2000" max="2100">
                     </div>
                 </div>
                 <div style="margin-top:0.75rem;">
                     <label class="fg-label" for="ne-desc">Beschreibung (optional)</label>
-                    <input class="fg-input" id="ne-desc" type="text" placeholder="Kurzer Text für die Event-Karte" autocomplete="off">
+                    <input class="fg-input" id="ne-desc" type="text" maxlength="300" placeholder="Kurzer Text für die Event-Karte" autocomplete="off">
                 </div>
+                <p id="ne-hint" style="display:none; margin:0.75rem 0 0; font-size:0.82rem; color:#777;">
+                    <i class="fa-solid fa-circle-info"></i> Die Event-ID bleibt unverändert – bestehende Links und Fotos bleiben gültig.
+                </p>
                 <div class="actions">
                     <button class="fg-btn" id="ne-save" type="button"><i class="fa-solid fa-check"></i> Event anlegen</button>
                     <button class="fg-btn fg-btn--outline" id="ne-cancel" type="button">Abbrechen</button>
