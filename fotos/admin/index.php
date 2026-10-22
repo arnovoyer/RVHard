@@ -776,6 +776,7 @@ $currentName = fg2_displayname();
     let serverEventsById = {};   /* id → Event-Objekt aus events.json */
     let _pickerItems = [];       /* aktuelle Auswahl-Liste (Standard + eigene Events) */
     let _busyEvent = false;      /* verhindert Doppel-Klicks beim Anlegen/Toggeln */
+    let _editEventId = null;     /* null = neues Event, sonst ID des Events, das gerade bearbeitet wird */
 
     function fgEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -863,18 +864,28 @@ $currentName = fg2_displayname();
                     ${it.location ? `<small>${fgEsc(it.location)}</small>` : ''}
                     <small style="color:${it.custom ? '#6f42c1' : '#0d6efd'}; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${fgEsc(it.folder)}</small>
                     <div class="count"><i class="fa-regular fa-image"></i> ${countLabel}</div>
-                    ${(it.onServer && it.serverPhotos > 0) ? `<a class="managebtn" href="verwalten.php?event=${encodeURIComponent(it.id)}" onclick="event.stopPropagation()" title="Bilder dieses Events löschen oder bearbeiten"><i class="fa-solid fa-list-check"></i> Bilder verwalten</a>` : ''}
+                    ${it.onServer ? `<div class="pickactions">
+                        ${(it.serverPhotos > 0) ? `<a class="managebtn" href="verwalten.php?event=${encodeURIComponent(it.id)}" title="Bilder dieses Events löschen oder bearbeiten"><i class="fa-solid fa-list-check"></i> Bilder</a>` : ''}
+                        <button class="iconbtn editbtn" type="button" data-edit="${fgEsc(it.id)}" title="Event-Angaben bearbeiten"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
+                        <button class="iconbtn danger delbtn" type="button" data-del="${fgEsc(it.id)}" title="Event löschen"><i class="fa-solid fa-trash"></i></button>
+                    </div>` : ''}
                 </div>
             `;
         }).join('');
         $grid.querySelectorAll('.fg-event-pick').forEach(el => {
             el.addEventListener('click', async (ev) => {
-                if (ev.target.closest('.hidebtn') || ev.target.closest('.managebtn')) return; /* Buttons nicht als Auswahl werten */
+                if (ev.target.closest('button, a')) return; /* Buttons/Links nicht als Auswahl werten */
                 currentEventId = el.getAttribute('data-id');
                 renderEvents();
                 renderPhotos();
                 updatePublishBtn();
             });
+        });
+        $grid.querySelectorAll('.editbtn').forEach(btn => {
+            btn.addEventListener('click', () => fgOpenEditForm(btn.getAttribute('data-edit')));
+        });
+        $grid.querySelectorAll('.delbtn').forEach(btn => {
+            btn.addEventListener('click', () => fgDeleteEvent(btn.getAttribute('data-del')));
         });
         $grid.querySelectorAll('.hidebtn').forEach(btn => {
             btn.addEventListener('click', async (ev) => {
@@ -952,6 +963,138 @@ $currentName = fg2_displayname();
         }
     }
 
+    /* Formular in den "Neues Event"-Grundzustand zurücksetzen */
+    function fgResetEventForm() {
+        _editEventId = null;
+        const title = document.getElementById('ne-title');
+        if (title) title.textContent = 'Neues Event anlegen';
+        const yWrap = document.getElementById('ne-year-wrap');
+        if (yWrap) yWrap.style.display = '';
+        const hint = document.getElementById('ne-hint');
+        if (hint) hint.style.display = 'none';
+        const btn = document.getElementById('ne-save');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-check"></i> Event anlegen';
+    }
+
+    /* Bestehendes Event ins Formular laden (Bearbeiten) */
+    function fgOpenEditForm(eventId) {
+        const ev = serverEventsById[String(eventId)];
+        if (!ev) { alert('Event nicht gefunden.'); return; }
+        _editEventId = String(eventId);
+
+        const title = document.getElementById('ne-title');
+        if (title) title.textContent = 'Event bearbeiten';
+        document.getElementById('ne-name').value     = ev.name || ev.shortName || '';
+        document.getElementById('ne-date').value     = String(ev.date || '').slice(0, 10);
+        document.getElementById('ne-location').value = ev.location || '';
+        document.getElementById('ne-distance').value = ev.distance || '';
+        document.getElementById('ne-desc').value     = ev.description || '';
+        document.getElementById('ne-subtype').value  = ev.subtype || '';
+
+        /* Jahr/ID beim Bearbeiten nicht anbieten und nicht ändern */
+        const yWrap = document.getElementById('ne-year-wrap');
+        if (yWrap) yWrap.style.display = 'none';
+        const hint = document.getElementById('ne-hint');
+        if (hint) hint.style.display = 'block';
+        const btn = document.getElementById('ne-save');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-check"></i> Speichern';
+
+        const form = document.getElementById('new-event-form');
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const n = document.getElementById('ne-name');
+        if (n) n.focus();
+    }
+
+    /* Speichern-Button: neu anlegen ODER bestehendes aktualisieren */
+    function fgSaveEvent() {
+        if (_editEventId) return fgUpdateEvent(_editEventId);
+        return fgCreateEvent();
+    }
+
+    /* Bestehendes Event speichern */
+    async function fgUpdateEvent(eventId) {
+        const name = (document.getElementById('ne-name').value || '').trim();
+        if (name.length < 2) { alert('Bitte einen Namen eintragen.'); return; }
+        const btn = document.getElementById('ne-save');
+        if (_busyEvent) return;
+        _busyEvent = true;
+        const old = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird gespeichert…';
+        try {
+            const res = await fetch('event_admin.php', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update', csrf: fgAdminCsrf(), eventId: String(eventId),
+                    name: name,
+                    date: document.getElementById('ne-date').value || '',
+                    location: document.getElementById('ne-location').value || '',
+                    distance: document.getElementById('ne-distance').value || '',
+                    description: document.getElementById('ne-desc').value || '',
+                    subtype: document.getElementById('ne-subtype').value || ''
+                })
+            });
+            const j = await res.json().catch(() => ({ ok: false }));
+            if (!j || !j.ok) { alert('Speichern fehlgeschlagen:\n' + ((j && j.message) || 'Unbekannter Fehler')); return; }
+            await fgRefreshServerEvents();
+            document.getElementById('new-event-form').style.display = 'none';
+            fgResetEventForm();
+            renderEvents();
+            renderPhotos();
+            updatePublishBtn();
+        } catch (e) {
+            alert('Netzwerkfehler: ' + (e.message || e));
+        } finally {
+            _busyEvent = false;
+            btn.disabled = false;
+            btn.innerHTML = old;
+        }
+    }
+
+    /* Bestehendes Event löschen (optional samt Bilddateien) */
+    async function fgDeleteEvent(eventId) {
+        const ev = serverEventsById[String(eventId)] || {};
+        const label = ev.name || ev.shortName || eventId;
+        const photoCount = Array.isArray(ev.photos) ? ev.photos.length : 0;
+
+        let msg = 'Event "' + label + '" wirklich löschen?';
+        if (photoCount > 0) msg += '\n\nZu diesem Event gehören ' + photoCount + ' Bilder.';
+        if (!confirm(msg)) return;
+
+        let deleteFiles = false;
+        if (photoCount > 0) {
+            deleteFiles = confirm(
+                'Sollen auch die ' + photoCount + ' Bilddateien (Original + Vorschauen) vom Server gelöscht werden?\n\n' +
+                'OK  = Bilder endgültig mitlöschen\n' +
+                'Abbrechen = nur das Event entfernen, Dateien bleiben liegen'
+            );
+        }
+
+        if (_busyEvent) return;
+        _busyEvent = true;
+        try {
+            const res = await fetch('event_admin.php', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete', csrf: fgAdminCsrf(), eventId: String(eventId), deleteFiles: deleteFiles ? 1 : 0 })
+            });
+            const j = await res.json().catch(() => ({ ok: false }));
+            if (!j || !j.ok) { alert('Löschen fehlgeschlagen:\n' + ((j && j.message) || 'Unbekannter Fehler')); return; }
+            if (String(currentEventId) === String(eventId)) currentEventId = '';
+            await fgRefreshServerEvents();
+            fgSyncYearOptions();
+            renderEvents();
+            renderPhotos();
+            updatePublishBtn();
+        } catch (e) {
+            alert('Netzwerkfehler: ' + (e.message || e));
+        } finally {
+            _busyEvent = false;
+        }
+    }
+
     /* Formular ein-/ausblenden + Jahr vorbelegen */
     (function initNewEventForm() {
         const form = document.getElementById('new-event-form');
@@ -966,10 +1109,14 @@ $currentName = fg2_displayname();
                 if (n) n.focus();
             }
         };
-        btnOpen.addEventListener('click', () => toggle(form.style.display === 'none'));
-        document.getElementById('ne-cancel').addEventListener('click', () => toggle(false));
-        document.getElementById('ne-save').addEventListener('click', fgCreateEvent);
-        document.getElementById('ne-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); fgCreateEvent(); } });
+        btnOpen.addEventListener('click', () => {
+            const show = (form.style.display === 'none');
+            if (show) fgResetEventForm();
+            toggle(show);
+        });
+        document.getElementById('ne-cancel').addEventListener('click', () => { toggle(false); fgResetEventForm(); });
+        document.getElementById('ne-save').addEventListener('click', fgSaveEvent);
+        document.getElementById('ne-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); fgSaveEvent(); } });
     })();
 
     $yearSel.addEventListener('change', renderEvents);

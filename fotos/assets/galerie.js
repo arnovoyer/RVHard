@@ -775,6 +775,13 @@ function fgRenderEventPage(event) {
 
     const date = fgFormatDate(event.date);
     document.title = `${event.name} | Foto-Galerie | RV Hard`;
+    _fgCurrentEventId = String(event.id || event.slug || '');
+    _fgCurrentEventName = event.name || event.shortName || '';
+    const _photoCount = Array.isArray(event.photos) ? event.photos.length : 0;
+    fgSetMeta('description',
+        `${event.name}${date ? ' (' + date + ')' : ''} – Fotogalerie des RV Hard` +
+        `${event.location ? ' in ' + event.location : ''}. ` +
+        `${_photoCount} Bild${_photoCount === 1 ? '' : 'er'} zum Ansehen und Teilen.`);
 
     document.getElementById('fg-event-name').textContent = event.name;
     document.getElementById('fg-event-date').textContent = date;
@@ -1171,6 +1178,7 @@ async function fgInitEventPage() {
         _fgTrackCurrentEvent = String(event.id || event.slug || '');
         fgTrack('event', { e: _fgTrackCurrentEvent });
         fgRenderEventPage(event);
+        fgMaybeOpenSharedPhoto(event);
         if (window.__FGBG) window.__FGBG.setPhase(`✅ ${event.shortName} Galerie geladen!`);
 
     } catch (err) {
@@ -1204,6 +1212,75 @@ async function fgInitEventPage() {
 ================================================= */
 
 let _fgLightboxState = { photos: [], index: 0 };
+let _fgCurrentEventId = '';    /* id des aktuell geöffneten Events (für Teilen-Links) */
+let _fgCurrentEventName = '';  /* Name des aktuell geöffneten Events (für Teilen-Links) */
+
+/* Dateiname aus einer Bild-URL ziehen (ohne Query/Pfad) */
+function fgPhotoBasename(u) {
+    if (!u) return '';
+    const raw = String(u).split('?')[0].split('/').pop() || '';
+    try { return decodeURIComponent(raw); } catch (e) { return raw; }
+}
+
+/* <meta name="…"> setzen oder anlegen (z. B. Beschreibung pro Event) */
+function fgSetMeta(name, content) {
+    if (!name || content == null) return;
+    let el = document.querySelector('meta[name="' + name + '"]');
+    if (!el) { el = document.createElement('meta'); el.setAttribute('name', name); document.head.appendChild(el); }
+    el.setAttribute('content', String(content));
+}
+
+/* Teilbarer Direkt-Link auf ein einzelnes Foto (?id=…&f=<dateiname>) */
+function fgPhotoShareUrl(p) {
+    const bn = fgPhotoBasename((p && (p.src || p.display || p.thumbnail)) || '');
+    const base = window.location.origin + window.location.pathname;
+    const qs = new URLSearchParams();
+    if (_fgCurrentEventId) qs.set('id', _fgCurrentEventId);
+    if (bn) qs.set('f', bn);
+    return base + '?' + qs.toString();
+}
+
+/* Kleines Feedback direkt am Teilen-Button */
+function fgShareBtnFeedback(text) {
+    const btn = document.getElementById('fg-lb-share');
+    if (!btn) return;
+    const old = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> ' + (text || 'Link kopiert');
+    setTimeout(() => { btn.innerHTML = old; }, 1700);
+}
+
+/* Aktuelles Lightbox-Foto teilen (Web Share API oder Link kopieren) */
+function fgShareCurrentPhoto() {
+    const { photos, index } = _fgLightboxState;
+    const p = photos[index];
+    if (!p) return;
+    const url = fgPhotoShareUrl(p);
+    if (navigator.share) {
+        navigator.share({ title: _fgCurrentEventName || document.title || 'RV Hard Foto-Galerie', url: url }).catch(() => {});
+        return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url)
+            .then(() => fgShareBtnFeedback())
+            .catch(() => window.prompt('Link kopieren:', url));
+    } else {
+        window.prompt('Link kopieren:', url);
+    }
+}
+
+/* Deep-Link: einzelnes Foto (?f=<dateiname>) direkt in der Lightbox öffnen */
+function fgMaybeOpenSharedPhoto(event) {
+    const f = fgQueryParam('f');
+    if (!f) return;
+    const photos = Array.isArray(event.photos) ? event.photos : [];
+    const want = String(f).toLowerCase();
+    const idx = photos.findIndex(p => {
+        const bn = fgPhotoBasename(p.src || p.display || p.thumbnail || '');
+        return bn && bn.toLowerCase() === want;
+    });
+    if (idx < 0) return;
+    setTimeout(() => fgOpenLightbox(photos, idx), 300);
+}
 
 function fgOpenLightbox(photos, startIdx = 0) {
     _fgLightboxState = { photos: Array.isArray(photos) ? photos : [], index: startIdx };
@@ -1222,7 +1299,9 @@ function fgOpenLightbox(photos, startIdx = 0) {
     if (nextBtn) nextBtn.onclick = () => fgLightboxNav(1);
 
     lb.onclick = (e) => { if (e.target === lb) fgCloseLightbox(); };
-    document.addEventListener('keydown', _fgLightboxKeyHandler, { once: true });
+    document.addEventListener('keydown', _fgLightboxKeyHandler);
+    const cb = lb.querySelector('.fg-lightbox__close');
+    if (cb) cb.focus();
 }
 
 function fgCloseLightbox() {
@@ -1234,10 +1313,11 @@ function fgCloseLightbox() {
 }
 
 function _fgLightboxKeyHandler(e) {
-    if (e.key === 'Escape') fgCloseLightbox();
-    else if (e.key === 'ArrowLeft') fgLightboxNav(-1);
-    else if (e.key === 'ArrowRight') fgLightboxNav(1);
-    else document.addEventListener('keydown', _fgLightboxKeyHandler, { once: true });
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 'Escape') { fgCloseLightbox(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); fgLightboxNav(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); fgLightboxNav(1); }
 }
 
 function fgLightboxNav(delta) {
@@ -1415,11 +1495,17 @@ function _fgRenderLightboxItem() {
             <a class="fg-btn" href="${fgEscapeHtml(origSafe)}" target="_blank" rel="noopener" ${origBroken ? 'style="opacity:0.5;pointer-events:none;" title="Original kann nicht geladen werden – neu publ."' : ''} download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
             </a>
+            <button class="fg-btn fg-btn--outline" type="button" id="fg-lb-share">
+                <i class="fa-solid fa-share-nodes"></i> Bild teilen
+            </button>
             <div style="font-size:0.78rem;color:#777;text-align:center;">
                 ${index + 1} / ${photos.length}
             </div>
         </div>
     `;
+
+    const shareBtn = info.querySelector('#fg-lb-share');
+    if (shareBtn) shareBtn.addEventListener('click', fgShareCurrentPhoto);
 
     /* 🔥 Direkt nach Rendern: Vorheriges + Nächstes Bild im Hintergrund vorladen! (Nicht warten bis User klickt!) */
     setTimeout(_fgLightboxPreloadAdjacent, 40);

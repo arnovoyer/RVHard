@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /data/
 
-# Sitemap - falls vorhanden auskommentieren:
-# Sitemap: https://fotos.rv-hard.at/sitemap.xml
+Sitemap: https://fotos.rv-hard.at/sitemap.php
