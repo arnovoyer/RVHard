@@ -1004,6 +1004,147 @@ function fgRenderEventPage(event) {
         });
     }
 
+    /* ============ MEHRFACHAUSWAHL (mehrere Bilder markieren) ============
+       Direkt im Grid: Klick markiert/entmarkiert, unten erscheint eine Aktionsleiste.
+       Im Auswahlmodus öffnet ein Klick NICHT die Lightbox. */
+    let selectMode = false;
+    const selected = new Set();   /* Foto-Objekte (stabile Referenzen aus events.json) */
+    const $gallery = document.getElementById('fg-gallery');
+    const $selectBar = document.getElementById('fg-select-bar');
+    const $selectToolbar = document.getElementById('fg-select-toolbar');
+    const $selectCount = document.getElementById('fg-select-count');
+    const $selectToggle = document.getElementById('fg-select-toggle');
+    const $selectAll = document.getElementById('fg-select-all');
+    const $selectShare = document.getElementById('fg-select-share');
+    const $selectDownload = document.getElementById('fg-select-download');
+    const $selectCancel = document.getElementById('fg-select-cancel');
+
+    function fgCurrentPhotos() {
+        return (window._fgPhotoBuckets && window._fgPhotoBuckets.current) || [];
+    }
+    function fgUpdateSelectUI() {
+        const n = selected.size;
+        if ($selectCount) $selectCount.textContent = n === 1 ? '1 Bild ausgewählt' : `${n} Bilder ausgewählt`;
+        if ($selectDownload) $selectDownload.disabled = n === 0;
+        if ($selectShare) $selectShare.disabled = n === 0;
+        if ($selectAll) {
+            const cur = fgCurrentPhotos();
+            const all = cur.length > 0 && cur.every(p => selected.has(p));
+            $selectAll.innerHTML = all
+                ? '<i class="fa-solid fa-xmark"></i> Keine'
+                : '<i class="fa-solid fa-check-double"></i> Alle';
+        }
+    }
+    function fgSetSelectMode(on) {
+        selectMode = !!on;
+        if ($selectBar) $selectBar.style.display = selectMode ? 'none' : 'flex';
+        if ($selectToolbar) $selectToolbar.hidden = !selectMode;
+        if ($gallery) $gallery.classList.toggle('is-selecting', selectMode);
+        if (!selectMode) {
+            selected.clear();
+            if ($gallery) $gallery.querySelectorAll('.fg-photo.is-selected').forEach(f => f.classList.remove('is-selected'));
+        }
+        fgUpdateSelectUI();
+    }
+    /* Original-Datei-URL (Download) */
+    function fgOriginalUrl(p) {
+        if (!p) return null;
+        const s = fgSanitizePhotoSrc(p.src, null);
+        return s ? fgSafeUrl(s, null, 'dl-orig') : null;
+    }
+    /* Anzeige-URL (2560px) – kleiner, fürs direkte Teilen */
+    function fgShareDisplayUrl(p) {
+        return _fgLightboxBestDisplaySrc(p) || fgOriginalUrl(p);
+    }
+    function fgFlashButton(btn, html) {
+        if (!btn) return;
+        const old = btn.innerHTML;
+        btn.innerHTML = html;
+        setTimeout(() => { btn.innerHTML = old; }, 1800);
+    }
+    function fgDownloadSelected() {
+        const sel = [...selected];
+        if (!sel.length) return;
+        sel.forEach((p, i) => {
+            const url = fgOriginalUrl(p);
+            if (!url) return;
+            /* Gestaffelt auslösen – sonst blocken Browser Folge-Downloads */
+            setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fgPhotoBasename(url) || `rv-hard-foto-${i + 1}.jpg`;
+                a.rel = 'noopener';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }, i * 400);
+        });
+        fgFlashButton($selectDownload, `<i class="fa-solid fa-check"></i> ${sel.length} gestartet`);
+    }
+    async function fgShareSelected() {
+        const sel = [...selected];
+        if (!sel.length) return;
+        const urls = sel.map(fgPhotoShareUrl);
+        const title = _fgCurrentEventName ? `${_fgCurrentEventName} | RV Hard` : 'RV Hard Foto-Galerie';
+        const hint = 'Beim Teilen bitte @rv_hard taggen bzw. © RV Hard angeben.';
+        if (navigator.share) {
+            /* 1) Bilder direkt teilen (Mobile: Instagram, WhatsApp …) */
+            let fileShareOk = false;
+            try {
+                fileShareOk = !!(navigator.canShare && window.File &&
+                    navigator.canShare({ files: [new File([''], 'test.jpg', { type: 'image/jpeg' })] }));
+            } catch (e) { fileShareOk = false; }
+            if (fileShareOk) {
+                try {
+                    const files = [];
+                    for (const p of sel.slice(0, 10)) {
+                        const u = fgShareDisplayUrl(p);
+                        if (!u) continue;
+                        const r = await fetch(u);
+                        const b = await r.blob();
+                        const name = fgPhotoBasename(p.src || u) || `rv-hard-foto-${files.length + 1}.jpg`;
+                        files.push(new File([b], name, { type: b.type || 'image/jpeg' }));
+                    }
+                    if (files.length && navigator.canShare({ files })) {
+                        await navigator.share({ files, title, text: hint });
+                        return;
+                    }
+                } catch (e) {
+                    if (e && e.name === 'AbortError') return;
+                }
+            }
+            /* 2) Fallback: Links teilen */
+            try {
+                await navigator.share({ title, text: urls.join('\n') + '\n\n' + hint });
+                return;
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+            }
+        }
+        /* 3) Desktop: Links in die Zwischenablage */
+        const text = urls.join('\n');
+        try {
+            await navigator.clipboard.writeText(text);
+            fgFlashButton($selectShare, '<i class="fa-solid fa-check"></i> Links kopiert');
+        } catch (e) {
+            window.prompt('Links kopieren:', text);
+        }
+    }
+    if ($selectToggle) $selectToggle.addEventListener('click', () => fgSetSelectMode(true));
+    if ($selectCancel) $selectCancel.addEventListener('click', () => fgSetSelectMode(false));
+    if ($selectAll) $selectAll.addEventListener('click', () => {
+        const cur = fgCurrentPhotos();
+        const all = cur.length > 0 && cur.every(p => selected.has(p));
+        if (all) selected.clear(); else cur.forEach(p => selected.add(p));
+        if ($gallery) $gallery.querySelectorAll('.fg-photo').forEach(fig => {
+            const p = cur[Number(fig.getAttribute('data-idx') || 0)];
+            fig.classList.toggle('is-selected', !!(p && selected.has(p)));
+        });
+        fgUpdateSelectUI();
+    });
+    if ($selectDownload) $selectDownload.addEventListener('click', fgDownloadSelected);
+    if ($selectShare) $selectShare.addEventListener('click', fgShareSelected);
+
     function renderGallery() {
         const bib = (bibInput ? bibInput.value : '').trim();
         // 🚨 BUGFIX: Immer frisch holen! + __forceBib überschreibt falls gesetzt!
@@ -1033,6 +1174,9 @@ function fgRenderEventPage(event) {
 
         const galleryInfo = document.getElementById('fg-gallery-info');
         if (galleryInfo) galleryInfo.innerHTML = '';
+
+        /* Auswahl-Leiste an den neuen Filter-Stand angleichen */
+        fgUpdateSelectUI();
 
         const gallery = document.getElementById('fg-gallery');
         if (!filtered.length) {
@@ -1085,13 +1229,15 @@ function fgRenderEventPage(event) {
                 ? `<span class="fg-tag" style="background:#dc3545;color:#fff;margin-right:4px;"><i class="fa-solid fa-triangle-exclamation"></i> Lokaler Pfad! Neu publ.</span>`
                 : '';
 
+            const isSel = selected.has(p);
             return `
-                <figure class="fg-photo ${broken ? 'is-broken' : ''}"
+                <figure class="fg-photo ${broken ? 'is-broken' : ''} ${isSel ? 'is-selected' : ''}"
                         tabindex="0"
                         data-idx="${idx}"
                         role="button"
-                        aria-label="Bild vergrößern">
+                        aria-label="${selectMode ? 'Bild auswählen' : 'Bild vergrößern'}">
                     <img src="${fgEscapeHtml(thumb)}" alt="Foto" loading="lazy" decoding="async" fetchpriority="low" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
+                    <span class="fg-photo__check" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
                     <figcaption class="fg-photo__overlay">
                         ${brokenBadge}${bibs}
                     </figcaption>
@@ -1104,6 +1250,14 @@ function fgRenderEventPage(event) {
             const go = () => {
                 const photosArr = (window._fgPhotoBuckets && window._fgPhotoBuckets.current) || [];
                 const start = Number(fig.getAttribute('data-idx') || 0);
+                if (selectMode) {
+                    const photo = photosArr[start];
+                    if (!photo) return;
+                    if (selected.has(photo)) { selected.delete(photo); fig.classList.remove('is-selected'); }
+                    else { selected.add(photo); fig.classList.add('is-selected'); }
+                    fgUpdateSelectUI();
+                    return;
+                }
                 fgOpenLightbox(photosArr, start);
             };
             fig.addEventListener('click', go);
@@ -1501,6 +1655,10 @@ function _fgRenderLightboxItem() {
             <div style="font-size:0.78rem;color:#777;text-align:center;">
                 ${index + 1} / ${photos.length}
             </div>
+        </div>
+        <div class="fg-lightbox__row" style="font-size:0.74rem;color:#8a8a8a;line-height:1.45;text-align:center;">
+            Beim Teilen bitte <strong style="color:#555;">@rv_hard</strong> taggen oder
+            <strong style="color:#555;">© RV Hard</strong> angeben.
         </div>
     `;
 

@@ -23,7 +23,7 @@
             const logo = assetsBase + 'img/logo/RV_Hard_Logo.webp';
             document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
-            document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261016">`);
+            document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261022b">`);
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -66,6 +66,12 @@
                     <span id="fg-event-date"></span><span id="fg-event-location"></span>
                 </p>
                 <div id="fg-event-head-meta" style="margin-top: 0.85rem; display:flex; flex-wrap:wrap; gap: 14px 20px; font-size:0.88rem; color:#555;"></div>
+
+                <p style="margin: 0.85rem 0 0; font-size:0.84rem; color:#6b7280; line-height:1.5;">
+                    <i class="fa-solid fa-share-nodes" style="color:#f5b301; margin-right:5px;"></i>
+                    Beim Teilen unserer Bilder bitte <strong style="color:#111827;">@rv_hard</strong> taggen oder
+                    <strong style="color:#111827;">© RV Hard</strong> angeben.
+                </p>
 
                 <!-- 🔥 ZEILE 1: Links = Alle Events Button, Rechts = Such-Modus Toggle Buttons (GLEICHE HÖHE!) -->
                 <div style="
@@ -238,6 +244,13 @@
                     </div>
                 </div>
 
+                <!-- MEHRFACHAUSWAHL: Umschalter (im Auswahlmodus ausgeblendet) -->
+                <div id="fg-select-bar" class="fg-select-bar">
+                    <button id="fg-select-toggle" type="button" class="fg-btn fg-btn--outline">
+                        <i class="fa-solid fa-square-check"></i> Mehrere Bilder auswählen
+                    </button>
+                </div>
+
                 <!-- GALLERY -->
                 <div id="fg-gallery" class="fg-gallery" style="margin-top: 1.5rem;">
                     <div class="fg-empty"><strong>Galerie wird geladen…</strong></div>
@@ -247,6 +260,15 @@
 
         </section>
     </main>
+
+    <!-- ============ AUSWAHL-TOOLBAR ============ -->
+    <div id="fg-select-toolbar" class="fg-select-toolbar" hidden>
+        <span class="fg-select-toolbar__count" id="fg-select-count">0 ausgewählt</span>
+        <button type="button" id="fg-select-all"><i class="fa-solid fa-check-double"></i> Alle</button>
+        <button type="button" id="fg-select-share"><i class="fa-solid fa-share-nodes"></i> Teilen</button>
+        <button type="button" id="fg-select-download" class="fg-select-primary"><i class="fa-solid fa-download"></i> Herunterladen</button>
+        <button type="button" id="fg-select-cancel"><i class="fa-solid fa-xmark"></i> Abbrechen</button>
+    </div>
 
     <!-- ============ LIGHTBOX ============ -->
     <div id="fg-lightbox" class="fg-lightbox" role="dialog" aria-modal="true" aria-label="Bildbetrachter">
@@ -273,7 +295,7 @@
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261022a" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261022b" defer><\/script>`);
         })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
