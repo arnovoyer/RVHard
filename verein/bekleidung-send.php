@@ -23,17 +23,17 @@ $ARTIKEL_LISTE = [
 $GROESSEN_LISTE = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 /* =========================================================
-   🧪 TEST-MODUS: https://rv-hard.at/bekleidung-send.php?test=rvhard
+   🧪 TEST-MODUS: https://rv-hard.at/verein/bekleidung-send.php?test=rvhard
    ========================================================= */
 if (isset($_GET['test']) && $_GET['test'] === 'rvhard') {
     header('Content-Type: text/html; charset=utf-8');
-    echo "<h1 style='color:#28a745;'>✅ Debug: /bekleidung-send.php AKTUELL geladen!</h1>";
+    echo "<h1 style='color:#28a745;'>✅ Debug: /verein/bekleidung-send.php AKTUELL geladen!</h1>";
     echo "<p><strong>Pfad dieser Datei:</strong> " . __FILE__ . "</p>";
     echo "<p><strong>PHP Version:</strong> " . phpversion() . "</p>";
     echo "<p><strong>mail() Funktion verfügbar:</strong> " . (function_exists('mail') ? "✅ JA" : "❌ NEIN") . "</p>";
     echo "<p><strong>EMPFAENGER (wo hingeht):</strong> " . EMPFAENGER_EMAIL . "</p>";
     echo "<p><strong>ABSENDER:</strong> " . ABSENDER_NAME . " &lt;" . ABSENDER_EMAIL . "&gt;</p>";
-    $testBetreff   = "TEST: /bekleidung-send.php funktioniert!";
+    $testBetreff   = "TEST: /verein/bekleidung-send.php funktioniert!";
     $testNachricht = "Test-Mail vom BESTELLFORMULAR.\n\nGeneriert am: " . date('d.m.Y H:i:s');
     $testHeader    = "From: " . ABSENDER_NAME . " <" . ABSENDER_EMAIL . ">\r\n";
     $testHeader   .= "Reply-To: " . ABSENDER_EMAIL . "\r\n";
@@ -55,7 +55,7 @@ $ist_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['H
 
 if (!$formular_ist_gesendet) {
     if ($ist_ajax) { echo json_encode(['status' => 'error', 'ok' => false, 'msg' => 'Keine POST-Daten.']); exit; }
-    header('Location: /bekleidung.html');
+    header('Location: /verein/bekleidung');
     exit;
 }
 
@@ -139,7 +139,7 @@ function antwort_senden($status, $html, $msg, $ist_ajax) {
     echo '<link rel="stylesheet" href="/assets/style.css"></head><body style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;background:#f8f9fa;">';
     echo '<div style="max-width:620px;width:100%;padding:2rem;background:white;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.08);font-family:Poppins,sans-serif;">';
     echo $html;
-    echo '<p style="margin-top:1.75rem;"><a href="/bekleidung.html" style="color:#ffc107;font-weight:600;text-decoration:none;">← Zurück zur Bekleidungs-Seite</a></p>';
+    echo '<p style="margin-top:1.75rem;"><a href="/verein/bekleidung" style="color:#ffc107;font-weight:600;text-decoration:none;">← Zurück zur Bekleidungs-Seite</a></p>';
     echo '</div></body></html>';
     exit;
 }
@@ -164,7 +164,7 @@ $mail_betreff = 'Neue Bekleidungsbestellung (' . count($positionen) . ' Position
 $betreff_mail = '=?UTF-8?B?' . base64_encode($mail_betreff) . '?=';
 
 $nachricht_mail  = "Neue Bestellung über die Website!\n";
-$nachricht_mail .= "Formular: /bekleidung.html (Vereinsbekleidung)\n\n";
+$nachricht_mail .= "Formular: /verein/bekleidung (Vereinsbekleidung)\n\n";
 $nachricht_mail .= "Name:            " . $name . "\n";
 $nachricht_mail .= "E-Mail:          " . $email . "\n";
 $nachricht_mail .= "Telefon:         " . ($telefon !== '' ? $telefon : 'Nicht angegeben') . "\n";

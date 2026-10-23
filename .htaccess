@@ -38,6 +38,7 @@ RewriteRule ^verein/team/?$ /verein/vorstand [R=301,L]
 RewriteRule ^verein/statuten/?$ /verein/unser-verein [R=301,L]
 RewriteRule ^verein/formulare/?$ /verein/mitglied-werden [R=301,L]
 RewriteRule ^verein/sportmedizinische-untersuchung/?$ /verein/unser-verein [R=301,L]
+RewriteRule ^bekleidung(?:\.html)?/?$ /verein/bekleidung [R=301,L]
 RewriteRule ^templates/.*$ / [R=301,L]
 RewriteRule ^news\.json$ /news/ [R=301,L]
 # Alte SBS-Kurz-URL (war eine Meta-Refresh-Seite) -> echte 301-Weiterleitung
@@ -50,9 +51,10 @@ RewriteRule ^sbs(?:\.html)?/?$ /events/sbs/summer-bike-series-2026 [R=301,L]
 #  der Sub-Applikationen angewandt werden!
 #  Dazu gehören:
 #    /fotos/*      – Foto-Galerie (Subdomain + Unterordner Kopie!)
-#    /cms/*        – ALTES CMS (falls vorhanden)
-#    /update/*     – Update Scripte
-#    *.php Dateien – Admin Login etc. (SONST ENDLOSSCHLEIFE!)
+#    /bilder/*     – öffentliche Upload-Seite
+#    /cms/*        – Redaktions-CMS (index.php)
+#    /update/*     – Update-/Wartungsseite
+#    *.php Dateien – Admin Login, Formular-Handler etc. (SONST ENDLOSSCHLEIFE!)
 # ================================================================
 RewriteCond %{REQUEST_URI} ^/fotos/ [OR]
 RewriteCond %{REQUEST_URI} ^/bilder/ [OR]
