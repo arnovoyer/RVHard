@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿  ﻿﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- ================= HAUPTSEITEN ================= -->
     <url>
@@ -39,12 +39,6 @@
     </url>
     <url>
       <loc>https://rv-hard.at/bekleidung</loc>
-      <lastmod>2026-09-03</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.7</priority>
-    </url>
-    <url>
-      <loc>https://rv-hard.at/sbs</loc>
       <lastmod>2026-09-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -230,8 +224,6 @@
     <url><loc>https://rv-hard.at/news/abenteuer-jugend-em</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/johanna-fuer-das-nationalteam-fuer-die-jugend-em-nominiert</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/zwischenbericht-jugend-em</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://rv-hard.at/news/3-laendermarathon-2023</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://rv-hard.at/news/rennbericht-3-laendermarathon</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/top-leistung-beim-wien-marathon-von-oleg-zaiats</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/top-ergebnis-des-rv-djs-bikeshop-simplon-hard-beim-3-laendermarathon</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/erste-ausfahrten-und-ausblick-erste-saisonrennen</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -301,5 +293,4 @@
     <url><loc>https://rv-hard.at/news/1-cyclocross-trainingsrennen-rv-hard-und-bikeworks-feldkirch</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/rennbericht-gamp-2021</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/finale-ayc-2021</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://rv-hard.at/news/sieg-beim-ayc-finale-in-koppl</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   </urlset>

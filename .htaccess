@@ -3,6 +3,47 @@ RewriteEngine On
 AddDefaultCharset UTF-8
 
 # ================================================================
+#  0. KANONISIERUNG: immer HTTPS + immer ohne www (nur Hauptdomain)
+#     Behebt in der Search Console:
+#       "Duplikat - vom Nutzer nicht als kanonisch festgelegt"
+#       "Alternative Seite mit richtigem kanonischen Tag"
+#     fotos.rv-hard.at ist NICHT betroffen (eigener Host, eigene .htaccess)
+# ================================================================
+RewriteCond %{HTTP_HOST} ^www\.rv-hard\.at$ [NC,OR]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?rv-hard\.at$ [NC]
+RewriteRule ^ https://rv-hard.at%{REQUEST_URI} [R=301,L]
+
+# ================================================================
+#  0b. ALTE CMS-/EVENT-PFADE -> neue URLs (301)
+#      Muss VOR der Sub-App-Sperre stehen (ViewDownloadsExec.php!)
+# ================================================================
+# Alte Downloads lagen unter /download/ (Singular), heute /downloads/
+# Nur umleiten, wenn die Datei dort wirklich existiert (sonst sauberes 404)
+RewriteCond %{DOCUMENT_ROOT}/downloads/$1 -f
+RewriteRule ^download/(.+)$ /downloads/$1 [R=301,L]
+RewriteRule ^ViewDownloadsExec\.php$ /downloads/ [R=301,L,NC]
+
+# Alte Event-Pfade (ohne /events/-Praefix)
+RewriteRule ^summer-bike-series/summer-bike-series-(\d{4})/?$ /events/sbs/summer-bike-series-$1 [R=301,L]
+RewriteRule ^summer-bike-series/?$ /events/sbs/summer-bike-series-2026 [R=301,L]
+RewriteRule ^nightrace/dachbau-schaffer-nightrace-(\d{4})/?$ /events/nightrace/dachbau-schaffer-nightrace-$1 [R=301,L]
+RewriteRule ^nightrace/?$ /events/nightrace/dachbau-schaffer-nightrace-2025 [R=301,L]
+RewriteRule ^fussach-triathlon/([0-9])\.-jolsport-(?:sprint-)?triathlon-fussach/?$ /events/fussach-triathlon/$1.-jolsport-triathlon-fussach [R=301,L]
+RewriteRule ^cyclocross-fussach/1\.-cyclocross-fussach/?$ /events/cyclocross/cyclocross-fussach-2023 [R=301,L]
+
+# Alte Vereins-/Termin-/Sonstiges
+RewriteRule ^termine-2024/?$ /termine [R=301,L]
+RewriteRule ^verein/team/?$ /verein/vorstand [R=301,L]
+RewriteRule ^verein/statuten/?$ /verein/unser-verein [R=301,L]
+RewriteRule ^verein/formulare/?$ /verein/mitglied-werden [R=301,L]
+RewriteRule ^verein/sportmedizinische-untersuchung/?$ /verein/unser-verein [R=301,L]
+RewriteRule ^templates/.*$ / [R=301,L]
+RewriteRule ^news\.json$ /news/ [R=301,L]
+# Alte SBS-Kurz-URL (war eine Meta-Refresh-Seite) -> echte 301-Weiterleitung
+RewriteRule ^sbs(?:\.html)?/?$ /events/sbs/summer-bike-series-2026 [R=301,L]
+
+# ================================================================
 #  WICHTIGSTE REGEL ZUERST:
 #  Keine der nachfolgenden Hauptdomain-Regeln (index.html entfernen,
 #  .html Endung entfernen, News etc.) darf auf ORDNER oder PHP-Dateien
@@ -33,6 +74,11 @@ RewriteRule ^news\.html$ /news/ [R=301,L]
 # b) Alte Duplikat-URLs /news/news* -> /news/
 RewriteCond %{THE_REQUEST} \s/+news/news [NC]
 RewriteRule ^news/news(?:\.html)?/?$ /news/ [R=301,L]
+
+# ---------- 2c. VERZEICHNISSE OHNE index.html (behebt 403-Fehler) ----------
+# /training und /verein/ haben keine Startseite -> mod_dir liefert 403
+RewriteRule ^training(?:\.html)?/?$ /training/training [R=301,L]
+RewriteRule ^verein/?$ /verein/unser-verein [R=301,L]
 
 # ---------- 3. GENERISCH: .html-Endung aus URLs entfernen (301) ----------
 RewriteCond %{REQUEST_URI} !^/news\.html$ [NC]

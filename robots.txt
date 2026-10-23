@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /data/
+# News-JSONs muessen crawlbar sein: News-Seiten rendern ihren Inhalt clientseitig
+# daraus (sonst "Soft 404" / "Gecrawlt - zurzeit nicht indexiert").
+Allow: /data/news/
 
 Sitemap: https://rv-hard.at/sitemap.xml
