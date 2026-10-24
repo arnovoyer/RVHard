@@ -775,8 +775,6 @@ function fgRenderEventPage(event) {
 
     const date = fgFormatDate(event.date);
     document.title = `${event.name} | Foto-Galerie | RV Hard`;
-    /* Share-Button mit korrektem Event-Titel/Link aktualisieren (falls vorhanden) */
-    if (window.initShareButtons) window.initShareButtons();
     _fgCurrentEventId = String(event.id || event.slug || '');
     _fgCurrentEventName = event.name || event.shortName || '';
     const _photoCount = Array.isArray(event.photos) ? event.photos.length : 0;
@@ -1396,29 +1394,25 @@ function fgPhotoShareUrl(p) {
     return base + '?' + qs.toString();
 }
 
-/* Kleines Feedback direkt am Teilen-Button */
-function fgShareBtnFeedback(text) {
-    const btn = document.getElementById('fg-lb-share');
-    if (!btn) return;
-    const old = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> ' + (text || 'Link kopiert');
-    setTimeout(() => { btn.innerHTML = old; }, 1700);
-}
-
-/* Aktuelles Lightbox-Foto teilen (Web Share API oder Link kopieren) */
-function fgShareCurrentPhoto() {
-    const { photos, index } = _fgLightboxState;
-    const p = photos[index];
-    if (!p) return;
-    const url = fgPhotoShareUrl(p);
-    if (navigator.share) {
-        navigator.share({ title: _fgCurrentEventName || document.title || 'RV Hard Foto-Galerie', url: url }).catch(() => {});
-        return;
-    }
+/* Foto-Link in die Zwischenablage kopieren + kurzes Icon-Feedback */
+function fgCopyPhotoLink(btn, url) {
+    const done = () => {
+        const icon = btn.querySelector('i');
+        if (icon) {
+            icon.classList.remove('fa-link');
+            icon.classList.add('fa-check');
+        }
+        btn.classList.add('is-copied');
+        setTimeout(() => {
+            if (icon) {
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-link');
+            }
+            btn.classList.remove('is-copied');
+        }, 1500);
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url)
-            .then(() => fgShareBtnFeedback())
-            .catch(() => window.prompt('Link kopieren:', url));
+        navigator.clipboard.writeText(url).then(done).catch(() => window.prompt('Link kopieren:', url));
     } else {
         window.prompt('Link kopieren:', url);
     }
@@ -1644,6 +1638,13 @@ function _fgRenderLightboxItem() {
         ? `<div class="fg-lightbox__row" style="background:#f8d7da;color:#842029;border-radius:6px;padding:0.5rem 0.75rem;margin-bottom:0.6rem;"><label><i class="fa-solid fa-triangle-exclamation"></i> Fehler</label><span style="font-weight:500;">Bild kann nicht angezeigt werden: Lokaler Pfad (<code>file://</code>)! Admin nochmal per HTTPS veröffentlichen!</span></div>`
         : '';
 
+    /* Direkt teilbare Links zum aktuell angezeigten Foto */
+    const shareUrl = fgPhotoShareUrl(p);
+    const shareTitle = _fgCurrentEventName || document.title || 'RV Hard Foto-Galerie';
+    const encUrl = encodeURIComponent(shareUrl);
+    const encText = encodeURIComponent(shareTitle + ' – ' + shareUrl);
+    const encSubject = encodeURIComponent(shareTitle);
+
     info.innerHTML = `
         ${warnBadge}
         ${bibs ? `<div class="fg-lightbox__row"><label>🏁 Startnummer(n)</label><div class="fg-lightbox__tags">${bibs}</div></div>` : ''}
@@ -1651,9 +1652,12 @@ function _fgRenderLightboxItem() {
             <a class="fg-btn" href="${fgEscapeHtml(origSafe)}" target="_blank" rel="noopener" ${origBroken ? 'style="opacity:0.5;pointer-events:none;" title="Original kann nicht geladen werden – neu publ."' : ''} download>
                 <i class="fa-solid fa-download"></i> Original herunterladen
             </a>
-            <button class="fg-btn fg-btn--outline" type="button" id="fg-lb-share">
-                <i class="fa-solid fa-share-nodes"></i> Bild teilen
-            </button>
+            <div class="fg-share-icons" role="group" aria-label="Bild teilen">
+                <a class="fg-share-icon fg-share-icon--whatsapp" href="https://wa.me/?text=${encText}" target="_blank" rel="noopener" aria-label="Auf WhatsApp teilen" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a class="fg-share-icon fg-share-icon--facebook" href="https://www.facebook.com/sharer/sharer.php?u=${encUrl}" target="_blank" rel="noopener" aria-label="Auf Facebook teilen" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a class="fg-share-icon fg-share-icon--mail" href="mailto:?subject=${encSubject}&body=${encText}" aria-label="Per E-Mail teilen" title="E-Mail"><i class="fa-solid fa-envelope"></i></a>
+                <button type="button" class="fg-share-icon fg-share-icon--copy" id="fg-lb-copy" aria-label="Link kopieren" title="Link kopieren"><i class="fa-solid fa-link"></i></button>
+            </div>
             <div style="font-size:0.78rem;color:#777;text-align:center;">
                 ${index + 1} / ${photos.length}
             </div>
@@ -1664,8 +1668,8 @@ function _fgRenderLightboxItem() {
         </div>
     `;
 
-    const shareBtn = info.querySelector('#fg-lb-share');
-    if (shareBtn) shareBtn.addEventListener('click', fgShareCurrentPhoto);
+    const copyBtn = info.querySelector('#fg-lb-copy');
+    if (copyBtn) copyBtn.addEventListener('click', () => fgCopyPhotoLink(copyBtn, shareUrl));
 
     /* 🔥 Direkt nach Rendern: Vorheriges + Nächstes Bild im Hintergrund vorladen! (Nicht warten bis User klickt!) */
     setTimeout(_fgLightboxPreloadAdjacent, 40);

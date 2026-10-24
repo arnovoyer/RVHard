@@ -474,6 +474,34 @@ figure {
     gap: 8px;
 }
 
+/* Teilen-Icons direkt in der Lightbox (WhatsApp, Facebook, E-Mail, Link kopieren) */
+.fg-share-icons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.fg-share-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    background: #fff;
+    color: #1f1e1e;
+    font-size: 1.15rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+}
+.fg-share-icon:hover { transform: translateY(-2px); }
+.fg-share-icon--whatsapp:hover { background: #25D366; border-color: #25D366; color: #fff; }
+.fg-share-icon--facebook:hover { background: #1877F2; border-color: #1877F2; color: #fff; }
+.fg-share-icon--mail:hover { background: #ffc107; border-color: #ffc107; color: #1f1e1e; }
+.fg-share-icon--copy:hover { border-color: #ffc107; }
+.fg-share-icon.is-copied { background: #1a7f37; border-color: #1a7f37; color: #fff; }
+
 /* ================= MELDUNGEN ================= */
 .fg-empty {
     padding: 2.5rem 1rem;
