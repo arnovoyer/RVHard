@@ -775,6 +775,8 @@ function fgRenderEventPage(event) {
 
     const date = fgFormatDate(event.date);
     document.title = `${event.name} | Foto-Galerie | RV Hard`;
+    /* Share-Button mit korrektem Event-Titel/Link aktualisieren (falls vorhanden) */
+    if (window.initShareButtons) window.initShareButtons();
     _fgCurrentEventId = String(event.id || event.slug || '');
     _fgCurrentEventName = event.name || event.shortName || '';
     const _photoCount = Array.isArray(event.photos) ? event.photos.length : 0;

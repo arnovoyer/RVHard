@@ -1,0 +1,136 @@
+.share-widget {
+    width: 100%;
+    max-width: 280px;
+}
+
+.share-widget__title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.share-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    width: 100%;
+    height: 64px;
+    background-color: #EEEEED;
+    border-radius: 80px;
+    padding: 0 18px;
+    border: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.share-button:hover {
+    transform: scale(1.03);
+}
+
+.share-button:focus-within {
+    transform: scale(1.03);
+}
+
+.share-button__label {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border-radius: 80px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    text-align: center;
+    line-height: 62px;
+    letter-spacing: 2px;
+    color: #EEEEED;
+    background-color: #1F1E1E;
+    padding: 0 18px;
+    transition: transform 1.2s ease;
+}
+
+.share-button__icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+    border-radius: 80px;
+}
+
+
+.share-button__icon {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-button__icon i {
+    opacity: 0;
+    font-size: 24px;
+    color: #1F1E1E;
+    will-change: transform;
+    transform: scale(0.1);
+    transition: all 0.3s ease;
+}
+
+.share-button__icon.is-feedback i {
+    animation: share-pop 0.6s ease;
+    color: #1a7f37;
+}
+
+.share-button__icons .share-button__icon:nth-of-type(1) i {
+    transition-delay: 1.1s;
+}
+
+.share-button__icons .share-button__icon:nth-of-type(2) i {
+    transition-delay: 0.9s;
+}
+
+.share-button__icons .share-button__icon:nth-of-type(3) i {
+    transition-delay: 0.7s;
+}
+
+.share-button__icons .share-button__icon:nth-of-type(4) i {
+    transition-delay: 0.4s;
+}
+
+.share-button:hover .share-button__label,
+.share-button:focus-within .share-button__label {
+    transition-delay: 0.25s;
+    transform: translateX(-120%);
+}
+
+.share-button:hover .share-button__icon i,
+.share-button:focus-within .share-button__icon i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@media (max-width: 768px) {
+    .share-button__label {
+        transform: translateX(-120%);
+    }
+
+    .share-button__icon i {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes share-pop {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.25) rotate(8deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}

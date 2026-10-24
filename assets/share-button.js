@@ -34,13 +34,17 @@
             link.target = "_blank";
             link.rel = "noopener";
 
-            link.addEventListener("click", () => {
-                triggerFeedback(link);
-            });
+            if (!link.dataset.shareBound) {
+                link.dataset.shareBound = "1";
+                link.addEventListener("click", () => {
+                    triggerFeedback(link);
+                });
+            }
         });
 
         const copyButton = widget.querySelector(".share-button__copy");
-        if (copyButton) {
+        if (copyButton && !copyButton.dataset.shareBound) {
+            copyButton.dataset.shareBound = "1";
             copyButton.addEventListener("click", () => {
                 const icon = copyButton.querySelector("i");
                 if (navigator.clipboard && navigator.clipboard.writeText) {

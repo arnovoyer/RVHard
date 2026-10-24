@@ -24,6 +24,7 @@
             document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261022b">`);
+            document.write(`<link rel="stylesheet" href="${assetsBase}share-button.css?v=20261023">`);
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -72,6 +73,9 @@
                     Beim Teilen unserer Bilder bitte <strong style="color:#111827;">@rv_hard</strong> taggen oder
                     <strong style="color:#111827;">© RV Hard</strong> angeben.
                 </p>
+
+                <!-- TEILEN (gleicher Button wie bei den News) -->
+                <aside id="share-widget" class="share-widget" data-aos="fade-up" style="margin: 1.1rem auto 0;"></aside>
 
                 <!-- 🔥 ZEILE 1: Links = Alle Events Button, Rechts = Such-Modus Toggle Buttons (GLEICHE HÖHE!) -->
                 <div style="
@@ -295,7 +299,26 @@
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261022b" defer><\/script>`);
+            document.write(`<script src="${assetBase}share-button.js?v=20261023" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261023" defer><\/script>`);
+        })();
+    </script>
+
+    <!-- TEILEN-BUTTON LADEN (wie bei den News) -->
+    <script>
+        (function() {
+            const here = String(window.location.pathname || '/');
+            const b = (here.indexOf('/fotos/') === 0 || here.endsWith('/fotos') || here === '/fotos') ? '/fotos' : '';
+            const assetBase = (b === '' ? './' : '../') + 'assets/';
+            const target = document.getElementById('share-widget');
+            if (!target) return;
+            fetch(assetBase + 'share-button.html')
+                .then(r => r.ok ? r.text() : Promise.reject())
+                .then(html => {
+                    target.innerHTML = html;
+                    if (window.initShareButtons) window.initShareButtons();
+                })
+                .catch(() => {});
         })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
