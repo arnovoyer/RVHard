@@ -12,3 +12,8 @@ fotos/admin/.htpasswd
 fotos/admin/generate-password-hash.php
 fotos/admin/generate-htpasswd.php
 
+# ============================================================
+# GROSSE ARCHIVE – NIE ins Repo (GitHub-Limit: 100 MB pro Datei)
+# ============================================================
+*.zip
+

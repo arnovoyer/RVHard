@@ -424,6 +424,22 @@
                 min-width: 260px;
             }
 
+            /* --- Spalten-Layout (Mobil & mittlere Bildschirme ≤1030px):
+                   flex-basis würde hier zur Höhe werden -> Karten an Inhalt anpassen.
+                   Disziplinen-Raster einspaltig, damit nichts gequetscht wird. --- */
+            @media (max-width: 1030px) {
+                .top-events-container .event-card.summer-series,
+                .top-events-container .event-card.nightrace {
+                    flex: 0 1 auto;
+                    width: 100%;
+                    max-width: 100%;
+                    min-width: 0;
+                }
+                .top-events-container .event-card.summer-series .sbs2026-banner__grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
             /* --- Mobile: Event-Buttons zentrieren (MUSS nach den Desktop-Regeln kommen!) --- */
             @media (max-width: 720px) {
                 .top-events-container .event-card.summer-series .sbs-footer {
