@@ -132,7 +132,7 @@ if (is_string($raw) && $raw !== '') {
             'date'      => (string)($ev['date'] ?? ''),
             'location'  => (string)($ev['location'] ?? ''),
             'image'     => $img,
-            'url'       => FF_GALLERY_BASE . '/event.html?id=' . rawurlencode($id),
+            'url'       => FF_GALLERY_BASE . '/event.php?id=' . rawurlencode($id),
             'photos'    => count($photos),
         ];
     }

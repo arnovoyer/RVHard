@@ -38,7 +38,7 @@
 })();
 const FG_BASE = window.__FGBASE || ''; /* z.B. '' (Subdomain root) ODER '/fotos' (Hauptdomain Unterordner) */
 const FG_DATA_URL = (FG_BASE? FG_BASE : '') + '/data/events.json';
-const FG_EVENT_URL = (FG_BASE? FG_BASE : '') + '/event.html';
+const FG_EVENT_URL = (FG_BASE? FG_BASE : '') + '/event.php';
 const FG_ADMIN_URL = (FG_BASE? FG_BASE : '') + '/admin/';
 const FG_HOME_URL = (FG_BASE? FG_BASE : '') + '/';
 let _fgEventsCachePromise = null;   /* Promise Cache → fetch läuft NUR 1x! */
@@ -615,7 +615,7 @@ async function fgInitEventsOverview() {
 }
 
 /* ================================================
-   SEITE 2: SINGLE EVENT-ANSICHT (/fotos/event.html)
+   SEITE 2: SINGLE EVENT-ANSICHT (/fotos/event.php)
 ================================================= */
 
 function fgFindEventById(events, id) {
@@ -1289,7 +1289,7 @@ async function fgInitEventPage() {
     if (window.__FGBG) window.__FGBG.setPhase('fgInitEventPage() startet…');
     const content = document.getElementById('fg-event-content');
     if (!content) {
-        const msg = '❌ FATAL: <div id="fg-event-content"> NICHT im HTML gefunden! Bitte event.html Template prüfen.';
+        const msg = '❌ FATAL: <div id="fg-event-content"> NICHT im HTML gefunden! Bitte event.php Template prüfen.';
         if (window.__FGBG) window.__FGBG.log('err', msg);
         const name = document.getElementById('fg-event-name');
         if (name) name.innerHTML = `<span style="color:#dc3545;">${fgEscapeHtml(msg)}</span>`;

@@ -385,3 +385,82 @@ function initNavigationMenu() {
     }
   });
 }
+
+/* -----------------------------------------------------------------
+ *  Anonyme Reichweiten-Messung der Hauptseite.
+ *  Sendet Seitenaufrufe und Klicks an /cms/track.php.
+ *  Keine Cookies, keine Zuordnung zu Personen – Details und die
+ *  Auswertung stehen im CMS unter "Statistik".
+ * ----------------------------------------------------------------- */
+(function () {
+  const host = window.location.hostname;
+
+  /* Nur die öffentliche Hauptdomain messen. Die Foto-Galerie
+     (fotos.rv-hard.at) hat eine eigene Statistik. */
+  if (host !== 'rv-hard.at' && host !== 'www.rv-hard.at') {
+    return;
+  }
+
+  const ENDPOINT = '/cms/track.php';
+  const IGNORED = /^\/(fotos|cms|update|bilder)(\/|$)/;
+
+  function currentPath() {
+    return window.location.pathname || '/';
+  }
+
+  function send(payload) {
+    try {
+      const body = JSON.stringify(payload);
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
+        return;
+      }
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+        keepalive: true
+      });
+    } catch (error) {
+      /* Messung darf die Seite nie beeinträchtigen */
+    }
+  }
+
+  function clickLabel(element) {
+    const raw = element.getAttribute('data-track')
+      || element.getAttribute('aria-label')
+      || element.getAttribute('title')
+      || element.textContent
+      || '';
+    const text = raw.replace(/\s+/g, ' ').trim();
+    return text.length > 80 ? text.slice(0, 80) : text;
+  }
+
+  if (!IGNORED.test(currentPath())) {
+    send({ t: 'page', p: currentPath() });
+  }
+
+  document.addEventListener('click', (event) => {
+    const el = event.target;
+    if (!el || typeof el.closest !== 'function') {
+      return;
+    }
+
+    const target = el.closest('a, button');
+    if (!target || target.closest('.theme-toggle, .menu-toggle')) {
+      return;
+    }
+
+    const path = currentPath();
+    if (IGNORED.test(path)) {
+      return;
+    }
+
+    const text = clickLabel(target);
+    if (!text) {
+      return;
+    }
+
+    send({ t: 'click', p: path, a: text });
+  }, true);
+})();

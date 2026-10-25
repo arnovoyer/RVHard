@@ -1,11 +1,86 @@
+<?php
+/* ================================================================
+ *  RV HARD – FOTO-GALERIE: EINZEL-EVENT-SEITE
+ *  Die Meta-Tags werden SERVERSEITIG aus data/events.json erzeugt.
+ *  Grund: WhatsApp/Facebook/Google führen KEIN JavaScript aus und
+ *  lesen nur die statischen Tags → nur so erscheint der Event-Name
+ *  in der Link-Vorschau.
+ * ================================================================ */
+$fgId = isset($_GET['id']) ? trim((string)$_GET['id']) : '';
+$fgEvent = null;
+
+if ($fgId !== '') {
+    $fgFile = __DIR__ . '/data/events.json';
+    if (is_file($fgFile)) {
+        $fgJson = json_decode((string)@file_get_contents($fgFile), true);
+        if (is_array($fgJson)) {
+            foreach ($fgJson as $fgItem) {
+                if (!is_array($fgItem) || isset($fgItem['_schemaVersion'])) continue;
+                if (isset($fgItem['id']) && (string)$fgItem['id'] === $fgId) { $fgEvent = $fgItem; break; }
+            }
+        }
+    }
+}
+
+/* Basis-URL (funktioniert auf Subdomain UND unter /fotos/) */
+$fgHttps = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off');
+$fgBase  = ($fgHttps ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'fotos.rv-hard.at');
+
+$fgName = $fgEvent ? trim((string)($fgEvent['name'] ?? $fgEvent['shortName'] ?? '')) : '';
+$fgTitle = $fgName !== '' ? $fgName . ' | Foto-Galerie | RV Hard' : 'Foto-Galerie | RV Hard';
+
+$fgDate = '';
+if ($fgEvent && !empty($fgEvent['date']) && preg_match('/^(\d{4})-(\d{2})-(\d{2})/', (string)$fgEvent['date'], $fgM)) {
+    $fgDate = $fgM[3] . '.' . $fgM[2] . '.' . $fgM[1];
+}
+$fgCount = ($fgEvent && isset($fgEvent['photos']) && is_array($fgEvent['photos'])) ? count($fgEvent['photos']) : 0;
+
+if ($fgEvent) {
+    $fgDesc = 'Fotos' . ($fgDate !== '' ? ' vom ' . $fgDate : '');
+    if (!empty($fgEvent['location'])) $fgDesc .= ' in ' . trim((string)$fgEvent['location']);
+    if ($fgCount > 0) $fgDesc .= ' · ' . $fgCount . ' Bild' . ($fgCount === 1 ? '' : 'er');
+    $fgDesc .= ' – Foto-Galerie des RV Hard.';
+} else {
+    $fgDesc = 'Foto-Galerie des RV Hard – Bilder unserer Veranstaltungen.';
+}
+
+/* Vorschaubild: coverPhoto (sofern echtes Bild), sonst erstes Foto, sonst Standardbild */
+$fgImage = '';
+if ($fgEvent && !empty($fgEvent['coverPhoto'])) {
+    $fgCover = trim((string)$fgEvent['coverPhoto']);
+    if (preg_match('#^https?://#i', $fgCover) && stripos($fgCover, 'trae.ai') === false && stripos($fgCover, '/cover.jpg') === false) {
+        $fgImage = $fgCover;
+    }
+}
+if ($fgImage === '' && $fgEvent && !empty($fgEvent['photos'][0]['src'])) {
+    $fgSrc = trim((string)$fgEvent['photos'][0]['src']);
+    if (preg_match('#^https?://#i', $fgSrc)) $fgImage = $fgSrc;
+    elseif ($fgSrc !== '') $fgImage = $fgBase . '/' . ltrim($fgSrc, '/');
+}
+if ($fgImage === '') $fgImage = 'https://rv-hard.at/assets/img/social/og-home-1200x630.png';
+
+$fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawurlencode($fgId) : '');
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foto-Galerie Event | RV Hard</title>
-    <meta name="description" content="Foto-Galerie eines RV Hard Events.">
+    <title><?= htmlspecialchars($fgTitle, ENT_QUOTES, 'UTF-8') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($fgDesc, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="<?= htmlspecialchars($fgCanonical, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RV Hard">
+    <meta property="og:title" content="<?= htmlspecialchars($fgTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($fgDesc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($fgCanonical, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($fgImage, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= htmlspecialchars($fgTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($fgDesc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:image" content="<?= htmlspecialchars($fgImage, ENT_QUOTES, 'UTF-8') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -295,7 +370,7 @@
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261023" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261024a" defer><\/script>`);
         })();
     </script>
 

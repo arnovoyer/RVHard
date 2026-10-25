@@ -99,6 +99,15 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.*)/$ /$1.html [L,NS]
 
+# Statistik-Daten der Hauptseite (aus /cms/track.php) nicht ausliefern
+<FilesMatch "^stats\.(json|salt)$">
+	Require all denied
+</FilesMatch>
+
+<FilesMatch "(\.tmp\.|\.lock$)">
+	Require all denied
+</FilesMatch>
+
 # Statisches Asset-Caching fuer bessere Wiederholungsaufrufe
 <IfModule mod_expires.c>
 	ExpiresActive On
@@ -122,6 +131,13 @@ RewriteRule ^(.*)/$ /$1.html [L,NS]
 <IfModule mod_headers.c>
 	<FilesMatch "\.(css|js)$">
 		Header set Cache-Control "public, max-age=2592000, immutable"
+	</FilesMatch>
+
+	# Der Navigations-Loader wird auf allen Seiten ohne ?v= eingebunden.
+	# Kurze Cache-Zeit, damit Aenderungen zuegig bei allen Besuchern ankommen.
+	<FilesMatch "^navigation-loader\.js$">
+		Header unset Cache-Control
+		Header set Cache-Control "public, max-age=600"
 	</FilesMatch>
 
 	<FilesMatch "\.(avif|webp|jpg|jpeg|png|gif|svg|woff2?|ico)$">

@@ -36,7 +36,7 @@ foreach ($events as $e) {
     }
 
     $urls[] = [
-        'loc'      => $base . '/event.html?id=' . rawurlencode($id),
+        'loc'      => $base . '/event.php?id=' . rawurlencode($id),
         'lastmod'  => $lastmod !== '' ? $lastmod : null,
         'priority' => '0.7',
     ];

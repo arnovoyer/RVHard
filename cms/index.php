@@ -371,6 +371,18 @@
         return normalize_termine_events($events);
     }
 
+    function load_site_stats(): array
+    {
+        $file = ROOT_DIR . '/data/stats.json';
+        if (!file_exists($file) || filesize($file) === 0) {
+            return [];
+        }
+
+        $json = file_get_contents($file);
+        $decoded = json_decode((string)$json, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
     function save_termine_events(array $events): bool
     {
         $dir = dirname(TERMINE_DATA_FILE);
@@ -1442,7 +1454,7 @@
 
     $editId = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
     $view = $loggedIn ? (string)($_GET['view'] ?? 'dashboard') : '';
-    if ($loggedIn && !in_array($view, ['dashboard', 'articles', 'termine'], true)) {
+    if ($loggedIn && !in_array($view, ['dashboard', 'articles', 'termine', 'statistik'], true)) {
         $view = 'dashboard';
     }
     if ($loggedIn && $editId > 0) {
@@ -1467,6 +1479,44 @@
     }
 
     $csrfToken = get_csrf_token();
+
+    /* Reichweiten-Messung der Hauptseite (siehe /cms/track.php) */
+    $siteStats = [];
+    $statPages = [];
+    $statClicks = [];
+    $statRefs = [];
+    $statDevices = ['mobile' => 0, 'desktop' => 0];
+    $statVisitorsToday = 0;
+    $statDays = [];
+    if ($view === 'statistik') {
+        $siteStats = load_site_stats();
+        $statDevices = array_merge(
+            ['mobile' => 0, 'desktop' => 0],
+            is_array($siteStats['devices'] ?? null) ? $siteStats['devices'] : []
+        );
+
+        $statPages = is_array($siteStats['pages'] ?? null) ? $siteStats['pages'] : [];
+        uasort($statPages, function ($a, $b) {
+            return (int)($b['n'] ?? 0) <=> (int)($a['n'] ?? 0);
+        });
+        $statPages = array_slice($statPages, 0, 20, true);
+
+        $statClicks = is_array($siteStats['clicks'] ?? null) ? $siteStats['clicks'] : [];
+        uasort($statClicks, function ($a, $b) {
+            return (int)($b['n'] ?? 0) <=> (int)($a['n'] ?? 0);
+        });
+        $statClicks = array_slice($statClicks, 0, 20, true);
+
+        $statRefs = is_array($siteStats['refs'] ?? null) ? $siteStats['refs'] : [];
+        arsort($statRefs);
+        $statRefs = array_slice($statRefs, 0, 12, true);
+
+        $statVisitorsToday = count($siteStats['visitors'][date('Y-m-d')] ?? []);
+
+        $statDays = is_array($siteStats['days'] ?? null) ? $siteStats['days'] : [];
+        ksort($statDays);
+        $statDays = array_slice($statDays, -14, 14, true);
+    }
 
     ?><!doctype html>
     <html lang="de">
@@ -2071,6 +2121,7 @@
                 <a class="btn btn-muted <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php">Dashboard</a>
                 <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles">Artikel</a>
                 <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine">Termine</a>
+                <a class="btn btn-muted <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik">Statistik</a>
                 <form method="post" style="display:inline; margin: 0;">
                     <input type="hidden" name="action" value="logout" />
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
@@ -2115,6 +2166,185 @@
                         </div>
                     </div>
                 </section>
+                <?php endif; ?>
+
+                <?php if ($view === 'statistik'): ?>
+                <?php
+                    $statTotalPv     = (int)($siteStats['totals']['pageviews'] ?? 0);
+                    $statTotalClicks = (int)($siteStats['totals']['clicks'] ?? 0);
+                    $statPvToday     = (int)($siteStats['days'][date('Y-m-d')]['pageviews'] ?? 0);
+                    $statSince       = (string)($siteStats['since'] ?? '');
+                    $statMob         = (int)($statDevices['mobile'] ?? 0);
+                    $statDesk        = (int)($statDevices['desktop'] ?? 0);
+                    $statMobShare    = ($statMob + $statDesk) > 0 ? (int)round($statMob / ($statMob + $statDesk) * 100) : 0;
+
+                    $statMaxDayPv = 1;
+                    foreach ($statDays as $statDayRow) {
+                        $statMaxDayPv = max($statMaxDayPv, (int)($statDayRow['pageviews'] ?? 0));
+                    }
+
+                    $statFriendly = function (string $path): string {
+                        $map = [
+                            '/'                => 'Startseite',
+                            '/index.html'      => 'Startseite',
+                            '/news'            => 'News',
+                            '/termine'         => 'Termine',
+                            '/verein'          => 'Unser Verein',
+                            '/vorstand'        => 'Vorstand',
+                            '/geschichte'      => 'Geschichte',
+                            '/mitglied-werden' => 'Mitglied werden',
+                            '/bekleidung'      => 'Bekleidung',
+                            '/kontakt'         => 'Kontakt',
+                            '/training'        => 'Training',
+                            '/bilder'          => 'Bilder hochladen',
+                            '/impressum'       => 'Impressum',
+                            '/datenschutz'     => 'Datenschutz',
+                        ];
+                        return $map[$path] ?? $path;
+                    };
+                ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Statistik</h2>
+                            <p class="section-note">
+                                Anonyme Reichweiten-Messung der Hauptseite<?= $statSince !== '' ? ' (seit ' . htmlspecialchars($statSince, ENT_QUOTES, 'UTF-8') . ')' : '' ?>.
+                                Keine Cookies, keine Zuordnung zu Personen.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statTotalPv, 0, ',', '.') ?></div>
+                            <h3>Seitenaufrufe gesamt</h3>
+                            <p><?= number_format($statPvToday, 0, ',', '.') ?> davon heute.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statVisitorsToday, 0, ',', '.') ?></div>
+                            <h3>Besucher heute</h3>
+                            <p>Eindeutige Geräte, tagesaktuell anonym gezählt.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statTotalClicks, 0, ',', '.') ?></div>
+                            <h3>Klicks gesamt</h3>
+                            <p>Klicks auf Links und Buttons.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= $statMobShare ?>%</div>
+                            <h3>Mobil-Anteil</h3>
+                            <p><?= number_format($statMob, 0, ',', '.') ?> mobil · <?= number_format($statDesk, 0, ',', '.') ?> Desktop</p>
+                        </div>
+                    </div>
+                </section>
+
+                <?php if ($statTotalPv === 0 && $statTotalClicks === 0): ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h3>Noch keine Daten</h3>
+                            <p class="section-note">Sobald Besucher auf der Hauptseite unterwegs sind, füllen sich die Listen hier automatisch.</p>
+                        </div>
+                    </div>
+                </section>
+                <?php else: ?>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Beliebteste Seiten</h2>
+                            <p class="section-note">Die meistbesuchten Unterseiten der Hauptseite.</p>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Seite</th><th>Aufrufe</th><th>Zuletzt</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($statPages as $statPath => $statRow): ?>
+                        <?php $statName = $statFriendly((string)$statPath); ?>
+                        <tr>
+                            <td>
+                                <?= htmlspecialchars($statName, ENT_QUOTES, 'UTF-8') ?>
+                                <?php if ($statName !== $statPath): ?>
+                                <span class="mono"><?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            <td class="section-note"><?= htmlspecialchars((string)($statRow['last'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Beliebteste Klicks</h2>
+                            <p class="section-note">Welche Links und Buttons am häufigsten angeklickt werden.</p>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Seite</th><th>Element</th><th>Klicks</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($statClicks as $statRow): ?>
+                        <?php $statPath = (string)($statRow['p'] ?? ''); ?>
+                        <tr>
+                            <td>
+                                <?= htmlspecialchars($statFriendly($statPath), ENT_QUOTES, 'UTF-8') ?>
+                                <span class="mono"><?= htmlspecialchars($statPath, ENT_QUOTES, 'UTF-8') ?></span>
+                            </td>
+                            <td><?= htmlspecialchars((string)($statRow['a'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Verweise</h3>
+                                <p class="section-note">Woher die Besucher kommen.</p>
+                            </div>
+                        </div>
+                        <div class="stats-grid">
+                            <?php foreach ($statRefs as $statHost => $statCount): ?>
+                            <div class="stat-box">
+                                <div class="stat-row">
+                                    <span class="mono"><?= htmlspecialchars((string)$statHost, ENT_QUOTES, 'UTF-8') ?></span>
+                                    <span class="stat-value"><?= (int)$statCount ?></span>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php if (empty($statRefs)): ?>
+                            <div class="stat-box"><p class="section-note" style="margin:0;">Noch keine Verweise erfasst.</p></div>
+                            <?php endif; ?>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Verlauf (14 Tage)</h3>
+                                <p class="section-note">Seitenaufrufe pro Tag.</p>
+                            </div>
+                        </div>
+                        <div class="stats-grid">
+                            <?php foreach ($statDays as $statDate => $statRow): ?>
+                            <?php $statPv = (int)($statRow['pageviews'] ?? 0); ?>
+                            <div class="stat-row">
+                                <span class="mono"><?= htmlspecialchars((string)$statDate, ENT_QUOTES, 'UTF-8') ?></span>
+                                <span style="flex:1; margin:0 0.75rem; background:var(--cms-border); border-radius:6px; height:8px; overflow:hidden;">
+                                    <span style="display:block; height:100%; width:<?= (int)round($statPv / $statMaxDayPv * 100) ?>%; background:var(--cms-accent);"></span>
+                                </span>
+                                <span class="stat-value" style="font-size:0.95rem;"><?= $statPv ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </section>
+                </div>
+                <?php endif; ?>
                 <?php endif; ?>
 
                 <?php if ($view === 'termine'): ?>
@@ -2383,6 +2613,7 @@
                         <a class="btn btn-muted <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php"><span>Dashboard</span><span>→</span></a>
                         <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles"><span>Artikel</span><span>→</span></a>
                         <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine"><span>Termine</span><span>→</span></a>
+                        <a class="btn btn-muted <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik"><span>Statistik</span><span>→</span></a>
                     </div>
                 </div>
 

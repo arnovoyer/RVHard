@@ -117,7 +117,7 @@ function fg_admin_public_prefix(): string {
 }
 function fg_event_public_url(string $eventId): string {
     $b = PUBLIC_BASE;
-    $prefix = ($b === '' || $b === '0') ? '/event.html' : $b . '/event.html';
+    $prefix = ($b === '' || $b === '0') ? '/event.php' : $b . '/event.php';
     return $prefix . '?id=' . rawurlencode($eventId);
 }
 define('MAX_IMG_SIZE', 15 * 1024 * 1024);

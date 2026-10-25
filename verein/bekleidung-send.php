@@ -136,7 +136,7 @@ function antwort_senden($status, $html, $msg, $ist_ajax) {
         exit;
     }
     echo '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Antwort – ' . WEBSITE_NAME . '</title><meta name="viewport" content="width=device-width,initial-scale=1">';
-    echo '<link rel="stylesheet" href="/assets/style.css"></head><body style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;background:#f8f9fa;">';
+    echo '<link rel="stylesheet" href="/assets/style.css?v=20261024"><link rel="stylesheet" href="/assets/home-fonts.css?v=20261024"></head><body style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1.5rem;background:#f8f9fa;">';
     echo '<div style="max-width:620px;width:100%;padding:2rem;background:white;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.08);font-family:Poppins,sans-serif;">';
     echo $html;
     echo '<p style="margin-top:1.75rem;"><a href="/verein/bekleidung" style="color:#ffc107;font-weight:600;text-decoration:none;">← Zurück zur Bekleidungs-Seite</a></p>';
