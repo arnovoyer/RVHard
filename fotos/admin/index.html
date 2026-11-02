@@ -22,7 +22,7 @@
             if (!b && (scriptHere.indexOf('/fotos/admin/') === 0 || scriptHere.endsWith('/fotos/admin/'))) b = '/fotos';
             const assetsBase = (b === '' ? '../assets/' : b.replace(/\/fotos$/,'') + '/assets/');
             const galerieBase = (b === '' ? '../assets/' : b + '/assets/');
-            const logo = (b === '' ? '../assets/' : (b === '/fotos' ? '../../assets/' : b.replace(/\/[^/]+$/,'') + '/assets/')) + 'img/logo/RV_Hard_Logo.webp';
+            const logo = (b === '' ? '../assets/' : (b === '/fotos' ? '../../assets/' : b.replace(/\/[^/]+$/,'') + '/assets/')) + 'img/logo/RV_Hard_Logo_dunkel.png';
             document.write(`<link rel="icon" type="image/png" href="${logo}">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css">`);
             document.write(`<link rel="stylesheet" href="${galerieBase}galerie.css">`);
