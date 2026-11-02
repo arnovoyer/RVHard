@@ -1,0 +1,329 @@
+Indexierte Seiten:
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-2022-D.pdf
+	24.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2023
+	24.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2022
+	24.10.2026
+https://rv-hard.at/events/fussach-triathlon/2.-jolsport-triathlon-fussach
+	24.10.2026
+https://rv-hard.at/events/fussach-triathlon/1.-jolsport-triathlon-fussach
+	24.10.2026
+https://rv-hard.at/events/cyclocross/cyclocross-fussach-2022
+	24.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2022
+	24.10.2026
+https://rv-hard.at/bilder/
+	24.10.2026
+https://rv-hard.at/verein/bekleidung
+	24.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025
+	24.10.2026
+https://rv-hard.at/training/training
+	23.10.2026
+https://rv-hard.at/training/probetraining
+	23.10.2026
+https://rv-hard.at/
+	22.10.2026
+https://fotos.rv-hard.at/datenschutz.html
+	21.10.2026
+https://fotos.rv-hard.at/impressum.html
+	21.10.2026
+https://fotos.rv-hard.at/
+	21.10.2026
+https://fotos.rv-hard.at/event.html?id=bmx4all-skillday-2026
+	21.10.2026
+https://rv-hard.at/impressum
+	21.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2024
+	21.10.2026
+https://rv-hard.at/verein/mitglied-werden
+	19.10.2026
+https://rv-hard.at/verein/gemeinschaft
+	19.10.2026
+https://rv-hard.at/datenschutz
+	18.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024
+	17.10.2026
+https://rv-hard.at/sponsoren
+	15.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023
+	14.10.2026
+https://rv-hard.at/termine
+	13.10.2026
+https://rv-hard.at/kontakt
+	06.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2025
+	05.10.2026
+https://rv-hard.at/verein/unser-verein
+	05.10.2026
+https://rv-hard.at/news/dachbau-schaffer-nightrace-2025
+	29.09.2026
+https://rv-hard.at/downloads/Ausschreibung-SBS-2024.pdf
+	25.09.2026
+https://rv-hard.at/verein/vorstand
+	25.09.2026
+https://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach
+	20.09.2026
+https://rv-hard.at/events/cyclocross/cyclocross-fussach-2023
+	17.09.2026
+https://rv-hard.at/verein/geschichte
+	17.09.2026
+https://rv-hard.at/news/abradeln-2025
+	12.08.2026
+http://rv-hard.at/downloads/Spesen-Rennfahrer-Formular.pdf
+	05.08.2026
+
+Umleitungsfehler:
+https://rv-hard.at/training
+	23.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2026.html
+	23.10.2026
+http://rv-hard.at/verein/vorstand.html
+	17.09.2026
+
+Duplikat – vom Nutzer nicht als kanonisch festgelegt:   
+https://fotos.rv-hard.at/index.html
+	21.10.2026
+http://rv-hard.at/events/sbs/summer-bike-series-2026
+	17.10.2026
+https://www.rv-hard.at/datenschutz
+	31.10.2025
+
+
+Nicht gefunden (404):
+https://rv-hard.at/fotos/datenschutz.html
+	24.10.2026
+https://rv-hard.at/bekleidung.html
+	24.10.2026
+https://rv-hard.at/probetraining
+	24.10.2026
+https://fotos.rv-hard.at/fotos/
+	23.10.2026
+https://fotos.rv-hard.at/fotos
+	23.10.2026
+https://rv-hard.at/verein/team/
+	29.09.2026
+https://rv-hard.at/summer-bike-series/summer-bike-series-2025/
+	08.09.2026
+https://rv-hard.at/ViewDownloadsExec.php?targetid=315&fileid=40
+	06.07.2026
+https://rv-hard.at/download/CUP-Termine-MTB-2024.pdf
+	30.06.2026
+https://rv-hard.at/download/Ausschreibung-Fussachtriathlon-A-B-C-Tri.pdf
+	24.06.2026
+https://www.rv-hard.at/download/Endstand-Summer-Bike-Series-2022-Cup-Wertung-6-6.pdf
+	23.06.2026
+https://www.rv-hard.at/nightrace/dachbau-schaffer-nightrace-2025/
+	20.06.2026
+https://rv-hard.at/download/Ausschreibung-Fussachtriathlon-D.pdf
+	17.06.2026
+https://rv-hard.at/download/Streckenplan-2022.pdf
+	15.06.2026
+https://rv-hard.at/termine-2024/
+	13.06.2026
+https://www.rv-hard.at/news.json
+	10.06.2026
+https://rv-hard.at/download/Ausschreibung-SBS-2023.pdf
+	10.06.2026
+https://rv-hard.at/download/TG-Nightrace-Hard-2025.pdf
+	10.06.2026
+https://rv-hard.at/templates/radsportverein-hard/
+	02.06.2026
+https://www.rv-hard.at/summer-bike-series/
+	30.05.2026
+https://rv-hard.at/verein/statuten/
+	28.05.2026
+https://rv-hard.at/ViewDownloadsExec.php?targetid=1397&fileid=29
+	27.05.2026
+https://www.rv-hard.at/download/Ausschreibung-20241.pdf
+	25.05.2026
+https://rv-hard.at/summer-bike-series/summer-bike-series-2023/
+	25.05.2026
+https://www.rv-hard.at/verein/sportmedizinische-untersuchung/
+	24.05.2026
+https://www.rv-hard.at/nightrace/
+	19.05.2026
+https://rv-hard.at/download/Spesen-Rennfahrer-Formular-2021.xlsx
+	19.05.2026
+https://rv-hard.at/download/Ergebniss-Bergrennen-Buch-I.pdf
+	19.05.2026
+https://rv-hard.at/download/Ausschreibung-Summer-Bike-Series-2022-V01.pdf
+	18.05.2026
+https://rv-hard.at/download/Ausschreibung-Nightrace-2021-V03.pdf
+	16.05.2026
+https://rv-hard.at/verein/formulare/
+	15.05.2026
+https://www.rv-hard.at/cyclocross-fussach/1.-cyclocross-fussach/
+	13.05.2026
+https://www.rv-hard.at/download/Vereinsbesttigung-Sportmedzinische-Untersuchung.pdf
+	12.05.2026
+https://rv-hard.at/nightrace/dachbau-schaffer-nightrace-2022/
+	12.05.2026
+https://rv-hard.at/download/Ergebnis-Kriterium-II-2022.pdf
+	12.05.2026
+https://rv-hard.at/nightrace/dachbau-schaffer-nightrace-2023/
+	12.05.2026
+https://rv-hard.at/ViewDownloadsExec.php?targetid=1397&fileid=43
+	12.05.2026
+https://rv-hard.at/download/Ausschreibung-Fussachtriathlon-Sprint.pdf
+	09.05.2026
+https://rv-hard.at/summer-bike-series/summer-bike-series-2022/
+	09.05.2026
+https://rv-hard.at/download/Ergebnis-Zeitfahren-II-2022.pdf
+	01.05.2026
+https://rv-hard.at/nightrace/dachbau-schaffer-nightrace-2024/
+	01.05.2026
+https://www.rv-hard.at/fussach-triathlon/2.-jolsport-sprint-triathlon-fussach/
+	29.04.2026
+https://www.rv-hard.at/download/Ausschreibung-2023-Fussachtriathlon-inkl.-Strecken-v1.pdf
+	27.04.2026
+
+Seite mit Weiterleitung:
+http://www.rv-hard.at/
+	24.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025.html
+	24.10.2026
+http://rv-hard.at/index.html
+	22.10.2026
+http://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html
+	21.10.2026
+https://fotos.rv-hard.at/kontakt.html
+	21.10.2026
+https://rv-hard.at/impressum.html
+	21.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2024.html
+	21.10.2026
+http://www.rv-hard.at/verein/mitglied-werden.html
+	19.10.2026
+https://rv-hard.at/verein/gemeinschaft.html
+	19.10.2026
+https://rv-hard.at/datenschutz.html
+	18.10.2026
+http://www.rv-hard.at/index.html
+	18.10.2026
+https://www.rv-hard.at/index.html
+	18.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024.html
+	17.10.2026
+http://rv-hard.at/kontakt.html
+	16.10.2026
+https://rv-hard.at/sponsoren.html
+	15.10.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023.html
+	14.10.2026
+https://rv-hard.at/termine.html
+	13.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2025.html
+	05.10.2026
+https://rv-hard.at/verein/unser-verein.html
+	05.10.2026
+http://rv-hard.at/news/dachbau-schaffer-nightrace-2025.html
+	08.07.2026
+http://www.rv-hard.at/termine.html
+	15.06.2026
+http://www.rv-hard.at/sponsoren.html
+	09.06.2026
+https://rv-hard.at/kontakt.html
+	04.06.2026
+https://www.rv-hard.at/termine.html
+	20.05.2026
+http://rv-hard.at/news/abradeln-2025.html
+	18.03.2026
+
+Alternative Seite mit richtigem kanonischen Tag:
+https://www.rv-hard.at/
+	22.10.2026
+https://rv-hard.at/?p=1048
+	22.10.2026
+http://rv-hard.at/?p=3212
+	22.10.2026
+http://rv-hard.at/
+	22.10.2026
+https://rv-hard.at/?p=1300
+	22.10.2026
+http://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach
+	21.10.2026
+http://www.rv-hard.at/verein/mitglied-werden
+	19.10.2026
+http://rv-hard.at/kontakt
+	16.10.2026
+http://rv-hard.at/news/dachbau-schaffer-nightrace-2025
+	08.07.2026
+https://www.rv-hard.at/termine
+	10.06.2026
+http://www.rv-hard.at/termine
+	03.06.2026
+http://www.rv-hard.at/sponsoren
+	03.06.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2026
+	22.05.2026
+http://rv-hard.at/?page_id=5
+	09.05.2026
+http://rv-hard.at/news/abradeln-2025
+	18.03.2026
+
+Soft 404:
+http://rv-hard.at/news/news
+	05.10.2026
+https://rv-hard.at/news-archiv
+	02.08.2026
+http://rv-hard.at/news/news.html
+	29.07.2026
+https://rv-hard.at/news.html
+	07.06.2026
+https://rv-hard.at/news/news
+	07.06.2026
+https://rv-hard.at/news-archiv.html
+	07.06.2026
+https://rv-hard.at/news
+	28.05.2026
+
+Wegen Zugriffsverbot (403) blockiert:
+https://rv-hard.at/training.html
+	09.10.2026
+http://rv-hard.at/training
+	08.10.2026
+http://rv-hard.at/training.html
+	24.09.2026
+https://rv-hard.at/verein/
+	29.04.2026
+
+Durch robots.txt-Datei blockiert:
+http://www.rv-hard.at/data/News/news.json
+	20.10.2026
+http://www.rv-hard.at/data/news/news.json
+	10.06.2026
+https://rv-hard.at/data/news/news-latest.json
+	09.06.2026
+http://rv-hard.at/data/news/news.json
+	12.05.2026
+
+Gecrawlt – zurzeit nicht indexiert:
+https://rv-hard.at/downloads/Ausschreibung-SBS-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-2022-E.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Streckenplan-Nightrace-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Nightrace-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-A-B-C-Women-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-SBS-2023.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-Sprint-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Rennspesenabrechnung-2026.xlsx
+	23.10.2026
+http://rv-hard.at/news/
+	06.10.2026
+https://rv-hard.at/downloads/TG-Nightrace-Hard-2025.pdf
+	05.08.2026
+https://rv-hard.at/news/news.html
+	04.06.2026
+http://rv-hard.at/?p=72
+	09.05.2026
+https://rv-hard.at/download/Ergebnis-Kriterium-I-2022.pdf
+	18.02.2026
+
