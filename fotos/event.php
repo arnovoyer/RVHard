@@ -57,7 +57,7 @@ if ($fgImage === '' && $fgEvent && !empty($fgEvent['photos'][0]['src'])) {
     if (preg_match('#^https?://#i', $fgSrc)) $fgImage = $fgSrc;
     elseif ($fgSrc !== '') $fgImage = $fgBase . '/' . ltrim($fgSrc, '/');
 }
-if ($fgImage === '') $fgImage = 'https://rv-hard.at/assets/img/social/og-home-1200x630.png';
+if ($fgImage === '') $fgImage = 'https://rv-hard.at/assets/img/social/og-galerie-1200x630.png';
 
 $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawurlencode($fgId) : '');
 ?>
