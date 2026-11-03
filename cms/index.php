@@ -76,9 +76,23 @@
         return $config;
     }
 
+    /* Gemeinsames Admin-Passwort für die Hauptdomain rv-hard.at:
+     * Der Bild-Eingang (/bilder/admin.php) hält das Passwort, das CMS
+     * akzeptiert es ebenfalls → ein Login für beide Bereiche (SSO). */
+    function get_shared_admin_password(): string
+    {
+        $file = ROOT_DIR . '/bilder/config.php';
+        if (!file_exists($file)) {
+            return '';
+        }
+
+        $cfg = include $file;
+        return (is_array($cfg) && !empty($cfg['admin_password'])) ? (string)$cfg['admin_password'] : '';
+    }
+
     function ensure_logged_in(): void
     {
-        if (!empty($_SESSION['cms_logged_in'])) {
+        if (!empty($_SESSION['cms_logged_in']) || !empty($_SESSION['rv_admin_logged_in'])) {
             return;
         }
 
@@ -1131,9 +1145,7 @@
         $csrf = (string)($_POST['csrf_token'] ?? '');
 
         if ($action === 'login') {
-            if (!$config) {
-                $error = 'Konfiguration fehlt: /cms/config.php anlegen.';
-            } elseif (!verify_csrf_token($csrf)) {
+            if (!verify_csrf_token($csrf)) {
                 $error = 'Ungültige Anfrage (CSRF). Bitte Seite neu laden.';
             } else {
                 $username = trim((string)($_POST['username'] ?? ''));
@@ -1141,17 +1153,22 @@
                 $clientIp = get_client_ip();
                 $lockout = get_login_lockout_seconds($username, $clientIp);
 
+                $sharedPassword = get_shared_admin_password();
+                $credentialOk = $config && $username === $config['username'] && password_verify($password, $config['password_hash']);
+                $sharedOk = $sharedPassword !== '' && hash_equals($sharedPassword, $password);
+
                 if ($lockout > 0) {
                     $error = 'Zu viele Fehlversuche. Bitte in ' . $lockout . ' Sekunden erneut versuchen.';
+                } elseif ($credentialOk || $sharedOk) {
+                    session_regenerate_id(true);
+                    $_SESSION['cms_logged_in'] = true;
+                    $_SESSION['rv_admin_logged_in'] = true;
+                    clear_login_attempts($username, $clientIp);
+                    header('Location: /cms/index.php');
+                    exit;
+                } elseif (!$config && $sharedPassword === '') {
+                    $error = 'Konfiguration fehlt: /cms/config.php anlegen.';
                 } else {
-                    if ($username === $config['username'] && password_verify($password, $config['password_hash'])) {
-                        session_regenerate_id(true);
-                        $_SESSION['cms_logged_in'] = true;
-                        clear_login_attempts($username, $clientIp);
-                        header('Location: /cms/index.php');
-                        exit;
-                    }
-
                     $blockedFor = record_failed_login_attempt($username, $clientIp);
                     if ($blockedFor > 0) {
                         $error = 'Zu viele Fehlversuche. Bitte in ' . $blockedFor . ' Sekunden erneut versuchen.';
@@ -1166,6 +1183,12 @@
             if (!verify_csrf_token($csrf)) {
                 $error = 'Ungültige Anfrage (CSRF). Bitte Seite neu laden.';
             } else {
+            /* SSO: gemeinsame Session → Abmelden gilt auch für den Bild-Eingang. */
+            $_SESSION = [];
+            if (ini_get('session.use_cookies')) {
+                $p = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
+            }
             session_destroy();
             header('Location: /cms/index.php');
             exit;
@@ -1401,7 +1424,8 @@
         }
     }
 
-    $loggedIn = !empty($_SESSION['cms_logged_in']);
+    /* SSO: Ein Login gilt für CMS + Bild-Eingang (gemeinsamer Flag). */
+    $loggedIn = !empty($_SESSION['cms_logged_in']) || !empty($_SESSION['rv_admin_logged_in']);
     $items = $loggedIn ? load_items() : [];
 
     $tagOptions = default_tag_options();
@@ -1519,26 +1543,41 @@
     }
 
     ?><!doctype html>
-    <html lang="de">
+    <html lang="de" data-theme="light">
     <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RV Hard CMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>Admin · RV Hard</title>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('rv-hard-theme');
+                document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'light');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="/assets/admin.css?v=20261103">
+    <script src="/assets/admin.js?v=20261103" defer></script>
     <style>
         :root {
-            --cms-bg: #eef2f7;
-            --cms-surface: rgba(255, 255, 255, 0.92);
-            --cms-surface-strong: #ffffff;
-            --cms-border: rgba(16, 24, 40, 0.10);
-            --cms-border-strong: rgba(16, 24, 40, 0.16);
-            --cms-text: #101828;
-            --cms-muted: #5b6472;
-            --cms-accent: #d5a300;
-            --cms-accent-strong: #b88200;
-            --cms-accent-soft: rgba(213, 163, 0, 0.12);
-            --cms-danger: #c03a32;
-            --cms-success: #1f7a4d;
-            --cms-shadow: 0 20px 60px rgba(16, 24, 40, 0.10);
+            --cms-bg: var(--site-bg);
+            --cms-surface: var(--site-surface);
+            --cms-surface-strong: var(--site-surface);
+            --cms-border: var(--site-border);
+            --cms-border-strong: var(--site-border);
+            --cms-text: var(--site-text);
+            --cms-muted: var(--site-muted);
+            --cms-accent: var(--accent-yellow);
+            --cms-accent-strong: var(--accent-gold);
+            --cms-accent-soft: rgba(255, 193, 7, 0.12);
+            --cms-danger: var(--a-danger);
+            --cms-success: var(--a-success);
+            --cms-shadow: 0 10px 28px rgba(16, 24, 40, 0.08);
         }
 
         * { box-sizing: border-box; }
@@ -1547,25 +1586,15 @@
 
         body {
             margin: 0;
-            color: var(--cms-text);
-            background:
-                radial-gradient(circle at top left, rgba(213, 163, 0, 0.18), transparent 28%),
-                radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 24%),
-                linear-gradient(180deg, #f7f9fc 0%, var(--cms-bg) 100%);
+            color: var(--site-text);
+            background: var(--site-bg);
             font-family: "Poppins", "Segoe UI", sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            color-scheme: light;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background-image: linear-gradient(rgba(16, 24, 40, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 24, 40, 0.02) 1px, transparent 1px);
-            background-size: 28px 28px;
-            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 65%);
+        body.has-topbar {
+            padding-top: calc(var(--a-topbar-h, 64px) + 16px);
         }
 
         a { color: inherit; }
@@ -1585,11 +1614,10 @@
 
         .cms-hero,
         .card {
-            background: var(--cms-surface);
-            border: 1px solid var(--cms-border);
-            border-radius: 22px;
+            background: var(--site-surface);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-lg);
             box-shadow: var(--cms-shadow);
-            backdrop-filter: blur(16px);
         }
 
         .cms-hero {
@@ -1688,7 +1716,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--cms-accent) 0%, #f0bc28 100%);
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-gold) 100%);
             color: #1a1608;
             box-shadow: 0 12px 24px rgba(213, 163, 0, 0.24);
         }
@@ -1696,21 +1724,28 @@
         .btn-primary:hover { box-shadow: 0 16px 30px rgba(213, 163, 0, 0.30); }
 
         .btn-muted {
-            border-color: var(--cms-border-strong);
-            background: rgba(255, 255, 255, 0.76);
-            color: var(--cms-text);
+            border-color: var(--site-border);
+            background: var(--site-surface);
+            color: var(--site-text);
+        }
+
+        .btn-muted:hover {
+            border-color: var(--accent-yellow);
+            color: var(--site-heading);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #d24d44 0%, var(--cms-danger) 100%);
+            background: var(--a-danger);
             color: #fff;
             box-shadow: 0 12px 24px rgba(192, 58, 50, 0.20);
         }
 
+        .btn-danger:hover { background: var(--a-danger-hover); }
+
         .btn-muted.is-active {
-            border-color: rgba(213, 163, 0, 0.42);
-            background: rgba(213, 163, 0, 0.12);
-            color: #352500;
+            border-color: var(--accent-yellow);
+            background: rgba(255, 193, 7, 0.14);
+            color: var(--site-heading);
         }
 
         .cms-layout {
@@ -1728,7 +1763,7 @@
 
         .cms-sidebar {
             position: sticky;
-            top: 1rem;
+            top: calc(var(--a-topbar-h, 64px) + 16px);
         }
 
         .card {
@@ -1780,9 +1815,9 @@
         .dash-box,
         .stat-box,
         .help-box {
-            border: 1px solid var(--cms-border);
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-lg);
+            background: var(--site-surface-soft);
             padding: 1rem;
         }
 
@@ -1859,11 +1894,10 @@
             width: 100%;
             box-sizing: border-box;
             padding: 0.92rem 1rem;
-            border: 1px solid rgba(16, 24, 40, 0.12);
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--cms-text);
-            box-shadow: inset 0 1px 1px rgba(16, 24, 40, 0.03);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-sm);
+            background: var(--site-surface-soft);
+            color: var(--site-text);
         }
 
         textarea { min-height: 110px; resize: vertical; }
@@ -1876,8 +1910,8 @@
         }
 
         thead th {
-            background: rgba(16, 24, 40, 0.04);
-            color: var(--cms-muted);
+            background: var(--site-surface-soft);
+            color: var(--site-muted);
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.04em;
@@ -1887,11 +1921,11 @@
         td {
             text-align: left;
             padding: 0.88rem 0.82rem;
-            border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+            border-bottom: 1px solid var(--site-border);
             vertical-align: top;
         }
 
-        tbody tr:hover { background: rgba(213, 163, 0, 0.04); }
+        tbody tr:hover { background: rgba(255, 193, 7, 0.08); }
 
         .notice,
         .error {
@@ -1919,9 +1953,9 @@
         }
 
         .tag-dropdown {
-            border: 1px solid rgba(16, 24, 40, 0.12);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-lg);
+            background: var(--site-surface-soft);
             overflow: hidden;
         }
 
@@ -1938,7 +1972,7 @@
         .tag-dropdown-panel {
             max-height: 300px;
             overflow: auto;
-            border-top: 1px solid rgba(16, 24, 40, 0.08);
+            border-top: 1px solid var(--site-border);
             padding: 1rem;
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1977,9 +2011,10 @@
         }
 
         .editor-toolbar button {
-            border: 1px solid rgba(16, 24, 40, 0.12);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-pill);
+            background: var(--site-surface);
+            color: var(--site-text);
             padding: 0.45rem 0.75rem;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -1987,14 +2022,14 @@
         }
 
         .editor-toolbar button:hover {
-            border-color: rgba(213, 163, 0, 0.42);
-            background: rgba(213, 163, 0, 0.08);
+            border-color: var(--accent-yellow);
+            background: rgba(255, 193, 7, 0.10);
         }
 
         .editor-toolbar button.active {
-            background: rgba(213, 163, 0, 0.14);
-            border-color: rgba(213, 163, 0, 0.48);
-            color: #4b3600;
+            background: rgba(255, 193, 7, 0.18);
+            border-color: var(--accent-yellow);
+            color: var(--site-heading);
         }
 
         .images-grid {
@@ -2005,13 +2040,13 @@
         }
 
         .image-item {
-            border: 1px solid rgba(16, 24, 40, 0.10);
-            border-radius: 16px;
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-lg);
             padding: 0.75rem;
             display: flex;
             gap: 0.75rem;
             align-items: flex-start;
-            background: rgba(255, 255, 255, 0.75);
+            background: var(--site-surface-soft);
         }
 
         .image-item img {
@@ -2052,10 +2087,10 @@
 
         .empty-state {
             padding: 1rem;
-            border: 1px dashed rgba(16, 24, 40, 0.16);
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.55);
-            color: var(--cms-muted);
+            border: 1px dashed var(--site-border);
+            border-radius: var(--radius-lg);
+            background: var(--site-surface-soft);
+            color: var(--site-muted);
         }
 
         @media (max-width: 1080px) {
@@ -2072,7 +2107,7 @@
         }
     </style>
     </head>
-    <body>
+    <body class="<?= $loggedIn ? 'has-topbar' : '' ?>">
     <div class="wrap cms-shell">
 
     <?php if (!$config): ?>
@@ -2087,47 +2122,41 @@
 
     <?php if (!$loggedIn): ?>
         <div class="auth-shell">
-        <div class="card auth-card">
-            <div class="cms-eyebrow">RV Hard Admin</div>
-            <h2 class="auth-title">Login</h2>
-            <p class="auth-subtitle">Melde dich an, um News, Termine und Inhalte gesammelt zu verwalten.</p>
+        <div class="a-login">
+            <div class="a-login__logo"><i class="fa-solid fa-lock" style="color:#111;font-size:24px;"></i></div>
+            <h1>Admin · RV Hard</h1>
+            <p class="a-page-sub" style="text-align:center;margin:0 0 20px;">Melde dich an, um News, Termine und Inhalte zu verwalten.</p>
             <form method="post">
             <input type="hidden" name="action" value="login" />
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-            <div class="login-field">
-                <label>Benutzername</label>
-                <input type="text" name="username" autocomplete="username" required />
+            <div class="a-field">
+                <label for="cms-user">Benutzername</label>
+                <input id="cms-user" type="text" name="username" autocomplete="username" required />
             </div>
-            <div class="login-field">
-                <label>Passwort</label>
-                <input type="password" name="password" autocomplete="current-password" required />
+            <div class="a-field">
+                <label for="cms-pw">Passwort</label>
+                <input id="cms-pw" type="password" name="password" autocomplete="current-password" required />
             </div>
-            <div class="row" style="margin-top:1rem;">
-                <button class="btn btn-primary" type="submit">Einloggen</button>
-            </div>
+            <button class="a-btn a-btn--primary" style="width:100%;" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Einloggen</button>
             </form>
         </div>
         </div>
     <?php else: ?>
-        <div class="cms-hero">
-            <div class="cms-brand">
-                <div class="cms-eyebrow">RV Hard CMS</div>
-                <div>
-                    <h1>Inhalte verwalten.</h1>
-                    <p>Backend für News, Termine und Medien.</p>
-                </div>
-            </div>
-            <div class="top-nav">
-                <a class="btn btn-muted <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php">Dashboard</a>
-                <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles">Artikel</a>
-                <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine">Termine</a>
-                <a class="btn btn-muted <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik">Statistik</a>
-                <form method="post" style="display:inline; margin: 0;">
-                    <input type="hidden" name="action" value="logout" />
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
-                    <button class="btn btn-muted" type="submit">Logout</button>
-                </form>
-            </div>
+        <div class="a-topbar">
+            <div class="a-topbar__brand"><i class="fa-solid fa-shield-halved"></i> <span>RV Hard <small>· Admin</small></span></div>
+            <div class="a-topbar__spacer"></div>
+            <a class="a-topbar__link <?= $view === 'dashboard' ? 'is-active' : '' ?>" href="/cms/index.php"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+            <a class="a-topbar__link <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles"><i class="fa-solid fa-newspaper"></i> <span>Artikel</span></a>
+            <a class="a-topbar__link <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine"><i class="fa-solid fa-calendar-days"></i> <span>Termine</span></a>
+            <a class="a-topbar__link <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
+            <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+            <a class="a-topbar__link" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
+            <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
+            <form method="post" style="display:inline;margin:0;">
+                <input type="hidden" name="action" value="logout" />
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />
+                <button class="a-topbar__link a-topbar__link--danger" style="border:0;cursor:pointer;font-family:inherit;" type="submit"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></button>
+            </form>
         </div>
 
         <div class="cms-layout">

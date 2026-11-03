@@ -17,13 +17,20 @@ $configFile = __DIR__ . '/config.php';
 $CFG = file_exists($configFile) ? (include $configFile) : [];
 if (!is_array($CFG)) $CFG = [];
 
-/* ---- EIGENES LOGIN-SYSTEM ---- */
+/* ---- LOGIN-SYSTEM (SSO für rv-hard.at) ----
+ * Der Bild-Eingang hält das gemeinsame Admin-Passwort (config.php).
+ * Das CMS (/cms/) akzeptiert dasselbe Passwort. Beide teilen sich denselben
+ * Session-Flag 'rv_admin_logged_in' → einmal anmelden reicht für beide. */
 $loginError = '';
-$loggedIn = !empty($_SESSION['bilder_admin_logged_in']);
+$loggedIn = !empty($_SESSION['bilder_admin_logged_in']) || !empty($_SESSION['rv_admin_logged_in']);
 
-/* Logout */
+/* Logout (SSO: gemeinsame Session → gilt auch für das CMS) */
 if (isset($_GET['logout'])) {
     $_SESSION = [];
+    if (ini_get('session.use_cookies')) {
+        $p = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
+    }
     session_destroy();
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
@@ -33,7 +40,9 @@ if (isset($_GET['logout'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'login') {
     $pw = $_POST['password'] ?? '';
     if (!empty($CFG['admin_password']) && hash_equals($CFG['admin_password'], $pw)) {
+        session_regenerate_id(true);
         $_SESSION['bilder_admin_logged_in'] = true;
+        $_SESSION['rv_admin_logged_in'] = true;
         $loggedIn = true;
     } else {
         $loginError = 'Falsches Passwort.';
@@ -141,10 +150,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
 </head>
 <body class="a-admin">
   <div class="a-topbar">
-    <div class="a-topbar__brand"><i class="fa-solid fa-inbox"></i> Bild-Eingang</div>
+    <div class="a-topbar__brand"><i class="fa-solid fa-shield-halved"></i> <span>RV Hard <small>· Admin</small></span></div>
     <div class="a-topbar__spacer"></div>
-    <a class="a-topbar__link" href="/fotos/admin/"><i class="fa-solid fa-grip"></i> <span>Galerie-Admin</span></a>
-    <a class="a-topbar__link" href="/bilder/" target="_blank" rel="noopener"><i class="fa-solid fa-upload"></i> <span>Upload-Seite</span></a>
+    <a class="a-topbar__link" href="/fotos/admin/"><i class="fa-solid fa-upload"></i> <span>Hochladen</span></a>
+    <a class="a-topbar__link" href="/fotos/admin/verwalten.php"><i class="fa-solid fa-list-check"></i> <span>Bilder</span></a>
+    <a class="a-topbar__link" href="/fotos/admin/stats.php"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
+    <a class="a-topbar__link is-active" href="/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+    <a class="a-topbar__link" href="/cms/"><i class="fa-solid fa-newspaper"></i> <span>Admin</span></a>
+    <a class="a-topbar__link" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
     <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
     <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
   </div>

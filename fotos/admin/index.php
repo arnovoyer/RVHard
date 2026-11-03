@@ -415,17 +415,14 @@ $currentName = fg2_displayname();
 
 <!-- Admin Topbar -->
 <div class="a-topbar">
-  <div class="a-topbar__brand">
-    <i class="fa-solid fa-user-shield"></i>
-    <span><?= htmlspecialchars($currentName) ?></span>
-    <small>(<?= htmlspecialchars($currentUser) ?>)</small>
-  </div>
+  <div class="a-topbar__brand"><i class="fa-solid fa-shield-halved"></i> <span>RV Hard <small>· Admin</small></span></div>
   <div class="a-topbar__spacer"></div>
-  <a class="a-topbar__link" href="index.php"><i class="fa-solid fa-upload"></i> <span>Hochladen</span></a>
-  <a class="a-topbar__link" href="verwalten.php"><i class="fa-solid fa-list-check"></i> <span>Bilder verwalten</span></a>
+  <a class="a-topbar__link is-active" href="index.php"><i class="fa-solid fa-upload"></i> <span>Hochladen</span></a>
+  <a class="a-topbar__link" href="verwalten.php"><i class="fa-solid fa-list-check"></i> <span>Bilder</span></a>
   <a class="a-topbar__link" href="stats.php"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
-  <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
-  <a class="a-topbar__link" href="/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+  <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+  <a class="a-topbar__link" href="https://rv-hard.at/cms/"><i class="fa-solid fa-newspaper"></i> <span>Admin</span></a>
+  <a class="a-topbar__link" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
   <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
   <a class="a-topbar__link a-topbar__link--danger" href="?logout=1"
      onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>

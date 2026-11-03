@@ -15,8 +15,8 @@ ini_set('log_errors', 1);
 
 session_start();
 
-/* EIGENES LOGIN-SYSTEM (Session auf dieser Subdomain) */
-if (empty($_SESSION['bilder_admin_logged_in'])) {
+/* SSO (rv-hard.at): Bild-Eingang und CMS teilen denselben Session-Flag. */
+if (empty($_SESSION['bilder_admin_logged_in']) && empty($_SESSION['rv_admin_logged_in'])) {
     http_response_code(401);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['ok' => false, 'msg' => 'Nicht eingeloggt.']);
