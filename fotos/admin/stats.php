@@ -150,6 +150,7 @@ $hasData = ((int)($st['totals']['views'] ?? 0) + (int)($st['totals']['events'] ?
     var h = location.hostname;
     var base = (h === 'rv-hard.at' || h === 'www.rv-hard.at') ? '/assets/' : 'https://rv-hard.at/assets/';
     document.write('<link rel="stylesheet" href="' + base + 'admin.css?v=20261103">');
+    document.write('<script src="' + base + 'admin.js?v=20261103"><\/script>');
 })();
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -163,7 +164,7 @@ $hasData = ((int)($st['totals']['views'] ?? 0) + (int)($st['totals']['events'] ?
   .devbar { height:12px; border-radius:6px; background:var(--site-surface-soft); overflow:hidden; display:flex; margin:8px 0 6px; }
   .devbar i { display:block; height:100%; }
   .devbar .m { background:var(--accent-yellow); }
-  .devbar .d { background:#4b5b70; }
+  .devbar .d { background:var(--site-muted); }
 </style>
 </head>
 <body class="a-admin">
@@ -176,6 +177,7 @@ $hasData = ((int)($st['totals']['views'] ?? 0) + (int)($st['totals']['events'] ?
         <a class="a-topbar__link" href="verwalten.php"><i class="fa-solid fa-list-check"></i> <span>Bilder</span></a>
         <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
         <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+        <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
         <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
     </div>
 

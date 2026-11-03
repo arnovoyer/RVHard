@@ -105,6 +105,7 @@ if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
     var h = location.hostname;
     var base = (h === 'rv-hard.at' || h === 'www.rv-hard.at') ? '/assets/' : 'https://rv-hard.at/assets/';
     document.write('<link rel="stylesheet" href="' + base + 'admin.css?v=20261103">');
+    document.write('<script src="' + base + 'admin.js?v=20261103"><\/script>');
 })();
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -162,6 +163,7 @@ if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
         <a class="a-topbar__link" href="stats.php"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
         <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
         <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+        <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
         <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
     </div>
 
@@ -243,7 +245,7 @@ if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
                        '<div class="pcard__img">' +
                            '<img src="' + esc(p.thumb) + '" alt="' + esc(p.file) + '" loading="lazy" decoding="async">' +
                            '<button class="pcard__del" type="button" title="Bild endgültig löschen"><i class="fa-solid fa-trash"></i></button>' +
-                           (badge ? '<div class="pcard__bibs">🏁 ' + esc(badge) + '</div>' : '') +
+                           (badge ? '<div class="pcard__bibs">' + esc(badge) + '</div>' : '') +
                        '</div>' +
                        '<div class="pcard__body">' +
                            '<div class="pcard__name" title="' + esc(p.file) + '">' + esc(p.file) + '</div>' +
@@ -311,7 +313,7 @@ if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
               if (badge) {
                   var el = document.createElement('div');
                   el.className = 'pcard__bibs';
-                  el.textContent = '🏁 ' + badge;
+                  el.textContent = badge;
                   img.appendChild(el);
               }
               toast('Startnummer gespeichert.', 'ok');

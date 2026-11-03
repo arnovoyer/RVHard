@@ -137,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/assets/admin.css?v=20261103">
+  <script src="/assets/admin.js?v=20261103" defer></script>
 </head>
 <body class="a-admin">
   <div class="a-topbar">
@@ -144,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
     <div class="a-topbar__spacer"></div>
     <a class="a-topbar__link" href="/fotos/admin/"><i class="fa-solid fa-grip"></i> <span>Galerie-Admin</span></a>
     <a class="a-topbar__link" href="/bilder/" target="_blank" rel="noopener"><i class="fa-solid fa-upload"></i> <span>Upload-Seite</span></a>
+    <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
     <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
   </div>
 

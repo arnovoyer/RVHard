@@ -160,6 +160,28 @@ body.a-admin h4 {
     color: #fff;
 }
 
+.a-topbar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--site-border);
+    background: var(--site-surface-soft);
+    color: var(--site-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.a-topbar__btn:hover {
+    background: var(--site-surface);
+    color: var(--site-heading);
+    border-color: var(--accent-yellow);
+}
+
 /* ---------------- Layout ---------------- */
 .a-wrap {
     max-width: 1160px;

@@ -35,7 +35,7 @@ $currentName = fg2_displayname();
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔒 Foto Admin – Bilder taggen & events.json erzeugen | RV Hard</title>
+    <title>Foto Admin – Bilder taggen &amp; events.json erzeugen | RV Hard</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,6 +59,7 @@ $currentName = fg2_displayname();
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css">`);
             document.write(`<link rel="stylesheet" href="${galerieBase}galerie.css">`);
             document.write('<link rel="stylesheet" href="https://rv-hard.at/assets/admin.css?v=20261103">');
+            document.write('<script src="https://rv-hard.at/assets/admin.js?v=20261103"><\/script>');
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -425,19 +426,18 @@ $currentName = fg2_displayname();
   <a class="a-topbar__link" href="stats.php"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
   <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
   <a class="a-topbar__link" href="/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+  <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
   <a class="a-topbar__link a-topbar__link--danger" href="?logout=1"
      onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
   <input type="hidden" id="fg-admin-csrf" name="csrf" value="<?= htmlspecialchars($csrfToken) ?>">
 </div>
 
-    <header><nav id="navigation-container"></nav></header>
-
     <main>
     <section class="fg-container">
 
         <!-- KONNTE NICHT ANDERS: FILE PROTOKOLL STOPPER! -->
-        <div id="proto-warn" style="display:none;padding:1rem 1.25rem;background:#f8d7da;border:2px solid #dc3545;border-radius:10px;color:#842029;margin-bottom:1.2rem;line-height:1.55;">
-            <h3 style="margin:0 0 0.5rem 0;color:#842029;"><i class="fa-solid fa-triangle-exclamation"></i> ⛔ Admin funktioniert hier NICHT!</h3>
+        <div id="proto-warn" style="display:none;padding:1rem 1.25rem;background:rgba(226,0,26,0.1);border:2px solid var(--a-danger);border-radius:var(--radius-md);color:var(--site-text);margin-bottom:1.2rem;line-height:1.55;">
+            <h3 style="margin:0 0 0.5rem 0;color:var(--a-danger);"><i class="fa-solid fa-triangle-exclamation"></i> Admin funktioniert hier NICHT!</h3>
             <p style="margin:0 0 0.6rem 0;">
                 Du hast diese Seite per <strong>Doppelklick</strong> als <code>file:///C:/Users/...</code> geöffnet.
                 Das <strong>geht NICHT</strong> — per file:// lassen sich <strong>keine Bilder auf den Server laden</strong> und auch <strong>keine PHP-Skripte ausführen</strong>.
@@ -445,9 +445,9 @@ $currentName = fg2_displayname();
             </p>
             <p style="margin:0 0 0.8rem 0;">
                 <strong>Richtig so öffnen (unbedingt):</strong><br>
-                👉 <a href="https://rv-hard.at/fotos/admin/" target="_blank" rel="noopener" style="color:#842029;text-decoration:underline;font-weight:bold;">https://rv-hard.at/fotos/admin/</a>
+                <a href="https://rv-hard.at/fotos/admin/" target="_blank" rel="noopener" style="color:var(--a-danger);text-decoration:underline;font-weight:bold;">https://rv-hard.at/fotos/admin/</a>
             </p>
-            <p style="margin:0;font-size:0.88rem;color:#7a2430;">
+            <p style="margin:0;font-size:0.88rem;color:var(--site-muted);">
                 Lokal auf PC zu Hause zum Testen: <code>http://localhost/rv-hard/fotos/admin/</code> oder XAMPP/WAMP starten.
                 Bilder hochladen und taggen funktioniert NUR über <code>http://</code> oder <code>https://</code>.
             </p>
@@ -487,7 +487,7 @@ $currentName = fg2_displayname();
 
             <!-- Formular: eigenes Event anlegen ODER bestehendes bearbeiten -->
             <div class="fg-ne" id="new-event-form" style="display:none;">
-                <h3 id="ne-title" style="margin:0 0 0.75rem; font-size:1rem; color:#111;">Neues Event anlegen</h3>
+                <h3 id="ne-title" style="margin:0 0 0.75rem; font-size:1rem; color:var(--site-heading);">Neues Event anlegen</h3>
                 <div class="row">
                     <div>
                         <label class="fg-label" for="ne-name">Name *</label>
@@ -523,7 +523,7 @@ $currentName = fg2_displayname();
                     <label class="fg-label" for="ne-desc">Beschreibung (optional)</label>
                     <input class="fg-input" id="ne-desc" type="text" maxlength="300" placeholder="Kurzer Text für die Event-Karte" autocomplete="off">
                 </div>
-                <p id="ne-hint" style="display:none; margin:0.75rem 0 0; font-size:0.82rem; color:#777;">
+                <p id="ne-hint" style="display:none; margin:0.75rem 0 0; font-size:0.82rem; color:var(--site-muted);">
                     <i class="fa-solid fa-circle-info"></i> Die Event-ID bleibt unverändert – bestehende Links und Fotos bleiben gültig.
                 </p>
                 <div class="actions">
@@ -561,7 +561,7 @@ $currentName = fg2_displayname();
                     </div>
                 </div>
                 <div class="field">
-                    <label>🏁 STARTNUMMERN (Komma getrennt!)</label>
+                    <label>STARTNUMMERN (Komma getrennt!)</label>
                     <input type="text" id="bulk-bib" placeholder="42, 12, 88, 333" autocomplete="off">
                 </div>
                 <div class="field" style="flex:0 0 auto;">
@@ -575,7 +575,7 @@ $currentName = fg2_displayname();
             <!-- 🎯 Startnummern-Modus: reiner Tastatur-Workflow (Bild groß + Nummer tippen) -->
             <div class="fg-bibmode">
                 <button class="fg-btn" id="bib-mode-btn" type="button">
-                    <i class="fa-solid fa-keyboard"></i> 🎯 Startnummern-Modus starten
+                    <i class="fa-solid fa-keyboard"></i> Startnummern-Modus starten
                 </button>
                 <span class="fg-bibmode__hint">
                     Bild groß · Nummer tippen · <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern
@@ -592,7 +592,7 @@ $currentName = fg2_displayname();
         <div class="fg-publish fg-step">
             <div class="fg-step__header">
                 <div class="fg-step__num">3</div>
-                <h2 style="margin:0;color:#fff;">Veröffentlichen</h2>
+                <h2 style="margin:0;color:var(--site-heading);">Veröffentlichen</h2>
             </div>
 
             <div class="server-status" id="server-status">
@@ -601,7 +601,7 @@ $currentName = fg2_displayname();
             </div>
 
             <button id="publish-btn" class="fg-btn" disabled>
-                <i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Auf Server speichern &amp; veröffentlichen
+                <i class="fa-solid fa-cloud-arrow-up"></i> Auf Server speichern &amp; veröffentlichen
             </button>
             <small>
                 Bilder + events.json gehen direkt auf den Server und sind sofort öffentlich sichtbar.
@@ -612,11 +612,11 @@ $currentName = fg2_displayname();
             </div>
             <div class="progress-text" id="progress-text" style="display:none;"></div>
 
-            <div id="success-msg" class="fg-success" style="margin-top:1rem; background:#fff3cd !important; color:#7a5d00 !important; border-color:#ffc107 !important; display:none;">
-                <h3 style="color:#155724 !important;"><i class="fa-solid fa-circle-check"></i> ✅ Fertig!</h3>
-                <ol style="color:#333;">
+            <div id="success-msg" class="fg-success" style="display:none;">
+                <h3><i class="fa-solid fa-circle-check"></i> Fertig!</h3>
+                <ol>
                     <li>Bilder gespeichert</li>
-                    <li>Galerie ist jetzt öffentlich sichtbar: <a id="success-link" style="color:#0f5132;font-weight:700;" href="../index.html" target="_blank">Galerie öffnen →</a></li>
+                    <li>Galerie ist jetzt öffentlich sichtbar: <a id="success-link" style="font-weight:700;" href="../index.html" target="_blank">Galerie öffnen →</a></li>
                 </ol>
             </div>
         </div>
@@ -628,7 +628,7 @@ $currentName = fg2_displayname();
     <div id="admin-lightbox" class="admin-lb" role="dialog" aria-modal="true">
         <div class="admin-lb__topbar">
             <div class="title">
-                <i class="fa-solid fa-image" style="color:#ffc107;"></i>
+                <i class="fa-solid fa-image" style="color:var(--accent-yellow);"></i>
                 <span id="lb-filename">Bildname</span>
                 <small id="lb-position"></small>
             </div>
@@ -655,9 +655,9 @@ $currentName = fg2_displayname();
                 <img id="lb-img" src="" alt="Vorschau">
             </div>
             <div class="admin-lb__sidebar">
-                <h3><i class="fa-solid fa-tags" style="color:#f5b301;"></i> Bild bearbeiten</h3>
+                <h3><i class="fa-solid fa-tags" style="color:var(--accent-gold);"></i> Bild bearbeiten</h3>
                 <div>
-                    <label>🏁 STARTNUMMER ODER KATEGORIE</label>
+                    <label>STARTNUMMER ODER KATEGORIE</label>
                     <input type="text" id="lb-bib" class="bibs" placeholder="42, 12 oder U7-U9" autocomplete="off">
                 </div>
 
@@ -682,13 +682,11 @@ $currentName = fg2_displayname();
                     </div>
                 </div>
                 <div class="hint" style="margin-top:0;">
-                    ⌨️ <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern · <kbd>Entf</kbd> löschen · <kbd>ESC</kbd> schließen
+                    <kbd>Enter</kbd> speichern &amp; weiter · <kbd>←</kbd> <kbd>→</kbd> blättern · <kbd>Entf</kbd> löschen · <kbd>ESC</kbd> schließen
                 </div>
             </div>
         </div>
     </div>
-
-    <footer id="site-footer"></footer>
 
     <script>
     /* ============================================================
@@ -707,26 +705,13 @@ $currentName = fg2_displayname();
      *  (Kompletter alter Code in project_memory / Git history)
      * ========== [ENDE ARCHIVIERT V3.1] */
 
-    /* ===== INIT NAV + FOOTER ===== */
-    (async () => {
-        try {
-            const r = await fetch('/assets/navigationneu.html');
-            if (r.ok) document.getElementById('navigation-container').innerHTML = await r.text();
-            if (typeof initNavigationMenu === 'function') initNavigationMenu();
-        } catch(e) {}
-        try {
-            const r = await fetch('/assets/footer.html');
-            if (r.ok) document.getElementById('site-footer').innerHTML = await r.text();
-        } catch(e) {}
-    })();
-
     /* ===== DATEN: 3 DISZIPLINEN PRO JAHR ===== */
     const DISCS = [
-        { key: 'bergrennen-wolfurt-buch', name: 'Bergrennen Wolfurt → Buch', short: 'Bergrennen Wolfurt-Buch', cat: 'BERGRENNEN', color: '#198754', icon: 'fa-mountain-sun',
+        { key: 'bergrennen-wolfurt-buch', name: 'Bergrennen Wolfurt → Buch', short: 'Bergrennen Wolfurt-Buch', cat: 'BERGRENNEN', icon: 'fa-mountain-sun',
           location: 'Wolfurt → Buch', distance: '12,8 km · 690 Hm', desc: 'Bergrennen Wolfurt nach Buch. Suche nach deiner Startnummer!' },
-        { key: 'kriterium-kammgarn-hard', name: 'Kriterium Kammgarn Hard', short: 'Kriterium Kammgarn Hard', cat: 'KRITERIUM', color: '#dc3545', icon: 'fa-flag-checkered',
+        { key: 'kriterium-kammgarn-hard', name: 'Kriterium Kammgarn Hard', short: 'Kriterium Kammgarn Hard', cat: 'KRITERIUM', icon: 'fa-flag-checkered',
           location: 'Kammgarn Areal, Hard', distance: '50 Runden · 75 km', desc: 'Stadtkurs Kriterium in Hard am Kammgarn-Gelände. Suche nach deiner Startnummer!' },
-        { key: 'ezf-rohrspitz-fussach', name: 'Einzelzeitfahren Rohrspitz Fußach', short: 'EZF Rohrspitz Fußach', cat: 'EZF', color: '#0d6efd', icon: 'fa-stopwatch',
+        { key: 'ezf-rohrspitz-fussach', name: 'Einzelzeitfahren Rohrspitz Fußach', short: 'EZF Rohrspitz Fußach', cat: 'EZF', icon: 'fa-stopwatch',
           location: 'Rohrspitz, Fußach (Bodensee)', distance: '9,2 km · 45 Hm', desc: 'Einzelzeitfahren entlang des Bodensees in Fußach. Suche nach deiner Startnummer!' }
     ];
 
@@ -827,7 +812,6 @@ $currentName = fg2_displayname();
                 name: ev.name || ev.shortName || ev.id,
                 short: ev.shortName || ev.name || ev.id,
                 cat: d ? d.cat : (ev.custom ? 'EVENT' : 'SBS'),
-                color: d ? d.color : (ev.custom ? '#6f42c1' : '#343a40'),
                 icon: d ? d.icon : (SUBTYPE_ICON[ev.subtype] || 'fa-camera-retro'),
                 location: ev.location || '', distance: ev.distance || '',
                 desc: ev.description || '',
@@ -841,7 +825,7 @@ $currentName = fg2_displayname();
             items.push({
                 id: id, key: d.key, folder: folderFor(year, d.key),
                 custom: false, hidden: false, name: d.name, short: d.short,
-                cat: d.cat, color: d.color, icon: d.icon, location: d.location,
+                cat: d.cat, icon: d.icon, location: d.location,
                 distance: d.distance, desc: d.desc, serverPhotos: 0, onServer: false
             });
         });
@@ -864,10 +848,10 @@ $currentName = fg2_displayname();
             return `
                 <div class="fg-event-pick ${active} ${hidden ? 'is-hidden' : ''}" data-id="${fgEsc(it.id)}">
                     ${toggleBtn}
-                    <span class="cat" style="background:${it.color};">${it.cat}</span>${badge}
-                    <h3><i class="fa-solid ${it.icon}" style="color:#f5b301;"></i> ${fgEsc(it.short)}</h3>
+                    <span class="cat">${it.cat}</span>${badge}
+                    <h3><i class="fa-solid ${it.icon}" style="color:var(--accent-gold);"></i> ${fgEsc(it.short)}</h3>
                     ${it.location ? `<small>${fgEsc(it.location)}</small>` : ''}
-                    <small style="color:${it.custom ? '#6f42c1' : '#0d6efd'}; display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${fgEsc(it.folder)}</small>
+                    <small style="color:var(--site-muted); display:block;"><i class="fa-solid fa-folder"></i> Ordner: ${fgEsc(it.folder)}</small>
                     <div class="count"><i class="fa-regular fa-image"></i> ${countLabel}</div>
                     ${it.onServer ? `<div class="pickactions">
                         ${(it.serverPhotos > 0) ? `<a class="managebtn" href="verwalten.php?event=${encodeURIComponent(it.id)}" title="Bilder dieses Events löschen oder bearbeiten"><i class="fa-solid fa-list-check"></i> Bilder</a>` : ''}
@@ -1190,13 +1174,13 @@ $currentName = fg2_displayname();
                     <input type="checkbox" class="fg-photo-card__select" ${p._selected?'checked':''} onclick="event.stopPropagation();">
                     <button class="fg-photo-card__del js-del" data-id="${p.id}" title="Bild löschen (Original + Vorschau + Display)" onclick="event.stopPropagation();"><i class="fa-solid fa-trash"></i></button>
                     <img src="${p.previewUrl}" alt="${p.filename}" loading="lazy" decoding="async" fetchpriority="auto" style="pointer-events:none; width:100%;">
-                    ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:#ffc107;color:#111;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:700;">🏁 ${bibBadge}</div>` : ''}
-                    <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:5px;font-size:0.72rem;font-weight:600;"><i class="fa-solid fa-expand"></i> öffnen</div>
+                    ${hasBibs ? `<div style="position:absolute;bottom:6px;left:6px;background:var(--accent-yellow);color:#111;padding:3px 7px;border-radius:var(--radius-sm);font-size:0.72rem;font-weight:700;">${bibBadge}</div>` : ''}
+                    <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 7px;border-radius:var(--radius-sm);font-size:0.72rem;font-weight:600;"><i class="fa-solid fa-expand"></i> öffnen</div>
                 </div>
                 <div class="fg-photo-card__body">
                     <div class="fg-photo-card__title"><i class="fa-regular fa-file-image"></i> ${p.filename}</div>
                     <div>
-                        <label>🏁 STARTNUMMER / KATEGORIE</label>
+                        <label>STARTNUMMER / KATEGORIE</label>
                         <input type="text" class="bibs js-bib" placeholder="42, 12 oder U7-U9" value="${bibStr}" data-id="${p.id}" autocomplete="off">
                     </div>
                 </div>
@@ -1385,7 +1369,7 @@ $currentName = fg2_displayname();
         updatedIds.forEach(updatePhotoCard);
         updateBulk();
         renderEvents();
-        alert(`✅ ${n} Bilder aktualisiert!`);
+        alert(`${n} Bilder aktualisiert!`);
     });
 
     /* ================================================================
@@ -1452,10 +1436,10 @@ $currentName = fg2_displayname();
                     body: JSON.stringify(Object.assign({ csrf: fgAdminCsrf() }, job))
                 });
                 const data = await res.json().catch(() => ({ ok: false }));
-                if (data && data.ok) lbSetStatus('ok', '✓ Auf Server gespeichert');
-                else lbSetStatus('warn', '⚠ ' + ((data && data.message) || 'nicht gespeichert'));
+                if (data && data.ok) lbSetStatus('ok', 'Auf Server gespeichert');
+                else lbSetStatus('warn', (data && data.message) || 'nicht gespeichert');
             } catch (e) {
-                lbSetStatus('warn', '⚠ Offline – Änderung nur lokal');
+                lbSetStatus('warn', 'Offline – Änderung nur lokal');
             }
         }
         _bibSaveBusy = false;
@@ -1519,7 +1503,7 @@ $currentName = fg2_displayname();
         } else {
             lbUpdateProgress();
             updateBulk(); renderEvents();
-            alert(`✅ Alle ${lbCurrentList.length} Bilder durchgesehen!`);
+            alert(`Alle ${lbCurrentList.length} Bilder durchgesehen!`);
             lbClose();
         }
     }
@@ -1650,14 +1634,14 @@ $currentName = fg2_displayname();
             const j = await r.json();
             if (!j.ok) throw new Error(j.msg || 'Fehler');
             if (j.data_writable) {
-                setServerStatus('ok', `✅ Server bereit`);
+                setServerStatus('ok', `Server bereit`);
             } else {
                 /* Pfad-Ausgabe dynamisch basierend auf Antwort! */
                 const dataPath = j.data_prefix || '/fotos/data/';
-                setServerStatus('warn', `⚠️ Ordner <code>${fgEscapeHtml(dataPath)}</code> nicht beschreibbar – bitte CHMOD 755 setzen!`);
+                setServerStatus('warn', `Ordner <code>${fgEscapeHtml(dataPath)}</code> nicht beschreibbar – bitte CHMOD 755 setzen!`);
             }
         } catch(err) {
-            setServerStatus('err', `❌ Upload-Endpoint nicht erreichbar (PHP? Rechte?)`);
+            setServerStatus('err', `Upload-Endpoint nicht erreichbar (PHP? Rechte?)`);
         }
     }
     setTimeout(pingServer, 300);
@@ -1680,7 +1664,7 @@ $currentName = fg2_displayname();
         const withoutFile = list.filter(p => !p.file || typeof p.file.arrayBuffer !== 'function').length;
         if (withoutFile > 0) {
             const jn = confirm(
-                `⚠️ ${withoutFile}/${list.length} Bilder haben KEINE Originaldaten mehr!\n\n` +
+                `${withoutFile}/${list.length} Bilder haben KEINE Originaldaten mehr!\n\n` +
                 `Das passiert wenn:\n` +
                 `  → Du die Seite NEU GELADEN hast, nachdem Bilder gezogen wurden\n` +
                 `  → Bilder waren nur Vorschau aus einem alten Publish.\n\n` +
@@ -1751,7 +1735,7 @@ $currentName = fg2_displayname();
                     const per = 100 / batches.length;
                     const pct = Math.min(100, Math.round(batchIdx * per + (e.loaded / e.total) * per));
                     $pb.style.width = pct + '%';
-                    $pt.textContent = `📤 Batch ${batchIdx + 1}/${batches.length} · ${pct}% (${(e.loaded/1024/1024).toFixed(1)} von ${(e.total/1024/1024).toFixed(1)} MB)…`;
+                    $pt.textContent = `Batch ${batchIdx + 1}/${batches.length} · ${pct}% (${(e.loaded/1024/1024).toFixed(1)} von ${(e.total/1024/1024).toFixed(1)} MB)…`;
                 }
             };
             xhr.onload = () => {
@@ -1773,11 +1757,11 @@ $currentName = fg2_displayname();
                 const j = await sendBatch(buildForm(batches[i], i === 0), i);
                 lastJ = j;
                 savedTotal += (j.photos_saved_count || 0);
-                $pt.textContent = `📤 Batch ${i + 1}/${batches.length} fertig…`;
+                $pt.textContent = `Batch ${i + 1}/${batches.length} fertig…`;
             }
             const total = (lastJ && typeof lastJ.photos_total === 'number') ? lastJ.photos_total : savedTotal;
             $pb.style.width = '100%';
-            $pt.textContent = `✅ ${savedTotal} Datei(en) hochgeladen · ${total} Fotos im Event`;
+            $pt.textContent = `${savedTotal} Datei(en) hochgeladen · ${total} Fotos im Event`;
             const sucMsg = document.getElementById('success-msg');
             sucMsg.style.display = 'block';
             if (lastJ && lastJ.preview_url) document.getElementById('success-link').href = lastJ.preview_url;
@@ -1787,10 +1771,10 @@ $currentName = fg2_displayname();
         } catch(err) {
             console.error(err);
             $pb.style.width = '0%';
-            $pt.textContent = '❌ Fehler: ' + (err.message || String(err));
-            $pt.style.color = '#ffd855';
-            alert('❌ Upload fehlgeschlagen!\n' + (err.message || String(err)));
-            $publishBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> 🚀 Erneut versuchen`;
+            $pt.textContent = 'Fehler: ' + (err.message || String(err));
+            $pt.style.color = 'var(--a-danger)';
+            alert('Upload fehlgeschlagen!\n' + (err.message || String(err)));
+            $publishBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Erneut versuchen`;
             $publishBtn.disabled = false;
             setTimeout(pingServer, 300);
         }
