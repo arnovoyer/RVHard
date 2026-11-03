@@ -90,117 +90,92 @@ $MANAGE_JSON = json_encode(
 if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>Bilder verwalten · Foto-Galerie · RV Hard</title>
+<script>
+(function () {
+    try {
+        var t = localStorage.getItem('rv-hard-theme');
+        document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'light');
+    } catch (e) {}
+    var h = location.hostname;
+    var base = (h === 'rv-hard.at' || h === 'www.rv-hard.at') ? '/assets/' : 'https://rv-hard.at/assets/';
+    document.write('<link rel="stylesheet" href="' + base + 'admin.css?v=20261103">');
+})();
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
-:root{
-  --bg:#121417; --card:#1b2027; --soft:#232a33; --border:#313b49;
-  --text:#e7ebef; --muted:#98a2b3; --yellow:#ffc107; --radius:12px;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; padding:0 16px 60px; background:var(--bg); color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-a{color:var(--yellow);text-decoration:none}
-.wrap{max-width:1180px;margin:0 auto}
-.top{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:18px 0 22px;border-bottom:1px solid var(--border);margin-bottom:24px;
-}
-.top h1{margin:0;font-size:1.35rem;font-weight:700}
-.top .spacer{flex:1 1 auto}
-.top a.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:8px 13px;border:1px solid var(--border);border-radius:9px;
-  color:var(--text);font-size:0.88rem;font-weight:600;background:var(--soft);
-}
-.top a.btn:hover{border-color:var(--yellow);color:var(--yellow)}
-.controls{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:14px 16px;margin-bottom:18px;
-}
-.controls label{font-size:0.8rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-select,.bib{
-  background:var(--soft);color:var(--text);border:1px solid var(--border);
-  border-radius:9px;padding:9px 11px;font-size:0.92rem;font-family:inherit;
-}
-select{min-width:260px;max-width:100%}
-select:focus,.bib:focus{outline:2px solid var(--yellow);outline-offset:1px}
-.count{margin-left:auto;font-size:0.86rem;color:var(--muted)}
-.grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:12px;
-}
-.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.pcard__img{position:relative;aspect-ratio:4/3;background:#0d1013;overflow:hidden}
-.pcard__img img{width:100%;height:100%;object-fit:cover;display:block}
-.pcard__del{
-  position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:8px;
-  border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);color:#fff;
-  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;
-}
-.pcard__del:hover{background:#e2001a;border-color:#e2001a}
-.pcard__bibs{
-  position:absolute;bottom:8px;left:8px;background:var(--yellow);color:#111;
-  padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:700;
-}
-.pcard__body{padding:10px}
-.pcard__name{
-  font-size:0.78rem;color:var(--muted);margin-bottom:8px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.pcard__body label{
-  display:block;font-size:0.66rem;color:var(--muted);font-weight:700;
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;
-}
-.pcard__body .bib{width:100%}
-.pcard__body .bib.saving{border-color:var(--yellow)}
-.pcard__body .bib.ok{border-color:#2e7d32}
-.pcard__body .bib.err{border-color:#e2001a}
-.empty{color:var(--muted);padding:22px 4px}
-.toast{
-  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120%);
-  background:#1b2027;border:1px solid var(--border);border-left:4px solid var(--yellow);
-  color:var(--text);padding:11px 16px;border-radius:10px;font-size:0.9rem;
-  box-shadow:0 8px 30px rgba(0,0,0,.5);transition:transform .22s ease;z-index:9999;
-}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.ok{border-left-color:#2e7d32}
-.toast.err{border-left-color:#e2001a}
-@media (max-width:520px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  select{min-width:0;width:100%}
-  .count{margin-left:0}
-}
+  .controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .controls label { font-size:0.78rem; color:var(--site-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .controls select { min-width:260px; max-width:100%; }
+  .count { margin-left:auto; font-size:0.86rem; color:var(--site-muted); }
+  .bib {
+    padding:9px 11px; font-family:inherit; font-size:0.92rem; width:100%;
+    color:var(--site-text); background:var(--site-surface-soft);
+    border:1.5px solid var(--site-border); border-radius:var(--radius-sm); outline:none;
+  }
+  .bib:focus { border-color:var(--accent-yellow); box-shadow:0 0 0 4px rgba(255,193,7,.18); }
+  .admingrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+  .pcard { background:var(--site-surface); border:1px solid var(--site-border); border-radius:var(--radius-md); overflow:hidden; }
+  .pcard__img { position:relative; aspect-ratio:4/3; background:#0d1013; overflow:hidden; }
+  .pcard__img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pcard__del {
+    position:absolute; top:8px; right:8px; width:32px; height:32px; border-radius:var(--radius-sm);
+    border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.6); color:#fff;
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .pcard__del:hover { background:var(--a-danger); border-color:var(--a-danger); }
+  .pcard__bibs {
+    position:absolute; bottom:8px; left:8px; background:var(--accent-yellow); color:#111;
+    padding:3px 8px; border-radius:6px; font-size:0.72rem; font-weight:700;
+  }
+  .pcard__body { padding:10px; }
+  .pcard__name {
+    font-size:0.78rem; color:var(--site-muted); margin-bottom:8px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .pcard__body label {
+    display:block; font-size:0.66rem; color:var(--site-muted); font-weight:700;
+    text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px;
+  }
+  .pcard__body .bib.saving { border-color:var(--accent-yellow); }
+  .pcard__body .bib.ok { border-color:var(--a-success); }
+  .pcard__body .bib.err { border-color:var(--a-danger); }
+  @media (max-width:520px){
+    .admingrid { grid-template-columns:repeat(2,1fr); }
+    .controls select { min-width:0; width:100%; }
+    .count { margin-left:0; }
+  }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body class="a-admin">
+<div class="a-wrap">
 
-    <div class="top">
-        <h1><i class="fa-solid fa-list-check" style="color:var(--yellow)"></i> Bilder verwalten</h1>
-        <div class="spacer"></div>
-        <a class="btn" href="./"><i class="fa-solid fa-upload"></i> Admin</a>
-        <a class="btn" href="stats.php"><i class="fa-solid fa-chart-simple"></i> Statistik</a>
-        <a class="btn" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> Galerie</a>
+    <div class="a-topbar">
+        <div class="a-topbar__brand"><i class="fa-solid fa-list-check"></i> Bilder verwalten</div>
+        <div class="a-topbar__spacer"></div>
+        <a class="a-topbar__link" href="./"><i class="fa-solid fa-sliders"></i> <span>Admin</span></a>
+        <a class="a-topbar__link" href="stats.php"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
+        <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
+        <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+        <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
     </div>
 
-    <div class="controls">
+    <h1 class="a-page-title"><i class="fa-solid fa-list-check"></i> Bilder verwalten</h1>
+    <p class="a-page-sub">Veröffentlichte Bilder prüfen, Startnummern korrigieren oder Bilder löschen.</p>
+
+    <div class="a-card controls">
         <label for="verw-event">Event</label>
-        <select id="verw-event"></select>
+        <select id="verw-event" class="a-input"></select>
         <span class="count" id="verw-count"></span>
     </div>
 
-    <div class="grid" id="verw-grid"></div>
-    <div class="empty" id="verw-empty" hidden>
+    <div class="admingrid" id="verw-grid"></div>
+    <div class="a-empty" id="verw-empty" hidden>
         <i class="fa-solid fa-circle-info"></i> Keine veröffentlichten Bilder vorhanden.
     </div>
 
@@ -228,13 +203,13 @@ select:focus,.bib:focus{outline:2px solid var(--yellow);outline-offset:1px}
     function toast(msg, kind) {
         if (!$toast) {
             $toast = document.createElement('div');
-            $toast.className = 'toast';
+            $toast.className = 'a-toast';
             document.body.appendChild($toast);
         }
         $toast.textContent = msg;
-        $toast.className = 'toast show' + (kind ? ' ' + kind : '');
+        $toast.className = 'a-toast show' + (kind ? ' ' + kind : '');
         clearTimeout(toast._t);
-        toast._t = setTimeout(function () { $toast.className = 'toast'; }, 2600);
+        toast._t = setTimeout(function () { $toast.className = 'a-toast'; }, 2600);
     }
 
     function currentEvent() {

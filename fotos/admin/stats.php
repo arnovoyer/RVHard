@@ -135,78 +135,56 @@ function fmtDate($iso) {
 $hasData = ((int)($st['totals']['views'] ?? 0) + (int)($st['totals']['events'] ?? 0) + (int)($st['totals']['photos'] ?? 0)) > 0;
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>Statistik · Foto-Galerie · RV Hard</title>
+<script>
+(function () {
+    try {
+        var t = localStorage.getItem('rv-hard-theme');
+        document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'light');
+    } catch (e) {}
+    var h = location.hostname;
+    var base = (h === 'rv-hard.at' || h === 'www.rv-hard.at') ? '/assets/' : 'https://rv-hard.at/assets/';
+    document.write('<link rel="stylesheet" href="' + base + 'admin.css?v=20261103">');
+})();
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
-:root{
-  --bg:#121417; --card:#1b2027; --soft:#232a33; --border:#313b49;
-  --text:#e7ebef; --muted:#98a2b3; --yellow:#ffc107; --radius:12px;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; padding:0 16px 60px; background:var(--bg); color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-a{color:var(--yellow);text-decoration:none}
-.wrap{max-width:1080px;margin:0 auto}
-.top{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:18px 0 22px;border-bottom:1px solid var(--border);margin-bottom:24px;
-}
-.top h1{margin:0;font-size:1.35rem;font-weight:700}
-.top .spacer{flex:1 1 auto}
-.top a.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:8px 13px;border:1px solid var(--border);border-radius:9px;
-  color:var(--text);font-size:0.88rem;font-weight:600;background:var(--soft);
-}
-.top a.btn:hover{border-color:var(--yellow);color:var(--yellow)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
-.kpi .lbl{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
-.kpi .val{font-size:1.9rem;font-weight:700;margin-top:6px;line-height:1.1}
-.kpi .sub{font-size:0.78rem;color:var(--muted);margin-top:4px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px}
-.card h2{margin:0 0 14px;font-size:1.02rem;font-weight:700}
-.chart{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:8px}
-.chart .bar{flex:1 1 0;background:var(--yellow);border-radius:3px 3px 0 0;min-height:2px;opacity:.85;transition:opacity .15s}
-.chart .bar:hover{opacity:1}
-.chart-x{display:flex;gap:3px;margin-top:6px}
-.chart-x span{flex:1 1 0;font-size:0.6rem;color:var(--muted);text-align:center;overflow:hidden;white-space:nowrap}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media (max-width:800px){.grid2{grid-template-columns:1fr}}
-table{width:100%;border-collapse:collapse;font-size:0.88rem}
-th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border)}
-th{color:var(--muted);font-size:0.74rem;text-transform:uppercase;letter-spacing:.04em}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.muted{color:var(--muted);font-size:0.85rem}
-.devbar{height:12px;border-radius:6px;background:var(--soft);overflow:hidden;display:flex;margin:8px 0 6px}
-.devbar i{display:block;height:100%}
-.devbar .m{background:var(--yellow)}
-.devbar .d{background:#4b5b70}
-.empty{color:var(--muted);padding:10px 0}
+  .a-chart { display:flex; align-items:flex-end; gap:3px; height:150px; padding-top:8px; }
+  .a-chart .bar { flex:1 1 0; background:var(--accent-yellow); border-radius:3px 3px 0 0; min-height:2px; opacity:.85; transition:opacity .15s; }
+  .a-chart .bar:hover { opacity:1; }
+  .a-chart-x { display:flex; gap:3px; margin-top:6px; }
+  .a-chart-x span { flex:1 1 0; font-size:0.6rem; color:var(--site-muted); text-align:center; overflow:hidden; white-space:nowrap; }
+  .a-table td.trunc { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .devbar { height:12px; border-radius:6px; background:var(--site-surface-soft); overflow:hidden; display:flex; margin:8px 0 6px; }
+  .devbar i { display:block; height:100%; }
+  .devbar .m { background:var(--accent-yellow); }
+  .devbar .d { background:#4b5b70; }
 </style>
 </head>
-<body>
-<div class="wrap">
+<body class="a-admin">
+<div class="a-wrap">
 
-    <div class="top">
-        <h1><i class="fa-solid fa-chart-simple" style="color:var(--yellow)"></i> Statistik</h1>
-        <div class="spacer"></div>
-        <a class="btn" href="./"><i class="fa-solid fa-sliders"></i> Admin</a>
-        <a class="btn" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> Galerie</a>
+    <div class="a-topbar">
+        <div class="a-topbar__brand"><i class="fa-solid fa-chart-simple"></i> Foto-Galerie <small>· Statistik</small></div>
+        <div class="a-topbar__spacer"></div>
+        <a class="a-topbar__link" href="./"><i class="fa-solid fa-sliders"></i> <span>Admin</span></a>
+        <a class="a-topbar__link" href="verwalten.php"><i class="fa-solid fa-list-check"></i> <span>Bilder</span></a>
+        <a class="a-topbar__link" href="../" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
+        <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
+        <a class="a-topbar__link a-topbar__link--danger" href="?logout=1" onclick="if(!confirm('Wirklich abmelden?'))return false"><i class="fa-solid fa-right-from-bracket"></i> <span>Abmelden</span></a>
     </div>
 
+    <h1 class="a-page-title"><i class="fa-solid fa-chart-simple"></i> Statistik</h1>
+    <p class="a-page-sub">Anonyme Reichweiten-Messung der Foto-Galerie.</p>
+
     <?php if (!$hasData): ?>
-        <div class="card">
-            <p class="empty">
+        <div class="a-card">
+            <p class="a-empty">
                 <i class="fa-solid fa-circle-info"></i>
                 Noch keine Daten vorhanden. Die Messung startet automatisch, sobald Besucher die
                 Galerie aufrufen. (Zahlen erscheinen hier erst nach dem ersten Aufruf.)
@@ -214,46 +192,46 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         </div>
     <?php endif; ?>
 
-    <div class="kpis">
-        <div class="kpi">
-            <div class="lbl">Galerie-Aufrufe gesamt</div>
-            <div class="val"><?= (int)($st['totals']['views'] ?? 0) ?></div>
-            <div class="sub"><?= $viewsToday ?> heute</div>
+    <div class="a-kpis">
+        <div class="a-kpi">
+            <div class="a-kpi__lbl">Galerie-Aufrufe gesamt</div>
+            <div class="a-kpi__val"><?= (int)($st['totals']['views'] ?? 0) ?></div>
+            <div class="a-kpi__sub"><?= $viewsToday ?> heute</div>
         </div>
-        <div class="kpi">
-            <div class="lbl">Aufrufe 30 Tage</div>
-            <div class="val"><?= $views30 ?></div>
-            <div class="sub"><?= $views7 ?> in den letzten 7 Tagen</div>
+        <div class="a-kpi">
+            <div class="a-kpi__lbl">Aufrufe 30 Tage</div>
+            <div class="a-kpi__val"><?= $views30 ?></div>
+            <div class="a-kpi__sub"><?= $views7 ?> in den letzten 7 Tagen</div>
         </div>
-        <div class="kpi">
-            <div class="lbl">Besucher 30 Tage</div>
-            <div class="val"><?= $uniq30 ?></div>
-            <div class="sub"><?= $uniqToday ?> heute (ohne Doppelzählung)</div>
+        <div class="a-kpi">
+            <div class="a-kpi__lbl">Besucher 30 Tage</div>
+            <div class="a-kpi__val"><?= $uniq30 ?></div>
+            <div class="a-kpi__sub"><?= $uniqToday ?> heute (ohne Doppelzählung)</div>
         </div>
-        <div class="kpi">
-            <div class="lbl">Event-Aufrufe</div>
-            <div class="val"><?= (int)($st['totals']['events'] ?? 0) ?></div>
-            <div class="sub">Events insgesamt geöffnet</div>
+        <div class="a-kpi">
+            <div class="a-kpi__lbl">Event-Aufrufe</div>
+            <div class="a-kpi__val"><?= (int)($st['totals']['events'] ?? 0) ?></div>
+            <div class="a-kpi__sub">Events insgesamt geöffnet</div>
         </div>
-        <div class="kpi">
-            <div class="lbl">Foto-Aufrufe</div>
-            <div class="val"><?= (int)($st['totals']['photos'] ?? 0) ?></div>
-            <div class="sub">Bilder in der Großansicht</div>
+        <div class="a-kpi">
+            <div class="a-kpi__lbl">Foto-Aufrufe</div>
+            <div class="a-kpi__val"><?= (int)($st['totals']['photos'] ?? 0) ?></div>
+            <div class="a-kpi__sub">Bilder in der Großansicht</div>
         </div>
     </div>
 
-    <div class="card">
+    <div class="a-card">
         <h2>Aufrufe der letzten 30 Tage</h2>
         <?php if ($views30 === 0): ?>
-            <p class="empty">Noch keine Aufrufe im Zeitraum.</p>
+            <p class="a-empty">Noch keine Aufrufe im Zeitraum.</p>
         <?php else: ?>
-            <div class="chart">
+            <div class="a-chart">
                 <?php foreach ($days30 as $d): $v = (int)($st['days'][$d]['views'] ?? 0); ?>
                     <div class="bar" style="height:<?= max(1, (int)round($v / $chartMax * 100)) ?>%"
                          title="<?= h(date('d.m.Y', strtotime($d))) ?>: <?= $v ?> Aufrufe"></div>
                 <?php endforeach; ?>
             </div>
-            <div class="chart-x">
+            <div class="a-chart-x">
                 <?php foreach ($days30 as $i => $d): ?>
                     <span><?= $i % 5 === 0 ? h(date('d.m.', strtotime($d))) : '&nbsp;' ?></span>
                 <?php endforeach; ?>
@@ -261,13 +239,13 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         <?php endif; ?>
     </div>
 
-    <div class="grid2">
-        <div class="card">
+    <div class="a-grid2">
+        <div class="a-card">
             <h2>Beliebteste Events</h2>
             <?php if (!$evList): ?>
-                <p class="empty">Noch keine Event-Aufrufe.</p>
+                <p class="a-empty">Noch keine Event-Aufrufe.</p>
             <?php else: ?>
-                <table>
+                <table class="a-table">
                     <tr><th>Event</th><th class="num">Aufrufe</th></tr>
                     <?php foreach ($evList as $e): ?>
                         <tr>
@@ -279,18 +257,18 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
             <?php endif; ?>
         </div>
 
-        <div class="card">
+        <div class="a-card">
             <h2>Beliebteste Fotos</h2>
             <?php if (!$phList): ?>
-                <p class="empty">Noch keine Foto-Aufrufe.</p>
+                <p class="a-empty">Noch keine Foto-Aufrufe.</p>
             <?php else: ?>
-                <table>
+                <table class="a-table">
                     <tr><th>Foto</th><th class="num">Aufrufe</th></tr>
                     <?php foreach ($phList as $p): ?>
                         <tr>
                             <td class="trunc" title="<?= h($p['event'] . ' · ' . $p['file']) ?>">
                                 <?= h($p['file']) ?>
-                                <span class="muted"> · <?= h($p['event']) ?></span>
+                                <span class="a-muted"> · <?= h($p['event']) ?></span>
                             </td>
                             <td class="num"><?= $p['n'] ?></td>
                         </tr>
@@ -300,13 +278,13 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         </div>
     </div>
 
-    <div class="grid2">
-        <div class="card">
+    <div class="a-grid2">
+        <div class="a-card">
             <h2>Woher kommen die Besucher</h2>
             <?php if (!$refList): ?>
-                <p class="empty">Noch keine Verweise erfasst.</p>
+                <p class="a-empty">Noch keine Verweise erfasst.</p>
             <?php else: ?>
-                <table>
+                <table class="a-table">
                     <tr><th>Quelle</th><th class="num">Aufrufe</th></tr>
                     <?php foreach ($refList as $r): ?>
                         <tr><td class="trunc"><?= h($r['host']) ?></td><td class="num"><?= $r['n'] ?></td></tr>
@@ -315,16 +293,16 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
             <?php endif; ?>
         </div>
 
-        <div class="card">
+        <div class="a-card">
             <h2>Geräte</h2>
             <?php if ($devMobile + $devDesktop === 0): ?>
-                <p class="empty">Noch keine Daten.</p>
+                <p class="a-empty">Noch keine Daten.</p>
             <?php else: ?>
                 <div class="devbar">
                     <i class="m" style="width:<?= round($devMobile / $devTotal * 100) ?>%"></i>
                     <i class="d" style="width:<?= round($devDesktop / $devTotal * 100) ?>%"></i>
                 </div>
-                <p class="muted">
+                <p class="a-muted">
                     Mobil: <?= $devMobile ?> (<?= round($devMobile / $devTotal * 100) ?> %) ·
                     Desktop: <?= $devDesktop ?> (<?= round($devDesktop / $devTotal * 100) ?> %)
                 </p>
@@ -332,7 +310,7 @@ td.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         </div>
     </div>
 
-    <p class="muted" style="margin-top:8px">
+    <p class="a-muted" style="margin-top:8px">
         Messung ohne Cookies. IP-Adressen werden nicht gespeichert; für die Besucherzahl wird nur ein
         tagesaktueller, anonymisierter Hash verwendet (Löschung nach 60 Tagen).
     </p>

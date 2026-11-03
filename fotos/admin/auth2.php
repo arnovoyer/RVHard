@@ -131,186 +131,75 @@ function fg2_render_login_page($msg = '', $msgType = 'err') {
     $year = date('Y');
     ?>
 <!doctype html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="color-scheme" content="dark">
 <title>Anmelden · RV Hard</title>
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('rv-hard-theme');
+    document.documentElement.setAttribute('data-theme', (t === 'dark' || t === 'light') ? t : 'light');
+  } catch (e) {}
+  var h = location.hostname;
+  var base = (h === 'rv-hard.at' || h === 'www.rv-hard.at') ? '/assets/' : 'https://rv-hard.at/assets/';
+  document.write('<link rel="stylesheet" href="' + base + 'admin.css?v=20261103">');
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-<style>
-:root{
-  --bg: #121417;
-  --card: #1b2027;
-  --soft: #232a33;
-  --border: #313b49;
-  --text: #e7ebef;
-  --muted: #98a2b3;
-  --yellow: #ffc107;
-  --yellow-hover: #ffd24a;
-  --red: #e2001a;
-  --radius: 12px;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%;width:100%}
-body{
-  font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  min-height:100vh;min-height:100svh;
-  -webkit-font-smoothing:antialiased;
-}
-.card{
-  width:100%;max-width:400px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:28px 26px 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.4);
-}
-.logo{
-  width:56px;height:56px;border-radius:14px;background:#fff;
-  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
-  box-shadow: 0 0 0 2px rgba(255,193,7,.25);
-}
-.logo img{width:70%;height:70%;object-fit:contain}
-h1{
-  margin:0 0 22px;font-size:22px;font-weight:700;text-align:center;
-  letter-spacing:-.01em;color:var(--text);
-}
-.msg{
-  border-radius:var(--radius);
-  padding:11px 13px;
-  margin-bottom:18px;
-  font-size:13.5px;line-height:1.5;
-  display:flex;align-items:flex-start;gap:9px;
-}
-.msg i{margin-top:2px;flex-shrink:0;font-size:15px}
-.msg.err{background:rgba(226,0,26,.1);border:1px solid rgba(226,0,26,.3);color:#ffcdd2}
-.msg.err i{color:#ff7a84}
-.msg.ok{background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.28);color:#ffe9a7}
-.msg.ok i{color:var(--yellow)}
-.msg.warn{background:rgba(255,100,0,.1);border:1px solid rgba(255,100,0,.3);color:#ffd7b6}
-.msg.warn i{color:#ffa755}
-.msg code{font-family:Menlo,Consolas,monospace;background:rgba(0,0,0,.35);padding:1px 5px;border-radius:4px;font-size:12px}
-.field{margin-bottom:14px}
-.field label{
-  display:block;margin:0 0 6px;font-size:12.5px;font-weight:700;color:var(--text);
-  letter-spacing:.01em;
-}
-.input{position:relative}
-.input i{
-  position:absolute;left:13px;top:50%;transform:translateY(-50%);
-  color:var(--muted);font-size:15px;width:17px;text-align:center;pointer-events:none;
-  transition:color .2s;
-}
-.input input{
-  width:100%;
-  padding:12.5px 14px 12.5px 40px;
-  background:var(--soft);
-  border:1.5px solid var(--border);
-  color:var(--text);
-  font-family:inherit;font-size:14.5px;font-weight:500;
-  border-radius:var(--radius);
-  outline:none;
-  transition:border-color .2s, box-shadow .2s, background .2s;
-}
-.input input:hover{border-color:#414c5b}
-.input input:focus{
-  border-color:var(--yellow);
-  background:#1e242d;
-  box-shadow:0 0 0 4px rgba(255,193,7,.15);
-}
-.input:focus-within > i{color:var(--yellow)}
-.btn{
-  width:100%;
-  margin-top:4px;
-  padding:13px 18px;
-  background:linear-gradient(180deg, var(--yellow-hover), var(--yellow));
-  color:#1a1600;
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:var(--radius);
-  font-family:inherit;font-weight:700;font-size:15px;letter-spacing:.01em;
-  cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  transition:filter .2s, transform .1s;
-  box-shadow:0 8px 20px rgba(255,193,7,.18);
-}
-.btn:hover{filter:brightness(1.06)}
-.btn:active{transform:translateY(1px)}
-.foot{
-  margin-top:22px;padding-top:14px;
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  font-size:11.5px;color:var(--muted);
-}
-.foot a{color:var(--muted);text-decoration:none;padding:3px 0;transition:color .2s}
-.foot a:hover{color:var(--yellow)}
-.foot .copy span{color:var(--yellow);font-weight:700}
-@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-</style>
 </head>
-<body>
+<body class="a-login-page">
 
-<main class="card">
+<main class="a-login">
   <form method="post" novalidate autocomplete="on">
     <?= $csrfH ?>
 
-    <div class="logo">
+    <div class="a-login__logo">
       <img src="<?= htmlspecialchars($logoUrl) ?>" alt="RV Hard" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-lock\' style=\'color:#121417;font-size:26px\'></i>'">
     </div>
     <h1>Anmelden</h1>
 
     <?php if (!$configExists): ?>
-      <div class="msg warn">
+      <div class="a-msg a-msg--warn" style="margin-bottom:16px;">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <div><strong>Fehlt: config.php</strong><br>Kopiere <code>config.example.php</code> nach <code>config.php</code>.</div>
       </div>
     <?php elseif (!$users): ?>
-      <div class="msg warn">
+      <div class="a-msg a-msg--warn" style="margin-bottom:16px;">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <div><strong>Kein Benutzer</strong><br>Füge <code>RVHardAdmin</code> + bcrypt Hash in <code>config.php</code> ein.</div>
       </div>
     <?php endif ?>
 
     <?php if ($msg && $msgType == 'err'): ?>
-      <div class="msg err"><i class="fa-solid fa-circle-exclamation"></i><div><?= htmlspecialchars($msg) ?></div></div>
+      <div class="a-msg a-msg--err" style="margin-bottom:16px;"><i class="fa-solid fa-circle-exclamation"></i><div><?= htmlspecialchars($msg) ?></div></div>
     <?php endif ?>
     <?php if ($msg && $msgType == 'ok'): ?>
-      <div class="msg ok"><i class="fa-solid fa-circle-check"></i><div><?= htmlspecialchars($msg) ?></div></div>
+      <div class="a-msg a-msg--ok" style="margin-bottom:16px;"><i class="fa-solid fa-circle-check"></i><div><?= htmlspecialchars($msg) ?></div></div>
     <?php endif ?>
 
-    <div class="field">
+    <div class="a-field">
       <label for="un">Benutzername</label>
-      <div class="input">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" id="un" name="username" autocomplete="username"
-          spellcheck="false" inputmode="text" required aria-required="true">
-      </div>
+      <input type="text" id="un" name="username" autocomplete="username" spellcheck="false" inputmode="text" required aria-required="true">
     </div>
 
-    <div class="field">
+    <div class="a-field">
       <label for="pw">Passwort</label>
-      <div class="input">
-        <i class="fa-solid fa-key"></i>
-        <input type="password" id="pw" name="password" autocomplete="current-password"
-          required aria-required="true">
-      </div>
+      <input type="password" id="pw" name="password" autocomplete="current-password" required aria-required="true">
     </div>
 
-    <button type="submit" class="btn">
+    <button type="submit" class="a-btn a-btn--primary" style="width:100%;">
       <i class="fa-solid fa-right-to-bracket"></i> Anmelden
     </button>
 
-    <div class="foot">
+    <div class="a-foot">
       <a href="../"><i class="fa-solid fa-arrow-left"></i> Zurück</a>
-      <div class="copy">© <?= $year ?> <span>RV Hard</span></div>
+      <div>© <?= $year ?> <span style="color:var(--accent-yellow);font-weight:700;">RV Hard</span></div>
       <div>
         <a href="../impressum.html">Impressum</a>
         <span aria-hidden="true"> · </span>
