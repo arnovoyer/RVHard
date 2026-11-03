@@ -95,7 +95,7 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
                 ? '/fotos' : '';
             const prefixCss = (b === '' ? './' : b + '/') + 'assets/';
             const assetsBase = (b === '' ? './' : '../') + 'assets/';
-            const logo = assetsBase + 'img/logo/RV_Hard_Logo_dunkel.png';
+            const logo = assetsBase + 'img/logo/favicon.png';
             document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261024a">`);
