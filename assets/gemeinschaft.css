@@ -11,7 +11,7 @@
     width: 250px;
     height: 150px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: var(--radius-md, 12px);
     transition: transform 0.3s;
 }
 
@@ -23,7 +23,7 @@
     width: 100%;
     height: 400px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: var(--radius-md, 12px);
     margin-bottom: 30px;
 }
 
@@ -44,7 +44,7 @@
 
 .slide-track img {
     flex: 0 0 auto;
-    border-radius: 10px;
+    border-radius: var(--radius-md, 12px);
     object-fit: cover;
 }
 

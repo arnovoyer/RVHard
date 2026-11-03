@@ -1,31 +1,36 @@
 :root {
     --accent: #f5b301;
     --accent-soft: rgba(245, 179, 1, 0.15);
-    --text-main: #1f2933;
-    --text-muted: #6b7280;
-    --bg-main: #f6f7f9;
-    --card-bg: #ffffff;
+    --text-main: var(--site-heading, #1f2933);
+    --text-muted: var(--site-muted, #6b7280);
+    --bg-main: var(--site-bg, #f6f7f9);
+    --card-bg: var(--site-surface, #ffffff);
 }
 
 body {
-    font-family: 'Inter', 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
-    background: linear-gradient(180deg, #f6f7f9 0%, #ffffff 100%);
+    background: var(--site-bg, #f6f7f9);
     color: var(--text-main);
     line-height: 1.65;
 }
 
 .verein-container {
     max-width: 1000px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--card-bg, #fff);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    line-height: 1.7;
+    color: var(--text-muted);
 }
 
 section {
     background-color: var(--card-bg);
     padding: 2.5rem;
     margin-bottom: 2.5rem;
-    border-radius: 20px;
+    border-radius: var(--radius-lg, 16px);
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
@@ -87,7 +92,7 @@ p {
 }
 
 .mail-link {
-    color: var(--accent);
+    color: var(--link, #a16207);
     font-weight: 600;
     text-decoration: none;
 }
@@ -123,21 +128,10 @@ p {
     transform: scale(1.05);
 }
 
-.verein-container {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    line-height: 1.7;
-    color: #555;
-}
-
 .verein-container h2 {
-    color: #111;
+    color: var(--text-main);
     margin-bottom: 1rem;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--site-border, #eee);
     padding-bottom: 0.5rem;
 }
 
@@ -147,18 +141,18 @@ p {
 }
 
 .geschichte-abschnitt h3 {
-    color: #333;
+    color: var(--text-main);
     margin-bottom: 0.75rem;
 }
 
 
 .highlight {
     font-weight: bold;
-    color: #007bff;
+    color: var(--link, #a16207);
 }
 
 .jahr {
     font-style: italic;
-    color: #777;
+    color: var(--text-muted);
     margin-right: 0.5rem;
 }

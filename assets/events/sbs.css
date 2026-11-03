@@ -3,11 +3,11 @@
 }
 
 .event-block {
-  border: 1px solid #ccc;
-  border-radius: 12px;
+  border: 1px solid var(--site-border, #ccc);
+  border-radius: var(--radius-md, 12px);
   padding: 1.5rem;
   margin-bottom: 3rem;
-  background-color: #f9f9f9;
+  background-color: var(--site-surface-soft, #f9f9f9);
 }
 
 .event-block h3 {
@@ -30,9 +30,9 @@
 }
 
 .danke-section {
-  background-color: #f8f8f8;
+  background-color: var(--site-surface-soft, #f8f8f8);
   padding: 2rem 1rem;
   text-align: center;
-  border-radius: 12px;
+  border-radius: var(--radius-md, 12px);
   margin-bottom: 2rem;
 }

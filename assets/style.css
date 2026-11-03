@@ -13,7 +13,18 @@ body {
     --site-surface-soft: #f2f3f5;
     --site-border: #e0e0e0;
     --accent-yellow: #ffc107;
+    --accent-gold: #f5b301;
     --accent-yellow-hover: #e0a800;
+    /* Links: dunkleres Gold für ausreichenden Kontrast auf hellem Grund */
+    --link: #a16207;
+    --link-hover: #7c4a06;
+    /* Marken-Schatten (ersetzt Fremdfarben wie Blau) */
+    --shadow-brand: 0 2px 10px rgba(255, 193, 7, 0.4);
+    /* Radius-Skala (durchgehend, Pill-Buttons bleiben Pill) */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
 }
 
 html[data-theme="dark"] {
@@ -25,7 +36,11 @@ html[data-theme="dark"] {
     --site-surface-soft: #232a33;
     --site-border: #313b49;
     --accent-yellow: #ffc107;
+    --accent-gold: #ffd24a;
     --accent-yellow-hover: #ffd24a;
+    /* Auf dunklem Grund ist das helle Markengold gut lesbar */
+    --link: #ffc107;
+    --link-hover: #ffd24a;
     color-scheme: dark;
 }
 
@@ -79,13 +94,13 @@ h3 {
 }
 
 a {
-    color: var(--accent-yellow);
+    color: var(--link);
     text-decoration: none;
     transition: color 0.3s ease-in-out;
 }
 
 a:hover {
-    color: var(--accent-yellow-hover);
+    color: var(--link-hover);
 }
 
 .container {
@@ -101,11 +116,11 @@ a:hover {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: linear-gradient(135deg, #ffc107, #f5b301);
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
     color: #1a1a1a;
     padding: 0.75rem 1.4rem;
     font-weight: 700;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     font-size: 0.95rem;
@@ -259,6 +274,23 @@ footer a {
     transform: rotate(10deg)
 }
 
+/* =================================================================
+   DARK MODE – zentrale Komponenten
+   (früher per JS injiziert; jetzt Teil des Design-Systems,
+    damit das Theme bereits mit dem Stylesheet greift)
+   ================================================================= */
+html[data-theme="dark"] {
+    --card-bg: var(--site-surface-soft);
+    --bg-main: var(--site-bg);
+    --text-main: var(--site-heading);
+    --text-muted: var(--site-text);
+}
+
+html[data-theme="dark"] body {
+    background: var(--site-bg);
+    color: var(--site-text);
+}
+
 html[data-theme="dark"] p,
 html[data-theme="dark"] li,
 html[data-theme="dark"] label,
@@ -271,12 +303,181 @@ html[data-theme="dark"] .event-date {
 html[data-theme="dark"] .card,
 html[data-theme="dark"] .news-card,
 html[data-theme="dark"] .event-card,
-html[data-theme="dark"] .fakt,
 html[data-theme="dark"] .news-item,
-html[data-theme="dark"] .gemeinschaft-item,
-html[data-theme="dark"] .verein-vorstellung {
+html[data-theme="dark"] .related-news-item,
+html[data-theme="dark"] .fakt,
+html[data-theme="dark"] .verein-vorstellung,
+html[data-theme="dark"] .info-section,
+html[data-theme="dark"] .strecken-section,
+html[data-theme="dark"] .zeitplan-section,
+html[data-theme="dark"] .anmeldung-section,
+html[data-theme="dark"] .partner-sponsoren-section,
+html[data-theme="dark"] .pdf-section,
+html[data-theme="dark"] .danke-section,
+html[data-theme="dark"] .vorstand-intro,
+html[data-theme="dark"] .vorstandsmitglied,
+html[data-theme="dark"] .verein-container,
+html[data-theme="dark"] .geschichte-abschnitt,
+html[data-theme="dark"] .zeitplan-tabelle,
+html[data-theme="dark"] .zeitplan-tabelle tr,
+html[data-theme="dark"] .rr-mobile-box,
+html[data-theme="dark"] .sponsoren-grid,
+html[data-theme="dark"] .training-seite section,
+html[data-theme="dark"] .modern-event-card,
+html[data-theme="dark"] .kontakt-container,
+html[data-theme="dark"] .kontakt-container section,
+html[data-theme="dark"] .verein-container section,
+html[data-theme="dark"] .vorstand-kurz .mitglied,
+html[data-theme="dark"] .membership-section {
     background: var(--site-surface-soft) !important;
-    border: 1px solid var(--site-border);
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] .gemeinschaft-item {
+    background: var(--site-bg) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="dark"] .timeline-content,
+html[data-theme="dark"] .membership-card {
+    background: var(--site-surface) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34) !important;
+}
+
+html[data-theme="dark"] .sponsoren-seite,
+html[data-theme="dark"] .nightrace-container,
+html[data-theme="dark"] .news-page,
+html[data-theme="dark"] .training-seite,
+html[data-theme="dark"] .termine-seite {
+    background-color: var(--site-bg) !important;
+}
+
+html[data-theme="dark"] .timeline-item:first-child .timeline-content {
+    background: #262f3a !important;
+    border-color: rgba(255, 193, 7, 0.4) !important;
+}
+
+html[data-theme="dark"] .timeline::after {
+    background: linear-gradient(to bottom, transparent, var(--accent-yellow), var(--accent-yellow), transparent) !important;
+}
+
+html[data-theme="dark"] .timeline-point {
+    background: var(--accent-yellow) !important;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25) !important;
+}
+
+html[data-theme="dark"] .zeitplan-tabelle tbody tr:nth-child(even),
+html[data-theme="dark"] .zeitplan-tabelle tbody tr:hover {
+    background: var(--site-surface) !important;
+}
+
+html[data-theme="dark"] .related-news-tags .tag,
+html[data-theme="dark"] .mitglied-mail,
+html[data-theme="dark"] .year-filter {
+    background: var(--site-surface) !important;
+    color: var(--site-text) !important;
+    border-color: var(--site-border) !important;
+}
+
+html[data-theme="dark"] .related-news-text p,
+html[data-theme="dark"] .mitglied-funktion,
+html[data-theme="dark"] .jahr,
+html[data-theme="dark"] .training-kontakt,
+html[data-theme="dark"] .sparte-beschreibung,
+html[data-theme="dark"] .sparte-verein,
+html[data-theme="dark"] .training-label,
+html[data-theme="dark"] .modern-event-card p,
+html[data-theme="dark"] .modern-event-card .event-date-time,
+html[data-theme="dark"] .kontakt-hinweis,
+html[data-theme="dark"] .kontakt-summary,
+html[data-theme="dark"] .dokumente-bereich h3,
+html[data-theme="dark"] .kontakt-container p,
+html[data-theme="dark"] .timeline-content p,
+html[data-theme="dark"] .geschichte-abschnitt > p,
+html[data-theme="dark"] .membership-section p,
+html[data-theme="dark"] .membership-card p,
+html[data-theme="dark"] .membership-card li,
+html[data-theme="dark"] cite {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .vorstand-intro h2,
+html[data-theme="dark"] .vorstand-intro p,
+html[data-theme="dark"] .mitglied-name,
+html[data-theme="dark"] .related-news-text h3,
+html[data-theme="dark"] .sponsoren-seite h1,
+html[data-theme="dark"] .nightrace-container h1,
+html[data-theme="dark"] .nightrace-container h2,
+html[data-theme="dark"] .training-seite h2,
+html[data-theme="dark"] .modern-event-card .event-title,
+html[data-theme="dark"] .kontakt-container h1,
+html[data-theme="dark"] .kontakt-container h2,
+html[data-theme="dark"] .kontakt-container h3,
+html[data-theme="dark"] .verein-container h1,
+html[data-theme="dark"] .verein-container h2,
+html[data-theme="dark"] .verein-container h3,
+html[data-theme="dark"] .timeline-content h3,
+html[data-theme="dark"] .membership-card h2 {
+    color: var(--site-heading) !important;
+}
+
+html[data-theme="dark"] .training-seite section,
+html[data-theme="dark"] .modern-event-card,
+html[data-theme="dark"] .kontakt-container,
+html[data-theme="dark"] .kontakt-container section,
+html[data-theme="dark"] .verein-container section {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28) !important;
+}
+
+html[data-theme="dark"] .training-seite li i,
+html[data-theme="dark"] .sparte-vorteile i,
+html[data-theme="dark"] .modern-event-card .event-location i {
+    color: var(--accent-yellow) !important;
+}
+
+html[data-theme="dark"] .dokument-link {
+    color: var(--accent-yellow) !important;
+    border-color: var(--accent-yellow) !important;
+}
+
+html[data-theme="dark"] .dokument-link:hover {
+    background-color: var(--accent-yellow-hover) !important;
+    color: #fff !important;
+}
+
+html[data-theme="dark"] #cookie-banner {
+    background: #1f242c !important;
+    color: var(--site-text) !important;
+    border: 1px solid var(--site-border) !important;
+}
+
+html[data-theme="dark"] #cookie-banner h3,
+html[data-theme="dark"] #cookie-banner p,
+html[data-theme="dark"] #cookie-banner strong,
+html[data-theme="dark"] #cookie-banner div {
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] #cookie-banner #decline-all,
+html[data-theme="dark"] #cookie-banner #open-preferences,
+html[data-theme="dark"] #cookie-banner .save-pref {
+    background: #2c3440 !important;
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] #cookie-banner .cookie-checkbox {
+    background: #232a33 !important;
+    color: var(--site-text) !important;
+}
+
+html[data-theme="dark"] .logos:before {
+    background: linear-gradient(to left, rgba(35, 42, 51, 0), var(--site-surface-soft));
+}
+
+html[data-theme="dark"] .logos:after {
+    background: linear-gradient(to right, rgba(35, 42, 51, 0), var(--site-surface-soft));
 }
 
 /* Footer Theme Toggle Styling */
@@ -319,38 +520,3 @@ html[data-theme="dark"] footer .theme-toggle:hover {
     color: var(--accent-yellow);
 }
 
-html[data-theme="dark"] .fakt,
-html[data-theme="dark"] .news-item,
-html[data-theme="dark"] .logos,
-html[data-theme="dark"] .event-card,
-html[data-theme="dark"] .gemeinschaft-item {
-    background: var(--site-surface-soft);
-    border: 1px solid var(--site-border);
-}
-
-html[data-theme="dark"] .gemeinschaft-item {
-    background: var(--site-bg);
-    border-color: transparent;
-    box-shadow: none;
-}
-
-html[data-theme="dark"] .fakt h3,
-html[data-theme="dark"] .news-content h3,
-html[data-theme="dark"] .gemeinschaft h2,
-html[data-theme="dark"] .fakten h2,
-html[data-theme="dark"] .cta-mitglied h2 {
-    color: var(--site-heading);
-}
-
-html[data-theme="dark"] .gemeinschaft .gemeinschaft-teaser,
-html[data-theme="dark"] .fakt p {
-    color: var(--site-text);
-}
-
-html[data-theme="dark"] .logos:before {
-    background: linear-gradient(to left, rgba(35, 42, 51, 0), var(--site-surface-soft));
-}
-
-html[data-theme="dark"] .logos:after {
-    background: linear-gradient(to right, rgba(35, 42, 51, 0), var(--site-surface-soft));
-}

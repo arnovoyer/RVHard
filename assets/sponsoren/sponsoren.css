@@ -1,13 +1,13 @@
 .sponsoren-seite {
     padding-top: 3rem;
     padding-bottom: 3rem;
-    background-color: #ffffff;
+    background-color: var(--site-surface, #ffffff);
 }
 
 .sponsoren-seite h1 {
     text-align: center;
     margin-bottom: 2.5rem;
-    color: #111;
+    color: var(--site-heading, #111);
 }
 
 .sponsoren-grid {
@@ -15,7 +15,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-sm, 8px);
     position: relative;
     grid-auto-rows: auto;
 }
