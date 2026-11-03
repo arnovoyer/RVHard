@@ -477,9 +477,9 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
         kriterium: 'fa-flag-checkered'
     };
     const disciplineBadge = {
-        bergrennen: { label: 'Bergrennen', bg: '#198754' },
-        ezf: { label: 'EZF', bg: '#0d6efd' },
-        kriterium: { label: 'Stadtkriterium', bg: '#dc3545' }
+        bergrennen: { label: 'Bergrennen' },
+        ezf: { label: 'EZF' },
+        kriterium: { label: 'Stadtkriterium' }
     };
 
     const fallbackCover = (subtype) => {
@@ -523,7 +523,7 @@ function fgRenderEventsOverview(events, containerId = 'fg-events') {
             html.push(`
                 <a class="fg-event-card" href="${link}" data-aos="fade-up">
                     <div class="fg-event-card__cover" ${coverBgStyle}>
-                        ${badge ? `<span class="fg-event-card__badge" style="background:${badge.bg}; color:#fff;">${badge.label}</span>` : ''}
+                        ${badge ? `<span class="fg-event-card__badge">${badge.label}</span>` : ''}
                         <div class="fg-event-card__count">
                             <i class="fa-regular fa-image"></i> ${count}
                         </div>

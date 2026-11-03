@@ -98,7 +98,7 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
             const logo = assetsBase + 'img/logo/favicon.png';
             document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
-            document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261024a">`);
+            document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261103">`);
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -370,7 +370,7 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261024a" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261103" defer><\/script>`);
         })();
     </script>
 
