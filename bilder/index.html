@@ -10,46 +10,33 @@
   <meta name="theme-color" content="#111">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/navigation.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  </noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      background: #f4f4f4;
-      color: #222;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background: #111;
-      color: #fff;
-      padding: 0.9rem 1rem;
-      text-align: center;
-      border-bottom: 3px solid #ffc400;
-    }
-    header h1 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    header h1 i { color: #ffc400; }
-    main {
-      flex: 1;
-      width: 100%;
-      max-width: 640px;
+    .upload-main {
+      max-width: 680px;
       margin: 0 auto;
-      padding: 1rem;
+      padding: 2.5rem 1rem 3rem;
+    }
+    .upload-main h1 {
+      margin-top: 0;
+      font-size: 1.7rem;
+    }
+    .upload-lead {
+      color: var(--site-muted);
+      margin-bottom: 1.5rem;
     }
     .card {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      background: var(--site-surface);
+      border: 1px solid var(--site-border);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
       padding: 1.25rem;
       margin-bottom: 1rem;
     }
@@ -58,46 +45,48 @@
       font-weight: 600;
       font-size: 0.92rem;
       margin-bottom: 0.5rem;
-      color: #333;
+      color: var(--site-heading);
     }
     .field-label .req { color: #e2001a; }
     .event-input {
       width: 100%;
       padding: 0.75rem 0.9rem;
-      border: 2px solid #ddd;
-      border-radius: 10px;
+      border: 2px solid var(--site-border);
+      border-radius: var(--radius-md, 12px);
       font-size: 1rem;
       font-family: inherit;
+      background: var(--site-bg);
+      color: var(--site-text);
       transition: border-color 0.2s;
     }
     .event-input:focus {
       outline: none;
-      border-color: #ffc400;
+      border-color: var(--accent-yellow);
     }
     .hint {
       font-size: 0.8rem;
-      color: #777;
+      color: var(--site-muted);
       margin-top: 0.35rem;
     }
 
     /* Dropzone */
     .dropzone {
-      border: 2.5px dashed #bbb;
-      border-radius: 14px;
+      border: 2.5px dashed var(--site-border);
+      border-radius: var(--radius-lg, 16px);
       padding: 1.6rem 1rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
-      background: #fafafa;
+      background: var(--site-surface-soft);
       margin-top: 0.5rem;
     }
     .dropzone:hover, .dropzone.drag {
-      border-color: #ffc400;
-      background: #fff9e6;
+      border-color: var(--accent-yellow);
+      background: rgba(255, 193, 7, 0.08);
     }
     .dropzone i {
       font-size: 2.2rem;
-      color: #ffc400;
+      color: var(--accent-yellow);
       margin-bottom: 0.5rem;
     }
     .dropzone p {
@@ -106,7 +95,7 @@
     }
     .dropzone small {
       display: block;
-      color: #888;
+      color: var(--site-muted);
       font-size: 0.78rem;
       margin-top: 0.3rem;
     }
@@ -121,9 +110,9 @@
     .file-item {
       position: relative;
       aspect-ratio: 1;
-      border-radius: 8px;
+      border-radius: var(--radius-sm, 8px);
       overflow: hidden;
-      background: #eee;
+      background: var(--site-surface-soft);
     }
     .file-item img, .file-item video {
       width: 100%;
@@ -137,7 +126,7 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       color: #fff;
       border: none;
       cursor: pointer;
@@ -150,11 +139,11 @@
       position: absolute;
       bottom: 3px;
       left: 3px;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       color: #fff;
       font-size: 0.6rem;
       padding: 1px 5px;
-      border-radius: 4px;
+      border-radius: var(--radius-sm, 8px);
     }
 
     /* Progress */
@@ -164,36 +153,40 @@
     }
     .progress-bar {
       height: 10px;
-      background: #eee;
-      border-radius: 5px;
+      background: var(--site-surface-soft);
+      border-radius: var(--radius-pill, 999px);
       overflow: hidden;
     }
     .progress-bar > div {
       height: 100%;
-      background: linear-gradient(90deg, #ffc400, #f5b301);
+      background: linear-gradient(90deg, var(--accent-yellow), var(--accent-gold));
       width: 0%;
       transition: width 0.3s;
     }
     .progress-text {
       font-size: 0.82rem;
-      color: #555;
+      color: var(--site-muted);
       margin-top: 0.4rem;
       text-align: center;
     }
 
     /* Submit */
     .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       width: 100%;
       margin-top: 1rem;
       padding: 0.95rem;
-      background: linear-gradient(135deg, #ffc400, #f5b301);
+      background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
       color: #1a1a1a;
       border: none;
-      border-radius: 12px;
+      border-radius: var(--radius-pill, 999px);
       font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(245,179,1,0.35);
+      box-shadow: 0 6px 16px rgba(245, 179, 1, 0.35);
       transition: transform 0.2s, opacity 0.2s;
       font-family: inherit;
     }
@@ -208,7 +201,7 @@
 
     .status-msg {
       padding: 0.9rem 1rem;
-      border-radius: 10px;
+      border-radius: var(--radius-md, 12px);
       font-size: 0.92rem;
       margin-top: 0.8rem;
       display: none;
@@ -225,27 +218,31 @@
       border: 1px solid #f5c6cb;
       display: block;
     }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.78rem;
-      color: #999;
+    html[data-theme="dark"] .status-msg.ok {
+      background: #14331f;
+      color: #9cecb7;
+      border-color: #1f5334;
     }
-    footer a { color: #777; }
+    html[data-theme="dark"] .status-msg.err {
+      background: #3a1d20;
+      color: #ffb4bd;
+      border-color: #5c2a30;
+    }
 
     @media (min-width: 600px) {
-      main { padding: 1.5rem; }
       .card { padding: 1.6rem; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1><i class="fa-solid fa-camera-retro"></i> Bilder &amp; Videos senden</h1>
+    <div id="navigation-container"></div>
   </header>
 
-  <main>
+  <main class="upload-main">
+    <h1><i class="fa-solid fa-camera-retro"></i> Bilder &amp; Videos senden</h1>
+    <p class="upload-lead">Sende uns Fotos und Videos von Radsport-Events – wir ordnen sie der passenden Veranstaltung zu.</p>
+
     <div class="card">
       <label class="field-label" for="event">Name der Veranstaltung <span class="req">*</span></label>
       <input type="text" id="event" class="event-input" placeholder="z.B. Vorarlberger Radsport-Tag 2026" maxlength="80">
@@ -271,11 +268,19 @@
     </div>
   </main>
 
-  <footer>
-    RV Hard · Bilder werden nur für Vereinszwecke genutzt ·
-    <a href="/fotos/datenschutz.html">Datenschutz</a>
-  </footer>
+  <footer id="site-footer"></footer>
 
+  <script src="/assets/navigation-loader.js" defer></script>
+  <script src="/assets/nav.js" defer></script>
+  <script src="/assets/header-scroll.js" defer></script>
+  <script src="/assets/cookie-banner.js" defer></script>
+  <script>
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("site-footer").innerHTML = html;
+      });
+  </script>
   <script>
     const MAX_FILES = 20;
     const dropzone = document.getElementById('dropzone');
@@ -391,7 +396,7 @@
         let res;
         try { res = JSON.parse(xhr.responseText); } catch { res = { ok: false, msg: 'Serverfehler. Bitte versuche es erneut.' }; }
         if (res.ok) {
-          setStatus('<i class="fa-solid fa-circle-check"></i> Danke! Deine Dateien wurden erfolgreich gesendet. 🎉', 'ok');
+          setStatus('<i class="fa-solid fa-circle-check"></i> Danke! Deine Dateien wurden erfolgreich gesendet.', 'ok');
           files = [];
           fileinput.value = '';
           eventInput.value = '';
