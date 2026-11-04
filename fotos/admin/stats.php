@@ -153,7 +153,7 @@ $hasData = ((int)($st['totals']['views'] ?? 0) + (int)($st['totals']['events'] ?
     document.write('<script src="' + base + 'admin.js?v=20261103"><\/script>');
 })();
 </script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
   .a-chart { display:flex; align-items:flex-end; gap:3px; height:150px; padding-top:8px; }
   .a-chart .bar { flex:1 1 0; background:var(--accent-yellow); border-radius:3px 3px 0 0; min-height:2px; opacity:.85; transition:opacity .15s; }

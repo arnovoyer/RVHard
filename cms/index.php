@@ -822,7 +822,7 @@
             . "  <link rel=\"stylesheet\" href=\"/assets/style.css\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/news/news.css\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/share-button.css\" />\n"
-            . "  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css\" />\n"
+            . "  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\" integrity=\"sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" />\n"
         . "  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css\" />\n"
             . "</head>\n"
             . "<body>\n"
@@ -1560,7 +1560,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="/assets/admin.css?v=20261103">
     <script src="/assets/admin.js?v=20261103" defer></script>
     <style>

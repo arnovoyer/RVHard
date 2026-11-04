@@ -108,7 +108,7 @@ if ($MANAGE_JSON === false) $MANAGE_JSON = '[]';
     document.write('<script src="' + base + 'admin.js?v=20261103"><\/script>');
 })();
 </script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
   .controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
   .controls label { font-size:0.78rem; color:var(--site-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
