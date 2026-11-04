@@ -1930,6 +1930,7 @@
         }
 
         input,
+        select,
         textarea {
             width: 100%;
             box-sizing: border-box;
@@ -2533,6 +2534,14 @@
                             <label>Datum (YYYY-MM-DD) <span class="required-star">*</span></label>
                             <input type="date" name="date" required value="<?= htmlspecialchars((string)($editItem['date'] ?? date('Y-m-d')), ENT_QUOTES, 'UTF-8') ?>" />
                         </div>
+                        <div>
+                            <label>Status</label>
+                            <?php $itemStatus = ((string)($editItem['status'] ?? 'published') === 'draft') ? 'draft' : 'published'; ?>
+                            <select name="status">
+                                <option value="published" <?= $itemStatus === 'published' ? 'selected' : '' ?>>Veröffentlicht</option>
+                                <option value="draft" <?= $itemStatus === 'draft' ? 'selected' : '' ?>>Entwurf (nicht öffentlich)</option>
+                            </select>
+                        </div>
                         <div class="full">
                             <label>Teaser <span class="required-star">*</span> (Kann auch der erste Satz vom Artikeltext sein)</label>
                             <textarea name="content" required><?= htmlspecialchars((string)($editItem['content'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
@@ -2628,6 +2637,7 @@
                         <div class="row" style="margin-top:1rem;">
                             <button class="btn btn-primary" type="submit">Speichern</button>
                             <?php if ($editItem): ?>
+                                <a class="btn btn-muted" target="_blank" href="/cms/index.php?preview=<?= (int)$editItem['id'] ?>">Vorschau</a>
                                 <a class="btn btn-muted" href="/cms/index.php?view=articles">Abbrechen</a>
                             <?php endif; ?>
                         </div>
@@ -2642,18 +2652,24 @@
                         </div>
                     </div>
                     <table>
-                        <thead><tr><th>ID</th><th>Datum</th><th>Titel</th><th>Slug</th><th>Aktion</th></tr></thead>
+                        <thead><tr><th>ID</th><th>Datum</th><th>Status</th><th>Titel</th><th>Slug</th><th>Aktion</th></tr></thead>
                         <tbody>
                         <?php foreach ($items as $item): ?>
+                        <?php $rowIsDraft = ((string)($item['status'] ?? 'published') === 'draft'); ?>
                         <tr>
                             <td><?= (int)$item['id'] ?></td>
                             <td><?= htmlspecialchars((string)$item['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?php if ($rowIsDraft): ?><span style="color:#b45309; font-weight:700;">Entwurf</span><?php else: ?><span style="color:#15803d; font-weight:700;">Live</span><?php endif; ?></td>
                             <td><?= htmlspecialchars((string)$item['title'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td class="mono"><?= htmlspecialchars((string)$item['slug'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td>
                             <div class="row">
                                 <a class="btn btn-muted" href="/cms/index.php?view=articles&edit=<?= (int)$item['id'] ?>">Bearbeiten</a>
+                                <?php if ($rowIsDraft): ?>
+                                <a class="btn btn-muted" target="_blank" href="/cms/index.php?preview=<?= (int)$item['id'] ?>">Vorschau</a>
+                                <?php else: ?>
                                 <a class="btn btn-muted" target="_blank" href="/news/<?= rawurlencode((string)$item['slug']) ?>.html">Öffnen</a>
+                                <?php endif; ?>
                                 <form method="post" onsubmit="return confirm('Artikel wirklich löschen?');" style="display:inline; margin:0;">
                                 <input type="hidden" name="action" value="delete" />
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>" />

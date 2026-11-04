@@ -109,11 +109,26 @@ if (is_string($raw) && $raw !== '') {
 
         $photos = is_array($ev['photos'] ?? null) ? $ev['photos'] : [];
 
-        /* Bestes Bild für die Kachel: Thumbnail → Original → coverPhoto */
+        /* Bestes Bild für die Kachel – NIEMALS das 3–5 MB Original laden:
+         *   1) Von der Galerie erzeugtes Vorschaubild (thumbnail, sonst display)
+         *   2) sonst die Vorschau-Datei direkt neben dem Original (…<datei>._rvthumb.webp)
+         *   3) Browser-Fallback (imageFallback) = Original, falls keine Vorschau existiert
+         * Dadurch sinkt die Bildgröße pro Kachel von ~5 MB auf ~40–80 KB. */
         $img = '';
+        $imgFallback = '';
         if (!empty($photos[0]) && is_array($photos[0])) {
-            $img = ff_abs_url((string)($photos[0]['thumbnail'] ?? ''), FF_GALLERY_BASE);
-            if ($img === '') $img = ff_abs_url((string)($photos[0]['src'] ?? ''), FF_GALLERY_BASE);
+            $thumb = (string)($photos[0]['thumbnail'] ?? '');
+            if ($thumb === '') $thumb = (string)($photos[0]['display'] ?? '');
+            if ($thumb !== '') {
+                $img = ff_abs_url($thumb, FF_GALLERY_BASE);
+            }
+            if ($img === '') {
+                $srcAbs = ff_abs_url((string)($photos[0]['src'] ?? ''), FF_GALLERY_BASE);
+                if ($srcAbs !== '') {
+                    $img = $srcAbs . '._rvthumb.webp';
+                    $imgFallback = $srcAbs;
+                }
+            }
         }
         if ($img === '') {
             $cover = (string)($ev['coverPhoto'] ?? '');
@@ -132,6 +147,7 @@ if (is_string($raw) && $raw !== '') {
             'date'      => (string)($ev['date'] ?? ''),
             'location'  => (string)($ev['location'] ?? ''),
             'image'     => $img,
+            'imageFallback' => $imgFallback,
             'url'       => FF_GALLERY_BASE . '/event.php?id=' . rawurlencode($id),
             'photos'    => count($photos),
         ];

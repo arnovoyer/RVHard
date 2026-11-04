@@ -857,11 +857,13 @@ if ($action === 'publish') {
             if ($src === '') continue;
             /* Wenn thumbnail schon gesetzt ist + Datei existiert → NIX tun (schnell!) */
             if (!empty($_phRef['thumbnail'])) {
-                $existingThumbAbs = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', (string)$_phRef['thumbnail']);
+                $existingThumbAbs = rtrim(DATA_ROOT, '/') . preg_replace('#^/?(?:fotos/)?data#', '', (string)$_phRef['thumbnail']);
                 if (file_exists($existingThumbAbs)) continue;
             }
-            /* Absoluter Pfad zum Original berechnen: /fotos/data/<ordner>/<datei> → __DIR__/../data/<ordner>/<datei> */
-            $absSrc = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', $src);
+            /* Absoluter Pfad zum Original: PUBLIC_BASE + "/data/<ordner>/<datei>"
+             * → __DIR__/../data/<ordner>/<datei>. Der Präfix ist je nach Setup
+             * "/fotos/data" (Unterordner) ODER "/data" (Subdomain) – beide entfernen! */
+            $absSrc = rtrim(DATA_ROOT, '/') . preg_replace('#^/?(?:fotos/)?data#', '', $src);
             if (!file_exists($absSrc)) continue;
             $thumb = rv_createThumbIfMissing($absSrc, $src);
             if (is_string($thumb) && $thumb !== '' && $thumb !== $src) {
@@ -898,10 +900,10 @@ if ($action === 'publish') {
             if ($src === '') continue;
             /* Schon gesetzt + Datei existiert → skip */
             if (!empty($_phRef3['display'])) {
-                $e = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', (string)$_phRef3['display']);
+                $e = rtrim(DATA_ROOT, '/') . preg_replace('#^/?(?:fotos/)?data#', '', (string)$_phRef3['display']);
                 if (file_exists($e)) continue;
             }
-            $absSrc = rtrim(DATA_ROOT, '/') . preg_replace('#^/fotos/data#', '', $src);
+            $absSrc = rtrim(DATA_ROOT, '/') . preg_replace('#^/?(?:fotos/)?data#', '', $src);
             if (!file_exists($absSrc)) continue;
             $display = rv_createMediumDisplayIfMissing($absSrc, $src);
             if (is_string($display) && $display !== '' && $display !== $src) {

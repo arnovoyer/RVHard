@@ -26,9 +26,15 @@
 
         grid.innerHTML = usable.map(function (e) {
             var label = e.shortName || e.name || 'Fotos';
+            /* Kleine Galerie-Vorschau laden. Existiert sie nicht (404), wird im
+               Browser automatisch auf das Original umgeschaltet – so bleibt die
+               Kachel immer sichtbar, lädt aber im Normalfall nur ~60 KB. */
+            var fallback = (typeof e.imageFallback === 'string' && e.imageFallback !== '')
+                ? ' onerror="this.onerror=null;this.src=\'' + esc(e.imageFallback) + '\'"'
+                : '';
             return '<a class="fotos-tile" href="' + esc(e.url) + '" target="_blank" rel="noopener">' +
                        '<span class="fotos-tile__imgwrap">' +
-                           '<img src="' + esc(e.image) + '" alt="' + esc(label) + '" loading="lazy" decoding="async">' +
+                           '<img src="' + esc(e.image) + '" alt="' + esc(label) + '" loading="lazy" decoding="async"' + fallback + '>' +
                        '</span>' +
                        '<span class="fotos-tile__label">' + esc(label) + '</span>' +
                    '</a>';
