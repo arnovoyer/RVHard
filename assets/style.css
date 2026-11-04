@@ -103,6 +103,26 @@ a:hover {
     color: var(--link-hover);
 }
 
+/* A11y: sichtbarer Fokusring bei Tastatur-Navigation.
+   Greift nur bei :focus-visible (Tastatur), nicht bei Mausklick. */
+:focus-visible {
+    outline: 3px solid var(--accent-yellow, #ffc107) !important;
+    outline-offset: 2px;
+}
+
+/* A11y: Animationen/Hover-Effekte für Nutzer mit Bewegungs-Reduktion abschalten. */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -110,6 +130,15 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+}
+
+/* Verein-Unterseiten: einheitliche Seitenbasis (Breite + Abstände).
+   Wird von allen Seiten unter /verein/ genutzt, damit sie denselben
+   Rahmen haben – auch wenn kein verein.css geladen wird. */
+.verein-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
 }
 
 .gelber-button {

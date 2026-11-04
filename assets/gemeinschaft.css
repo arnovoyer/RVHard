@@ -59,9 +59,9 @@
 }
 
 .gemeinschaft-seite {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
     overflow-x: hidden;
 }
 

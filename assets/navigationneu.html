@@ -232,7 +232,7 @@
                     width="383">
             </a>
         </div>
-        <ul class="nav-main-menu">
+        <ul class="nav-main-menu" id="nav-main-menu">
 
             <li><a href="/" class="nav-link">Home</a></li>
             <li class="dropdown">
@@ -314,7 +314,7 @@
             <li><a href="/kontakt" class="nav-link">Kontakt</a></li>
             <li><a href="/sponsoren" class="nav-link">Sponsoren</a></li>
         </ul>
-        <button class="menu-toggle" alt="Burger-Menu">
+        <button class="menu-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-main-menu">
             <span></span>
             <span></span>
             <span></span>
@@ -329,6 +329,7 @@
         toggleBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             toggleBtn.classList.toggle('active');
+            toggleBtn.setAttribute('aria-expanded', navMenu.classList.contains('active') ? 'true' : 'false');
             document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
         });
 
