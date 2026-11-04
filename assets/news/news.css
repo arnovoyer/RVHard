@@ -87,6 +87,7 @@
 
 .news-detail-page .container {
   display: block;
+  max-width: 900px;
 }
 
 .news-layout {
@@ -484,7 +485,7 @@ body.lightbox-open {
 }
 
 .news-page .container {
-  max-width: 960px;
+  max-width: 900px;
   margin: 20px auto;
   padding: 20px;
 }

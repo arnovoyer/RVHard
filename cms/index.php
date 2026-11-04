@@ -246,6 +246,7 @@
                 'image' => trim((string)($item['image'] ?? '')),
                 'images' => [],
             'link' => normalize_text((string)($item['link'] ?? '')),
+            'status' => ((string)($item['status'] ?? 'published') === 'draft') ? 'draft' : 'published',
             ];
 
             $images = [];
@@ -426,6 +427,10 @@
 
         $publicList = [];
         foreach ($normalized as $item) {
+            /* Entwürfe werden nicht veröffentlicht. */
+            if (($item['status'] ?? 'published') === 'draft') {
+                continue;
+            }
             $publicList[] = [
                 'id' => (int)($item['id'] ?? 0),
                 'slug' => (string)($item['slug'] ?? ''),
@@ -793,13 +798,8 @@
         return '<div class="news-detail-gallery-wrapper" data-aos="fade-up"><div class="news-detail-gallery">' . $slides . '</div><button class="gallery-control prev">&lt;</button><button class="gallery-control next">&gt;</button></div>';
     }
 
-    function generate_article_html(array $item): bool
+    function build_article_html(array $item): string
     {
-        $slug = trim((string)($item['slug'] ?? ''));
-        if ($slug === '') {
-            return false;
-        }
-
         $title = htmlspecialchars((string)($item['title'] ?? 'News'), ENT_QUOTES, 'UTF-8');
         $date = htmlspecialchars((string)($item['date'] ?? ''), ENT_QUOTES, 'UTF-8');
         $bodyMarkdown = (string)($item['body'] ?? '');
@@ -882,8 +882,18 @@
             . "</body>\n"
             . "</html>\n";
 
+        return $html;
+    }
+
+    function generate_article_html(array $item): bool
+    {
+        $slug = trim((string)($item['slug'] ?? ''));
+        if ($slug === '') {
+            return false;
+        }
+
         $target = NEWS_DIR . '/' . $slug . '.html';
-        return file_put_contents($target, $html, LOCK_EX) !== false;
+        return file_put_contents($target, build_article_html($item), LOCK_EX) !== false;
     }
 
     function delete_article_html_by_slug(string $slug): bool
@@ -929,6 +939,10 @@
         $count = 0;
         foreach ($items as $item) {
             if (empty($item['slug'])) {
+                continue;
+            }
+            /* Entwürfe erhalten keine öffentliche HTML-Datei. */
+            if (($item['status'] ?? 'published') === 'draft') {
                 continue;
             }
             if (generate_article_html($item)) {
@@ -1330,6 +1344,7 @@
                 'image' => '',
                     'images' => $images,
                 'link' => (string)($existingRecord['link'] ?? ''),
+                'status' => ((string)($_POST['status'] ?? 'published') === 'draft') ? 'draft' : 'published',
                 ];
 
                 if ($record['body'] === '') {
@@ -1354,17 +1369,25 @@
                 if (!save_items($items)) {
                     $error = 'Speichern fehlgeschlagen: news-cms.json konnte nicht geschrieben werden.';
                 } else {
-                    $htmlGenerated = generate_article_html($record);
                     $previousSlug = trim((string)($existingRecord['slug'] ?? ''));
                     if ($previousSlug !== '' && $previousSlug !== $record['slug']) {
                         delete_article_html_by_slug($previousSlug);
                     }
-                    refresh_legacy_slugs();
-                    @write_public_news_files(load_items());
-                    if ($htmlGenerated) {
-                        $notice = 'Artikel gespeichert und HTML-Datei erstellt.';
+                    if ($record['status'] === 'draft') {
+                        /* Entwurf: keine öffentliche HTML-Datei anlegen bzw. entfernen. */
+                        delete_article_html_by_slug($record['slug']);
+                        refresh_legacy_slugs();
+                        @write_public_news_files(load_items());
+                        $notice = 'Entwurf gespeichert – nicht öffentlich sichtbar.';
                     } else {
-                        $error = 'Artikel gespeichert, aber HTML-Datei konnte nicht geschrieben werden.';
+                        $htmlGenerated = generate_article_html($record);
+                        refresh_legacy_slugs();
+                        @write_public_news_files(load_items());
+                        if ($htmlGenerated) {
+                            $notice = 'Artikel gespeichert und veröffentlicht.';
+                        } else {
+                            $error = 'Artikel gespeichert, aber HTML-Datei konnte nicht geschrieben werden.';
+                        }
                     }
                 }
                 }
@@ -1427,6 +1450,23 @@
     /* SSO: Ein Login gilt für CMS + Bild-Eingang (gemeinsamer Flag). */
     $loggedIn = !empty($_SESSION['cms_logged_in']) || !empty($_SESSION['rv_admin_logged_in']);
     $items = $loggedIn ? load_items() : [];
+
+    /* Vorschau: Artikel-HTML direkt ausgeben – funktioniert für Entwürfe
+       und veröffentlichte Artikel, ohne etwas zu veröffentlichen. */
+    if ($loggedIn && isset($_GET['preview'])) {
+        $previewId = (int)$_GET['preview'];
+        foreach ($items as $previewItem) {
+            if ((int)$previewItem['id'] === $previewId) {
+                header('Content-Type: text/html; charset=UTF-8');
+                echo build_article_html($previewItem);
+                exit;
+            }
+        }
+        http_response_code(404);
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo 'Artikel nicht gefunden.';
+        exit;
+    }
 
     $tagOptions = default_tag_options();
     if ($loggedIn) {

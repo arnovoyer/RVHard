@@ -132,11 +132,16 @@ a:hover {
     align-items: stretch;
 }
 
+/* Textseiten: schmalere Lesebreite für lange Fließtexte (News, Rechtliches). */
+.container.text-seite {
+    max-width: 900px;
+}
+
 /* Verein-Unterseiten: einheitliche Seitenbasis (Breite + Abstände).
    Wird von allen Seiten unter /verein/ genutzt, damit sie denselben
    Rahmen haben – auch wenn kein verein.css geladen wird. */
 .verein-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 2rem auto;
     padding: 1rem;
 }
