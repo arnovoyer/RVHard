@@ -334,23 +334,25 @@
                     margin-top: 0.3rem;
                 }
                 .sbs2026-countdown__done { font-size: 0.8rem; padding: 0.6rem 0.8rem; }
-                .sbs2026-banner__grid {
+                /* Nur im Banner – die Startseiten-Karte nutzt dieselben Klassen,
+                   darf aber nicht in dieses Flex-Layout umschalten. */
+                .sbs2026-banner .sbs2026-banner__grid {
                     grid-template-columns: 1fr;
                     gap: 0.5rem;
                     margin-bottom: 1.1rem;
                 }
-                .sbs2026-card {
+                .sbs2026-banner .sbs2026-card {
                     display: flex;
                     align-items: flex-start;
                     gap: 0.75rem;
                     padding: 0.65rem 0.7rem;
                     border-radius: 10px;
                 }
-                .sbs2026-card:hover {
+                .sbs2026-banner .sbs2026-card:hover {
                     transform: none;
                     box-shadow: none;
                 }
-                .sbs2026-card__icon {
+                .sbs2026-banner .sbs2026-card__icon {
                     width: 36px;
                     height: 36px;
                     border-radius: 8px;
@@ -358,16 +360,16 @@
                     flex-shrink: 0;
                     margin-bottom: 0;
                 }
-                .sbs2026-card > div:last-child { flex: 1; }
-                .sbs2026-card h3 {
+                .sbs2026-banner .sbs2026-card > div:last-child { flex: 1; }
+                .sbs2026-banner .sbs2026-card h3 {
                     font-size: 0.92rem !important;
                     margin-bottom: 0.2rem !important;
                 }
-                .sbs2026-card p {
+                .sbs2026-banner .sbs2026-card p {
                     font-size: 0.75rem;
                     line-height: 1.35;
                 }
-                .sbs2026-card__desc { display: none; }
+                .sbs2026-banner .sbs2026-card__desc { display: none; }
                 .gelber-button {
                     padding: 0.6rem 1.05rem !important;
                     font-size: 0.85rem !important;
@@ -408,9 +410,6 @@
                 font-size: 0.9rem;
                 margin: 0 0 1rem 0;
             }
-            .top-events-container .event-card.summer-series .sbs2026-banner__grid {
-                margin-bottom: 1.1rem;
-            }
             .top-events-container .event-card.summer-series .sbs-footer {
                 display: flex;
                 justify-content: flex-start;
@@ -418,15 +417,38 @@
                 gap: 0.6rem;
                 flex-wrap: wrap;
             }
+            .top-events-container .event-card.summer-series .sbs-event-list {
+                list-style: none;
+                margin: 0.8rem 0 1.1rem;
+                padding: 0;
+                text-align: left;
+            }
+            .top-events-container .event-card.summer-series .sbs-event-list li {
+                display: grid;
+                gap: 0.2rem;
+                padding: 0.65rem 0.15rem;
+                border-top: 1px solid var(--site-border, #e0e0e0);
+            }
+            .top-events-container .event-card.summer-series .sbs-event-list li:last-child {
+                border-bottom: 1px solid var(--site-border, #e0e0e0);
+            }
+            .top-events-container .event-card.summer-series .sbs-event-list strong {
+                color: var(--site-heading, #111);
+                font-size: 0.92rem;
+                font-weight: 600;
+            }
+            .top-events-container .event-card.summer-series .sbs-event-list span {
+                color: var(--site-muted, #555);
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
             .top-events-container .event-card.nightrace {
                 flex: 1 1 320px;
                 max-width: 420px;
                 min-width: 260px;
             }
 
-            /* --- Spalten-Layout (Mobil & mittlere Bildschirme ≤1030px):
-                   flex-basis würde hier zur Höhe werden -> Karten an Inhalt anpassen.
-                   Disziplinen-Raster einspaltig, damit nichts gequetscht wird. --- */
+            /* --- Spalten-Layout (Mobil & mittlere Bildschirme ≤1030px) --- */
             @media (max-width: 1030px) {
                 .top-events-container .event-card.summer-series,
                 .top-events-container .event-card.nightrace {
@@ -434,9 +456,6 @@
                     width: 100%;
                     max-width: 100%;
                     min-width: 0;
-                }
-                .top-events-container .event-card.summer-series .sbs2026-banner__grid {
-                    grid-template-columns: 1fr;
                 }
             }
 
@@ -857,32 +876,20 @@
                                 <i class="fa-solid fa-flag-checkered"></i> Die Summer Bike Series 2026 ist vorbei – vielen Dank an alle Teilnehmer:innen, Helfer:innen und Sponsor:innen!
                             </p>
 
-                            <div class="sbs2026-banner__grid">
-                                <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">
-                                        <i class="fa-solid fa-building"></i>
-                                    </div>
-                                    <h3>Kammgarn Kriterium Hard</h3>
-                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 10:00</p>
-                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn · bis 30 Runden à 650 m</p>
-                                </div>
-                                <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">
-                                        <i class="fa-solid fa-flag-checkered"></i>
-                                    </div>
-                                    <h3>Einzelzeitfahren Rohrspitz</h3>
-                                    <p><i class="fa-regular fa-calendar-days"></i> Sa, 05.09. · ab 17:00</p>
-                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot</p>
-                                </div>
-                                <div class="sbs2026-card">
-                                    <div class="sbs2026-card__icon">
-                                        <i class="fa-solid fa-mountain-sun"></i>
-                                    </div>
-                                    <h3>Bergrennen Wolfurt – Buch</h3>
-                                    <p><i class="fa-regular fa-calendar-days"></i> So, 06.09. · ab 10:00</p>
-                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
-                                </div>
-                            </div>
+                            <ul class="sbs-event-list">
+                                <li>
+                                    <strong>Kammgarn Kriterium Hard</strong>
+                                    <span>Sa, 05.09. · ab 10:00 · Rundkurs Kammgarn, bis 30 Runden à 650 m</span>
+                                </li>
+                                <li>
+                                    <strong>Einzelzeitfahren Rohrspitz</strong>
+                                    <span>Sa, 05.09. · ab 17:00 · 2,86 km, Windschattenverbot</span>
+                                </li>
+                                <li>
+                                    <strong>Bergrennen Wolfurt – Buch</strong>
+                                    <span>So, 06.09. · ab 10:00 · bis 6,6 km und 308 Höhenmeter</span>
+                                </li>
+                            </ul>
 
                             <div class="sbs-footer">
                                 <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
