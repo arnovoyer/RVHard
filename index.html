@@ -406,41 +406,41 @@
                 margin-bottom: 0.35rem;
             }
             .top-events-container .event-card.summer-series .sbs-summary {
-                color: #777;
+                color: var(--site-muted, #555);
                 font-size: 0.9rem;
-                margin: 0 0 1rem 0;
+                margin: 0 0 0.4rem;
+            }
+            .top-events-container .event-card.summer-series .sbs-program {
+                margin: 1rem 0 0.3rem;
+                text-align: left;
+            }
+            .top-events-container .event-card.summer-series .sbs-program-item {
+                padding: 0.7rem 0;
+                border-top: 1px solid var(--site-border, #e0e0e0);
+            }
+            .top-events-container .event-card.summer-series .sbs-program-item:last-child {
+                border-bottom: 1px solid var(--site-border, #e0e0e0);
+            }
+            .top-events-container .event-card.summer-series .sbs-program-item strong {
+                display: block;
+                color: var(--site-heading, #111);
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            .top-events-container .event-card.summer-series .sbs-program-item span {
+                display: block;
+                margin-top: 0.15rem;
+                color: var(--site-muted, #555);
+                font-size: 0.9rem;
+                line-height: 1.45;
             }
             .top-events-container .event-card.summer-series .sbs-footer {
                 display: flex;
-                justify-content: flex-start;
+                justify-content: center;
                 align-items: center;
                 gap: 0.6rem;
                 flex-wrap: wrap;
-            }
-            .top-events-container .event-card.summer-series .sbs-event-list {
-                list-style: none;
-                margin: 0.8rem 0 1.1rem;
-                padding: 0;
-                text-align: left;
-            }
-            .top-events-container .event-card.summer-series .sbs-event-list li {
-                display: grid;
-                gap: 0.2rem;
-                padding: 0.65rem 0.15rem;
-                border-top: 1px solid var(--site-border, #e0e0e0);
-            }
-            .top-events-container .event-card.summer-series .sbs-event-list li:last-child {
-                border-bottom: 1px solid var(--site-border, #e0e0e0);
-            }
-            .top-events-container .event-card.summer-series .sbs-event-list strong {
-                color: var(--site-heading, #111);
-                font-size: 0.92rem;
-                font-weight: 600;
-            }
-            .top-events-container .event-card.summer-series .sbs-event-list span {
-                color: var(--site-muted, #555);
-                font-size: 0.84rem;
-                line-height: 1.45;
+                margin-top: 1rem;
             }
             .top-events-container .event-card.nightrace {
                 flex: 1 1 320px;
@@ -870,34 +870,28 @@
                         <div>
                             <h3>Raiffeisen Summer Bike Series 2026</h3>
                             <p class="sbs-summary">
-                                <i class="fa-regular fa-calendar-days"></i> 5. + 6. September 2026 · Hard und Umgebung · Landesmeisterschaften
-                            </p>
-                            <p class="sbs-summary">
-                                <i class="fa-solid fa-flag-checkered"></i> Die Summer Bike Series 2026 ist vorbei – vielen Dank an alle Teilnehmer:innen, Helfer:innen und Sponsor:innen!
+                                Landesmeisterschaften in Hard und Umgebung
                             </p>
 
-                            <ul class="sbs-event-list">
-                                <li>
-                                    <strong>Kammgarn Kriterium Hard</strong>
-                                    <span>Sa, 05.09. · ab 10:00 · Rundkurs Kammgarn, bis 30 Runden à 650 m</span>
-                                </li>
-                                <li>
-                                    <strong>Einzelzeitfahren Rohrspitz</strong>
-                                    <span>Sa, 05.09. · ab 17:00 · 2,86 km, Windschattenverbot</span>
-                                </li>
-                                <li>
-                                    <strong>Bergrennen Wolfurt – Buch</strong>
-                                    <span>So, 06.09. · ab 10:00 · bis 6,6 km und 308 Höhenmeter</span>
-                                </li>
-                            </ul>
+                            <div class="sbs-program">
+                                <div class="sbs-program-item">
+                                    <strong>Kammgarn-Kriterium Hard</strong>
+                                    <span>Samstag, 5. September · ab 10:00 Uhr · Rundkurs Kammgarn</span>
+                                </div>
+                                <div class="sbs-program-item">
+                                    <strong>Einzelzeitfahren Rohrspitz–Fußach</strong>
+                                    <span>Samstag, 5. September · ab 17:00 Uhr · 2,86 km</span>
+                                </div>
+                                <div class="sbs-program-item">
+                                    <strong>Bergrennen Wolfurt–Buch</strong>
+                                    <span>Sonntag, 6. September · ab 10:00 Uhr · bis 6,6 km</span>
+                                </div>
+                            </div>
 
                             <div class="sbs-footer">
                                 <a href="/events/sbs/summer-bike-series-2026.html" class="gelber-button">Mehr Infos</a>
                                 <a href="/events/sbs/summer-bike-series-2026.html#ergebnisse" class="gelber-button">Ergebnisse 2026</a>
                             </div>
-                            <p class="sbs-summary" style="margin-top:1rem;">
-                                <i class="fa-solid fa-calendar-plus"></i> Die Summer Bike Series findet 2027 wieder statt – die Termine folgen in Kürze.
-                            </p>
                         </div>
                     </div>
 
