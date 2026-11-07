@@ -1356,6 +1356,121 @@
             </div>
         </div>-->
 
+        <!-- ==========================================================================
+             Summer Bike Series 2027 – Banner-Vorlagen (auskommentiert)
+             Gleiches Design wie das 2026er Banner oben; bei Bedarf aktivieren.
+
+             Variante A = Ankündigung, Termine noch offen
+             Variante B = Ankündigung mit Terminen (sobald bekannt)
+
+             Hinweis beim Aktivieren:
+               - Banner-ID im JS anpassen ('sbs2027-banner') und den
+                 localStorage-Schlüssel auf 'sbs2027_banner_closed' ändern.
+               - Ziel-Datum im Countdown bei `TARGET_DATE` eintragen.
+             ========================================================================== -->
+
+        <!-- Variante A: Summer Bike Series 2027 – Ankündigung, Termine folgen
+        <div id="sbs2027-banner" class="sbs2026-banner sbs2026-banner--hidden" role="dialog" aria-modal="true" aria-label="Summer Bike Series 2027 Ankündigung">
+            <div class="sbs2026-banner__backdrop">
+                <div class="sbs2026-banner__wrap">
+                    <div class="sbs2026-banner__box">
+                        <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
+                        <div class="sbs2026-banner__label">📅 Save the Date</div>
+                        <h2 class="sbs2026-banner__title">Raiffeisen Summer Bike Series 2027</h2>
+                        <p class="sbs2026-banner__date">📅 Termine folgen in Kürze · Hard und Umgebung</p>
+
+                        <p class="sbs2026-banner__desc">
+                            Die Summer Bike Series findet auch 2027 wieder statt. Sobald die Termine
+                            fixiert sind, findest du hier alle Infos zu Kriterium, Einzelzeitfahren und Bergrennen.
+                        </p>
+
+                        <div class="sbs2026-banner__actions">
+                            <a href="/events/sbs/summer-bike-series-2027.html" class="gelber-button" style="margin-top:0">Mehr Infos</a>
+                        </div>
+                        <div class="sbs2026-banner__sponsor">
+                            <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="lazy" decoding="async">
+                            <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <!-- Variante B: Summer Bike Series 2027 – Ankündigung mit Terminen
+        <div id="sbs2027-banner" class="sbs2026-banner sbs2026-banner--hidden" role="dialog" aria-modal="true" aria-label="Summer Bike Series 2027 Ankündigung">
+            <div class="sbs2026-banner__backdrop">
+                <div class="sbs2026-banner__wrap">
+                    <div class="sbs2026-banner__box">
+                        <button class="sbs2026-banner__close" aria-label="Banner schließen">&times;</button>
+                        <div class="sbs2026-banner__label">🏆 Landesmeisterschaften</div>
+                        <h2 class="sbs2026-banner__title">Raiffeisen Summer Bike Series 2027</h2>
+                        <p class="sbs2026-banner__date">📅 TT. + TT. September 2027 · Hard und Umgebung</p>
+
+                        <div class="sbs2026-countdown" id="sbs2027-countdown">
+                            <p class="sbs2026-countdown__label">
+                                ⏳ Anmeldung schließt in <strong id="sbs2027-cd-label-num">–</strong>
+                            </p>
+                            <div class="sbs2026-countdown__grid">
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="days">00</span>
+                                    <span class="sbs2026-cd-unit__label">Tage</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="hours">00</span>
+                                    <span class="sbs2026-cd-unit__label">Stunden</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="minutes">00</span>
+                                    <span class="sbs2026-cd-unit__label">Minuten</span>
+                                </div>
+                                <div class="sbs2026-cd-unit">
+                                    <span class="sbs2026-cd-unit__num" data-sbs-cd="seconds">00</span>
+                                    <span class="sbs2026-cd-unit__label">Sekunden</span>
+                                </div>
+                            </div>
+                            <div class="sbs2026-countdown__done" id="sbs2027-cd-done">
+                                🏁 Anmeldung ist geschlossen – Ergebnisse folgen in Kürze!
+                            </div>
+                        </div>
+
+                        <div class="sbs2026-banner__grid">
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">🏙️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Kammgarn Kriterium Hard</h3>
+                                    <p>📅 Samstag, TT.TT. · Start ab TT:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Rundkurs Kammgarn-Areal · bis 30 Runden à 650 m</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⏱️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Einzelzeitfahren Rohrspitz – Fußach</h3>
+                                    <p>📅 Samstag, TT.TT. · Start ab TT:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">2,86 km flach & schnell · Windschattenverbot!</p>
+                                </div>
+                            </div>
+                            <div class="sbs2026-card">
+                                <div class="sbs2026-card__icon">⛰️</div>
+                                <div class="sbs2026-card__body">
+                                    <h3>Bergrennen Wolfurt – Buch</h3>
+                                    <p>📅 Sonntag, TT.TT. · Start ab TT:00 Uhr</p>
+                                    <p class="sbs2026-card__desc">Bis 6,6 km · bis 308 Höhenmeter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sbs2026-banner__actions">
+                            <a href="/events/sbs/summer-bike-series-2027.html" class="gelber-button" style="margin-top:0">Mehr Infos & Anmeldung</a>
+                        </div>
+                        <div class="sbs2026-banner__sponsor">
+                            <img src="/assets/img/logo/Raiffeisen_Österreich_logo.svg.webp" alt="Raiffeisen Österreich Logo" loading="lazy" decoding="async">
+                            <span><strong>Vorarlberger Radsport</strong> powered by Raiffeisen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
         <footer id="site-footer"></footer>
 
         <script src="/assets/navigation-loader.js" defer></script>
