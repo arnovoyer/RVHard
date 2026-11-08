@@ -58,6 +58,17 @@
         return strtr($value, $map);
     }
 
+    /* Sekunden freundlich anzeigen: "2 min 05 s" */
+    function cms_dur_label(int $seconds): string
+    {
+        if ($seconds <= 0) {
+            return '0 s';
+        }
+        $min = intdiv($seconds, 60);
+        $sec = $seconds % 60;
+        return $min > 0 ? $min . ' min ' . str_pad((string)$sec, 2, '0', STR_PAD_LEFT) . ' s' : $sec . ' s';
+    }
+
     function read_config(): ?array
     {
         if (!file_exists(CONFIG_FILE)) {
@@ -1559,11 +1570,11 @@
     $statCamps = [];
     $statEngage = [];
     $statNotFoundTable = [];
-    if ($view === 'statistik') {
+    if (in_array($view, ['dashboard', 'statistik'], true)) {
         $siteStats = load_site_stats();
 
         /* CSV-Export der wichtigsten Tabellen (Download über ?export=csv). */
-        if (($_GET['export'] ?? '') === 'csv') {
+        if ($view === 'statistik' && ($_GET['export'] ?? '') === 'csv') {
             ini_set('display_errors', '0'); /* keine Hinweise mitten in der CSV-Datei */
             header('Content-Type: text/csv; charset=utf-8');
             header('Content-Disposition: attachment; filename="rv-hard-statistik-' . date('Y-m-d') . '.csv"');
@@ -2000,6 +2011,94 @@
             letter-spacing: -0.04em;
         }
 
+        /* Einfache Diagramme – ganz ohne externe Bibliothek */
+        .chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.3rem;
+            height: 160px;
+            padding-top: 0.25rem;
+        }
+
+        .chart--sm { height: 110px; }
+
+        .chart-col {
+            flex: 1 1 0;
+            min-width: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.3rem;
+        }
+
+        .chart-col__val {
+            font-size: 0.72rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .chart-col__bar {
+            width: 100%;
+            max-width: 30px;
+            min-height: 3px;
+            border-radius: 6px 6px 3px 3px;
+            background: linear-gradient(180deg, var(--cms-accent), var(--cms-accent-strong));
+        }
+
+        .chart-col__label {
+            font-size: 0.66rem;
+            color: var(--cms-muted);
+            white-space: nowrap;
+        }
+
+        .hbar-list {
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .hbar-row {
+            display: grid;
+            grid-template-columns: minmax(120px, 34%) 1fr auto;
+            gap: 0.65rem;
+            align-items: center;
+        }
+
+        .hbar-row__name {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .hbar-row__name .mono {
+            display: block;
+            font-size: 0.72rem;
+        }
+
+        .hbar-track {
+            background: var(--cms-border);
+            border-radius: 6px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .hbar-fill {
+            display: block;
+            height: 100%;
+            border-radius: 6px;
+            background: var(--cms-accent);
+        }
+
+        .hbar-row__val {
+            font-size: 0.85rem;
+            font-weight: 700;
+            min-width: 2.5rem;
+            text-align: right;
+        }
+
         .quick-links {
             display: grid;
             gap: 0.65rem;
@@ -2301,11 +2400,81 @@
         <div class="cms-layout">
             <main class="cms-main">
                 <?php if ($view === 'dashboard'): ?>
+                <?php
+                    $dashTotalPv   = (int)($siteStats['totals']['pageviews'] ?? 0);
+                    $dashClicks    = (int)($siteStats['totals']['clicks'] ?? 0);
+                    $dashPvToday   = (int)($siteStats['days'][date('Y-m-d')]['pageviews'] ?? 0);
+                    $dashDownloads = (int)($siteStats['totals']['downloads'] ?? 0);
+                    $dashEngageN   = (int)($siteStats['totals']['engageN'] ?? 0);
+                    $dashAvgDur    = $dashEngageN > 0 ? (int)round((int)($siteStats['totals']['dur'] ?? 0) / $dashEngageN) : 0;
+                    $dashDays      = is_array($siteStats['days'] ?? null) ? $siteStats['days'] : [];
+                    $dashDays      = array_slice($dashDays, -14, 14, true);
+                    $dashMaxDay    = 1;
+                    foreach ($dashDays as $dashDayRow) {
+                        $dashMaxDay = max($dashMaxDay, (int)($dashDayRow['pageviews'] ?? 0));
+                    }
+                ?>
                 <section class="card">
                     <div class="section-head">
                         <div>
                             <h2>Übersicht</h2>
-                            <p class="section-note">Die wichtigsten Inhalte auf einen Blick.</p>
+                            <p class="section-note">Die wichtigsten Zahlen und Inhalte auf einen Blick.</p>
+                        </div>
+                        <div class="row">
+                            <a class="btn btn-muted" href="/cms/index.php?view=statistik">Zur ausführlichen Statistik</a>
+                        </div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($dashTotalPv, 0, ',', '.') ?></div>
+                            <h3>Seitenaufrufe gesamt</h3>
+                            <p><?= number_format($dashPvToday, 0, ',', '.') ?> davon heute.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($dashClicks, 0, ',', '.') ?></div>
+                            <h3>Klicks gesamt</h3>
+                            <p>Klicks auf Links und Buttons.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($dashDownloads, 0, ',', '.') ?></div>
+                            <h3>Downloads</h3>
+                            <p>Heruntergeladene Dateien.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= htmlspecialchars(cms_dur_label($dashAvgDur), ENT_QUOTES, 'UTF-8') ?></div>
+                            <h3>Ø Verweildauer</h3>
+                            <p>Durchschnitt pro gemessenem Seitenaufruf.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h3>Seitenaufrufe (14 Tage)</h3>
+                            <p class="section-note">Täglicher Verlauf der letzten zwei Wochen.</p>
+                        </div>
+                    </div>
+                    <?php if (empty($dashDays)): ?>
+                    <p class="section-note" style="margin:0;">Noch keine Daten erfasst.</p>
+                    <?php else: ?>
+                    <div class="chart chart--sm">
+                        <?php foreach ($dashDays as $dashDate => $dashDayRow): ?>
+                        <?php $dashPv = (int)($dashDayRow['pageviews'] ?? 0); ?>
+                        <div class="chart-col" title="<?= htmlspecialchars((string)$dashDate, ENT_QUOTES, 'UTF-8') ?>: <?= $dashPv ?> Aufrufe">
+                            <span class="chart-col__bar" style="height:<?= (int)round($dashPv / $dashMaxDay * 100) ?>%;"></span>
+                            <span class="chart-col__label"><?= htmlspecialchars(date('d.', (int)strtotime((string)$dashDate)), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h3>Inhalte</h3>
+                            <p class="section-note">Artikel und Termine verwalten.</p>
                         </div>
                     </div>
                     <div class="dashboard-grid">
@@ -2313,24 +2482,17 @@
                             <div class="dash-kpi"><?= count($items) ?></div>
                             <h3>Artikel gesamt</h3>
                             <p>Aktuell gespeicherte News-Einträge.</p>
-                        </div>
-                        <div class="dash-box">
-                            <h3>Artikel verwalten</h3>
-                            <p>Direkt zur Bearbeitung und Erstellung von Artikeln wechseln.</p>
                             <div class="row" style="margin-top:0.95rem;">
                                 <a class="btn btn-primary" href="/cms/index.php?view=articles">Zu den Artikeln</a>
                             </div>
                         </div>
                         <div class="dash-box">
-                            <h3>Termine verwalten</h3>
-                            <p>Termine direkt bearbeiten.</p>
+                            <div class="dash-kpi"><?= count($termineEvents) ?></div>
+                            <h3>Termine gesamt</h3>
+                            <p>Anstehende und vergangene Termine.</p>
                             <div class="row" style="margin-top:0.95rem;">
                                 <a class="btn btn-primary" href="/cms/index.php?view=termine">Zu den Terminen</a>
                             </div>
-                        </div>
-                        <div class="dash-box">
-                            <h3>Arbeitsweise</h3>
-                            <p>Links über die Navigation wählen, rechts mit den Arbeitsnotizen bleiben.</p>
                         </div>
                     </div>
                 </section>
@@ -2351,6 +2513,13 @@
                         $statMaxDayPv = max($statMaxDayPv, (int)($statDayRow['pageviews'] ?? 0));
                     }
 
+                    $statMaxPageN = 1;
+                    foreach ($statPages as $statPageRow) {
+                        $statMaxPageN = max($statMaxPageN, (int)($statPageRow['n'] ?? 0));
+                    }
+
+                    $statMaxDevice = max(1, $statMob + $statDesk);
+
                     $statFriendly = function (string $path): string {
                         $map = [
                             '/'                => 'Startseite',
@@ -2369,16 +2538,6 @@
                             '/datenschutz'     => 'Datenschutz',
                         ];
                         return $map[$path] ?? $path;
-                    };
-
-                    /* Sekunden freundlich darstellen: "2 min 05 s" */
-                    $statFmtDur = function (int $seconds): string {
-                        if ($seconds <= 0) {
-                            return '0 s';
-                        }
-                        $min = intdiv($seconds, 60);
-                        $sec = $seconds % 60;
-                        return $min > 0 ? $min . ' min ' . str_pad((string)$sec, 2, '0', STR_PAD_LEFT) . ' s' : $sec . ' s';
                     };
                 ?>
                 <section class="card">
@@ -2431,7 +2590,7 @@
                             <p>WhatsApp, E-Mail und „Link kopieren".</p>
                         </div>
                         <div class="dash-box">
-                            <div class="dash-kpi"><?= htmlspecialchars($statFmtDur($statAvgDur), ENT_QUOTES, 'UTF-8') ?></div>
+                            <div class="dash-kpi"><?= htmlspecialchars(cms_dur_label($statAvgDur), ENT_QUOTES, 'UTF-8') ?></div>
                             <h3>Ø Verweildauer</h3>
                             <p>Durchschnitt pro gemessenem Seitenaufruf.</p>
                         </div>
@@ -2461,6 +2620,11 @@
                             <?= $statNotrackOn ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.' ?>
                         </span>
                     </div>
+                    <p class="section-note" style="margin:0.85rem 0 0;">
+                        Auch ohne Login möglich – diese Adresse einfach auf dem Gerät öffnen:
+                        <a class="mono" href="/cms/notrack.php?on=1">/cms/notrack.php?on=1</a> (austreten) bzw.
+                        <a class="mono" href="/cms/notrack.php?on=0">/cms/notrack.php?on=0</a> (wieder mitzählen).
+                    </p>
                 </section>
                 <script>
                 (function () {
@@ -2505,24 +2669,27 @@
                             <p class="section-note">Die meistbesuchten Unterseiten der Hauptseite.</p>
                         </div>
                     </div>
-                    <table>
-                        <thead><tr><th>Seite</th><th>Aufrufe</th><th>Zuletzt</th></tr></thead>
-                        <tbody>
+                    <div class="hbar-list">
                         <?php foreach ($statPages as $statPath => $statRow): ?>
-                        <?php $statName = $statFriendly((string)$statPath); ?>
-                        <tr>
-                            <td>
+                        <?php
+                            $statName = $statFriendly((string)$statPath);
+                            $statPageN = (int)($statRow['n'] ?? 0);
+                        ?>
+                        <div class="hbar-row" title="<?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?><?= !empty($statRow['last']) ? ' · zuletzt ' . htmlspecialchars((string)$statRow['last'], ENT_QUOTES, 'UTF-8') : '' ?>">
+                            <span class="hbar-row__name">
                                 <?= htmlspecialchars($statName, ENT_QUOTES, 'UTF-8') ?>
                                 <?php if ($statName !== $statPath): ?>
                                 <span class="mono"><?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?></span>
                                 <?php endif; ?>
-                            </td>
-                            <td><?= (int)($statRow['n'] ?? 0) ?></td>
-                            <td class="section-note"><?= htmlspecialchars((string)($statRow['last'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
-                        </tr>
+                            </span>
+                            <span class="hbar-track"><span class="hbar-fill" style="width:<?= (int)round($statPageN / $statMaxPageN * 100) ?>%;"></span></span>
+                            <span class="hbar-row__val"><?= $statPageN ?></span>
+                        </div>
                         <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                        <?php if (empty($statPages)): ?>
+                        <p class="section-note" style="margin:0;">Noch keine Seitenaufrufe.</p>
+                        <?php endif; ?>
+                    </div>
                 </section>
 
                 <section class="card">
@@ -2548,6 +2715,29 @@
                         <?php endforeach; ?>
                         </tbody>
                     </table>
+                </section>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h3>Verlauf (14 Tage)</h3>
+                            <p class="section-note">Seitenaufrufe pro Tag – größter Wert oben ausgerichtet.</p>
+                        </div>
+                    </div>
+                    <?php if (empty($statDays)): ?>
+                    <p class="section-note" style="margin:0;">Noch keine Tageswerte erfasst.</p>
+                    <?php else: ?>
+                    <div class="chart">
+                        <?php foreach ($statDays as $statDate => $statRow): ?>
+                        <?php $statPv = (int)($statRow['pageviews'] ?? 0); ?>
+                        <div class="chart-col" title="<?= htmlspecialchars((string)$statDate, ENT_QUOTES, 'UTF-8') ?>: <?= $statPv ?> Aufrufe">
+                            <span class="chart-col__val"><?= $statPv ?></span>
+                            <span class="chart-col__bar" style="height:<?= (int)round($statPv / $statMaxDayPv * 100) ?>%;"></span>
+                            <span class="chart-col__label"><?= htmlspecialchars(date('d.', (int)strtotime((string)$statDate)), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
                 </section>
 
                 <div class="dashboard-grid">
@@ -2576,21 +2766,21 @@
                     <section class="card">
                         <div class="section-head">
                             <div>
-                                <h3>Verlauf (14 Tage)</h3>
-                                <p class="section-note">Seitenaufrufe pro Tag.</p>
+                                <h3>Geräte</h3>
+                                <p class="section-note">Mobil und Desktop im Verhältnis (<?= $statMobShare ?>% mobil).</p>
                             </div>
                         </div>
-                        <div class="stats-grid">
-                            <?php foreach ($statDays as $statDate => $statRow): ?>
-                            <?php $statPv = (int)($statRow['pageviews'] ?? 0); ?>
-                            <div class="stat-row">
-                                <span class="mono"><?= htmlspecialchars((string)$statDate, ENT_QUOTES, 'UTF-8') ?></span>
-                                <span style="flex:1; margin:0 0.75rem; background:var(--cms-border); border-radius:6px; height:8px; overflow:hidden;">
-                                    <span style="display:block; height:100%; width:<?= (int)round($statPv / $statMaxDayPv * 100) ?>%; background:var(--cms-accent);"></span>
-                                </span>
-                                <span class="stat-value" style="font-size:0.95rem;"><?= $statPv ?></span>
+                        <div class="hbar-list">
+                            <div class="hbar-row">
+                                <span class="hbar-row__name">Mobil</span>
+                                <span class="hbar-track"><span class="hbar-fill" style="width:<?= (int)round($statMob / $statMaxDevice * 100) ?>%;"></span></span>
+                                <span class="hbar-row__val"><?= number_format($statMob, 0, ',', '.') ?></span>
                             </div>
-                            <?php endforeach; ?>
+                            <div class="hbar-row">
+                                <span class="hbar-row__name">Desktop</span>
+                                <span class="hbar-track"><span class="hbar-fill" style="width:<?= (int)round($statDesk / $statMaxDevice * 100) ?>%;"></span></span>
+                                <span class="hbar-row__val"><?= number_format($statDesk, 0, ',', '.') ?></span>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -2642,7 +2832,7 @@
                                     <?= htmlspecialchars($statFriendly((string)$statPath), ENT_QUOTES, 'UTF-8') ?>
                                     <span class="mono"><?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?></span>
                                 </td>
-                                <td><?= htmlspecialchars($statFmtDur($statEngDur), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(cms_dur_label($statEngDur), ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= $statEngScroll ?>%</td>
                                 <td><?= (int)($statRow['n'] ?? 0) ?></td>
                             </tr>

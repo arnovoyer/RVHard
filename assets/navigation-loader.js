@@ -204,13 +204,19 @@ function initNavigationMenu() {
   }
 
   /* Austritt / Wiedereintritt per Link: ...?notrack=1 bzw. ?notrack=0
-     (z. B. vom CMS-Button verlinkt). Der Zustand bleibt 1 Jahr erhalten. */
+     (z. B. vom CMS-Button verlinkt). Der Zustand bleibt 1 Jahr erhalten.
+     Das Cookie wird domainweit gesetzt, damit er auch für die
+     Foto-Galerie (fotos.rv-hard.at) gilt. */
   try {
     const params = new URLSearchParams(window.location.search);
     if (params.has('notrack')) {
       const on = params.get('notrack') !== '0';
       document.cookie = NOTRACK_COOKIE + '=' + (on ? '1' : '') +
-        '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax';
+        '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax; domain=.rv-hard.at';
+      /* Beim Austritt eine früher gesetzte host-only-Variante mitlöschen. */
+      if (!on) {
+        document.cookie = NOTRACK_COOKIE + '=; path=/; max-age=0; samesite=Lax';
+      }
     }
   } catch (error) {}
 

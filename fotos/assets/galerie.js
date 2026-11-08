@@ -53,14 +53,29 @@ const FG_TRACK_URL = (FG_BASE ? FG_BASE : '') + '/admin/track.php';
 let _fgTrackCurrentEvent = '';
 
 /* Freiwilliger Austritt aus der Messung: ?notrack=1 setzt ein Cookie,
-   ?notrack=0 entfernt es. Ist es gesetzt, wird gar nichts gezählt. */
+   ?notrack=0 entfernt es. Ist es gesetzt, wird gar nichts gezählt.
+   Auf rv-hard.at wird das Cookie domainweit gesetzt, damit der Austritt
+   auch auf der Hauptseite und allen Sub-Domains gilt. */
+function fgCookieDomain() {
+    try {
+        const h = String(window.location.hostname || '').toLowerCase();
+        if (h === 'rv-hard.at' || /\.rv-hard\.at$/.test(h)) return '; domain=.rv-hard.at';
+    } catch (e) {}
+    return '';
+}
+
 (function fgNotrackInit() {
     try {
         const params = new URLSearchParams(window.location.search);
         if (params.has('notrack')) {
             const on = params.get('notrack') !== '0';
+            const dom = fgCookieDomain();
             document.cookie = 'rv_notrack=' + (on ? '1' : '') +
-                '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax';
+                '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax' + dom;
+            /* Beim Austritt eine früher gesetzte host-only-Variante mitlöschen. */
+            if (!on && dom) {
+                document.cookie = 'rv_notrack=; path=/; max-age=0; samesite=Lax';
+            }
         }
     } catch (e) {}
 })();
