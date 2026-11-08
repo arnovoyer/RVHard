@@ -149,4 +149,5 @@ RewriteRule ^(.*)/$ /$1.html [L,NS]
 	</FilesMatch>
 </IfModule>
 
-ErrorDocument 404 /404.html
+# 404-Seite + anonyme Zählung fehlerhafter Aufrufe (siehe /cms/404.php)
+ErrorDocument 404 /cms/404.php

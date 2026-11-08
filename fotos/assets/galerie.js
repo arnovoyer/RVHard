@@ -52,7 +52,28 @@ const FG_LOAD_TIMEOUT_MS = 12000;   /* 12 Sekunden Timeout, dann Fehlermeldung *
 const FG_TRACK_URL = (FG_BASE ? FG_BASE : '') + '/admin/track.php';
 let _fgTrackCurrentEvent = '';
 
+/* Freiwilliger Austritt aus der Messung: ?notrack=1 setzt ein Cookie,
+   ?notrack=0 entfernt es. Ist es gesetzt, wird gar nichts gezählt. */
+(function fgNotrackInit() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('notrack')) {
+            const on = params.get('notrack') !== '0';
+            document.cookie = 'rv_notrack=' + (on ? '1' : '') +
+                '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax';
+        }
+    } catch (e) {}
+})();
+
+function fgNotrackOn() {
+    try {
+        const m = ('; ' + document.cookie).match(/(?:^|; )rv_notrack=([^;]*)/);
+        return !!m && m[1] === '1';
+    } catch (e) { return false; }
+}
+
 function fgTrack(type, data) {
+    if (fgNotrackOn()) return;
     try {
         const payload = { t: String(type || '') };
         if (data && data.e) payload.e = String(data.e).slice(0, 120);

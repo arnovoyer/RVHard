@@ -64,6 +64,25 @@ function rv_load_stats() {
     return is_array($decoded) ? $decoded : [];
 }
 
+/* ---------- 0) Eigene Aufrufe nicht mitzählen ---------- */
+
+/* (a) Geräte-Flag: Cookie "rv_notrack" = 1 (per ?notrack=1 in galerie.js gesetzt) */
+if ((string)($_COOKIE['rv_notrack'] ?? '') === '1') rv_out(true, ['skipped' => 'notrack']);
+
+/* (b) Galerie-Admin eingeloggt? Session nur lesen, wenn der Besucher
+       bereits das passende Session-Cookie hat – so bekommen normale
+       Besucher weiterhin kein Cookie von der Statistik. */
+foreach (['RVHARD_FOTO_ADMIN' => 'fg_admin_user', 'RVH2' => 'fg2_user'] as $rv_sname => $rv_skey) {
+    if (empty($_COOKIE[$rv_sname])) continue;
+    @session_name($rv_sname);
+    @session_cache_limiter('none');
+    if (@session_start()) {
+        $rv_isAdmin = !empty($_SESSION[$rv_skey]);
+        @session_write_close();
+        if ($rv_isAdmin) rv_out(true, ['skipped' => 'admin']);
+    }
+}
+
 /* ---------- 1) Nur POST, Body lesen ---------- */
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     http_response_code(405);

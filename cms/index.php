@@ -1552,23 +1552,83 @@
     $statDevices = ['mobile' => 0, 'desktop' => 0];
     $statVisitorsToday = 0;
     $statDays = [];
+    $statMonths = [];
+    $statDl = [];
+    $statExt = [];
+    $statShare = [];
+    $statCamps = [];
+    $statEngage = [];
+    $statNotFoundTable = [];
     if ($view === 'statistik') {
         $siteStats = load_site_stats();
+
+        /* CSV-Export der wichtigsten Tabellen (Download über ?export=csv). */
+        if (($_GET['export'] ?? '') === 'csv') {
+            ini_set('display_errors', '0'); /* keine Hinweise mitten in der CSV-Datei */
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename="rv-hard-statistik-' . date('Y-m-d') . '.csv"');
+            $csvOut = fopen('php://output', 'w');
+            fwrite($csvOut, "\xEF\xBB\xBF"); /* BOM, damit Excel Umlaute korrekt zeigt */
+            fputcsv($csvOut, ['Bereich', 'Eintrag', 'Wert']);
+
+            $statTotalsCsv = is_array($siteStats['totals'] ?? null) ? $siteStats['totals'] : [];
+            foreach (['pageviews' => 'Seitenaufrufe', 'clicks' => 'Klicks',
+                      'downloads' => 'Downloads', 'extclicks' => 'Externe Links',
+                      'shares' => 'Teilen', 'notfound' => 'Nicht gefunden'] as $csvKey => $csvLabel) {
+                fputcsv($csvOut, ['Gesamt', $csvLabel, (int)($statTotalsCsv[$csvKey] ?? 0)]);
+            }
+            foreach ((array)($siteStats['pages'] ?? []) as $csvPath => $csvRow) {
+                fputcsv($csvOut, ['Seite', (string)$csvPath, (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['clicks'] ?? []) as $csvRow) {
+                fputcsv($csvOut, ['Klick', (string)($csvRow['p'] ?? '') . ' > ' . (string)($csvRow['a'] ?? ''), (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['dl'] ?? []) as $csvTarget => $csvRow) {
+                fputcsv($csvOut, ['Download', (string)$csvTarget, (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['ext'] ?? []) as $csvTarget => $csvRow) {
+                fputcsv($csvOut, ['Externer Link', (string)$csvTarget, (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['share'] ?? []) as $csvRow) {
+                fputcsv($csvOut, ['Teilen', (string)($csvRow['p'] ?? '') . ' > ' . (string)($csvRow['a'] ?? ''), (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['camps'] ?? []) as $csvKey => $csvRow) {
+                fputcsv($csvOut, ['Kampagne', (string)$csvKey, (int)($csvRow['n'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['days'] ?? []) as $csvDay => $csvRow) {
+                fputcsv($csvOut, ['Tag', (string)$csvDay . ' (Klicks: ' . (int)($csvRow['clicks'] ?? 0) . ')', (int)($csvRow['pageviews'] ?? 0)]);
+            }
+            foreach ((array)($siteStats['notfound'] ?? []) as $csvPath => $csvRow) {
+                fputcsv($csvOut, ['Nicht gefunden', (string)$csvPath, (int)($csvRow['n'] ?? 0)]);
+            }
+            fclose($csvOut);
+            exit;
+        }
+
         $statDevices = array_merge(
             ['mobile' => 0, 'desktop' => 0],
             is_array($siteStats['devices'] ?? null) ? $siteStats['devices'] : []
         );
 
-        $statPages = is_array($siteStats['pages'] ?? null) ? $siteStats['pages'] : [];
-        uasort($statPages, function ($a, $b) {
+        $statTotals    = is_array($siteStats['totals'] ?? null) ? $siteStats['totals'] : [];
+        $statDownloads = (int)($statTotals['downloads'] ?? 0);
+        $statExtClicks = (int)($statTotals['extclicks'] ?? 0);
+        $statShares    = (int)($statTotals['shares'] ?? 0);
+        $statNotFound  = (int)($statTotals['notfound'] ?? 0);
+        $statDurSum    = (int)($statTotals['dur'] ?? 0);
+        $statEngageN   = (int)($statTotals['engageN'] ?? 0);
+        $statAvgDur    = $statEngageN > 0 ? (int)round($statDurSum / $statEngageN) : 0;
+
+        $statSortDesc = static function (array $a, array $b): int {
             return (int)($b['n'] ?? 0) <=> (int)($a['n'] ?? 0);
-        });
+        };
+
+        $statPages = is_array($siteStats['pages'] ?? null) ? $siteStats['pages'] : [];
+        uasort($statPages, $statSortDesc);
         $statPages = array_slice($statPages, 0, 20, true);
 
         $statClicks = is_array($siteStats['clicks'] ?? null) ? $siteStats['clicks'] : [];
-        uasort($statClicks, function ($a, $b) {
-            return (int)($b['n'] ?? 0) <=> (int)($a['n'] ?? 0);
-        });
+        uasort($statClicks, $statSortDesc);
         $statClicks = array_slice($statClicks, 0, 20, true);
 
         $statRefs = is_array($siteStats['refs'] ?? null) ? $siteStats['refs'] : [];
@@ -1577,8 +1637,46 @@
 
         $statVisitorsToday = count($siteStats['visitors'][date('Y-m-d')] ?? []);
 
-        $statDays = is_array($siteStats['days'] ?? null) ? $siteStats['days'] : [];
-        ksort($statDays);
+        $statDl = is_array($siteStats['dl'] ?? null) ? $siteStats['dl'] : [];
+        uasort($statDl, $statSortDesc);
+        $statDl = array_slice($statDl, 0, 15, true);
+
+        $statExt = is_array($siteStats['ext'] ?? null) ? $siteStats['ext'] : [];
+        uasort($statExt, $statSortDesc);
+        $statExt = array_slice($statExt, 0, 15, true);
+
+        $statShare = is_array($siteStats['share'] ?? null) ? $siteStats['share'] : [];
+        uasort($statShare, $statSortDesc);
+        $statShare = array_slice($statShare, 0, 15, true);
+
+        $statCamps = is_array($siteStats['camps'] ?? null) ? $siteStats['camps'] : [];
+        uasort($statCamps, $statSortDesc);
+        $statCamps = array_slice($statCamps, 0, 15, true);
+
+        $statEngage = is_array($siteStats['engage'] ?? null) ? $siteStats['engage'] : [];
+        uasort($statEngage, $statSortDesc);
+        $statEngage = array_slice($statEngage, 0, 15, true);
+
+        $statNotFoundTable = is_array($siteStats['notfound'] ?? null) ? $siteStats['notfound'] : [];
+        uasort($statNotFoundTable, $statSortDesc);
+        $statNotFoundTable = array_slice($statNotFoundTable, 0, 20, true);
+
+        /* Monatsvergleich aus allen Tageswerten (nicht nur den letzten 14). */
+        $statAllDays = is_array($siteStats['days'] ?? null) ? $siteStats['days'] : [];
+        ksort($statAllDays);
+        $statMonths = [];
+        foreach ($statAllDays as $statDayKey => $statDayRow) {
+            $statMonthKey = substr((string)$statDayKey, 0, 7);
+            if (!isset($statMonths[$statMonthKey])) {
+                $statMonths[$statMonthKey] = ['pageviews' => 0, 'clicks' => 0, 'downloads' => 0, 'extclicks' => 0];
+            }
+            foreach (['pageviews', 'clicks', 'downloads', 'extclicks'] as $statMKey) {
+                $statMonths[$statMonthKey][$statMKey] += (int)($statDayRow[$statMKey] ?? 0);
+            }
+        }
+        $statMonths = array_slice(array_reverse($statMonths, true), 0, 12, true);
+
+        $statDays = $statAllDays;
         $statDays = array_slice($statDays, -14, 14, true);
     }
 
@@ -2272,6 +2370,16 @@
                         ];
                         return $map[$path] ?? $path;
                     };
+
+                    /* Sekunden freundlich darstellen: "2 min 05 s" */
+                    $statFmtDur = function (int $seconds): string {
+                        if ($seconds <= 0) {
+                            return '0 s';
+                        }
+                        $min = intdiv($seconds, 60);
+                        $sec = $seconds % 60;
+                        return $min > 0 ? $min . ' min ' . str_pad((string)$sec, 2, '0', STR_PAD_LEFT) . ' s' : $sec . ' s';
+                    };
                 ?>
                 <section class="card">
                     <div class="section-head">
@@ -2279,8 +2387,11 @@
                             <h2>Statistik</h2>
                             <p class="section-note">
                                 Anonyme Reichweiten-Messung der Hauptseite<?= $statSince !== '' ? ' (seit ' . htmlspecialchars($statSince, ENT_QUOTES, 'UTF-8') . ')' : '' ?>.
-                                Keine Cookies, keine Zuordnung zu Personen.
+                                Keine Cookies zur Wiedererkennung; eingeloggte CMS-Aufrufe werden nicht gezählt.
                             </p>
+                            <div class="row" style="margin-top:0.6rem;">
+                                <a class="btn btn-muted" href="/cms/index.php?view=statistik&amp;export=csv">Als CSV exportieren</a>
+                            </div>
                         </div>
                     </div>
                     <div class="dashboard-grid">
@@ -2304,8 +2415,77 @@
                             <h3>Mobil-Anteil</h3>
                             <p><?= number_format($statMob, 0, ',', '.') ?> mobil · <?= number_format($statDesk, 0, ',', '.') ?> Desktop</p>
                         </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statDownloads, 0, ',', '.') ?></div>
+                            <h3>Downloads</h3>
+                            <p>Datei-Downloads (PDF, GPX, …).</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statExtClicks, 0, ',', '.') ?></div>
+                            <h3>Externe Links</h3>
+                            <p>Klicks, die die Seite verlassen.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($statShares, 0, ',', '.') ?></div>
+                            <h3>Teilen</h3>
+                            <p>WhatsApp, E-Mail und „Link kopieren".</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= htmlspecialchars($statFmtDur($statAvgDur), ENT_QUOTES, 'UTF-8') ?></div>
+                            <h3>Ø Verweildauer</h3>
+                            <p>Durchschnitt pro gemessenem Seitenaufruf.</p>
+                        </div>
                     </div>
                 </section>
+
+                <?php
+                    /* Freiwilliger Austritt aus der Messung – dieses Gerät
+                       bekommt dann das Cookie "rv_notrack". */
+                    $statNotrackOn = ((string)($_COOKIE['rv_notrack'] ?? '') === '1');
+                ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Eigenes Gerät ausschließen</h2>
+                            <p class="section-note">
+                                Eingeloggte CMS-Aufrufe werden automatisch nicht gezählt. Zusätzlich kannst du dieses Gerät
+                                dauerhaft aus der Messung nehmen – praktisch, wenn du die Seite auch ohne Login ansiehst.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn <?= $statNotrackOn ? 'btn-primary' : 'btn-muted' ?>" id="rv-notrack-toggle">
+                            <?= $statNotrackOn ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten' ?>
+                        </button>
+                        <span class="section-note" id="rv-notrack-state">
+                            <?= $statNotrackOn ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.' ?>
+                        </span>
+                    </div>
+                </section>
+                <script>
+                (function () {
+                    var btn = document.getElementById('rv-notrack-toggle');
+                    var state = document.getElementById('rv-notrack-state');
+                    if (!btn || !state) { return; }
+
+                    function isOn() {
+                        var m = ('; ' + document.cookie).match(/(?:^|; )rv_notrack=([^;]*)/);
+                        return !!m && m[1] === '1';
+                    }
+                    function render() {
+                        var on = isOn();
+                        btn.textContent = on ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten';
+                        btn.className = 'btn ' + (on ? 'btn-primary' : 'btn-muted');
+                        state.textContent = on ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.';
+                    }
+                    btn.addEventListener('click', function () {
+                        var on = isOn();
+                        document.cookie = 'rv_notrack=' + (on ? '' : '1') +
+                            '; path=/; max-age=' + (on ? 0 : 31536000) + '; samesite=Lax';
+                        render();
+                    });
+                })();
+                </script>
 
                 <?php if ($statTotalPv === 0 && $statTotalClicks === 0): ?>
                 <section class="card">
@@ -2414,6 +2594,196 @@
                         </div>
                     </section>
                 </div>
+
+                <div class="dashboard-grid">
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Monatsvergleich</h3>
+                                <p class="section-note">Aufrufe und Klicks je Monat.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Monat</th><th>Aufrufe</th><th>Klicks</th><th>Downloads</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statMonths as $statMonthKey => $statRow): ?>
+                            <tr>
+                                <td class="mono"><?= htmlspecialchars((string)$statMonthKey, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= (int)($statRow['pageviews'] ?? 0) ?></td>
+                                <td><?= (int)($statRow['clicks'] ?? 0) ?></td>
+                                <td><?= (int)($statRow['downloads'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statMonths)): ?>
+                            <tr><td colspan="4" class="section-note">Noch keine Monatsdaten.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Verweildauer &amp; Scroll-Tiefe</h3>
+                                <p class="section-note">Durchschnitt je Seite, gemessen bis zum Verlassen.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Seite</th><th>Ø Dauer</th><th>Ø Scroll</th><th>Messungen</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statEngage as $statPath => $statRow): ?>
+                            <?php
+                                $statEngN      = max(1, (int)($statRow['n'] ?? 0));
+                                $statEngDur    = (int)round((int)($statRow['dur'] ?? 0) / $statEngN);
+                                $statEngScroll = (int)round((int)($statRow['scroll'] ?? 0) / $statEngN);
+                            ?>
+                            <tr>
+                                <td>
+                                    <?= htmlspecialchars($statFriendly((string)$statPath), ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="mono"><?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?></span>
+                                </td>
+                                <td><?= htmlspecialchars($statFmtDur($statEngDur), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= $statEngScroll ?>%</td>
+                                <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statEngage)): ?>
+                            <tr><td colspan="4" class="section-note">Noch keine Messwerte.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <div class="dashboard-grid">
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Downloads</h3>
+                                <p class="section-note">Am häufigsten heruntergeladene Dateien.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Datei</th><th>Downloads</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statDl as $statTarget => $statRow): ?>
+                            <tr>
+                                <td>
+                                    <?= htmlspecialchars((string)($statRow['a'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="mono"><?= htmlspecialchars((string)$statTarget, ENT_QUOTES, 'UTF-8') ?></span>
+                                </td>
+                                <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statDl)): ?>
+                            <tr><td colspan="2" class="section-note">Noch keine Downloads.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Externe Links</h3>
+                                <p class="section-note">Klicks, die die Seite verlassen.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Ziel</th><th>Klicks</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statExt as $statTarget => $statRow): ?>
+                            <tr>
+                                <td>
+                                    <?= htmlspecialchars((string)($statRow['a'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="mono"><?= htmlspecialchars((string)$statTarget, ENT_QUOTES, 'UTF-8') ?></span>
+                                </td>
+                                <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statExt)): ?>
+                            <tr><td colspan="2" class="section-note">Noch keine externen Klicks.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <div class="dashboard-grid">
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Teilen</h3>
+                                <p class="section-note">Welche Teilen-Buttons genutzt werden.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Seite</th><th>Kanal</th><th>Nutzungen</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statShare as $statRow): ?>
+                            <tr>
+                                <td>
+                                    <?= htmlspecialchars($statFriendly((string)($statRow['p'] ?? '')), ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="mono"><?= htmlspecialchars((string)($statRow['p'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
+                                </td>
+                                <td><?= htmlspecialchars((string)($statRow['a'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statShare)): ?>
+                            <tr><td colspan="3" class="section-note">Noch keine Teilen-Nutzung.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="card">
+                        <div class="section-head">
+                            <div>
+                                <h3>Kampagnen</h3>
+                                <p class="section-note">Aufrufe mit utm_source / utm_campaign.</p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead><tr><th>Kampagne</th><th>Aufrufe</th></tr></thead>
+                            <tbody>
+                            <?php foreach ($statCamps as $statKey => $statRow): ?>
+                            <tr>
+                                <td class="mono"><?= htmlspecialchars((string)$statKey, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if (empty($statCamps)): ?>
+                            <tr><td colspan="2" class="section-note">Noch keine Kampagnen-Aufrufe.</td></tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h3>Nicht gefundene Seiten (404)</h3>
+                            <p class="section-note">Aufgerufene Adressen, die es nicht gibt – hilfreich für fehlende Links.</p>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Adresse</th><th>Aufrufe</th><th>Zuletzt</th></tr></thead>
+                        <tbody>
+                        <?php foreach ($statNotFoundTable as $statPath => $statRow): ?>
+                        <tr>
+                            <td class="mono"><?= htmlspecialchars((string)$statPath, ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= (int)($statRow['n'] ?? 0) ?></td>
+                            <td class="section-note"><?= htmlspecialchars((string)($statRow['last'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php if (empty($statNotFoundTable)): ?>
+                        <tr><td colspan="3" class="section-note">Keine fehlerhaften Aufrufe erfasst.</td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </section>
                 <?php endif; ?>
                 <?php endif; ?>
 

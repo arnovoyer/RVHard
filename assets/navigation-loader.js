@@ -195,6 +195,29 @@ function initNavigationMenu() {
 
   const ENDPOINT = '/cms/track.php';
   const IGNORED = /^\/(fotos|cms|update|bilder)(\/|$)/;
+  const NOTRACK_COOKIE = 'rv_notrack';
+  const DOWNLOAD_RE = /\.(pdf|zip|docx?|xlsx?|pptx?|csv|ics|gpx|jpe?g|png|webp|mp4|mov|mp3)(\?|#|$)/i;
+
+  function readCookie(name) {
+    const match = ('; ' + document.cookie).match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return match ? match[1] : '';
+  }
+
+  /* Austritt / Wiedereintritt per Link: ...?notrack=1 bzw. ?notrack=0
+     (z. B. vom CMS-Button verlinkt). Der Zustand bleibt 1 Jahr erhalten. */
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('notrack')) {
+      const on = params.get('notrack') !== '0';
+      document.cookie = NOTRACK_COOKIE + '=' + (on ? '1' : '') +
+        '; path=/; max-age=' + (on ? 31536000 : 0) + '; samesite=Lax';
+    }
+  } catch (error) {}
+
+  /* Wer die Messung abbestellt hat, wird nicht gezählt. */
+  if (readCookie(NOTRACK_COOKIE) === '1') {
+    return;
+  }
 
   function currentPath() {
     return window.location.pathname || '/';
@@ -218,20 +241,62 @@ function initNavigationMenu() {
     }
   }
 
+  function clip(value, max) {
+    const text = String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+    return text.length > max ? text.slice(0, max) : text;
+  }
+
   function clickLabel(element) {
-    const raw = element.getAttribute('data-track')
-      || element.getAttribute('aria-label')
-      || element.getAttribute('title')
-      || element.textContent
-      || '';
-    const text = raw.replace(/\s+/g, ' ').trim();
-    return text.length > 80 ? text.slice(0, 80) : text;
+    return clip(
+      element.getAttribute('data-track')
+        || element.getAttribute('aria-label')
+        || element.getAttribute('title')
+        || element.textContent
+        || '',
+      80
+    );
   }
 
+  /* Ziel eines Links einordnen: Download, externer Link oder normal. */
+  function linkKind(anchor) {
+    if (anchor.hasAttribute('download')) {
+      return 'dl';
+    }
+    const href = anchor.getAttribute('href') || '';
+    if (href === '' || href.startsWith('#')) {
+      return '';
+    }
+    if (href.startsWith('mailto:') || href.startsWith('tel:')) {
+      return '';
+    }
+    if (DOWNLOAD_RE.test(href)) {
+      return 'dl';
+    }
+    try {
+      const url = new URL(anchor.href, window.location.href);
+      if (url.hostname && url.hostname !== window.location.hostname) {
+        return 'ext';
+      }
+    } catch (error) {}
+    return '';
+  }
+
+  /* --- Seitenaufruf (inkl. Kampagnen-Kennung aus UTM-Parametern) --- */
   if (!IGNORED.test(currentPath())) {
-    send({ t: 'page', p: currentPath() });
+    const payload = { t: 'page', p: currentPath() };
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const source = clip(params.get('utm_source') || '', 60);
+      const campaign = clip(params.get('utm_campaign') || '', 60);
+      if (source || campaign) {
+        payload.c = source;
+        payload.m = campaign;
+      }
+    } catch (error) {}
+    send(payload);
   }
 
+  /* --- Klicks, Downloads und externe Links --- */
   document.addEventListener('click', (event) => {
     const el = event.target;
     if (!el || typeof el.closest !== 'function') {
@@ -248,6 +313,17 @@ function initNavigationMenu() {
       return;
     }
 
+    if (target.tagName === 'A') {
+      const kind = linkKind(target);
+      if (kind) {
+        const label = clickLabel(target) || clip(target.getAttribute('href') || '', 80);
+        if (label) {
+          send({ t: kind, p: path, a: label, h: clip(target.getAttribute('href') || '', 160) });
+          return;
+        }
+      }
+    }
+
     const text = clickLabel(target);
     if (!text) {
       return;
@@ -255,4 +331,51 @@ function initNavigationMenu() {
 
     send({ t: 'click', p: path, a: text });
   }, true);
+
+  /* --- Verweildauer & Scroll-Tiefe --- */
+  const startTime = Date.now();
+  let maxScroll = 0;
+
+  function measureScroll() {
+    const doc = document.documentElement;
+    const body = document.body || {};
+    const height = Math.max(
+      doc.scrollHeight || 0, body.scrollHeight || 0,
+      doc.offsetHeight || 0, body.offsetHeight || 0
+    );
+    const viewport = window.innerHeight || doc.clientHeight || 0;
+    const scrollable = Math.max(1, height - viewport);
+    const top = window.scrollY || doc.scrollTop || body.scrollTop || 0;
+    const depth = Math.round(Math.min(1, Math.max(0, top / scrollable)) * 100);
+    if (depth > maxScroll) {
+      maxScroll = depth;
+    }
+  }
+
+  window.addEventListener('scroll', measureScroll, { passive: true });
+  measureScroll();
+
+  let engageSent = false;
+  function sendEngagement() {
+    if (engageSent || IGNORED.test(currentPath())) {
+      return;
+    }
+    engageSent = true;
+    const seconds = Math.round((Date.now() - startTime) / 1000);
+    if (seconds < 1 && maxScroll <= 0) {
+      return;
+    }
+    send({ t: 'engage', p: currentPath(), d: seconds, s: maxScroll });
+  }
+
+  window.addEventListener('pagehide', sendEngagement);
+
+  /* --- Teilen-Nutzung: Meldung aus /assets/share.js --- */
+  window.addEventListener('rv-track', (event) => {
+    const detail = event && event.detail ? event.detail : null;
+    if (!detail || IGNORED.test(currentPath())) {
+      return;
+    }
+    send(Object.assign({ p: currentPath() }, detail));
+  });
 })();

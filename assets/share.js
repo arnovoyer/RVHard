@@ -59,6 +59,15 @@
       '</svg>'
   };
 
+  /* Teilen-Nutzung anonym melden (Auswertung im CMS unter "Statistik").
+     Der Versand passiert im navigation-loader.js, damit die
+     "Nicht zählen"-Regeln nur an einer Stelle gepflegt werden. */
+  function trackShare(network) {
+    try {
+      window.dispatchEvent(new CustomEvent('rv-track', { detail: { t: 'share', a: network } }));
+    } catch (error) {}
+  }
+
   /* Erzeugt einen Share-Button (als <a> oder <button>). */
   function createButton(tag, className, label, iconSvg, href) {
     var el = document.createElement(tag);
@@ -117,7 +126,17 @@
       ICONS.link
     );
 
+    whatsapp.addEventListener('click', function () {
+      trackShare('WhatsApp');
+    });
+
+    mail.addEventListener('click', function () {
+      trackShare('E-Mail');
+    });
+
     copy.addEventListener('click', function () {
+      trackShare('Link kopieren');
+
       function done() {
         var label = copy.querySelector('.share-btn-label');
         copy.classList.add('share-btn--done');
