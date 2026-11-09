@@ -1,4 +1,278 @@
 Indexierte Seiten:
+https://rv-hard.at/sponsoren
+	07.11.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2025
+	06.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023
+	06.11.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2026
+	06.11.2026
+https://rv-hard.at/verein/mitglied-werden
+	06.11.2026
+https://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach
+	06.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025
+	06.11.2026
+https://rv-hard.at/
+	06.11.2026
+https://rv-hard.at/verein/geschichte
+	05.11.2026
+https://rv-hard.at/news/abradeln-2025
+	05.11.2026
+https://rv-hard.at/news/bilder-von-andrea-p-online
+	05.11.2026
+https://rv-hard.at/news/rennbericht-tschengla-bike
+	05.11.2026
+https://rv-hard.at/verein/gemeinschaft
+	05.11.2026
+https://rv-hard.at/downloads/Ergebnis-LM-2022.pdf
+	05.11.2026
+https://rv-hard.at/termine
+	04.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024
+	04.11.2026
+https://rv-hard.at/impressum
+	03.11.2026
+https://rv-hard.at/news/ruggburg-charity-race-2020
+	03.11.2026
+https://rv-hard.at/news/tschengla-bike-2019
+	03.11.2026
+https://rv-hard.at/news/ruggburg-charity-race-2021
+	03.11.2026
+https://rv-hard.at/news/rennbericht-gamp-2021
+	03.11.2026
+https://rv-hard.at/news/abenteuer-jugend-em
+	03.11.2026
+https://rv-hard.at/news/austrias-youngsters-cup-in-oberndorf-tirol-starke-vorstellung-der-starter-vom-rv-djs-bikeshop-simplon-hard
+	03.11.2026
+https://rv-hard.at/news/geglueckter-saisonauftakt
+	03.11.2026
+https://rv-hard.at/news/nachwuchs-oem-mtb-xco-2023
+	03.11.2026
+https://rv-hard.at/news/2-rheindamm-cyclocross-mtb
+	03.11.2026
+https://rv-hard.at/news/arlberger-bike-classic-2018
+	03.11.2026
+https://rv-hard.at/news/vize-oem-xc-eliminator
+	03.11.2026
+https://rv-hard.at/news/rennbericht-albstadt-bike-marathon-2024
+	03.11.2026
+https://rv-hard.at/news/zwischenbericht-jugend-em
+	03.11.2026
+https://rv-hard.at/news/kobel-hobel-2019
+	03.11.2026
+https://rv-hard.at/news/abschluss-tirol-cup-2021
+	03.11.2026
+https://rv-hard.at/news/ayc-scheffau-u15w
+	03.11.2026
+https://rv-hard.at/news/kammgarn-kriterium-in-hard
+	03.11.2026
+https://rv-hard.at/news/zeitfahren-in-fussach
+	03.11.2026
+https://rv-hard.at/news/halbzeit-bei-der-summer-bike-series-2022
+	03.11.2026
+https://rv-hard.at/news/ayc-scheffau-u13m
+	03.11.2026
+https://rv-hard.at/news/top-ergebnis-des-rv-djs-bikeshop-simplon-hard-beim-3-laendermarathon
+	03.11.2026
+https://rv-hard.at/news/johanna-fuer-das-nationalteam-fuer-die-jugend-em-nominiert
+	03.11.2026
+https://rv-hard.at/news/zanzenberg-rennen-2020-oder-the-same-procedure-as-every-year
+	03.11.2026
+https://rv-hard.at/news/1-cyclocross-trainingsrennen-rv-hard-und-bikeworks-feldkirch
+	03.11.2026
+https://rv-hard.at/news/austrias-youngsterscup-alpencup-finale-dornbirn-zanzenberg
+	03.11.2026
+https://rv-hard.at/news/rennbericht-duerrenberg-rennen-und-ehrenberg-burgrennen
+	03.11.2026
+https://rv-hard.at/news/nightrace-ergebnisse-auf-der-alpencupseite-abrufbar
+	03.11.2026
+https://rv-hard.at/news/hahnenkamm-mountainbikerennen-und-bergkaiser-2023
+	03.11.2026
+https://rv-hard.at/news/die-legende-lebt-gamp-bike-beschling-19-auflage
+	03.11.2026
+https://rv-hard.at/news/top-leistung-beim-wien-marathon-von-oleg-zaiats
+	03.11.2026
+https://rv-hard.at/news/rennbericht-st-pauli-radmarathon-to-hell-2023
+	03.11.2026
+https://rv-hard.at/news/save-the-date-nightrace-hard-am-10-juni-2023
+	03.11.2026
+https://rv-hard.at/news/erfolgreiche-jugend-em-fuer-johanna-piringer
+	03.11.2026
+https://rv-hard.at/news/rennbericht-weltmeisterschaft-hamburg-2023
+	03.11.2026
+https://rv-hard.at/news/lageplan-cyclocross-landesmeisterschaften
+	03.11.2026
+https://rv-hard.at/news/altstaetten-finale-stevens-bikecup-2019
+	03.11.2026
+https://rv-hard.at/news/austrias-youngsters-cup-koppl-salzburg
+	03.11.2026
+https://rv-hard.at/news/silvretta-montafon-mtb-hillclimb-2018
+	03.11.2026
+https://rv-hard.at/news/top-stimmung-beim-heimrennen-in-hard
+	03.11.2026
+https://rv-hard.at/news/rennbericht-cyclassics-hamburg-2023
+	03.11.2026
+https://rv-hard.at/news/rennbericht-tschengla-bike-hc-2024
+	03.11.2026
+https://rv-hard.at/news/rennbericht-albstadt-bike-marathon
+	03.11.2026
+https://rv-hard.at/news/rennbericht-kitzalpbike-festival
+	03.11.2026
+https://rv-hard.at/news/spannende-rennen-in-der-schweiz
+	03.11.2026
+https://rv-hard.at/news/oem-wochenende-in-graz-stattegg
+	03.11.2026
+https://rv-hard.at/news/bulls-nighthawk-zu-verkaufen
+	03.11.2026
+https://rv-hard.at/news/austrians-youngsters-cup-petzen-kaernten
+	03.11.2026
+https://rv-hard.at/news/rennbericht-ischgl-ironbike
+	03.11.2026
+https://rv-hard.at/news/rennbericht-ralf-martin
+	03.11.2026
+https://rv-hard.at/news/der-austrian-youngsters-cup-geht-ins-finale
+	03.11.2026
+https://rv-hard.at/news/3-renntag-ayc-scheffau-in-tirol
+	03.11.2026
+https://rv-hard.at/news/aufbau-nightrace
+	03.11.2026
+https://rv-hard.at/news/furx-2018
+	03.11.2026
+https://rv-hard.at/news/landesmeisterschaften-mtb-xco-2023-in-buch
+	03.11.2026
+https://rv-hard.at/assets/share-button
+	03.11.2026
+https://rv-hard.at/assets/share-button.html
+	03.11.2026
+https://rv-hard.at/news/abgesagtes-rennen-des-tiroler-mtb-cups
+	03.11.2026
+https://rv-hard.at/news/starker-auftritt-beim-alpencup-in-mieming
+	03.11.2026
+https://rv-hard.at/news/landesmeisterschaften-beim-jannersee
+	03.11.2026
+https://rv-hard.at/news/tolle-ergebnisse-beim-heimrennen-harder-mtb-race-und-nachwuchs-cross-duathlon
+	03.11.2026
+https://rv-hard.at/news/finale-ayc-2021
+	03.11.2026
+https://rv-hard.at/news/top-auftritt-beim-pfaenderrennen-2022
+	02.11.2026
+https://rv-hard.at/news/toller-start-in-die-rennsaison-2019
+	02.11.2026
+https://rv-hard.at/news/saisonauftakt-fuer-die-rv-hard-jugend-beim-internationalen-mtb-rennen-in-scheffau-tirol
+	02.11.2026
+https://rv-hard.at/news/erste-ausfahrten-und-ausblick-erste-saisonrennen
+	02.11.2026
+https://rv-hard.at/news/nightrace-landesmeisterschaften-mtb-im-rahmen-des-harder-nightraces
+	02.11.2026
+https://rv-hard.at/news/topplatzierungen-bei-den-oem-im-triathlon-in-kitzbuehel-fuer-die-harder-athletinnen-und-athleten
+	02.11.2026
+https://rv-hard.at/news/sieg-beim-ayc-finale-in-koppl
+	02.11.2026
+https://rv-hard.at/news/mtb-rennen-isny-2018
+	02.11.2026
+https://rv-hard.at/downloads/Zwischenstand-Summer-Bike-Series-2022-Cup-Wertung-2-6.pdf
+	02.11.2026
+https://rv-hard.at/news/abschlussveranstaltung-des-alpencups-2021-am-19-9-2021-in-altstaetten-ch
+	02.11.2026
+https://rv-hard.at/news/rennbericht-ironbike-festival-2021
+	02.11.2026
+https://rv-hard.at/news/rennbericht-cadfish-luebeck-juni-2024
+	02.11.2026
+https://rv-hard.at/news/lea-riem-landesmeisterin-im-mountainbike-marathon
+	02.11.2026
+https://rv-hard.at/news/alpencup-mieming-oder-letzte-woche-frieren,-heute-hitzeschlacht
+	02.11.2026
+https://rv-hard.at/news/vereinsrennserie-2020
+	02.11.2026
+https://rv-hard.at/news/bikeopening-2023-graz-stattegg
+	02.11.2026
+https://rv-hard.at/news/cic-on-swiss-bike-cup-graenichen-samstag
+	02.11.2026
+https://rv-hard.at/news/cic-on-swiss-bike-cup-graenichen-samstag.html
+	02.11.2026
+https://rv-hard.at/news/landesmeisterschaften-xco-2019
+	02.11.2026
+https://rv-hard.at/news/landesmeisterschaften-xco-2019.html
+	02.11.2026
+https://rv-hard.at/news/trainingssaison-2018-19
+	02.11.2026
+https://rv-hard.at/news/sieg-beim-ayc-finale-in-koppl.html
+	02.11.2026
+https://rv-hard.at/news/pfaenderrennen-2024
+	02.11.2026
+https://rv-hard.at/news/oem-2023-cyclocross-querfeldein
+	02.11.2026
+https://rv-hard.at/news/rennbericht-bazora-hc-2024
+	02.11.2026
+https://rv-hard.at/news/rennbericht-gran-fondo-vosges-mai-2024
+	02.11.2026
+https://rv-hard.at/news/saisoneroeffnung-2022-orbea-bike-cup-arbon
+	02.11.2026
+https://rv-hard.at/news/haiming-mountainbike-festival-2023
+	02.11.2026
+https://rv-hard.at/news/summer-bike-series-2025
+	02.11.2026
+https://rv-hard.at/news/oem-mtb-xco-2022-hohenems
+	02.11.2026
+https://rv-hard.at/news/everesting
+	02.11.2026
+https://rv-hard.at/news/56-crosslaufserie-lustenau-2025-26
+	02.11.2026
+https://rv-hard.at/news/anradeln-2024
+	02.11.2026
+https://rv-hard.at/news/italien-rr-trainingslager-2019
+	02.11.2026
+https://rv-hard.at/news/das-war-der-austrias-youngsters-cup-2020
+	02.11.2026
+https://rv-hard.at/news/vorarlberger-mountainbike-cup-2018
+	02.11.2026
+https://rv-hard.at/news/u7-cross-country-rennen-am-dornbirner-zanzenberg
+	02.11.2026
+https://rv-hard.at/news/kobel-hobel-2023
+	02.11.2026
+https://rv-hard.at/news/nightrace-2019
+	02.11.2026
+https://rv-hard.at/verein/vorstand
+	02.11.2026
+https://rv-hard.at/downloads/Rennspesenabrechnung-2026.xlsx
+	31.10.2026
+https://rv-hard.at/datenschutz
+	29.10.2026
+https://rv-hard.at/kontakt
+	28.10.2026
+https://rv-hard.at/changelog
+	27.10.2026
+https://rv-hard.at/training/training
+	27.10.2026
+https://rv-hard.at/news/radkriterium-rankweil-2026
+	26.10.2026
+https://rv-hard.at/news/radwoche-2026
+	26.10.2026
+https://rv-hard.at/news/anradeln-2026
+	26.10.2026
+https://rv-hard.at/news/bilder-summer-bike-series-2026
+	26.10.2026
+https://rv-hard.at/news/bilder-summer-bike-series-2026.html
+	26.10.2026
+https://rv-hard.at/verein/bekleidung
+	26.10.2026
+https://rv-hard.at/verein/unser-verein
+	25.10.2026
+https://rv-hard.at/downloads/Ausschreibung-SBS-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-2022-E.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Streckenplan-Nightrace-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Nightrace-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-A-B-C-Women-2022.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-SBS-2023.pdf
+	24.10.2026
+https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-Sprint-2022.pdf
+	24.10.2026
 https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-2022-D.pdf
 	24.10.2026
 https://rv-hard.at/events/sbs/summer-bike-series-2023
@@ -15,89 +289,230 @@ https://rv-hard.at/events/sbs/summer-bike-series-2022
 	24.10.2026
 https://rv-hard.at/bilder/
 	24.10.2026
-https://rv-hard.at/verein/bekleidung
-	24.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025
-	24.10.2026
-https://rv-hard.at/training/training
-	23.10.2026
 https://rv-hard.at/training/probetraining
 	23.10.2026
-https://rv-hard.at/
-	22.10.2026
-https://fotos.rv-hard.at/datenschutz.html
-	21.10.2026
-https://fotos.rv-hard.at/impressum.html
-	21.10.2026
-https://fotos.rv-hard.at/
-	21.10.2026
-https://fotos.rv-hard.at/event.html?id=bmx4all-skillday-2026
-	21.10.2026
-https://rv-hard.at/impressum
-	21.10.2026
 https://rv-hard.at/events/sbs/summer-bike-series-2024
 	21.10.2026
-https://rv-hard.at/verein/mitglied-werden
-	19.10.2026
-https://rv-hard.at/verein/gemeinschaft
-	19.10.2026
-https://rv-hard.at/datenschutz
-	18.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024
-	17.10.2026
-https://rv-hard.at/sponsoren
-	15.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023
-	14.10.2026
-https://rv-hard.at/termine
-	13.10.2026
-https://rv-hard.at/kontakt
-	06.10.2026
-https://rv-hard.at/events/sbs/summer-bike-series-2025
-	05.10.2026
-https://rv-hard.at/verein/unser-verein
-	05.10.2026
 https://rv-hard.at/news/dachbau-schaffer-nightrace-2025
 	29.09.2026
 https://rv-hard.at/downloads/Ausschreibung-SBS-2024.pdf
 	25.09.2026
-https://rv-hard.at/verein/vorstand
-	25.09.2026
-https://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach
-	20.09.2026
 https://rv-hard.at/events/cyclocross/cyclocross-fussach-2023
 	17.09.2026
-https://rv-hard.at/verein/geschichte
-	17.09.2026
-https://rv-hard.at/news/abradeln-2025
-	12.08.2026
 http://rv-hard.at/downloads/Spesen-Rennfahrer-Formular.pdf
 	05.08.2026
 
-Umleitungsfehler:
-https://rv-hard.at/training
-	23.10.2026
-https://rv-hard.at/events/sbs/summer-bike-series-2026.html
-	23.10.2026
+
+Umleitungsfehler: 
 http://rv-hard.at/verein/vorstand.html
 	17.09.2026
 
-Duplikat – vom Nutzer nicht als kanonisch festgelegt:   
+Duplikat – vom Nutzer nicht als kanonisch festgelegt
 https://fotos.rv-hard.at/index.html
 	21.10.2026
+
+Seite mit Weiterleitung
+https://rv-hard.at/events/sbs/summer-bike-series-2025.html
+	06.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023.html
+	06.11.2026
 http://rv-hard.at/events/sbs/summer-bike-series-2026
-	17.10.2026
+	06.11.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2026.html
+	06.11.2026
+http://www.rv-hard.at/verein/mitglied-werden.html
+	06.11.2026
+https://rv-hard.at/verein/mitglied-werden.html
+	06.11.2026
+http://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html
+	06.11.2026
+https://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html
+	06.11.2026
+https://fotos.rv-hard.at/kontakt.html
+	06.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025.html
+	06.11.2026
+https://rv-hard.at/news/bilder-von-andrea-p-online.html
+	05.11.2026
+https://rv-hard.at/news/rennbericht-tschengla-bike.html
+	05.11.2026
+https://rv-hard.at/verein/gemeinschaft.html
+	05.11.2026
+https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024.html
+	04.11.2026
+https://rv-hard.at/impressum.html
+	03.11.2026
+https://rv-hard.at/news/ruggburg-charity-race-2020.html
+	03.11.2026
+https://rv-hard.at/news/tschengla-bike-2019.html
+	03.11.2026
+https://rv-hard.at/news/top-ergebnis-des-rv-djs-bikeshop-simplon-hard-beim-3-laendermarathon.html
+	03.11.2026
+https://rv-hard.at/news/ruggburg-charity-race-2021.html
+	03.11.2026
+https://rv-hard.at/news/top-stimmung-beim-heimrennen-in-hard.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-tschengla-bike-hc-2024.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-gamp-2021.html
+	03.11.2026
+https://rv-hard.at/news/save-the-date-nightrace-hard-am-10-juni-2023.html
+	03.11.2026
+https://rv-hard.at/news/silvretta-montafon-mtb-hillclimb-2018.html
+	03.11.2026
+https://rv-hard.at/news/abenteuer-jugend-em.html
+	03.11.2026
+https://rv-hard.at/news/austrias-youngsters-cup-in-oberndorf-tirol-starke-vorstellung-der-starter-vom-rv-djs-bikeshop-simplon-hard.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-duerrenberg-rennen-und-ehrenberg-burgrennen.html
+	03.11.2026
+https://rv-hard.at/news/geglueckter-saisonauftakt.html
+	03.11.2026
+https://rv-hard.at/news/nachwuchs-oem-mtb-xco-2023.html
+	03.11.2026
+https://rv-hard.at/news/1-cyclocross-trainingsrennen-rv-hard-und-bikeworks-feldkirch.html
+	03.11.2026
+https://rv-hard.at/news/2-rheindamm-cyclocross-mtb.html
+	03.11.2026
+https://rv-hard.at/news/arlberger-bike-classic-2018.html
+	03.11.2026
+https://rv-hard.at/news/austrias-youngsterscup-alpencup-finale-dornbirn-zanzenberg.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-kitzalpbike-festival.html
+	03.11.2026
+https://rv-hard.at/news/erfolgreiche-jugend-em-fuer-johanna-piringer.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-weltmeisterschaft-hamburg-2023.html
+	03.11.2026
+https://rv-hard.at/news/vize-oem-xc-eliminator.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-cyclassics-hamburg-2023.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-st-pauli-radmarathon-to-hell-2023.html
+	03.11.2026
+https://rv-hard.at/news/zanzenberg-rennen-2020-oder-the-same-procedure-as-every-year.html
+	03.11.2026
+https://rv-hard.at/news/top-leistung-beim-wien-marathon-von-oleg-zaiats.html
+	03.11.2026
+https://rv-hard.at/news/rennbericht-albstadt-bike-marathon-2024.html
+	03.11.2026
+https://rv-hard.at/news/zwischenbericht-jugend-em.html
+	03.11.2026
+https://rv-hard.at/news/kobel-hobel-2019.html
+	03.11.2026
+https://rv-hard.at/news/abschluss-tirol-cup-2021.html
+	03.11.2026
+https://rv-hard.at/news/ayc-scheffau-u15w.html
+	03.11.2026
+https://rv-hard.at/news/kammgarn-kriterium-in-hard.html
+	03.11.2026
+https://rv-hard.at/news/zeitfahren-in-fussach.html
+	03.11.2026
+https://rv-hard.at/news/halbzeit-bei-der-summer-bike-series-2022.html
+	03.11.2026
+https://rv-hard.at/news/ayc-scheffau-u13m.html
+	03.11.2026
+https://rv-hard.at/news/finale-ayc-2021.html
+	03.11.2026
+https://rv-hard.at/news/spannende-rennen-in-der-schweiz.html
+	02.11.2026
+https://rv-hard.at/news/austrians-youngsters-cup-petzen-kaernten.html
+	02.11.2026
+https://rv-hard.at/news/3-renntag-ayc-scheffau-in-tirol.html
+	02.11.2026
+https://rv-hard.at/news/aufbau-nightrace.html
+	02.11.2026
+https://rv-hard.at/news/altstaetten-finale-stevens-bikecup-2019.html
+	02.11.2026
+https://rv-hard.at/news/furx-2018.html
+	02.11.2026
+https://rv-hard.at/news/rennbericht-ischgl-ironbike.html
+	02.11.2026
+https://rv-hard.at/news/pfaenderrennen-2024.html
+	02.11.2026
+https://rv-hard.at/news/die-legende-lebt-gamp-bike-beschling-19-auflage.html
+	02.11.2026
+https://rv-hard.at/news/johanna-fuer-das-nationalteam-fuer-die-jugend-em-nominiert.html
+	02.11.2026
+https://rv-hard.at/news/der-austrian-youngsters-cup-geht-ins-finale.html
+	02.11.2026
+https://rv-hard.at/news/rennbericht-bazora-hc-2024.html
+	02.11.2026
+https://rv-hard.at/news/oem-wochenende-in-graz-stattegg.html
+	02.11.2026
+https://rv-hard.at/news/rennbericht-albstadt-bike-marathon.html
+	02.11.2026
+https://rv-hard.at/news/landesmeisterschaften-mtb-xco-2023-in-buch.html
+	02.11.2026
+https://rv-hard.at/news/lageplan-cyclocross-landesmeisterschaften.html
+	02.11.2026
+https://rv-hard.at/news/austrias-youngsters-cup-koppl-salzburg.html
+	02.11.2026
+https://rv-hard.at/news/nightrace-ergebnisse-auf-der-alpencupseite-abrufbar.html
+	02.11.2026
+https://rv-hard.at/news/rennbericht-ralf-martin.html
+	02.11.2026
+https://rv-hard.at/news/bulls-nighthawk-zu-verkaufen.html
+	02.11.2026
+https://www.rv-hard.at/
+	01.11.2026
+http://rv-hard.at/
+	31.10.2026
+http://www.rv-hard.at/index.html
+	29.10.2026
+https://rv-hard.at/index.html
+	29.10.2026
+https://rv-hard.at/datenschutz.html
+	29.10.2026
 https://www.rv-hard.at/datenschutz
-	31.10.2025
-
-
-Nicht gefunden (404):
-https://rv-hard.at/fotos/datenschutz.html
-	24.10.2026
+	29.10.2026
+http://www.rv-hard.at/
+	29.10.2026
+https://www.rv-hard.at/index.html
+	29.10.2026
+https://rv-hard.at/termine.html
+	28.10.2026
+http://rv-hard.at/kontakt.html
+	28.10.2026
+https://rv-hard.at/kontakt.html
+	28.10.2026
+https://rv-hard.at/training
+	27.10.2026
+https://rv-hard.at/news/radkriterium-rankweil-2026.html
+	26.10.2026
+https://rv-hard.at/news/radwoche-2026.html
+	26.10.2026
+https://rv-hard.at/news/anradeln-2026.html
+	26.10.2026
+http://rv-hard.at/?p=3212
+	26.10.2026
+http://rv-hard.at/index.html
+	26.10.2026
 https://rv-hard.at/bekleidung.html
-	24.10.2026
+	26.10.2026
+https://rv-hard.at/verein/unser-verein.html
+	25.10.2026
+https://rv-hard.at/events/sbs/summer-bike-series-2024.html
+	21.10.2026
+https://rv-hard.at/sponsoren.html
+	15.10.2026
+http://rv-hard.at/news/dachbau-schaffer-nightrace-2025.html
+	08.07.2026
+http://www.rv-hard.at/termine.html
+	15.06.2026
+http://www.rv-hard.at/sponsoren.html
+	09.06.2026
+https://www.rv-hard.at/termine.html
+	20.05.2026
+http://rv-hard.at/news/abradeln-2025.html
+	18.03.2026
+
+
+Nicht gefunden (404)
+https://rv-hard.at/fotos/datenschutz.html
+	27.10.2026
 https://rv-hard.at/probetraining
-	24.10.2026
+	26.10.2026
 https://fotos.rv-hard.at/fotos/
 	23.10.2026
 https://fotos.rv-hard.at/fotos
@@ -166,82 +581,17 @@ https://rv-hard.at/nightrace/dachbau-schaffer-nightrace-2023/
 	12.05.2026
 https://rv-hard.at/ViewDownloadsExec.php?targetid=1397&fileid=43
 	12.05.2026
-https://rv-hard.at/download/Ausschreibung-Fussachtriathlon-Sprint.pdf
-	09.05.2026
-https://rv-hard.at/summer-bike-series/summer-bike-series-2022/
-	09.05.2026
-https://rv-hard.at/download/Ergebnis-Zeitfahren-II-2022.pdf
-	01.05.2026
-https://rv-hard.at/nightrace/dachbau-schaffer-nightrace-2024/
-	01.05.2026
-https://www.rv-hard.at/fussach-triathlon/2.-jolsport-sprint-triathlon-fussach/
-	29.04.2026
-https://www.rv-hard.at/download/Ausschreibung-2023-Fussachtriathlon-inkl.-Strecken-v1.pdf
-	27.04.2026
 
-Seite mit Weiterleitung:
-http://www.rv-hard.at/
-	24.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2025.html
-	24.10.2026
-http://rv-hard.at/index.html
-	22.10.2026
-http://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach.html
-	21.10.2026
-https://fotos.rv-hard.at/kontakt.html
-	21.10.2026
-https://rv-hard.at/impressum.html
-	21.10.2026
-https://rv-hard.at/events/sbs/summer-bike-series-2024.html
-	21.10.2026
-http://www.rv-hard.at/verein/mitglied-werden.html
-	19.10.2026
-https://rv-hard.at/verein/gemeinschaft.html
-	19.10.2026
-https://rv-hard.at/datenschutz.html
-	18.10.2026
-http://www.rv-hard.at/index.html
-	18.10.2026
-https://www.rv-hard.at/index.html
-	18.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2024.html
-	17.10.2026
-http://rv-hard.at/kontakt.html
-	16.10.2026
-https://rv-hard.at/sponsoren.html
-	15.10.2026
-https://rv-hard.at/events/nightrace/dachbau-schaffer-nightrace-2023.html
-	14.10.2026
-https://rv-hard.at/termine.html
-	13.10.2026
-https://rv-hard.at/events/sbs/summer-bike-series-2025.html
-	05.10.2026
-https://rv-hard.at/verein/unser-verein.html
-	05.10.2026
-http://rv-hard.at/news/dachbau-schaffer-nightrace-2025.html
-	08.07.2026
-http://www.rv-hard.at/termine.html
-	15.06.2026
-http://www.rv-hard.at/sponsoren.html
-	09.06.2026
-https://rv-hard.at/kontakt.html
-	04.06.2026
-https://www.rv-hard.at/termine.html
-	20.05.2026
-http://rv-hard.at/news/abradeln-2025.html
-	18.03.2026
 
-Alternative Seite mit richtigem kanonischen Tag:
-https://www.rv-hard.at/
-	22.10.2026
-https://rv-hard.at/?p=1048
-	22.10.2026
-http://rv-hard.at/?p=3212
-	22.10.2026
-http://rv-hard.at/
-	22.10.2026
+Alternative Seite mit richtigem kanonischen Tag
 https://rv-hard.at/?p=1300
-	22.10.2026
+	06.11.2026
+https://rv-hard.at/news/alpencup-mieming-oder-letzte-woche-frieren%2C-heute-hitzeschlacht
+	02.11.2026
+https://rv-hard.at/?p=1048
+	26.10.2026
+https://rv-hard.at/?p=3212
+	26.10.2026
 http://rv-hard.at/events/fussach-triathlon/3.-jolsport-triathlon-fussach
 	21.10.2026
 http://www.rv-hard.at/verein/mitglied-werden
@@ -254,16 +604,18 @@ https://www.rv-hard.at/termine
 	10.06.2026
 http://www.rv-hard.at/termine
 	03.06.2026
-http://www.rv-hard.at/sponsoren
-	03.06.2026
-https://rv-hard.at/events/sbs/summer-bike-series-2026
-	22.05.2026
-http://rv-hard.at/?page_id=5
-	09.05.2026
-http://rv-hard.at/news/abradeln-2025
-	18.03.2026
 
-Soft 404:
+Soft 404
+https://fotos.rv-hard.at/event.php?id=bmx4all-skillday-2026
+	28.10.2026
+https://fotos.rv-hard.at/event.php?id=sbs-2026-ezf-rohrspitz-fussach
+	28.10.2026
+https://fotos.rv-hard.at/event.php?id=sbs-2026-bergrennen-wolfurt-buch
+	28.10.2026
+https://fotos.rv-hard.at/event.html?id=sbs-2026-ezf-rohrspitz-fussach
+	27.10.2026
+https://fotos.rv-hard.at/event.html?id=sbs-2026-bergrennen-wolfurt-buch
+	27.10.2026
 http://rv-hard.at/news/news
 	05.10.2026
 https://rv-hard.at/news-archiv
@@ -279,17 +631,8 @@ https://rv-hard.at/news-archiv.html
 https://rv-hard.at/news
 	28.05.2026
 
-Wegen Zugriffsverbot (403) blockiert:
-https://rv-hard.at/training.html
-	09.10.2026
-http://rv-hard.at/training
-	08.10.2026
-http://rv-hard.at/training.html
-	24.09.2026
-https://rv-hard.at/verein/
-	29.04.2026
 
-Durch robots.txt-Datei blockiert:
+Durch robots.txt-Datei blockiert
 http://www.rv-hard.at/data/News/news.json
 	20.10.2026
 http://www.rv-hard.at/data/news/news.json
@@ -299,31 +642,36 @@ https://rv-hard.at/data/news/news-latest.json
 http://rv-hard.at/data/news/news.json
 	12.05.2026
 
-Gecrawlt – zurzeit nicht indexiert:
-https://rv-hard.at/downloads/Ausschreibung-SBS-2022.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-2022-E.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Streckenplan-Nightrace-2022.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Ausschreibung-Nightrace-2022.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-A-B-C-Women-2022.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Ausschreibung-SBS-2023.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Ausschreibung-Fussachtriathlon-Sprint-2022.pdf
-	24.10.2026
-https://rv-hard.at/downloads/Rennspesenabrechnung-2026.xlsx
-	23.10.2026
+
+Wegen Zugriffsverbot (403) blockiert
+https://rv-hard.at/training.html
+	09.10.2026
+http://rv-hard.at/training
+	08.10.2026
+http://rv-hard.at/training.html
+	24.09.2026
+
+
+Gecrawlt – zurzeit nicht indexiert
+https://fotos.rv-hard.at/event.php?id=sbs-2026-kriterium-kammgarn-hard
+	26.10.2026
+https://fotos.rv-hard.at/datenschutz.html
+	21.10.2026
+https://fotos.rv-hard.at/impressum.html
+	21.10.2026
+https://fotos.rv-hard.at/
+	21.10.2026
+https://fotos.rv-hard.at/event.html?id=bmx4all-skillday-2026
+	21.10.2026
 http://rv-hard.at/news/
 	06.10.2026
 https://rv-hard.at/downloads/TG-Nightrace-Hard-2025.pdf
 	05.08.2026
 https://rv-hard.at/news/news.html
 	04.06.2026
-http://rv-hard.at/?p=72
-	09.05.2026
 https://rv-hard.at/download/Ergebnis-Kriterium-I-2022.pdf
 	18.02.2026
 
+Gefunden – zurzeit nicht indexiert
+https://rv-hard.at/news/
+	Nicht zutreffend

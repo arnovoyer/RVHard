@@ -151,6 +151,71 @@
       .sponsoren-grid { gap: 2rem 1.25rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
       .sponsor-logo img { max-height: 42px; }
     }
+
+    /* Bilder-Karte zur Fotogalerie (fotos.rv-hard.at) */
+    .foto-karte {
+      display: flex;
+      align-items: stretch;
+      margin: 14px auto 0;
+      max-width: 620px;
+      border: 1px solid var(--site-border, #e0e0e0);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--site-surface-soft, #f2f3f5);
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .foto-karte:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+    }
+    .foto-karte__media {
+      flex: 0 0 40%;
+      max-width: 230px;
+      background: #dfe3e8;
+    }
+    .foto-karte__media img {
+      width: 100%;
+      height: 100%;
+      min-height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+    .foto-karte__body {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 1.1rem 1.3rem;
+      text-align: left;
+    }
+    .foto-karte__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-gold, #f5b301);
+    }
+    .foto-karte__title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--site-heading, #111);
+    }
+    .foto-karte__hint {
+      margin-top: 0.35rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent-gold, #f5b301);
+    }
+    @media (max-width: 560px) {
+      .foto-karte { flex-direction: column; max-width: 100%; }
+      .foto-karte__media { flex-basis: auto; max-width: 100%; }
+      .foto-karte__media img { min-height: 160px; }
+    }
   </style>
 
   <script type="application/ld+json">
@@ -211,10 +276,16 @@
       <div class="pdf-section">
         <h3>Bilder</h3>
         <p>Hier findest du die Bilder der Summer Bike Series 2026:</p>
-        <a href="https://drive.google.com/drive/folders/1hvfhiQ47ZP_JXc779lQT2Lm-idST5Wa0?usp=sharing" target="_blank" class="gelber-button"
-        style="margin-top: 12px;">
-        Bilder Summer Bike Series 2026 (Google Drive)
-      </a>
+        <a class="foto-karte" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener">
+          <span class="foto-karte__media">
+            <img src="https://fotos.rv-hard.at/data/sbs-2026-kriterium-kammgarn-hard/DSC_0981__2_.JPG" alt="Radrennen der Summer Bike Series 2026" loading="lazy" decoding="async">
+          </span>
+          <span class="foto-karte__body">
+            <span class="foto-karte__eyebrow">Fotogalerie</span>
+            <span class="foto-karte__title">Bilder der Summer Bike Series 2026</span>
+            <span class="foto-karte__hint">Zur Galerie auf fotos.rv-hard.at</span>
+          </span>
+        </a>
       </div>
       <!--<h3>Kriterium</h3>
        ALTE VERSION (für spätere Wiederverwendung):
