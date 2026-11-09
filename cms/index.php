@@ -2137,6 +2137,47 @@
             text-align: right;
         }
 
+        /* Einklappbare Detail-Abschnitte der Statistik-Seite */
+        details.stat-details {
+            background: var(--site-surface);
+            border: 1px solid var(--site-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--cms-shadow);
+        }
+
+        details.stat-details > summary {
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 1.05rem 1.2rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        details.stat-details > summary::-webkit-details-marker { display: none; }
+        details.stat-details > summary::marker { content: ""; }
+
+        details.stat-details > summary::before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 6px solid var(--cms-muted);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            transition: transform 0.15s ease;
+        }
+
+        details.stat-details[open] > summary::before { transform: rotate(90deg); }
+        details.stat-details[open] > summary { border-bottom: 1px solid var(--site-border); }
+
+        details.stat-details > .details-body { padding: 1.2rem; }
+        details.stat-details .details-body h3 { margin-top: 0; }
+        details.stat-details .dashboard-grid > * { min-width: 0; }
+
         .quick-links {
             display: grid;
             gap: 0.65rem;
@@ -2600,32 +2641,12 @@
                         <div class="dash-box">
                             <div class="dash-kpi"><?= number_format($statVisitorsToday, 0, ',', '.') ?></div>
                             <h3>Besucher heute</h3>
-                            <p>Eindeutige Geräte, tagesaktuell anonym gezählt.</p>
+                            <p>Tagesaktuelle Schätzung, ohne Wiedererkennung.</p>
                         </div>
                         <div class="dash-box">
                             <div class="dash-kpi"><?= number_format($statTotalClicks, 0, ',', '.') ?></div>
                             <h3>Klicks gesamt</h3>
                             <p>Klicks auf Links und Buttons.</p>
-                        </div>
-                        <div class="dash-box">
-                            <div class="dash-kpi"><?= $statMobShare ?>%</div>
-                            <h3>Mobil-Anteil</h3>
-                            <p><?= number_format($statMob, 0, ',', '.') ?> mobil · <?= number_format($statDesk, 0, ',', '.') ?> Desktop</p>
-                        </div>
-                        <div class="dash-box">
-                            <div class="dash-kpi"><?= number_format($statDownloads, 0, ',', '.') ?></div>
-                            <h3>Downloads</h3>
-                            <p>Datei-Downloads (PDF, GPX, …).</p>
-                        </div>
-                        <div class="dash-box">
-                            <div class="dash-kpi"><?= number_format($statExtClicks, 0, ',', '.') ?></div>
-                            <h3>Externe Links</h3>
-                            <p>Klicks, die die Seite verlassen.</p>
-                        </div>
-                        <div class="dash-box">
-                            <div class="dash-kpi"><?= number_format($statShares, 0, ',', '.') ?></div>
-                            <h3>Teilen</h3>
-                            <p>WhatsApp, E-Mail und „Link kopieren".</p>
                         </div>
                         <div class="dash-box">
                             <div class="dash-kpi"><?= htmlspecialchars(cms_dur_label($statAvgDur), ENT_QUOTES, 'UTF-8') ?></div>
@@ -2635,60 +2656,7 @@
                     </div>
                 </section>
 
-                <?php
-                    /* Freiwilliger Austritt aus der Messung – dieses Gerät
-                       bekommt dann das Cookie "rv_notrack". */
-                    $statNotrackOn = ((string)($_COOKIE['rv_notrack'] ?? '') === '1');
-                ?>
-                <section class="card">
-                    <div class="section-head">
-                        <div>
-                            <h2>Eigenes Gerät ausschließen</h2>
-                            <p class="section-note">
-                                Eingeloggte CMS-Aufrufe werden automatisch nicht gezählt. Zusätzlich kannst du dieses Gerät
-                                dauerhaft aus der Messung nehmen – praktisch, wenn du die Seite auch ohne Login ansiehst.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <button type="button" class="btn <?= $statNotrackOn ? 'btn-primary' : 'btn-muted' ?>" id="rv-notrack-toggle">
-                            <?= $statNotrackOn ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten' ?>
-                        </button>
-                        <span class="section-note" id="rv-notrack-state">
-                            <?= $statNotrackOn ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.' ?>
-                        </span>
-                    </div>
-                    <p class="section-note" style="margin:0.85rem 0 0;">
-                        Auch ohne Login möglich – diese Adresse einfach auf dem Gerät öffnen:
-                        <a class="mono" href="/cms/notrack.php?on=1">/cms/notrack.php?on=1</a> (austreten) bzw.
-                        <a class="mono" href="/cms/notrack.php?on=0">/cms/notrack.php?on=0</a> (wieder mitzählen).
-                    </p>
-                </section>
-                <script>
-                (function () {
-                    var btn = document.getElementById('rv-notrack-toggle');
-                    var state = document.getElementById('rv-notrack-state');
-                    if (!btn || !state) { return; }
-
-                    function isOn() {
-                        var m = ('; ' + document.cookie).match(/(?:^|; )rv_notrack=([^;]*)/);
-                        return !!m && m[1] === '1';
-                    }
-                    function render() {
-                        var on = isOn();
-                        btn.textContent = on ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten';
-                        btn.className = 'btn ' + (on ? 'btn-primary' : 'btn-muted');
-                        state.textContent = on ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.';
-                    }
-                    btn.addEventListener('click', function () {
-                        var on = isOn();
-                        document.cookie = 'rv_notrack=' + (on ? '' : '1') +
-                            '; path=/; max-age=' + (on ? 0 : 31536000) + '; samesite=Lax';
-                        render();
-                    });
-                })();
-                </script>
-
+                <?php $statNotrackOn = ((string)($_COOKIE['rv_notrack'] ?? '') === '1'); ?>
                 <?php if ($statTotalPv === 0 && $statTotalClicks === 0): ?>
                 <section class="card">
                     <div class="section-head">
@@ -2700,14 +2668,11 @@
                 </section>
                 <?php else: ?>
 
-                <section class="card">
-                    <div class="section-head">
-                        <div>
-                            <h2>Beliebteste Seiten</h2>
-                            <p class="section-note">Die meistbesuchten Unterseiten der Hauptseite.</p>
-                        </div>
-                    </div>
-                    <div class="hbar-list">
+                <details class="stat-details">
+                    <summary>Beliebteste Seiten</summary>
+                    <div class="details-body">
+                        <p class="section-note" style="margin:0 0 0.9rem;">Die meistbesuchten Unterseiten der Hauptseite.</p>
+                        <div class="hbar-list">
                         <?php foreach ($statPages as $statPath => $statRow): ?>
                         <?php
                             $statName = $statFriendly((string)$statPath);
@@ -2727,17 +2692,15 @@
                         <?php if (empty($statPages)): ?>
                         <p class="section-note" style="margin:0;">Noch keine Seitenaufrufe.</p>
                         <?php endif; ?>
-                    </div>
-                </section>
-
-                <section class="card">
-                    <div class="section-head">
-                        <div>
-                            <h2>Beliebteste Klicks</h2>
-                            <p class="section-note">Welche Links und Buttons am häufigsten angeklickt werden.</p>
                         </div>
                     </div>
-                    <table>
+                </details>
+
+                <details class="stat-details">
+                    <summary>Beliebteste Klicks</summary>
+                    <div class="details-body">
+                        <p class="section-note" style="margin:0 0 0.9rem;">Welche Links und Buttons am häufigsten angeklickt werden.</p>
+                        <table>
                         <thead><tr><th>Seite</th><th>Element</th><th>Klicks</th></tr></thead>
                         <tbody>
                         <?php foreach ($statClicks as $statRow): ?>
@@ -2752,8 +2715,9 @@
                         </tr>
                         <?php endforeach; ?>
                         </tbody>
-                    </table>
-                </section>
+                        </table>
+                    </div>
+                </details>
 
                 <section class="card">
                     <div class="section-head">
@@ -2778,8 +2742,11 @@
                     <?php endif; ?>
                 </section>
 
-                <div class="dashboard-grid">
-                    <section class="card">
+                <details class="stat-details">
+                    <summary>Verweise &amp; Geräte</summary>
+                    <div class="details-body">
+                    <div class="dashboard-grid">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Verweise</h3>
@@ -2801,7 +2768,7 @@
                         </div>
                     </section>
 
-                    <section class="card">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Geräte</h3>
@@ -2821,10 +2788,15 @@
                             </div>
                         </div>
                     </section>
-                </div>
+                    </div>
+                    </div>
+                </details>
 
-                <div class="dashboard-grid">
-                    <section class="card">
+                <details class="stat-details">
+                    <summary>Monatsvergleich, Verweildauer &amp; Scroll</summary>
+                    <div class="details-body">
+                    <div class="dashboard-grid">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Monatsvergleich</h3>
@@ -2849,7 +2821,7 @@
                         </table>
                     </section>
 
-                    <section class="card">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Verweildauer &amp; Scroll-Tiefe</h3>
@@ -2881,10 +2853,15 @@
                             </tbody>
                         </table>
                     </section>
-                </div>
+                    </div>
+                    </div>
+                </details>
 
-                <div class="dashboard-grid">
-                    <section class="card">
+                <details class="stat-details">
+                    <summary>Downloads &amp; externe Links</summary>
+                    <div class="details-body">
+                    <div class="dashboard-grid">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Downloads</h3>
@@ -2910,7 +2887,7 @@
                         </table>
                     </section>
 
-                    <section class="card">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Externe Links</h3>
@@ -2935,10 +2912,15 @@
                             </tbody>
                         </table>
                     </section>
-                </div>
+                    </div>
+                    </div>
+                </details>
 
-                <div class="dashboard-grid">
-                    <section class="card">
+                <details class="stat-details">
+                    <summary>Teilen &amp; Kampagnen</summary>
+                    <div class="details-body">
+                    <div class="dashboard-grid">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Teilen</h3>
@@ -2965,7 +2947,7 @@
                         </table>
                     </section>
 
-                    <section class="card">
+                    <section>
                         <div class="section-head">
                             <div>
                                 <h3>Kampagnen</h3>
@@ -2987,16 +2969,15 @@
                             </tbody>
                         </table>
                     </section>
-                </div>
-
-                <section class="card">
-                    <div class="section-head">
-                        <div>
-                            <h3>Nicht gefundene Seiten (404)</h3>
-                            <p class="section-note">Aufgerufene Adressen, die es nicht gibt – hilfreich für fehlende Links.</p>
-                        </div>
                     </div>
-                    <table>
+                    </div>
+                </details>
+
+                <details class="stat-details">
+                    <summary>Nicht gefundene Seiten (404)</summary>
+                    <div class="details-body">
+                        <p class="section-note" style="margin:0 0 0.9rem;">Aufgerufene Adressen, die es nicht gibt – hilfreich für fehlende Links.</p>
+                        <table>
                         <thead><tr><th>Adresse</th><th>Aufrufe</th><th>Zuletzt</th></tr></thead>
                         <tbody>
                         <?php foreach ($statNotFoundTable as $statPath => $statRow): ?>
@@ -3010,8 +2991,56 @@
                         <tr><td colspan="3" class="section-note">Keine fehlerhaften Aufrufe erfasst.</td></tr>
                         <?php endif; ?>
                         </tbody>
-                    </table>
-                </section>
+                        </table>
+                    </div>
+                </details>
+
+                <details class="stat-details">
+                    <summary>Eigenes Gerät ausschließen</summary>
+                    <div class="details-body">
+                        <p class="section-note" style="margin:0 0 1rem;">
+                            Eingeloggte CMS-Aufrufe werden automatisch nicht gezählt. Zusätzlich kannst du dieses Gerät
+                            dauerhaft aus der Messung nehmen – praktisch, wenn du die Seite auch ohne Login ansiehst.
+                        </p>
+                        <div class="row">
+                            <button type="button" class="btn <?= $statNotrackOn ? 'btn-primary' : 'btn-muted' ?>" id="rv-notrack-toggle">
+                                <?= $statNotrackOn ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten' ?>
+                            </button>
+                            <span class="section-note" id="rv-notrack-state">
+                                <?= $statNotrackOn ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.' ?>
+                            </span>
+                        </div>
+                        <p class="section-note" style="margin:0.85rem 0 0;">
+                            Auch ohne Login möglich – diese Adresse einfach auf dem Gerät öffnen:
+                            <a class="mono" href="/cms/notrack.php?on=1">/cms/notrack.php?on=1</a> (austreten) bzw.
+                            <a class="mono" href="/cms/notrack.php?on=0">/cms/notrack.php?on=0</a> (wieder mitzählen).
+                        </p>
+                    </div>
+                </details>
+                <script>
+                (function () {
+                    var btn = document.getElementById('rv-notrack-toggle');
+                    var state = document.getElementById('rv-notrack-state');
+                    if (!btn || !state) { return; }
+
+                    function isOn() {
+                        var m = ('; ' + document.cookie).match(/(?:^|; )rv_notrack=([^;]*)/);
+                        return !!m && m[1] === '1';
+                    }
+                    function render() {
+                        var on = isOn();
+                        btn.textContent = on ? 'Wieder am Tracking teilnehmen' : 'Aus dem Tracking austreten';
+                        btn.className = 'btn ' + (on ? 'btn-primary' : 'btn-muted');
+                        state.textContent = on ? 'Dieses Gerät wird aktuell nicht gezählt.' : 'Dieses Gerät wird aktuell gezählt.';
+                    }
+                    btn.addEventListener('click', function () {
+                        var on = isOn();
+                        document.cookie = 'rv_notrack=' + (on ? '' : '1') +
+                            '; path=/; max-age=' + (on ? 0 : 31536000) + '; samesite=Lax';
+                        render();
+                    });
+                })();
+                </script>
                 <?php endif; ?>
                 <?php endif; ?>
 
