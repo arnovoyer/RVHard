@@ -69,6 +69,12 @@ function rv_load_stats() {
 /* (a) Geräte-Flag: Cookie "rv_notrack" = 1 (per ?notrack=1 in galerie.js gesetzt) */
 if ((string)($_COOKIE['rv_notrack'] ?? '') === '1') rv_out(true, ['skipped' => 'notrack']);
 
+/* (a2) CMS-Login: /cms setzt beim Login ein domainweites Kennzeichen
+       (rv_admin=1). Damit wird der eingeloggte Admin auch hier auf der
+       Sub-Domain nicht mitgezählt. Die CMS-Session selbst reicht nicht,
+       weil Session-Cookies host-only sind und hier nicht ankommen. */
+if ((string)($_COOKIE['rv_admin'] ?? '') === '1') rv_out(true, ['skipped' => 'admin']);
+
 /* (b) Galerie-Admin eingeloggt? Session nur lesen, wenn der Besucher
        bereits das passende Session-Cookie hat – so bekommen normale
        Besucher weiterhin kein Cookie von der Statistik. */

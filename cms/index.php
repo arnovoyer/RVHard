@@ -1161,6 +1161,42 @@
     return $stored;
     }
 
+    /* Domainweites Kennzeichen für die Statistik-Ausnahme: wird beim
+       Login gesetzt und beim Logout gelöscht. So erkennen auch
+       Sub-Domains (z. B. fotos.rv-hard.at) den eingeloggten Admin und
+       zählen dessen eigene Aufrufe nicht mit – obwohl die CMS-Session
+       dort nicht gilt (Session-Cookies sind host-only). */
+    function set_cms_admin_flag(bool $on): void
+    {
+        $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || ((int)($_SERVER['SERVER_PORT'] ?? 0) === 443);
+        $host = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
+        $host = (string)preg_replace('/:\d+$/', '', $host);
+
+        $opts = [
+            'path' => '/',
+            'secure' => $https,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ];
+        if ($host !== '' && substr($host, -10) === 'rv-hard.at') {
+            $opts['domain'] = '.rv-hard.at';
+        }
+
+        if ($on) {
+            /* Sitzungs-Cookie: verschwindet mit dem Schließen des Browsers,
+               passend zur CMS-Session. */
+            setcookie('rv_admin', '1', $opts);
+        } else {
+            $opts['expires'] = time() - 3600;
+            setcookie('rv_admin', '', $opts);
+            if (isset($opts['domain'])) {
+                /* evtl. früher gesetztes host-only Cookie ebenfalls löschen */
+                setcookie('rv_admin', '', ['expires' => time() - 3600, 'path' => '/']);
+            }
+        }
+    }
+
     $config = read_config();
     $error = '';
     $notice = '';
@@ -1188,6 +1224,7 @@
                     session_regenerate_id(true);
                     $_SESSION['cms_logged_in'] = true;
                     $_SESSION['rv_admin_logged_in'] = true;
+                    set_cms_admin_flag(true);
                     clear_login_attempts($username, $clientIp);
                     header('Location: /cms/index.php');
                     exit;
@@ -1215,6 +1252,7 @@
                 setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
             }
             session_destroy();
+            set_cms_admin_flag(false);
             header('Location: /cms/index.php');
             exit;
             }
