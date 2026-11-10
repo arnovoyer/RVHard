@@ -37,9 +37,6 @@ $currentName = fg2_displayname();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foto Admin – Bilder taggen &amp; events.json erzeugen | RV Hard</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <!-- 🔥🔥 SUBDOMAIN KOMPATIBEL! RELATIVE PFAD-ANGABEN! -->
     <script>
         (function() {
@@ -58,6 +55,7 @@ $currentName = fg2_displayname();
             document.write(`<link rel="icon" type="image/png" href="${logo}">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css">`);
             document.write(`<link rel="stylesheet" href="${galerieBase}galerie.css">`);
+            document.write(`<link rel="stylesheet" href="${galerieBase}fonts.css?v=20261111">`);
             document.write('<link rel="stylesheet" href="https://rv-hard.at/assets/admin.css?v=20261103">');
             document.write('<script src="https://rv-hard.at/assets/admin.js?v=20261103"><\/script>');
         })();

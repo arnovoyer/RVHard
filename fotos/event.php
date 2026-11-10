@@ -119,12 +119,7 @@ $fgStartHref = 'https://rv-hard.at/';
     <meta name="twitter:title" content="<?= htmlspecialchars($fgTitle, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="twitter:description" content="<?= htmlspecialchars($fgDesc, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="twitter:image" content="<?= htmlspecialchars($fgImage, ENT_QUOTES, 'UTF-8') ?>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
     <!-- 🔥🔥 SUBDOMAIN KOMPATIBEL! RELATIVE PFAD-ANGABEN! -->
     <script>
         (function() {
@@ -137,6 +132,7 @@ $fgStartHref = 'https://rv-hard.at/';
             document.write(`<link rel="icon" type="image/png" href="${logo}?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${assetsBase}style.css?v=20260918">`);
             document.write(`<link rel="stylesheet" href="${prefixCss}galerie.css?v=20261103">`);
+            document.write(`<link rel="stylesheet" href="${prefixCss}fonts.css?v=20261111">`);
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">

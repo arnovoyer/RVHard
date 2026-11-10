@@ -92,13 +92,8 @@ $fgCover = function ($ev) use ($fgRoot) {
       "isPartOf": { "@type": "WebSite", "name": "RV Hard", "url": "https://rv-hard.at/" }
     }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"></noscript>
     <script>
         (function() {
             /* Automatisch den BASE-Pfad erkennen! (Gleiches Prinzip wie upload.php + galerie.js) */
@@ -124,6 +119,11 @@ $fgCover = function ($ev) use ($fgRoot) {
             const link3 = document.createElement('link');
             link3.rel = 'stylesheet'; link3.href = prefixCss + 'galerie.css?v=20261103';
             document.write(link3.outerHTML);
+
+            /* Lokale Poppins-Fonts (ersetzt Google Fonts) */
+            const link4 = document.createElement('link');
+            link4.rel = 'stylesheet'; link4.href = prefixCss + 'fonts.css?v=20261111';
+            document.write(link4.outerHTML);
         })();
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
