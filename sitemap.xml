@@ -14,12 +14,6 @@
       <priority>0.95</priority>
     </url>
     <url>
-      <loc>https://rv-hard.at/news-archiv</loc>
-      <lastmod>2026-10-01</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.85</priority>
-    </url>
-    <url>
       <loc>https://rv-hard.at/termine</loc>
       <lastmod>2026-10-01</lastmod>
       <changefreq>weekly</changefreq>
@@ -296,7 +290,7 @@
     <url><loc>https://rv-hard.at/news/ayc-scheffau-u13m</loc><lastmod>2023-05-15</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/arlberger-bike-classic-2018</loc><lastmod>2018-10-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/altstaetten-finale-stevens-bikecup-2019</loc><lastmod>2019-09-05</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://rv-hard.at/news/alpencup-mieming-oder-letzte-woche-frieren%2C-heute-hitzeschlacht</loc><lastmod>2019-07-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>https://rv-hard.at/news/alpencup-mieming-oder-letzte-woche-frieren,-heute-hitzeschlacht</loc><lastmod>2019-07-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/top-auftritt-beim-pfaenderrennen-2022</loc><lastmod>2022-07-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/nightrace-2019</loc><lastmod>2019-04-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>https://rv-hard.at/news/aufbau-nightrace</loc><lastmod>2022-06-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>

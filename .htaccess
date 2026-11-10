@@ -45,6 +45,21 @@ RewriteRule ^news\.json$ /news/ [R=301,L]
 RewriteRule ^sbs(?:\.html)?/?$ /events/sbs/summer-bike-series-2026 [R=301,L]
 
 # ================================================================
+#  0c. WEITERE 301-WEITERLEITUNGEN (aus der Google Search Console)
+# ================================================================
+# Alte Kurz-URL /probetraining -> Trainingsseite
+RewriteRule ^probetraining/?$ /training/probetraining [R=301,L]
+# Alte Download-Links, deren Datei es nicht mehr gibt -> Downloads-Übersicht
+# (Dateien, die noch existieren, fängt die Regel in Abschnitt 0b oben ab)
+RewriteRule ^download/.*$ /downloads/ [R=301,L]
+# /fotos/-Unterseiten der Hauptdomain -> Hauptseiten (die Galerie läuft auf fotos.rv-hard.at)
+RewriteRule ^fotos/(datenschutz|impressum|kontakt)(?:\.html)?/?$ /$1 [R=301,L]
+# Galerie-Startseite im Unterordner doppelt aufrufbar -> Galerie-Wurzel (/fotos/)
+RewriteRule ^fotos/index(?:\.html)?/?$ /fotos/ [R=301,L]
+# Alte News-Archiv-Seite (nur JS-Hülle, Soft 404) -> News-Übersicht
+RewriteRule ^news-archiv(?:\.html)?/?$ /news/ [R=301,L]
+
+# ================================================================
 #  WICHTIGSTE REGEL ZUERST:
 #  Keine der nachfolgenden Hauptdomain-Regeln (index.html entfernen,
 #  .html Endung entfernen, News etc.) darf auf ORDNER oder PHP-Dateien

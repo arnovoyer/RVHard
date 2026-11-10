@@ -60,6 +60,40 @@ if ($fgImage === '' && $fgEvent && !empty($fgEvent['photos'][0]['src'])) {
 if ($fgImage === '') $fgImage = 'https://rv-hard.at/assets/img/social/og-galerie-1200x630.png';
 
 $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawurlencode($fgId) : '');
+
+/* ================================================================
+ *  SERVERSEITIGE INHALTE
+ *  Google & Co. führen KEIN JavaScript aus. Ohne die folgenden
+ *  Ausgaben sah die Seite nur "Galerie wird geladen…" → Google
+ *  bewertete sie als "Soft 404". Die Galerie-Logik (galerie.js)
+ *  ersetzt diese Inhalte anschließend wieder durch dieselben Daten.
+ * ================================================================ */
+$fgE = function ($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); };
+
+$fgLocation  = $fgEvent ? trim((string)($fgEvent['location'] ?? '')) : '';
+$fgOrganizer = $fgEvent ? trim((string)($fgEvent['organizer'] ?? '')) : '';
+$fgDistance  = $fgEvent ? trim((string)($fgEvent['distance'] ?? '')) : '';
+$fgDescText  = $fgEvent ? trim((string)($fgEvent['description'] ?? '')) : '';
+$fgPhotos    = ($fgEvent && isset($fgEvent['photos']) && is_array($fgEvent['photos'])) ? $fgEvent['photos'] : [];
+
+/* Galerie-Wurzel: '' (Subdomain) oder '/fotos' (Unterordner der Hauptdomain) */
+$fgRoot = str_replace('\\', '/', (string)dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/event.php')));
+$fgRoot = ($fgRoot === '/' || $fgRoot === '.' || $fgRoot === '') ? '' : rtrim($fgRoot, '/');
+
+/* Foto-Pfad (z.B. /data/album/bild.JPG) → vollständige URL */
+$fgPhotoUrl = function ($src) use ($fgBase, $fgRoot) {
+    $s = str_replace('\\', '/', trim((string)$src));
+    if ($s === '') return '';
+    if (preg_match('#^https?://#i', $s)) return $s;
+    if (strpos($s, './') === 0) $s = substr($s, 2);
+    if ($s === '' || $s[0] !== '/') $s = '/' . $s;
+    if ($fgRoot !== '' && strpos($s, $fgRoot . '/') !== 0) $s = $fgRoot . $s;
+    return $fgBase . $s;
+};
+
+/* Links für Breadcrumb ("Startseite" → Hauptdomain, "Foto-Galerie" → Galerie-Wurzel) */
+$fgHomeHref  = ($fgRoot === '') ? '/' : $fgRoot . '/';
+$fgStartHref = 'https://rv-hard.at/';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -68,7 +102,11 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= htmlspecialchars($fgTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="description" content="<?= htmlspecialchars($fgDesc, ENT_QUOTES, 'UTF-8') ?>">
+<?php if ($fgEvent): ?>
     <meta name="robots" content="index, follow">
+<?php else: ?>
+    <meta name="robots" content="noindex, follow">
+<?php endif; ?>
     <link rel="canonical" href="<?= htmlspecialchars($fgCanonical, ENT_QUOTES, 'UTF-8') ?>">
     <meta property="og:locale" content="de_AT">
     <meta property="og:type" content="website">
@@ -114,33 +152,37 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
              Ohne diese ID wird die Galerie NIEMALS geladen (return sofort!) -->
         <section class="fg-container" id="fg-event-content">
 
-            <!-- BREADCRUMB (SUBDOMAIN KOMPATIBEL! RELATIVE LINKS!) -->
+            <!-- BREADCRUMB (SERVERSEITIG, damit auch Crawler ohne JS die Links sehen) -->
             <div class="fg-breadcrumb">
-                <script>
-                    (function(){
-                        const here = String(window.location.pathname || '/');
-                        const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
-                        const home = (b === '' ? './index.html' : b + '/');
-                        const root = (b === '' ? './index.html' : '/');
-                        document.write(
-                            `<a href="${root}"><i class="fa-solid fa-house"></i> Startseite</a>` +
-                            `<span class="sep">›</span>` +
-                            `<a href="${home}"><i class="fa-regular fa-images"></i> Foto-Galerie</a>` +
-                            `<span class="sep">›</span>` +
-                            `<span id="fg-bc-event">Event wird geladen…</span>`
-                        );
-                    })();
-                </script>
+                <a href="<?= $fgE($fgStartHref) ?>"><i class="fa-solid fa-house"></i> Startseite</a>
+                <span class="sep">›</span>
+                <a href="<?= $fgE($fgHomeHref) ?>"><i class="fa-regular fa-images"></i> Foto-Galerie</a>
+                <span class="sep">›</span>
+                <span id="fg-bc-event"><?= $fgE($fgEvent ? $fgName : 'Event') ?></span>
             </div>
 
             <!-- HEADER / EVENT INFOS -->
             <div class="fg-section" data-aos="fade-up">
-                <!-- 🔥 fg-event-name NUR EINMAL (für H1!) jetzt korrekt! -->
-                <h1 id="fg-event-name" style="font-size:2rem;"><i class="fa-solid fa-camera-retro" style="color:#f5b301;"></i> Event wird geladen…</h1>
+                <!-- 🔥 fg-event-name NUR EINMAL (für H1!) serverseitig vorbelegt! -->
+                <h1 id="fg-event-name" style="font-size:2rem;"><i class="fa-solid fa-camera-retro" style="color:#f5b301;"></i> <?= $fgE($fgEvent ? $fgName : 'Event nicht gefunden') ?></h1>
                 <p style="color:#777; margin: 0.25rem 0 0 0; font-size:0.92rem;">
-                    <span id="fg-event-date"></span><span id="fg-event-location"></span>
+                    <span id="fg-event-date"><?= $fgE($fgDate) ?></span><span id="fg-event-location"><?= $fgLocation !== '' ? ' · ' . $fgE($fgLocation) : '' ?></span>
                 </p>
-                <div id="fg-event-head-meta" style="margin-top: 0.85rem; display:flex; flex-wrap:wrap; gap: 14px 20px; font-size:0.88rem; color:#555;"></div>
+                <div id="fg-event-head-meta" style="margin-top: 0.85rem; display:flex; flex-wrap:wrap; gap: 14px 20px; font-size:0.88rem; color:#555;">
+<?php if ($fgEvent): ?>
+<?php if ($fgDate !== ''): ?>                    <span><i class="fa-regular fa-calendar"></i> <?= $fgE($fgDate) ?></span>
+<?php endif; ?>
+<?php if ($fgLocation !== ''): ?>                    <span><i class="fa-solid fa-location-dot"></i> <?= $fgE($fgLocation) ?></span>
+<?php endif; ?>
+<?php if ($fgOrganizer !== ''): ?>                    <span><i class="fa-regular fa-building"></i> <?= $fgE($fgOrganizer) ?></span>
+<?php endif; ?>
+<?php if ($fgDistance !== ''): ?>                    <span><i class="fa-solid fa-route"></i> <?= $fgE($fgDistance) ?></span>
+<?php endif; ?>
+<?php endif; ?>
+                </div>
+<?php if ($fgEvent && $fgDescText !== ''): ?>
+                <p style="margin: 0.7rem 0 0; font-size:0.95rem; color:#3f3f46; line-height:1.55;"><?= $fgE($fgDescText) ?><?= $fgCount > 0 ? ' · ' . $fgCount . ' Bild' . ($fgCount === 1 ? '' : 'er') : '' ?></p>
+<?php endif; ?>
 
                 <p style="margin: 0.85rem 0 0; font-size:0.84rem; color:#6b7280; line-height:1.5;">
                     <i class="fa-solid fa-share-nodes" style="color:#f5b301; margin-right:5px;"></i>
@@ -157,18 +199,11 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
                     gap: 16px;
                     flex-wrap: wrap;
                 ">
-                    <!-- RELATIVER LINK zurück zur Übersicht (funktioniert auf Subdomain + Unterordner!) -->
+                    <!-- LINK zurück zur Übersicht (server-seitig, Subdomain + Unterordner kompatibel) -->
                     <div style="display:flex; align-items:center; gap: 8px; flex-wrap:wrap;">
-                        <script>
-                            (function(){
-                                const here = String(window.location.pathname || '/');
-                                const b = (here.indexOf('/fotos/')===0 || here.endsWith('/fotos') || here==='/fotos') ? '/fotos' : '';
-                                const home = (b === '' ? './index.html' : b + '/');
-                                document.write(`<a href="${home}" class="fg-btn fg-btn--outline">
-                                    <i class="fa-solid fa-arrow-left"></i> Alle Events
-                                </a>`);
-                            })();
-                        </script>
+                        <a href="<?= $fgE($fgHomeHref) ?>" class="fg-btn fg-btn--outline">
+                            <i class="fa-solid fa-arrow-left"></i> Alle Events
+                        </a>
                         <span id="fg-external-link"></span>
                     </div>
 
@@ -326,9 +361,16 @@ $fgCanonical = $fgBase . $_SERVER['SCRIPT_NAME'] . ($fgId !== '' ? '?id=' . rawu
                     </button>
                 </div>
 
-                <!-- GALLERY -->
+                <!-- GALLERY (server-seitig mit den echten Bildern vorbelegt;
+                     galerie.js übernimmt danach Filter, Lightbox usw.) -->
                 <div id="fg-gallery" class="fg-gallery" style="margin-top: 1.5rem;">
-                    <div class="fg-empty"><strong>Galerie wird geladen…</strong></div>
+<?php if ($fgPhotos): ?>
+<?php foreach ($fgPhotos as $fgI => $fgP): $fgSrcAttr = $fgPhotoUrl(is_array($fgP) ? ($fgP['thumbnail'] ?? $fgP['src'] ?? '') : $fgP); if ($fgSrcAttr === '') continue; ?>
+                    <figure class="fg-photo" data-idx="<?= (int)$fgI ?>"><img src="<?= $fgE($fgSrcAttr) ?>" alt="<?= $fgE(($fgName !== '' ? $fgName : 'Foto-Galerie') . ' – Foto ' . ($fgI + 1)) ?>" loading="lazy" decoding="async"></figure>
+<?php endforeach; ?>
+<?php else: ?>
+                    <div class="fg-empty"><strong><?= $fgEvent ? 'Für dieses Event sind noch keine Bilder veröffentlicht.' : 'Galerie ist nicht verfügbar.' ?></strong></div>
+<?php endif; ?>
                 </div>
 
             </div>

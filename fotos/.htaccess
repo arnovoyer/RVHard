@@ -6,9 +6,23 @@
 
 RewriteEngine Off
 Options -Indexes -MultiViews
-DirectoryIndex index.html index.php
+# Die Startseite ist serverseitig (index.php, damit Crawler ohne JS die Events sehen)
+DirectoryIndex index.php index.html
 
 AddDefaultCharset UTF-8
+
+# ================================================================
+#  ALTE / FEHLERHAFTE GALERIE-URLS -> kanonische Adressen (301)
+#  mod_alias greift auch bei "RewriteEngine Off" weiter unten.
+# ================================================================
+<IfModule mod_alias.c>
+  # Startseite doppelt aufrufbar (index.html) -> kanonische Wurzel
+  RedirectMatch 301 ^/index\.html$ /
+  # Häufig verlinkte Doppel-URL: /fotos/ liegt schon im Wurzelverzeichnis
+  RedirectMatch 301 ^/fotos/?$ /
+  # Alte Einzel-Event-Seite ohne PHP -> aktuelle Event-Seite
+  RedirectMatch 301 ^/event\.html$ /event.php
+</IfModule>
 
 # Sicherheit: Zugriff auf .ht*, .git*, Konfigurationsdateien verbieten
 <FilesMatch "^\.(ht|git)|^(.env|composer\.(json|lock))$">

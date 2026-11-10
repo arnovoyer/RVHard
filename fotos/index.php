@@ -1,3 +1,64 @@
+<?php
+/* ================================================================
+ *  RV HARD – FOTO-GALERIE: ÜBERSICHT (Galerie-Startseite)
+ *  Die Event-Karten werden SERVERSEITIG aus data/events.json erzeugt.
+ *  Grund: Google & Co. führen KEIN JavaScript aus. Vorher stand hier
+ *  nur "Foto-Galerie wird geladen…" → die Übersicht wurde in der
+ *  Search Console als "Gecrawlt – zurzeit nicht indexiert" geführt.
+ *  galerie.js rendert anschließend identisch neu (Suche, Filter, AOS).
+ * ================================================================ */
+
+/* Galerie-Wurzel: '' (Subdomain) oder '/fotos' (Unterordner der Hauptdomain) */
+$fgRoot = str_replace('\\', '/', (string)dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/index.php')));
+$fgRoot = ($fgRoot === '/' || $fgRoot === '.' || $fgRoot === '') ? '' : rtrim($fgRoot, '/');
+
+$fgEventUrl = $fgRoot . '/event.php';
+$fgE = function ($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); };
+
+/* Events laden (Schema-Objekte und ausgeblendete Events überspringen) */
+$fgEvents = [];
+$fgFile = __DIR__ . '/data/events.json';
+if (is_file($fgFile)) {
+    $fgJson = json_decode((string)@file_get_contents($fgFile), true);
+    if (is_array($fgJson)) {
+        foreach ($fgJson as $fgItem) {
+            if (!is_array($fgItem) || isset($fgItem['_schemaVersion']) || !empty($fgItem['hidden'])) continue;
+            $fgEvents[] = $fgItem;
+        }
+    }
+}
+
+/* Nach Jahr gruppieren (Jahr aus parentId/id, sonst "Archiv") */
+$fgByYear = [];
+foreach ($fgEvents as $fgEv) {
+    $fgYear = '';
+    if (preg_match('/(20\d{2})/', (string)($fgEv['parentId'] ?? $fgEv['id'] ?? ''), $fgM)) $fgYear = $fgM[1];
+    if ($fgYear === '') $fgYear = 'Archiv';
+    $fgByYear[$fgYear][] = $fgEv;
+}
+krsort($fgByYear);
+
+/* Datum JJJJ-MM-TT -> TT.MM.JJJJ */
+$fgFmtDate = function ($d) { return preg_match('/^(\d{4})-(\d{2})-(\d{2})/', (string)$d, $m) ? $m[3].'.'.$m[2].'.'.$m[1] : ''; };
+
+$fgIcon  = ['bergrennen' => 'fa-mountain-sun', 'ezf' => 'fa-stopwatch', 'kriterium' => 'fa-flag-checkered'];
+$fgBadge = ['bergrennen' => 'Bergrennen', 'ezf' => 'EZF', 'kriterium' => 'Stadtkriterium'];
+
+/* Cover wie galerie.js: erstes Foto-Thumbnail > coverPhoto > erstes Foto.
+   KI-Platzhalter (coresg-normal.trae.ai) und /cover.jpg werden ignoriert. */
+$fgCover = function ($ev) use ($fgRoot) {
+    $p0 = (isset($ev['photos'][0]) && is_array($ev['photos'][0])) ? $ev['photos'][0] : null;
+    $c = $p0 ? (string)($p0['thumbnail'] ?? '') : '';
+    if ($c === '') $c = (string)($ev['coverPhoto'] ?? '');
+    if ($c === '' && $p0) $c = (string)($p0['src'] ?? '');
+    if ($c === '' || stripos($c, 'coresg-normal.trae.ai') !== false || preg_match('#/cover\.jpg(\?|$)#', $c)) return '';
+    if (!preg_match('#^https?://#i', $c)) {
+        if ($c[0] !== '/') $c = '/' . $c;
+        if ($fgRoot !== '' && strpos($c, $fgRoot . '/') !== 0) $c = $fgRoot . $c;
+    }
+    return $c;
+};
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -87,11 +148,59 @@
                     <input type="search" id="fg-search" placeholder="🔍 Suche nach Ort, Jahr…" aria-label="Events durchsuchen" style="min-width: 260px;">
                     <select id="fg-filter-year" aria-label="Jahr Filter">
                         <option value="all">Alle Jahre</option>
+<?php foreach (array_keys($fgByYear) as $fgY): if ($fgY === 'Archiv') continue; ?>
+                        <option value="<?= $fgE($fgY) ?>"><?= $fgE($fgY) ?></option>
+<?php endforeach; ?>
                     </select>
                 </div>
 
+                <!-- EVENT-KARTEN (SERVERSEITIG vorbelegt; galerie.js übernimmt danach Suche/Filter) -->
                 <div id="fg-events" class="fg-events-grid" style="margin-top:10px;">
-                    <div class="fg-empty"><strong>Foto-Galerie wird geladen…</strong></div>
+<?php if (!$fgEvents): ?>
+                    <div class="fg-empty"><strong>Zurzeit sind keine Events veröffentlicht.</strong></div>
+<?php else: ?>
+<?php foreach ($fgByYear as $fgYearGroup => $fgList): ?>
+                    <div style="grid-column: 1/-1; margin: 1.5rem 0 0.5rem;">
+                        <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:0.75rem;">
+                            <span style="background:#111; color:#ffc107; padding:0.25rem 0.85rem; border-radius: 8px; font-weight: 800;">Events <?= $fgE($fgYearGroup) ?></span>
+                            <span style="font-size:0.9rem; color:#777; font-weight: 500;"><?= count($fgList) ?> Einträge</span>
+                        </h2>
+                        <hr style="border:none; border-top: 2px dashed #eee; margin:0.5rem 0 0;">
+                    </div>
+<?php foreach ($fgList as $fgEv):
+    $fgId = (string)($fgEv['id'] ?? ''); if ($fgId === '') continue;
+    $fgCoverUrl = $fgCover($fgEv);
+    $fgCount = (isset($fgEv['photos']) && is_array($fgEv['photos'])) ? count($fgEv['photos']) : 0;
+    $fgSub = (string)($fgEv['subtype'] ?? '');
+?>
+                    <a class="fg-event-card" href="<?= $fgE($fgEventUrl . '?id=' . rawurlencode($fgId)) ?>">
+                        <div class="fg-event-card__cover"<?= $fgCoverUrl !== '' ? ' style="background-image:url(&quot;' . $fgE($fgCoverUrl) . '&quot;)"' : '' ?>>
+<?php if (isset($fgBadge[$fgSub])): ?>
+                            <span class="fg-event-card__badge"><?= $fgE($fgBadge[$fgSub]) ?></span>
+<?php endif; ?>
+                            <div class="fg-event-card__count"><i class="fa-regular fa-image"></i> <?= $fgCount ?></div>
+                        </div>
+                        <div class="fg-event-card__body">
+                            <h3><i class="fa-solid <?= $fgE($fgIcon[$fgSub] ?? 'fa-bicycle') ?>" style="color:#f5b301;"></i> <?= $fgE((string)($fgEv['shortName'] ?? $fgEv['name'] ?? '')) ?></h3>
+                            <div class="fg-event-card__meta">
+<?php $fgD = $fgFmtDate($fgEv['date'] ?? ''); if ($fgD !== ''): ?>
+                                <span><i class="fa-regular fa-calendar"></i> <?= $fgE($fgD) ?></span>
+<?php endif; ?>
+<?php if (trim((string)($fgEv['location'] ?? '')) !== ''): ?>
+                                <span><i class="fa-solid fa-location-dot"></i> <?= $fgE($fgEv['location']) ?></span>
+<?php endif; ?>
+<?php if (trim((string)($fgEv['distance'] ?? '')) !== ''): ?>
+                                <span><i class="fa-solid fa-route"></i> <?= $fgE($fgEv['distance']) ?></span>
+<?php endif; ?>
+                            </div>
+<?php if (trim((string)($fgEv['description'] ?? '')) !== ''): ?>
+                            <p class="fg-event-card__desc"><?= $fgE($fgEv['description']) ?></p>
+<?php endif; ?>
+                        </div>
+                    </a>
+<?php endforeach; ?>
+<?php endforeach; ?>
+<?php endif; ?>
                 </div>
             </div>
         </section>
