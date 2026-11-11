@@ -15,7 +15,8 @@ function createGridLines() {
     const logoRects = Array.from(sponsorLogos).map(logo => logo.getBoundingClientRect());
     const gridRect = sponsorenGrid.getBoundingClientRect();
 
-    const lineColor = '#666';
+    const lineColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--site-border').trim() || '#e0e0e0';
     const lineWidth = '1px';
     const borderRadius = '1px';
 

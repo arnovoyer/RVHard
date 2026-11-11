@@ -1,0 +1,114 @@
+/* Termine-Seite – dynamische Event-Liste.
+   Basis (Container, Karten, Überschriften) kommt aus /assets/style.css. */
+
+.hidden {
+    display: none;
+}
+
+.termine-liste {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+}
+
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Event-Karte: gleiche Optik wie .card, nur als Flex-Spalte */
+.modern-event-card {
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: 0 6px 24px rgba(16, 24, 40, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modern-event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(16, 24, 40, 0.12);
+}
+
+.modern-event-card h3,
+.modern-event-card .event-title {
+    color: var(--site-heading);
+    margin: 0 0 0.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.modern-event-card .event-date-time {
+    color: var(--site-muted);
+    font-size: 0.9rem;
+    margin: 0 0 0.8rem;
+}
+
+.modern-event-card p {
+    color: var(--site-text);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.modern-event-card .event-button {
+    margin-top: 1rem;
+}
+
+.modern-event-card .event-location-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+}
+
+.modern-event-card .event-location {
+    color: var(--link);
+}
+
+.modern-event-card .event-location i {
+    color: var(--accent-yellow);
+}
+
+.modern-event-card .event-location:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+/* Sekundär-Button: neutral gehalten, damit der gelbe Button führt */
+.modern-event-card .kalender-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--site-surface-soft);
+    color: var(--site-heading);
+    border: 1px solid var(--site-border);
+    padding: 0.65rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modern-event-card .kalender-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(16, 24, 40, 0.12);
+}
+
+#toggle-vergangene {
+    margin-top: 1.5rem;
+    align-self: center;
+    border: none;
+}
+
+.event-empty {
+    color: var(--site-muted);
+}

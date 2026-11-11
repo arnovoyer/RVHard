@@ -24,150 +24,27 @@
         content="Alle aktuellen und kommenden Termine des RV Hard - Veranstaltungen, Rennen und Vereinsaktivitäten auf einen Blick.">
     <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-standard-1200x630.png">
     <meta name="twitter:image:alt" content="Logo des RV Hard">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b">
     <link rel="stylesheet" href="/assets/navigation.css">
     <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="stylesheet" href="/assets/termine.css?v=20261111a">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
     <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css?v=20261111">
-    <style>
-        .hidden {
-            display: none;
-        }
-
-        .termine-seite .container {
-            max-width: 960px;
-            margin-top: 0;
-        }
-
-        .termine-seite h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #ffc107;
-        }
-
-        #event-liste {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            row-gap: 5rem;
-        }
-
-        .event-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .event-grid.hidden {
-            display: none;
-        }
-
-        .modern-event-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .modern-event-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .modern-event-card h3 {
-            color: #ffc107;
-            margin-top: 0;
-            margin-bottom: 0.1rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            line-height: 1.2;
-        }
-
-        .modern-event-card .event-date-time {
-            color: #777;
-            font-size: 0.9rem;
-            margin-top: 0.05rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .modern-event-card p {
-            color: #555;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .modern-event-card .event-button {
-            margin-top: 1rem;
-        }
-
-        .modern-event-card .kalender-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            background: linear-gradient(135deg, #6c757d, #5a6268);
-            color: #ffffff;
-            padding: 0.65rem 1.2rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 999px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s ease;
-        }
-
-        .modern-event-card .kalender-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-        }
-
-        .modern-event-card .event-location i {
-            color: #ffc107;
-        }
-
-        .modern-event-card .event-location:hover {
-            color: #f4b400;
-            text-decoration: underline;
-        }
-
-        .modern-event-card .event-location-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            margin-top: 0.4rem;
-        }
-
-        .modern-event-card .event-title {
-            color: #111;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.2rem;
-        }
-
-        main {
-            padding-top: 0px;
-        }
-    </style>
 </head>
 
 <body>
     <header>
         <nav id="navigation-container"></nav>
     </header>
-    <main class="termine-seite">
-        <section class="container">
-            <h1 style="color: #111;">Unsere Termine</h1>
-            <h2>Bevorstehende Events</h2>
+    <main class="verein-container">
+        <section class="card">
+            <h1>Unsere Termine</h1>
+        </section>
+
+        <section class="termine-liste">
+            <h2 class="section-title">Bevorstehende Events</h2>
             <div id="bevorstehende-events" class="event-grid"></div>
-            <button id="toggle-vergangene" class="gelber-button"
-                style="margin-top:12px; border: none;align-self: center;">Vergangene Events anzeigen</button>
+            <button id="toggle-vergangene" class="gelber-button">Vergangene Events anzeigen</button>
             <div id="vergangene-events" class="event-grid hidden"></div>
         </section>
     </main>
@@ -302,7 +179,7 @@
             const container = document.getElementById(containerId);
             const info = document.createElement("p");
             info.textContent = text;
-            info.style.color = "#666";
+            info.classList.add("event-empty");
             container.appendChild(info);
         }
 

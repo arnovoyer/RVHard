@@ -1,13 +1,13 @@
 .sponsoren-seite {
     padding-top: 3rem;
     padding-bottom: 3rem;
-    background-color: var(--site-surface, #ffffff);
+    background-color: var(--site-surface);
 }
 
 .sponsoren-seite h1 {
     text-align: center;
     margin-bottom: 2.5rem;
-    color: var(--site-heading, #111);
+    color: var(--site-heading);
 }
 
 .sponsoren-grid {
@@ -15,7 +15,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     padding: 1.5rem;
-    border-radius: var(--radius-sm, 8px);
+    border-radius: var(--radius-sm);
     position: relative;
     grid-auto-rows: auto;
 }
@@ -38,12 +38,8 @@
     align-items: center;
     height: 150px;
     background-color: transparent;
-    border-radius: 0;
-    box-shadow: none;
     overflow: hidden;
     position: relative;
-    border: none;
-    outline: none;
 }
 
 .sponsor-logo img {
@@ -86,6 +82,8 @@
         opacity: 1;
     }
 }
+
+/* Hover-Rahmen oben und unten */
 .sponsor-logo::before,
 .sponsor-logo::after {
     content: "";
@@ -93,63 +91,24 @@
     left: 0;
     width: 100%;
     height: 3px;
-    background-color: #e0e0e0;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    transform: translateY(10px);
-}
-
-.sponsor-logo::before,
-.sponsor-logo::after,
-.sponsor-logo::before-vertical,
-.sponsor-logo::after-vertical {
-    content: "";
-    position: absolute;
-    background-color: #e0e0e0;
+    border-radius: 2px;
+    background-color: var(--site-border);
     opacity: 0;
     transition: opacity 0.3s ease-in-out, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .sponsor-logo::before {
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    border-radius: 2px;
     transform: translateY(10px);
 }
 
 .sponsor-logo::after {
     bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    border-radius: 2px;
     transform: translateY(-10px);
 }
 
-.sponsor-logo::before-vertical {
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    border-radius: 2px;
-    transform: translateX(10px);
-}
-
-.sponsor-logo::after-vertical {
-    top: 0;
-    right: 0;
-    width: 3px;
-    height: 100%;
-    border-radius: 2px;
-    transform: translateX(-10px);
-}
-
 .sponsor-logo:hover::before,
-.sponsor-logo:hover::after,
-.sponsor-logo:hover::before-vertical,
-.sponsor-logo:hover::after-vertical {
+.sponsor-logo:hover::after {
     opacity: 1;
     transform: translate(0);
 }
