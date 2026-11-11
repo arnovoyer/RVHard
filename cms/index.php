@@ -826,15 +826,12 @@
             . "  <title>{$title} | RV Hard</title>\n"
             . "  <meta name=\"description\" content=\"News und Rennberichte des RV Hard.\" />\n"
             . "  <link rel=\"icon\" type=\"image/png\" href=\"/assets/img/logo/RV_Hard_Logo.webp\" />\n"
-        . "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n"
-        . "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n"
-        . "  <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap\" media=\"print\" onload=\"this.media='all'\" />\n"
-        . "  <noscript><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap\" /></noscript>\n"
+            . "  <link rel=\"stylesheet\" href=\"/assets/fonts.css?v=20261111\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/style.css\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/news/news.css\" />\n"
             . "  <link rel=\"stylesheet\" href=\"/assets/share-button.css\" />\n"
-            . "  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\" integrity=\"sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" />\n"
-        . "  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css\" />\n"
+            . "  <link rel=\"stylesheet\" href=\"/assets/vendor/fontawesome/css/all.min.css?v=20261111\" />\n"
+            . "  <link rel=\"stylesheet\" href=\"/assets/vendor/aos/aos.css?v=20261111\" />\n"
             . "</head>\n"
             . "<body>\n"
             . "  <header><nav id=\"navigation-container\"></nav></header>\n"
@@ -864,7 +861,7 @@
             . "  <script src=\"/assets/header-scroll.js\" defer></script>\n"
             . "  <script src=\"/assets/cookie-banner.js\" defer></script>\n"
             . "  <script src=\"/assets/share-button.js\" defer></script>\n"
-            . "  <script src=\"https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js\"></script>\n"
+            . "  <script src=\"/assets/vendor/aos/aos.js?v=20261111\"></script>\n"
             . "  <script>\n"
             . "    document.addEventListener('DOMContentLoaded', async () => {\n"
             . "      try {\n"
@@ -1744,10 +1741,8 @@
             } catch (e) {}
         })();
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="/assets/fonts.css?v=20261111">
+    <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css?v=20261111">
     <link rel="stylesheet" href="/assets/admin.css?v=20261103">
     <script src="/assets/admin.js?v=20261103" defer></script>
     <style>

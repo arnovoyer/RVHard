@@ -149,13 +149,8 @@ ${marker}
   <meta name="robots" content="index, follow" />
   <link rel="stylesheet" href="/assets/style.css" />
   <link rel="stylesheet" href="/assets/news/news.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
-  </noscript>
+  <link rel="stylesheet" href="/assets/vendor/aos/aos.css?v=20261111" />
+  <link rel="stylesheet" href="/assets/fonts.css?v=20261111" />
 </head>
 
 <body>
@@ -211,7 +206,7 @@ ${marker}
   <script src="/assets/nav.js" defer></script>
   <script src="/assets/header-scroll.js" defer></script>
   <script src="/assets/cookie-banner.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+  <script src="/assets/vendor/aos/aos.js?v=20261111"></script>
   <script>
     window.addEventListener('load', () => {
       if (window.AOS && typeof window.AOS.init === 'function') {

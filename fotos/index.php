@@ -92,8 +92,6 @@ $fgCover = function ($ev) use ($fgRoot) {
       "isPartOf": { "@type": "WebSite", "name": "RV Hard", "url": "https://rv-hard.at/" }
     }
     </script>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://unpkg.com">
     <script>
         (function() {
             /* Automatisch den BASE-Pfad erkennen! (Gleiches Prinzip wie upload.php + galerie.js) */
@@ -126,8 +124,8 @@ $fgCover = function ($ev) use ($fgRoot) {
             document.write(link4.outerHTML);
         })();
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20261111">
+    <link href="assets/vendor/aos/aos.css?v=20261111" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -220,7 +218,7 @@ $fgCover = function ($ev) use ($fgRoot) {
             document.write(`<script src="${galerieBase}galerie.js?v=20261109" defer><\/script>`);
         })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js" defer></script>
+    <script src="assets/vendor/aos/aos.js?v=20261111" defer></script>
     <script>
         window.addEventListener('load', () => {
             if (typeof AOS !== 'undefined') {
