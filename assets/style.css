@@ -172,6 +172,41 @@ a.gelber-button {
     color: #111;
 }
 
+/* Button direkt unter Text/Liste bekommt Luft nach oben */
+p+.gelber-button,
+ul+.gelber-button {
+    margin-top: 1rem;
+}
+
+/* ===================================================================
+   GEMEINSAMER BAUKASTEN (Unterseiten)
+   Einheitliche, theme-fähige Bausteine, damit alle Seiten dieselben
+   Komponenten nutzen – auch wenn ihr Layout unterschiedlich ist.
+   Farben/Radien kommen ausschließlich aus den Tokens oben.
+   =================================================================== */
+
+/* Karte / Panel: Box für Inhaltsabschnitte */
+.card {
+    background-color: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 6px 24px rgba(16, 24, 40, 0.06);
+    padding: 2rem;
+}
+
+.card+.card {
+    margin-top: 1.5rem;
+}
+
+/* Abschnitts-Überschrift: einheitlicher Look für Inhaltsseiten */
+.section-title {
+    color: var(--site-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+}
+
 .news-container {
     display: grid;
     grid-template-columns: 1fr;

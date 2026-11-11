@@ -1,96 +1,9 @@
-:root {
-    --accent: #f5b301;
-    --accent-soft: rgba(245, 179, 1, 0.15);
-    --text-main: var(--site-heading, #1f2933);
-    --text-muted: var(--site-muted, #6b7280);
-    --bg-main: var(--site-bg, #f6f7f9);
-    --card-bg: var(--site-surface, #ffffff);
-}
+/* Verein-Unterseiten – nur die Bausteine, die es nur hier gibt.
+   Basis (Farben, Container, Karten, Buttons, Überschriften) kommt aus
+   /assets/style.css: .card und .section-title.
+   Farben/Radien ausschließlich über die Tokens aus style.css. */
 
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background: var(--site-bg, #f6f7f9);
-    color: var(--text-main);
-    line-height: 1.65;
-}
-
-.verein-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: var(--card-bg, #fff);
-    border-radius: var(--radius-md, 12px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    line-height: 1.7;
-    color: var(--text-muted);
-}
-
-section {
-    background-color: var(--card-bg);
-    padding: 2.5rem;
-    margin-bottom: 2.5rem;
-    border-radius: var(--radius-lg, 16px);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-    position: relative;
-}
-
-section::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 20px;
-    bottom: 20px;
-    width: 4px;
-    background: linear-gradient(180deg, var(--accent), #ffd866);
-    border-radius: 4px;
-    opacity: 0.9;
-}
-
-section:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
-}
-
-h1,
-h2 {
-    color: var(--text-main);
-    margin-top: 0;
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-}
-
-h1 {
-    font-size: 2.2rem;
-}
-
-h2 {
-    font-size: 1.5rem;
-    color: var(--text-main);
-}
-
-h2::after {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 3px;
-    background-color: var(--accent);
-    margin-top: 0.5rem;
-    border-radius: 2px;
-}
-
-.verein-container h2 {
-    color: var(--text-main);
-}
-
-p {
-    margin-bottom: 1.2rem;
-    color: var(--text-muted);
-}
-
+/* ---------- Gemeinsame Kleinigkeiten ---------- */
 .mail-link {
     color: var(--link, #a16207);
     font-weight: 600;
@@ -101,6 +14,7 @@ p {
     text-decoration: underline;
 }
 
+/* ---------- "Unser Verein": Vorstand-Vorschau ---------- */
 .vorstand-kurz {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -120,7 +34,7 @@ p {
     margin-bottom: 0.8rem;
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.15),
-        0 0 0 6px var(--accent-soft);
+        0 0 0 6px rgba(255, 193, 7, 0.15);
     transition: transform 0.3s ease;
 }
 
@@ -128,31 +42,561 @@ p {
     transform: scale(1.05);
 }
 
-.verein-container h2 {
-    color: var(--text-main);
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--site-border, #eee);
-    padding-bottom: 0.5rem;
+/* ---------- Vorstand-Seite ---------- */
+.vorstand-intro {
+    text-align: center;
 }
 
-.geschichte-abschnitt {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
+.vorstand-intro p {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--site-muted);
 }
 
-.geschichte-abschnitt h3 {
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
+.vorstandsmitglieder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    margin-top: 1.5rem;
 }
 
-
-.highlight {
-    font-weight: bold;
-    color: var(--link, #a16207);
+.vorstandsmitglied {
+    text-align: center;
 }
 
-.jahr {
-    font-style: italic;
-    color: var(--text-muted);
-    margin-right: 0.5rem;
+.mitglied-bild {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin: 0 auto 0.8rem;
+    overflow: hidden;
+    background: var(--site-surface-soft);
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.15),
+        0 0 0 6px rgba(255, 193, 7, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.vorstandsmitglied:hover .mitglied-bild {
+    transform: scale(1.05);
+}
+
+.mitglied-bild img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mitglied-name {
+    margin: 0 0 0.2rem;
+    font-size: 1.05rem;
+    color: var(--site-heading);
+}
+
+.mitglied-funktion {
+    margin: 0 0 0.6rem;
+    font-size: 0.9rem;
+    color: var(--site-muted);
+}
+
+.mitglied-mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--site-surface-soft);
+    color: var(--link);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.mitglied-mail:hover {
+    background: var(--accent-yellow);
+    color: #1a1a1a;
+}
+
+/* ---------- "Mitglied werden": Tarif-Karten ---------- */
+.membership-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.membership-card {
+    background: var(--site-surface-soft);
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+}
+
+.membership-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    color: var(--site-heading);
+}
+
+.membership-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.membership-card li {
+    position: relative;
+    margin-bottom: 0.35rem;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.membership-card li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #2e9e44;
+    font-weight: 700;
+}
+
+.membership-cta {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.membership-hinweis {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .membership-hinweis {
+        text-align: left;
+    }
+}
+
+/* ---------- "Geschichte": Zeitleiste ---------- */
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 1.5rem auto 0;
+}
+
+/* Neutrale Achse – bewusst kein Akzentstrich */
+.timeline::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: var(--site-border);
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 0 2.5rem 1.4rem;
+}
+
+.timeline-item.left {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item.right {
+    left: 50%;
+    text-align: left;
+}
+
+/* Eintrag – gleiche Optik wie .card */
+.timeline-content {
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 6px 24px rgba(16, 24, 40, 0.06);
+    padding: 1.4rem 1.6rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.timeline-item:hover .timeline-content {
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.10);
+}
+
+.timeline-content h3 {
+    margin: 0 0 0.35rem;
+    color: var(--site-heading);
+    font-size: 1.15rem;
+}
+
+.timeline-content p {
+    margin: 0;
+    color: var(--site-muted);
+    font-size: 0.95rem;
+}
+
+.timeline-point {
+    position: absolute;
+    top: 1.4rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    border: 2px solid var(--site-surface);
+    box-shadow: 0 0 0 1px var(--site-border);
+    z-index: 2;
+}
+
+.timeline-item.left .timeline-point {
+    right: -6px;
+}
+
+.timeline-item.right .timeline-point {
+    left: -6px;
+}
+
+@media (max-width: 768px) {
+    .timeline::after {
+        left: 16px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        padding: 0 0 1.4rem 44px;
+        text-align: left;
+    }
+
+    .timeline-item.left,
+    .timeline-item.right {
+        text-align: left;
+    }
+
+    .timeline-point {
+        left: 10px !important;
+        right: auto;
+    }
+
+    .timeline-content {
+        padding: 1.2rem 1.4rem;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.05rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.9rem;
+    }
+}
+
+/* ---------- "Bekleidung": 3D-Modelle ---------- */
+.sketchfab-embed-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 1.25rem 0 0;
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--site-surface-soft);
+}
+
+.sketchfab-embed-wrapper iframe {
+    display: block;
+    width: 100%;
+    height: 520px;
+    border: 0;
+}
+
+.bekleidung-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0 0;
+}
+
+.bekleidung-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.bekleidung-item h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.05rem;
+}
+
+.bekleidung-item__desc {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--site-muted);
+}
+
+.bekleidung-item .sketchfab-embed-wrapper {
+    flex: 1;
+    margin-top: 0.85rem;
+}
+
+@media (max-width: 720px) {
+    .sketchfab-embed-wrapper iframe {
+        height: 420px;
+    }
+}
+
+/* ---------- "Bekleidung": Bestellformular ---------- */
+.bestell-status {
+    display: none;
+    margin: 0 0 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.bestell-status.erfolg {
+    display: block;
+    background: #d3f9d8;
+    border: 1px solid #8ce99a;
+    color: #2b8a3e;
+}
+
+.bestell-status.fehler {
+    display: block;
+    background: #ffe3e3;
+    border: 1px solid #ffa8a8;
+    color: #c92a2a;
+}
+
+.bestell-zeile {
+    display: grid;
+    grid-template-columns: 1fr 130px 110px 38px;
+    gap: 0.85rem;
+    align-items: end;
+    padding-bottom: 0.85rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 1px dashed var(--site-border);
+}
+
+.bestell-zeile-entfernen {
+    height: 42px;
+    width: 38px;
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-sm);
+    background: var(--site-surface-soft);
+    color: var(--site-muted);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.bestell-zeile-entfernen:hover {
+    border-color: #ffa8a8;
+    background: #fff0f0;
+    color: #c92a2a;
+}
+
+.bestell-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.25rem 0 1.75rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px dashed var(--accent-yellow);
+    border-radius: var(--radius-sm);
+    background: var(--site-surface);
+    color: var(--link);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-style 0.2s ease;
+}
+
+.bestell-add:hover {
+    background: var(--site-surface-soft);
+    border-style: solid;
+}
+
+.bestell-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.bestell-group {
+    margin-bottom: 1.25rem;
+}
+
+.bestell-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--site-text);
+}
+
+.bestell-group label .pflicht {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.bestell-group input,
+.bestell-group select,
+.bestell-group textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--site-border);
+    border-radius: var(--radius-sm);
+    background: var(--site-surface);
+    color: var(--site-text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.bestell-group input::placeholder,
+.bestell-group textarea::placeholder {
+    color: var(--site-muted);
+    opacity: 0.7;
+}
+
+.bestell-group input:focus,
+.bestell-group select:focus,
+.bestell-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
+.bestell-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.bestell-datenschutz {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin-top: 1.1rem;
+    margin-bottom: 1.75rem;
+    padding: 0.8rem 0.35rem 0.3rem;
+    border-top: 1px dashed var(--site-border);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--site-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.bestell-datenschutz input[type="checkbox"] {
+    margin-top: 0.1rem;
+    width: 15px;
+    height: 15px;
+    accent-color: var(--accent-yellow);
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.bestell-datenschutz .pflicht {
+    color: #dc3545;
+    font-weight: 700;
+}
+
+.bestell-datenschutz a {
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.35);
+}
+
+.bestell-datenschutz a:hover {
+    border-bottom-color: var(--accent-yellow);
+}
+
+.bestell-submit-row {
+    text-align: center;
+}
+
+.bestell-submit-row .gelber-button {
+    min-width: 220px;
+}
+
+.bestell-submit-row .gelber-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .bestell-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .bestell-zeile {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .bestell-zeile .bestell-group:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .bestell-zeile-entfernen {
+        width: 100%;
+        grid-column: 1 / -1;
+    }
+}
+
+/* Sprungziel unter der sticky Navigation sichtbar machen */
+#bestellformular {
+    scroll-margin-top: 90px;
+}
+
+/* Schwebender Bestell-Button – standardmäßig sichtbar */
+.bestell-float {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.7rem;
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease,
+        opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.bestell-float.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(18px);
+    pointer-events: none;
+}
+
+.bestell-float:hover {
+    background: var(--accent-yellow-hover);
+    transform: translateY(-3px) scale(1.03);
+}
+
+.bestell-float i {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+    .bestell-float {
+        right: 1rem;
+        bottom: 1rem;
+        padding: 0.95rem 1.4rem;
+        font-size: 1rem;
+    }
 }

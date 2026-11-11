@@ -22,108 +22,12 @@
     <meta name="twitter:image:alt" content="Logo des RV Hard">
     <title>Mitglied werden | RV Hard</title>
     <meta name="author" content="RV Hard">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b">
     <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="stylesheet" href="/assets/events/verein.css?v=20261111c">
     <link href="/assets/vendor/aos/aos.css?v=20261111" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        .membership-options {
-            display: grid;
-            gap: 1.5rem;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            margin: 2rem 0;
-            padding: 0 16px;
-            width: 100%;
-        }
-
-        .membership-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-        }
-
-        .membership-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .membership-card h2 {
-            margin-top: 0;
-            color: #333;
-        }
-
-        .membership-card ul {
-            margin: 0.5rem 0 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .membership-card li {
-            margin-bottom: 0.3rem;
-            padding-left: 1.4rem;
-            position: relative;
-        }
-
-        .membership-card li::before {
-            content: "\2713";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #2e7d32;
-            font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-
-            .membership-options {
-                grid-template-columns: 1fr;
-                padding: 0 14px;
-                gap: 1rem;
-            }
-
-            .membership-card {
-                width: 100%;
-                max-width: none;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .membership-section {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .membership-section p {
-                max-width: 100%;
-            }
-        }
-
-        .membership-section {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            padding: 0 16px 24px;
-        }
-
-        .membership-section p {
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
 </head>
 
 <body>
@@ -132,15 +36,14 @@
     </header>
 
     <main class="verein-container">
-        <section class="membership-section">
-            <h1 style="text-align: center;">Mitglied werden!</h1>
+        <section class="card">
+            <h1>Mitglied werden!</h1>
 
             <p>Mit mehr als 200 Mitgliedern zählt der RV-Hard zu den größeren Vereinen in Hard. Wir freuen uns über
                 jedes neue Mitglied. Es stehen drei unterschiedliche Mitgliedschaften zur Auswahl:</p>
 
             <div class="membership-options">
-                <div class="membership-card" href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880"
-                    data-aos="fade-up" data-aos-delay="0">
+                <div class="membership-card" data-aos="fade-up" data-aos-delay="0">
                     <h2>Einzelmitgliedschaft Kinder (55 EUR)</h2>
                     <ul>
                         <li>Regelmäßiges Training (Sommer outdoor / Winter in der Halle)</li>
@@ -152,8 +55,7 @@
                     </ul>
                 </div>
 
-                <div class="membership-card" href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880"
-                    data-aos="fade-up" data-aos-delay="100">
+                <div class="membership-card" data-aos="fade-up" data-aos-delay="100">
                     <h2>Einzelmitgliedschaft Erwachsene (35 EUR)</h2>
                     <ul>
                         <li>Organisierte Ausfahrten</li>
@@ -165,8 +67,7 @@
                     </ul>
                 </div>
 
-                <div class="membership-card" href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880"
-                    data-aos="fade-up" data-aos-delay="200">
+                <div class="membership-card" data-aos="fade-up" data-aos-delay="200">
                     <h2>Familienmitgliedschaft (120 EUR)</h2>
                     <p>Kombination beider Mitgliedschaften für die ganze Familie – inklusive aller Vorteile:</p>
                     <ul>
@@ -183,18 +84,16 @@
                 </div>
             </div>
 
-            <div style="text-align:center;">
+            <div class="membership-cta">
                 <a href="https://rvhard.webling.eu/forms/memberform/c7950355e96292321880" class="gelber-button">
                     📄 Mitgliedsantrag ausfüllen
                 </a>
             </div>
 
-            <div style="text-align:right;">
-                <p style="margin-top:1.5rem; text-align:right; @media (max-width:768px){text-align:center}">
-                    Bei weiteren Fragen wende dich an:
-                    <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
-                </p>
-            </div>
+            <p class="membership-hinweis">
+                Bei weiteren Fragen wende dich an:
+                <a href="mailto:vorstand@rv-hard.at">vorstand@rv-hard.at</a>
+            </p>
         </section>
     </main>
 
@@ -211,13 +110,6 @@
     <script src="/assets/nav.js" defer></script>
     <script src="/assets/header-scroll.js" defer></script>
     <script src="/assets/cookie-banner.js" defer></script>
-    <script>
-        function openMail(membershipType) {
-            const subject = encodeURIComponent(`Anfrage: ${membershipType}`);
-            const body = encodeURIComponent(`Hallo,\n\nich interessiere mich für die ${membershipType} beim RV Hard.\nBitte senden Sie mir weitere Informationen.\n(Wenn möglich den ausgefüllten Mitgliedsantrag anfügen)\n\nMit freundlichen Grüßen`);
-            window.location.href = `mailto:vorstand@rv-hard.at?subject=${subject}&body=${body}`;
-        }
-    </script>
     <script src="/assets/vendor/aos/aos.js?v=20261111"></script>
     <script>
         window.addEventListener('load', () => {

@@ -25,225 +25,12 @@
     <meta name="twitter:image:alt" content="Logo des RV Hard">
     <title>Geschichte | RV Hard</title>
     <meta name="author" content="RV Hard">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b">
     <link rel="stylesheet" href="/assets/navigation.css">
+    <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="stylesheet" href="/assets/events/verein.css?v=20261111c">
     <link href="/assets/vendor/aos/aos.css?v=20261111" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
-    <style>
-        h1 {
-            text-align: center;
-        }
-
-        cite {
-            font-style: italic;
-            color: #333;
-            display: block;
-            margin-top: 5px;
-            font-size: 0.9em;
-        }
-
-        p {
-            margin-bottom: 1em;
-            line-height: 1.6;
-        }
-
-        p.jahr {
-            font-weight: bold;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 900px;
-            margin: 50px auto;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 3px;
-            background: linear-gradient(to bottom,
-                    transparent,
-                    #ffc107,
-                    #ffc107,
-                    transparent);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            position: relative;
-            width: 50%;
-            padding: 20px 40px;
-        }
-
-        .timeline-item.left {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item.right {
-            left: 50%;
-            text-align: left;
-        }
-
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(6px);
-            padding: 1.5rem 1.7rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .timeline-content h3 {
-            display: inline-block;
-            background: rgba(255, 193, 7, 0.15);
-            color: #b38700;
-            padding: 0.25rem 0.7rem;
-            border-radius: 999px;
-            font-size: 1.2rem;
-            margin-bottom: 0.6rem;
-        }
-
-
-        .timeline-content p {
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-
-
-        .timeline-item:hover .timeline-content {
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
-        }
-
-
-        .timeline-item.left:hover .timeline-content {
-            transform: translateX(-5px);
-        }
-
-        .timeline-item.right:hover .timeline-content {
-            transform: translateX(5px);
-        }
-
-        @media (max-width: 768px) {
-            .timeline {
-                margin: 30px auto;
-            }
-
-            .timeline::after {
-                left: 16px;
-            }
-
-            .timeline-item {
-                padding-left: 50px;
-                padding-right: 15px;
-            }
-
-            .timeline-point {
-                left: 9px !important;
-            }
-
-            .timeline {
-                margin: 30px auto;
-            }
-
-            .timeline::after {
-                left: 16px;
-            }
-
-            .timeline-item {
-                width: 100%;
-                left: 0 !important;
-                padding-left: 50px;
-                padding-right: 15px;
-                text-align: left;
-            }
-
-            .timeline-item.left,
-            .timeline-item.right {
-                text-align: left;
-            }
-
-            .timeline-point {
-                left: 9px !important;
-                right: auto;
-            }
-
-            .timeline-item.left:hover .timeline-content,
-            .timeline-item.right:hover .timeline-content {
-                transform: none;
-            }
-
-            .timeline-content {
-                border-radius: 14px;
-                padding: 1.2rem 1.4rem;
-            }
-
-            .timeline-content h3 {
-                font-size: 1.05rem;
-            }
-
-            .timeline-content p {
-                font-size: 0.9rem;
-            }
-
-            .timeline-item:first-child .timeline-content {
-                box-shadow: 0 12px 30px rgba(255, 193, 7, 0.25);
-            }
-
-            .geschichte-abschnitt p {
-                max-width: 90%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        .timeline-point {
-            position: absolute;
-            top: 28px;
-            width: 14px;
-            height: 14px;
-            background: #ffc107;
-            border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);
-        }
-
-        .timeline-item.left .timeline-point {
-            right: -7px;
-        }
-
-        .timeline-item.right .timeline-point {
-            left: -7px;
-        }
-
-        .geschichte-abschnitt h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .geschichte-abschnitt>p {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-            color: #666;
-        }
-
-        .timeline-item:first-child .timeline-content {
-            background: linear-gradient(135deg, #fff4cc, #ffffff);
-            border-color: rgba(255, 193, 7, 0.4);
-        }
-    </style>
 </head>
 
 <body>
@@ -253,19 +40,21 @@
     </header>
 
     <main class="verein-container">
-        <section class="geschichte-abschnitt">
-            <h1 style="text-align:  center;">Unsere Geschichte</h1>
+        <section class="card">
+            <h1>Unsere Geschichte</h1>
             <p>
                 Hier möchten wir dir einen
                 Einblick in die bewegte und facettenreiche Geschichte unseres Vereins geben.
             </p>
-            <div class="timeline">
+        </section>
+
+        <div class="timeline">
                 <div class="timeline-item left" data-aos="zoom-in-right">
                     <span class="timeline-point"></span>
                     <div class="timeline-content">
                         <h3>Zukunft</h3>
                         <p> <strong>Willst du Teil
-                                unserer Geschichte werden?</strong> <a href="mitglied-werden.html">Werde Mitglied</a>
+                                unserer Geschichte werden?</strong> <a href="/verein/mitglied-werden">Werde Mitglied</a>
                             und gestalte
                             die Zukunft des RV Hard gemeinsam mit uns!</p>
                     </div>
@@ -417,7 +206,6 @@
                     </div>
                 </div>
             </div>
-        </section>
     </main>
 
     <footer id="site-footer"></footer>

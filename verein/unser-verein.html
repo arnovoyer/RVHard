@@ -22,135 +22,12 @@
     <meta name="twitter:image:alt" content="Logo des RV Hard">
     <title>Unser Verein | RV Hard</title>
     <meta name="author" content="RV Hard">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b">
     <link rel="stylesheet" href="/assets/navigation.css">
-    <link rel="stylesheet" href="/assets/events/verein.css">
+    <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="stylesheet" href="/assets/events/verein.css?v=20261111c">
     <link href="/assets/vendor/aos/aos.css?v=20261111" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
-    <link rel="stylesheet" href="/assets/home-fonts.css">
-    <style>
-        :root {
-            --accent: #f5b301;
-            --accent-soft: rgba(245, 179, 1, 0.15);
-            --text-main: #1f2933;
-            --text-muted: #6b7280;
-            --bg-main: #f6f7f9;
-            --card-bg: #ffffff;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background: linear-gradient(180deg, #f6f7f9 0%, #ffffff 100%);
-            color: var(--text-main);
-            line-height: 1.65;
-        }
-
-        .verein-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 3rem 1.5rem;
-        }
-
-        section {
-            background-color: var(--card-bg);
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-            border-radius: 20px;
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-            position: relative;
-        }
-
-        section::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 20px;
-            bottom: 20px;
-            width: 4px;
-            background: linear-gradient(180deg, var(--accent), #ffd866);
-            border-radius: 4px;
-            opacity: 0.9;
-        }
-
-        section:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
-        }
-
-        h1,
-        h2 {
-            color: var(--text-main);
-            margin-top: 0;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            color: var(--text-main);
-        }
-
-        h2::after {
-            content: "";
-            display: block;
-            width: 40px;
-            height: 3px;
-            background-color: var(--accent);
-            margin-top: 0.5rem;
-            border-radius: 2px;
-        }
-
-        p {
-            margin-bottom: 1.2rem;
-            color: var(--text-muted);
-        }
-
-        .mail-link {
-            color: var(--accent);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .mail-link:hover {
-            text-decoration: underline;
-        }
-
-        .vorstand-kurz {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 2.5rem;
-            margin-top: 2.5rem;
-        }
-
-        .vorstand-kurz .mitglied {
-            text-align: center;
-        }
-
-        .vorstand-kurz .mitglied img {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 0.8rem;
-            box-shadow:
-                0 10px 25px rgba(0, 0, 0, 0.15),
-                0 0 0 6px var(--accent-soft);
-            transition: transform 0.3s ease;
-        }
-
-        .vorstand-kurz .mitglied img:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 
 <body>
@@ -159,23 +36,23 @@
     </header>
 
     <main class="verein-container">
-        <section class="intro-section" data-aos="fade-up">
+        <section class="card intro-section" data-aos="fade-up">
             <h1>Wir sind der RV DJ's Bikeshop Simplon Hard</h1>
             <p>Deine Radsport-Familie in Hard! Ob Mountainbike, Rennrad oder Triathlon – bei uns finden Radsportlerinnen
                 und Radsportler jeden Alters und Leistungsniveaus ein Zuhause. Wir leben Gemeinschaft, fördern Talente
                 und lieben den Radsport in all seinen Facetten.</p>
         </section>
 
-        <section class="geschichte-section" data-aos="fade-up" data-aos-delay="300">
-            <h2>Unsere Geschichte</h2>
+        <section class="card geschichte-section" data-aos="fade-up" data-aos-delay="300">
+            <h2 class="section-title">Unsere Geschichte</h2>
             <p><!--TODO: Bearbeiten-->Seit unserer Gründung prägt der RV Hard die Radsportszene in Vorarlberg. Aus einer kleinen Gruppe
                 radsportbegeisterter Jugendlicher ist über die Jahre ein erfolgreicher, aktiver Verein geworden, der
                 weit über die Landesgrenzen hinaus bekannt ist.</p>
             <a href="/verein/geschichte" class="gelber-button">Mehr über unsere Geschichte</a>
         </section>
 
-        <section class="vorstand-section" data-aos="fade-up" data-aos-delay="600">
-            <h2>Der Vorstand</h2>
+        <section class="card vorstand-section" data-aos="fade-up" data-aos-delay="600">
+            <h2 class="section-title">Der Vorstand</h2>
             <p><!--TODO: Bearbeiten--> Unser Vorstand besteht aus engagierten Radsport-Enthusiasten, die mit viel Herzblut den Verein leiten,
                 Veranstaltungen organisieren und sich für die Anliegen unserer Mitglieder einsetzen.</p>
 
@@ -200,15 +77,15 @@
             <a href="/verein/vorstand" class="gelber-button">Zum gesamten Vorstand</a>
         </section>
 
-        <section class="mitglied-section" data-aos="fade-up">
-            <h2>Mitglied werden</h2>
+        <section class="card mitglied-section" data-aos="fade-up">
+            <h2 class="section-title">Mitglied werden</h2>
             <p>Du möchtest Teil unserer Radsport-Community werden? Super! Egal ob Hobbyfahrer:in, Nachwuchstalent oder
                 ambitionierte:r Wettkampfsportler:in – bei uns bist du willkommen.</p>
             <a href="/verein/mitglied-werden" class="gelber-button">Jetzt Mitglied werden</a>
         </section>
 
-        <section class="kontakt-section" data-aos="fade-up">
-            <h2>Du hast Fragen?</h2>
+        <section class="card kontakt-section" data-aos="fade-up">
+            <h2 class="section-title">Du hast Fragen?</h2>
             <p>Wir helfen dir gerne weiter! Schreib uns eine E-Mail an:</p>
             <p><a href="mailto:vorstand@rv-hard.at" class="mail-link">vorstand@rv-hard.at</a></p>
         </section>
