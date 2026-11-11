@@ -25,127 +25,11 @@
     <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-news-1200x630.png">
     <meta name="twitter:image:alt" content="Logo des RV Hard">
     <link rel="stylesheet" href="/assets/home-fonts.css">
-    <link rel="stylesheet" href="/assets/style.css" />
-    <link rel="stylesheet" href="/assets/news/news.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b" />
+    <link rel="stylesheet" href="/assets/news/news.css?v=20261111a" />
+    <link rel="stylesheet" href="/assets/news/news-archiv.css?v=20261111a" />
     <link href="/assets/vendor/aos/aos.css?v=20261111" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
-    <style>
-        html,
-        body {
-            min-height: 100%;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .news-page {
-            flex: 1;
-        }
-
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 30px;
-            align-items: center;
-        }
-
-        .filter-container select,
-        .filter-container input[type="search"] {
-            padding: 0.45rem 0.65rem;
-            border-radius: 6px;
-            border: 2px solid #e0e0e0;
-            font-size: 0.9rem;
-            font-family: 'Poppins', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .filter-container select {
-            min-width: 120px;
-            flex: 0 1 auto;
-        }
-
-        .filter-container input[type="search"] {
-            flex: 1 1 200px;
-            min-width: 200px;
-        }
-
-        .filter-container select:hover,
-        .filter-container input[type="search"]:hover {
-            border-color: #ffc107;
-            background-color: #fffbf0;
-        }
-
-        .filter-container select:focus,
-        .filter-container input[type="search"]:focus {
-            outline: none;
-            border-color: #ffc107;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
-        }
-
-        .search-btn {
-            padding: 0.45rem 1.2rem;
-            background: linear-gradient(135deg, #ffc107, #f5b301);
-            color: #1a1a1a;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 0 1 auto;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-        }
-
-        .search-btn:active {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 768px) {
-            .filter-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .filter-container select {
-                width: 100%;
-                min-width: unset;
-            }
-
-            .filter-container input[type="search"] {
-                width: 100%;
-                flex: 1 1 auto;
-                min-width: unset;
-            }
-
-            .search-btn {
-                width: 100%;
-            }
-        }
-
-        /* ================= KORREKTUREN ================= */
-        /* 1. Genau 2 Spalten im News-Archiv (statt 3 aus assets/news/news.css) */
-        .news-container {
-            grid-template-columns: repeat(2, 1fr) !important;
-        }
-        @media (max-width: 768px) {
-            .news-container {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -315,11 +199,7 @@
                             <span class="news-author">${article.author || ''}</span>
                         </div>
                         <p>${article.content}</p>
-                        <a class="gelber-button"
-                           style="align-self:flex-start;margin-top:auto"
-                                    href="${articleLink}">
-                           Weiterlesen
-                        </a>
+                        <a class="gelber-button" href="${articleLink}">Weiterlesen</a>
                     </div>
                 `;
                         container.appendChild(el);

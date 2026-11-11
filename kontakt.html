@@ -24,292 +24,12 @@
         content="Kontakt zum RV Hard: allgemeine Anfragen, Mitgliedschaft und wichtige Dokumente auf einen Blick.">
     <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-standard-1200x630.png">
     <meta name="twitter:image:alt" content="Logo des RV Hard">
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v=20261111b">
     <link rel="stylesheet" href="/assets/navigation.css">
     <link rel="stylesheet" href="/assets/home-fonts.css">
+    <link rel="stylesheet" href="/assets/kontakt.css?v=20261111b">
+    <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css?v=20261111">
     <link rel="icon" type="image/png" href="/assets/img/logo/favicon.png">
-    <style>
-        .kontakt-container section {
-            background: #f8f8f8;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-
-        .kontakt-container h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .kontakt-container h1{
-            text-align: center;
-        }
-
-        .kontakt-hinweis {
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        @media (max-width: 600px) {
-            .kontakt-buttons {
-                flex-direction: column;
-                gap: 1.25rem;
-                align-items: stretch;
-            }
-
-            .kontakt-button-wrapper {
-                width: 100%;
-            }
-
-            .kontakt-button-wrapper .gelber-button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        .kontakt-summary {
-            text-indent: 25px;
-        }
-
-        .kontakt-sum {
-            margin-top: 10px;
-        }
-
-        .kontakt-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-            color: #555;
-            line-height: 1.6;
-            justify-content: center;
-        }
-
-        .kontakt-container h2 {
-            color: #ffc107;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            justify-content: center;
-        }
-
-        .kontakt-container p {
-            justify-content: center;
-
-        }
-
-        .dokumente-bereich {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-
-        .dokumente-bereich h3 {
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .dokumente-liste {
-            list-style: none;
-            padding: 0;
-        }
-
-        .dokumente-liste li {
-            margin-bottom: 0.75rem;
-        }
-
-        .dokument-link {
-            display: inline-block;
-            color: #ffc107;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 1px solid #ffc107;
-            border-radius: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dokument-link:hover {
-            background-color: #e0a800;
-            color: #fff;
-        }
-
-        .kontakt-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .kontakt-button-wrapper {
-            flex: 1;
-            text-align: center;
-        }
-
-        .kontakt-button-wrapper h3 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        /* ===== KONTAKT FORMULAR ===== */
-        .form-status {
-            display: none;
-            margin-bottom: 1.5rem;
-            padding: 1rem 1.25rem;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .form-status.erfolg {
-            display: block;
-            background: #d3f9d8;
-            border: 1px solid #8ce99a;
-            color: #2b8a3e;
-        }
-
-        .form-status.fehler {
-            display: block;
-            background: #ffe3e3;
-            border: 1px solid #ffa8a8;
-            color: #c92a2a;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
-        }
-
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        .form-group label .pflicht {
-            color: #dc3545;
-            font-weight: 700;
-            margin-left: 2px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 0.9rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.92rem;
-            font-family: 'Poppins', sans-serif;
-            background: #fff;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-sizing: border-box;
-            color: #333;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #aaa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #ffc107;
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-submit-row {
-            margin-top: 0.25rem;
-            text-align: center;
-        }
-
-        .form-submit-row .gelber-button {
-            min-width: 220px;
-            transition: transform 0.25s ease, background-color 0.25s ease;
-        }
-
-        .form-submit-row .gelber-button:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        .form-submit-row .gelber-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .form-datenschutz {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.65rem;
-            margin-top: 1.1rem;
-            margin-bottom: 1.75rem;
-            padding: 0.8rem 0.35rem 0.3rem 0.35rem;
-            font-size: 0.78rem;
-            color: #888;
-            line-height: 1.45;
-            border-top: 1px dashed #eee;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .form-datenschutz input[type="checkbox"] {
-            margin-top: 0.1rem;
-            width: 15px;
-            height: 15px;
-            accent-color: #ffc107;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .form-datenschutz .dse-label-text {
-            flex: 1;
-            display: block;
-        }
-
-        .form-datenschutz .pflicht {
-            color: #dc3545;
-            font-weight: 700;
-            margin-left: 0.1rem;
-        }
-
-        .form-datenschutz i {
-            margin-right: 0.2rem;
-            color: #bbb;
-            font-size: 0.82rem;
-        }
-
-        .form-datenschutz a {
-            color: #ffc107;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 193, 7, 0.35);
-        }
-
-        .form-datenschutz a:hover {
-            border-bottom-color: #ffc107;
-        }
-    </style>
 </head>
 
 <body>
@@ -317,12 +37,14 @@
         <div id="navigation-container">
         </div>
     </header>
-    <main class="kontakt-container">
-        <h1>Kontakt</h1>
-        <p class="kontakt-hinweis" style="text-align:center;">Wir freuen uns auf deine Anfrage - egal ob allgemein oder zur Mitgliedschaft.</p>
+    <main class="verein-container">
+        <section class="card">
+            <h1>Kontakt</h1>
+            <p class="kontakt-hinweis">Wir freuen uns auf deine Anfrage - egal ob allgemein oder zur Mitgliedschaft.</p>
+        </section>
 
-        <section class="kontaktformular-bereich" style="padding-top:1.25rem;">
-            <h2 style="margin-bottom:1rem;"><i class="fa-solid fa-envelope" style="color:#ffc107;margin-right:0.5rem;"></i> Schreib uns direkt</h2>
+        <section class="card kontakt-formular">
+            <h2 class="section-title"><i class="fa-solid fa-envelope"></i> Schreib uns direkt</h2>
 
             <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
 
@@ -384,8 +106,8 @@
             </form>
         </section>
 
-        <section style="padding-top:0.5rem; padding-bottom:0.25rem;">
-            <h3 style="font-size:1rem;color:#666;margin-bottom:1rem;">Alternativen:</h3>
+        <section class="card kontakt-alternativen">
+            <h2 class="section-title">Alternativen</h2>
             <div class="kontakt-buttons">
                 <div class="kontakt-button-wrapper">
                     <h3>Mitglied werden</h3>
@@ -399,8 +121,8 @@
                 </div>
             </div>
         </section>
-        <section class="kontakt-faq">
-            <h3>Häufige Fragen</h3>
+        <section class="card kontakt-faq">
+            <h2 class="section-title">Häufige Fragen</h2>
             <details>
                 <summary class="kontakt-sum">Wie werde ich Mitglied?</summary>
                 <p class="kontakt-summary"> Über das Online-Formular. Nach Prüfung melden wir uns bei dir.</p>
@@ -414,16 +136,16 @@
                 <p class="kontakt-summary"> Ja. Schreib uns einfach.</p>
             </details>
         </section>
-        <section class="dokumente-bereich">
-            <h3>Wichtige Dokumente zum Download</h3>
+        <section class="card dokumente-bereich">
+            <h2 class="section-title">Wichtige Dokumente zum Download</h2>
             <ul class="dokumente-liste">
                 <li><a href="/downloads/Rennspesenabrechnung-2026.xlsx" class="dokument-link" target="_blank"
                         download="Rennspesenabrechnung-2026.xlsx">Rennspesenabrechnung 2026 (XLSX)</a>
                 </li>
             </ul>
         </section>
-        <section class="kontakt-standort">
-            <h3>Vereinssitz</h3>
+        <section class="card kontakt-standort">
+            <h2 class="section-title">Vereinssitz</h2>
             <p>
                 RV DJ's Bikeshop Simplon Hard<br>
                 Kohlplatzstrße 2a, Hard<br>

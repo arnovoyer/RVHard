@@ -1,0 +1,108 @@
+/* Changelog / Versionsverlauf – kompakte Zeitleiste.
+   Basis (Container, Überschriften) kommt aus /assets/style.css. */
+
+.changelog-seite {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+}
+
+.changelog-seite h1 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    margin-bottom: 0.4rem;
+}
+
+.changelog-intro {
+    color: var(--site-muted);
+    margin-bottom: 2.4rem;
+    font-size: 0.98rem;
+}
+
+.changelog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.changelog-item {
+    position: relative;
+    padding: 0 0 2.1rem 1.9rem;
+    border-left: 2px solid var(--site-border);
+}
+
+.changelog-item:last-child {
+    padding-bottom: 0;
+    border-left-color: transparent;
+}
+
+/* Punkt an der Achse – gleiche Optik wie der Timeline-Punkt */
+.changelog-item::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 7px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    box-shadow: 0 0 0 3px var(--site-bg), 0 0 0 4px var(--site-border);
+}
+
+.changelog-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+}
+
+.changelog-version {
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: var(--site-heading);
+}
+
+.changelog-badge {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--accent-yellow);
+    color: #1a1600;
+    border-radius: 6px;
+    padding: 2px 7px;
+}
+
+.changelog-date {
+    font-size: 0.84rem;
+    color: var(--site-muted);
+}
+
+.changelog-changes {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--site-text);
+    font-size: 0.94rem;
+    line-height: 1.7;
+}
+
+.changelog-changes li {
+    margin-bottom: 0.15rem;
+}
+
+@media (max-width: 600px) {
+    .changelog-seite {
+        padding: 1.75rem 1rem 3rem;
+    }
+
+    .changelog-item {
+        padding-left: 1.4rem;
+    }
+
+    .changelog-item::before {
+        left: -7px;
+        width: 12px;
+        height: 12px;
+    }
+}

@@ -1,0 +1,115 @@
+/* News-Archiv – Filterleiste und 2-spaltiges Raster.
+   Basis (Container, News-Karten) kommt aus /assets/style.css und news.css. */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-page {
+    flex: 1;
+}
+
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.filter-container select,
+.filter-container input[type="search"] {
+    padding: 0.45rem 0.65rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--site-border);
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--site-surface);
+    color: var(--site-text);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.filter-container select {
+    min-width: 120px;
+    flex: 0 1 auto;
+}
+
+.filter-container input[type="search"] {
+    flex: 1 1 200px;
+    min-width: 200px;
+}
+
+.filter-container select:hover,
+.filter-container input[type="search"]:hover {
+    border-color: var(--accent-yellow);
+    background-color: var(--site-surface-soft);
+}
+
+.filter-container select:focus,
+.filter-container input[type="search"]:focus {
+    outline: none;
+    border-color: var(--accent-yellow);
+    background-color: var(--site-surface);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+.search-btn {
+    padding: 0.45rem 1.2rem;
+    background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
+    color: #1a1a1a;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 0 1 auto;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+/* Genau 2 Spalten im Archiv (statt 3 aus news.css) */
+.news-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+@media (max-width: 768px) {
+    .filter-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .filter-container select,
+    .filter-container input[type="search"] {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .filter-container input[type="search"] {
+        flex: 1 1 auto;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    .news-container {
+        grid-template-columns: 1fr !important;
+    }
+}

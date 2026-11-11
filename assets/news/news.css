@@ -43,7 +43,7 @@
   bottom: 10px;
   transform: translateX(-50%);
   font-size: 0.85rem;
-  color: #333;
+  color: var(--site-text);
   background: rgba(255, 255, 255, 0.85);
   padding: 4px 8px;
   border-radius: var(--radius-pill, 999px);
@@ -327,12 +327,12 @@ section.container {
 }
 
 .year-filter:hover {
-  border-color: #e0a800;
+  border-color: var(--accent-yellow);
 }
 
 .year-filter:focus {
   outline: none;
-  border-color: #e0a800;
+  border-color: var(--accent-yellow);
   box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
 }
 
@@ -472,7 +472,7 @@ body.lightbox-open {
 }
 
 .news-meta i {
-  color: #ccc;
+  color: var(--site-muted);
 }
 
 .news-date {
@@ -482,6 +482,12 @@ body.lightbox-open {
 .news-item p {
   margin-bottom: 1rem;
   color: var(--site-muted, #555);
+}
+
+/* "Weiterlesen"-Button am unteren Rand der News-Karte */
+.news-content .gelber-button {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .news-page .container {
