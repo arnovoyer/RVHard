@@ -28,7 +28,7 @@
             content="Training, Termine, News und Vereinsleben beim RV Hard - Mountainbike, Rennrad und Triathlon in Vorarlberg.">
         <meta name="twitter:image" content="https://rv-hard.at/assets/img/social/og-start-1200x630.png">
         <meta name="twitter:image:alt" content="RV Hard - Radsport- und Triathlonverein in Hard">
-        <link rel="stylesheet" href="assets/style.css">
+        <link rel="stylesheet" href="/assets/style.css?v=20261111b">
         <link rel="stylesheet" href="/assets/home-fonts.css">
         <link rel="preload" as="image" href="/assets/img/hero/Hero-img-medium.webp"
             imagesrcset="/assets/img/hero/Hero-img-small.webp 640w, /assets/img/hero/Hero-img-medium.webp 960w, /assets/img/hero/Hero-img.webp 1600w"
@@ -37,7 +37,7 @@
         <noscript>
             <link rel="stylesheet" href="/assets/events/index.css">
         </noscript>
-        <link rel="stylesheet" href="assets/navigation.css">
+        <link rel="stylesheet" href="/assets/navigation.css">
         <link href="/assets/vendor/aos/aos.css?v=20261111" rel="stylesheet" media="print"
             onload="this.media='all'">
         <noscript>
@@ -984,8 +984,8 @@
             <section id="instagram-placeholder"></section>
 
             <section id="home-news-container" class="news-container" data-aos="zoom-out-right">
-                <h2><a href="/news/news">Neueste Nachrichten</a></h2>
-                <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/news">News-Seite</a>.</p>
+                <h2><a href="/news/">Neueste Nachrichten</a></h2>
+                <p>Die aktuellen Vereinsnews findest du auf unserer <a href="/news/">News-Seite</a>.</p>
             </section>
 
             <script>
@@ -1130,7 +1130,7 @@
                         if (external && !external.toLowerCase().startsWith('externer link')) {
                             if (external.startsWith('/') || /^https?:\/\//i.test(external)) return external;
                         }
-                        return '/news/news';
+                        return '/news/';
                     }
 
                     async function loadLatestNews(container) {
@@ -1155,7 +1155,7 @@
                             const latest = news.slice(0, 2);
 
                             container.innerHTML = `
-                    <h2><a href="/news/news">Neueste Nachrichten</a></h2>
+                    <h2><a href="/news/">Neueste Nachrichten</a></h2>
                 `;
 
                             latest.forEach(article => {

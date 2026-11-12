@@ -1,156 +1,14 @@
-/* Kontakt-Seite – Formular, Alternativen, FAQ und Dokumente.
-   Basis (Container, Karten, Überschriften) kommt aus /assets/style.css. */
+/* Kontakt-Seite – Alternativen, FAQ und Dokumente.
+   Formular-Styles (.form-*) kommen aus /assets/form.css,
+   Basis (Container, Karten, Überschriften) aus /assets/style.css. */
 
 .kontakt-hinweis {
     color: var(--site-muted);
 }
 
-/* ===== Kontaktformular ===== */
 .kontakt-formular h2 i {
     color: var(--accent-yellow);
     margin-right: 0.5rem;
-}
-
-.form-status {
-    display: none;
-    margin-bottom: 1.5rem;
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.form-status.erfolg {
-    display: block;
-    background: #d3f9d8;
-    border: 1px solid #8ce99a;
-    color: #2b8a3e;
-}
-
-.form-status.fehler {
-    display: block;
-    background: #ffe3e3;
-    border: 1px solid #ffa8a8;
-    color: #c92a2a;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-}
-
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: var(--site-heading);
-}
-
-.form-group label .pflicht {
-    color: #dc3545;
-    font-weight: 700;
-    margin-left: 2px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid var(--site-border);
-    border-radius: var(--radius-sm);
-    font-size: 0.92rem;
-    font-family: 'Poppins', sans-serif;
-    background: var(--site-surface);
-    color: var(--site-text);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: var(--site-muted);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-yellow);
-    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.form-submit-row {
-    margin-top: 0.25rem;
-    text-align: center;
-}
-
-.form-submit-row .gelber-button {
-    min-width: 220px;
-}
-
-.form-submit-row .gelber-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.form-datenschutz {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.65rem;
-    margin-top: 1.1rem;
-    margin-bottom: 1.75rem;
-    padding: 0.8rem 0.35rem 0.3rem 0.35rem;
-    font-size: 0.78rem;
-    color: var(--site-muted);
-    line-height: 1.45;
-    border-top: 1px dashed var(--site-border);
-    cursor: pointer;
-    user-select: none;
-}
-
-.form-datenschutz input[type="checkbox"] {
-    margin-top: 0.1rem;
-    width: 15px;
-    height: 15px;
-    accent-color: var(--accent-yellow);
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.form-datenschutz .dse-label-text {
-    flex: 1;
-    display: block;
-}
-
-.form-datenschutz .pflicht {
-    color: #dc3545;
-    font-weight: 700;
-    margin-left: 0.1rem;
-}
-
-.form-datenschutz i {
-    margin-right: 0.2rem;
-    color: var(--site-muted);
-    font-size: 0.82rem;
-}
-
-.form-datenschutz a {
-    color: var(--link);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent-yellow);
 }
 
 /* ===== Alternativen ===== */
@@ -205,11 +63,6 @@
 }
 
 @media (max-width: 600px) {
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
     .kontakt-buttons {
         flex-direction: column;
         gap: 1.25rem;
