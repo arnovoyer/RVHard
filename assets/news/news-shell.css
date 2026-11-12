@@ -1,0 +1,96 @@
+/* News-Shell: Reset/Layout für die News-Übersichtsseiten
+   (news.html, news/index.html, news/news.html).
+   Artikel-Detailseiten nutzen stattdessen news.css + style.css. */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 500;
+  color: #222;
+  background-color: #f7f7f7;
+  line-height: 1.6;
+}
+
+body {
+  padding-top: 70px;
+}
+
+header {
+  height: 70px;
+  margin-bottom: 0;
+}
+
+#navigation-container:empty {
+  min-height: 70px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+#site-footer:empty {
+  min-height: 150px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  margin-top: 3rem;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+main {
+  padding-top: 40px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #111;
+  margin-bottom: 2rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.news-content {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: calc(var(--item-index, 0) * 0.1s);
+}
+
+.news-archiv-wrapper {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.gelber-button {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #ffc107, #f5b301);
+  color: #1a1a1a;
+  padding: 0.65rem 1.2rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
