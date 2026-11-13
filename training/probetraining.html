@@ -45,8 +45,8 @@
     }
 
     .probetraining-card {
-      background: #f9f9f9;
-      border: 1px solid #ddd;
+      background: var(--site-surface-soft);
+      border: 1px solid var(--site-border);
       border-radius: 10px;
       padding: 2rem 1.75rem;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -59,7 +59,7 @@
 
     .probetraining-card .einleitung {
       text-align: center;
-      color: #555;
+      color: var(--site-muted);
       margin-bottom: 2rem;
       font-size: 0.95rem;
       line-height: 1.6;
@@ -79,8 +79,8 @@
     }
 
     .vorteil-item {
-      background: #fff;
-      border: 1px solid #e8e8e8;
+      background: var(--site-surface);
+      border: 1px solid var(--site-border);
       border-radius: 10px;
       padding: 1rem 1.1rem;
       text-align: center;
@@ -94,20 +94,20 @@
 
     .vorteil-item i {
       font-size: 1.6rem;
-      color: #ffc107;
+      color: var(--accent-yellow);
       margin-bottom: 0.5rem;
       display: block;
     }
 
     .vorteil-item h3 {
       font-size: 0.95rem;
-      color: #333;
+      color: var(--site-heading);
       margin: 0.3rem 0 0.4rem 0;
     }
 
     .vorteil-item p {
       font-size: 0.82rem;
-      color: #666;
+      color: var(--site-muted);
       margin: 0;
       line-height: 1.4;
     }
@@ -115,7 +115,7 @@
     .sparten-hinweis {
       margin-top: 0.3rem;
       font-size: 0.82rem;
-      color: #777;
+      color: var(--site-muted);
     }
 
     @media (max-width: 480px) {
@@ -137,7 +137,7 @@
 
   <main class="probetraining-container">
     <div class="probetraining-card" data-aos="fade-up">
-      <h1><i class="fa-solid fa-bicycle" style="color:#ffc107; margin-right:0.4rem;"></i> Probetraining Anfragen</h1>
+      <h1><i class="fa-solid fa-bicycle" style="color:var(--accent-yellow); margin-right:0.4rem;"></i> Probetraining Anfragen</h1>
       <p class="einleitung">
         Du möchtest den RV Hard und unser Training unverbindlich kennenlernen?<br>
         Fülle einfach das Formular aus – wir melden uns <strong>telefonisch</strong> bei dir, um einen passenden Termin für ein kostenloses Probetraining zu vereinbaren!
@@ -179,7 +179,7 @@
               <option value="Triathlon">Triathlon</option>
               <option value="Noch unsicher">Noch unsicher / Unentschieden</option>
             </select>
-            <p class="sparten-hinweis"><i class="fa-solid fa-circle-info" style="color:#ffc107;"></i> Keine Vorkenntnisse nötig!</p>
+            <p class="sparten-hinweis"><i class="fa-solid fa-circle-info" style="color:var(--accent-yellow);"></i> Keine Vorkenntnisse nötig!</p>
           </div>
           <div class="form-group">
             <label for="email">E-Mail (optional)</label>

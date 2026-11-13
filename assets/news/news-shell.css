@@ -10,8 +10,8 @@ body {
   overflow-x: hidden;
   font-family: 'Poppins', system-ui, sans-serif;
   font-weight: 500;
-  color: #222;
-  background-color: #f7f7f7;
+  color: var(--site-text);
+  background-color: var(--site-bg);
   line-height: 1.6;
 }
 
@@ -26,14 +26,14 @@ header {
 
 #navigation-container:empty {
   min-height: 70px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--site-surface-soft) 25%, var(--site-border) 50%, var(--site-surface-soft) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
 }
 
 #site-footer:empty {
   min-height: 150px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--site-surface-soft) 25%, var(--site-border) 50%, var(--site-surface-soft) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
   margin-top: 3rem;
@@ -56,7 +56,7 @@ main {
 
 .section-title {
   font-size: 2rem;
-  color: #111;
+  color: var(--site-heading);
   margin-bottom: 2rem;
 }
 
@@ -86,7 +86,7 @@ main {
 .gelber-button {
   display: inline-flex;
   align-items: center;
-  background: linear-gradient(135deg, #ffc107, #f5b301);
+  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
   color: #1a1a1a;
   padding: 0.65rem 1.2rem;
   font-weight: 600;
