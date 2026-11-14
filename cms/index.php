@@ -1564,7 +1564,7 @@
 
     $editId = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
     $view = $loggedIn ? (string)($_GET['view'] ?? 'dashboard') : '';
-    if ($loggedIn && !in_array($view, ['dashboard', 'articles', 'termine', 'statistik'], true)) {
+    if ($loggedIn && !in_array($view, ['dashboard', 'articles', 'termine', 'statistik', 'instagram'], true)) {
         $view = 'dashboard';
     }
     if ($loggedIn && $editId > 0) {
@@ -1605,6 +1605,20 @@
     $statCamps = [];
     $statEngage = [];
     $statNotFoundTable = [];
+
+    /* Instagram-Anbindung (siehe cms/instagram.php) – nur in dieser Ansicht laden. */
+    $igData = null;
+    if ($view === 'instagram') {
+        $igLib = __DIR__ . '/instagram.php';
+        if (is_file($igLib)) {
+            require_once $igLib;
+            $igData = ig_load_data(((string)($_GET['refresh'] ?? '')) === 'instagram');
+        } else {
+            $igData = ['ok' => false, 'configured' => false,
+                       'message' => 'Die Datei cms/instagram.php wurde auf dem Server nicht gefunden.'];
+        }
+    }
+
     if (in_array($view, ['dashboard', 'statistik'], true)) {
         $siteStats = load_site_stats();
 
@@ -2461,6 +2475,7 @@
             <a class="a-topbar__link <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles"><i class="fa-solid fa-newspaper"></i> <span>Artikel</span></a>
             <a class="a-topbar__link <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine"><i class="fa-solid fa-calendar-days"></i> <span>Termine</span></a>
             <a class="a-topbar__link <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik"><i class="fa-solid fa-chart-simple"></i> <span>Statistik</span></a>
+            <a class="a-topbar__link <?= $view === 'instagram' ? 'is-active' : '' ?>" href="/cms/index.php?view=instagram"><i class="fa-brands fa-instagram"></i> <span>Instagram</span></a>
             <a class="a-topbar__link" href="https://rv-hard.at/bilder/admin.php"><i class="fa-solid fa-inbox"></i> <span>Bild-Eingang</span></a>
             <a class="a-topbar__link" href="https://fotos.rv-hard.at/" target="_blank" rel="noopener"><i class="fa-solid fa-image"></i> <span>Galerie</span></a>
             <button type="button" class="a-topbar__btn" data-theme-toggle title="Hell/Dunkel umschalten" aria-label="Theme umschalten"><i class="fa-solid fa-moon"></i></button>
@@ -3039,6 +3054,211 @@
                 <?php endif; ?>
                 <?php endif; ?>
 
+                <?php if ($view === 'instagram'): ?>
+                <?php
+                    $ig = is_array($igData) ? $igData : [];
+                    $igConfigured = !empty($ig['configured']);
+                    $igProfile    = is_array($ig['profile'] ?? null) ? $ig['profile'] : [];
+                    $igRecent     = is_array($ig['recent'] ?? null) ? $ig['recent'] : [];
+                    $igTotals     = is_array($ig['totals30'] ?? null) ? $ig['totals30'] : [];
+                    $igSeries     = is_array($ig['series'] ?? null) ? $ig['series'] : [];
+                    $igHistory    = is_array($ig['history'] ?? null) ? array_values(array_filter($ig['history'], 'is_array')) : [];
+                    $igErrors     = array_merge((array)($ig['errors'] ?? []), (array)($ig['refresh_error'] ?? []));
+                    $igUpdated    = (int)($ig['updated_ts'] ?? 0);
+                    $igRefreshed  = $igUpdated > 0 ? date('d.m.Y H:i', $igUpdated) : '–';
+
+                    $igLikeSum = 0;
+                    foreach ($igRecent as $igRow) { $igLikeSum += (int)($igRow['likes'] ?? 0); }
+                    $igAvgLikes = $igRecent ? (int)round($igLikeSum / count($igRecent)) : 0;
+
+                    /* Follower-Verlauf aus dem eigenen Tages-Snapshot. */
+                    $igChart = array_values(array_filter(
+                        array_slice($igHistory, -90),
+                        static fn ($r) => (int)($r['followers'] ?? 0) > 0
+                    ));
+                    $igFMin = 0; $igFMax = 0;
+                    foreach ($igChart as $igRow) {
+                        $igV = (int)($igRow['followers'] ?? 0);
+                        if ($igFMax === 0 || $igV > $igFMax) { $igFMax = $igV; }
+                        if ($igFMin === 0 || $igV < $igFMin) { $igFMin = $igV; }
+                    }
+                    $igFSpan = max(1, $igFMax - $igFMin);
+
+                    /* Reichweite der letzten 30 Tage (kommt direkt von der API). */
+                    $igReach = is_array($igSeries['reach'] ?? null) ? $igSeries['reach'] : [];
+                    $igReachMax = 1;
+                    foreach ($igReach as $igRow) { $igReachMax = max($igReachMax, (int)($igRow['value'] ?? 0)); }
+
+                    /* Zeitraum-Auswertung aus dem eigenen Verlauf. */
+                    $igFirst = $igHistory[0] ?? null;
+                    $igLastR = $igHistory ? $igHistory[count($igHistory) - 1] : null;
+                    $igDays  = count($igHistory);
+                    $igGain  = ($igFirst && $igLastR) ? ((int)($igLastR['followers'] ?? 0) - (int)($igFirst['followers'] ?? 0)) : 0;
+                    $igYearSince = date('Y-m-d', time() - 365 * 86400);
+                    $igYearInter = 0;
+                    foreach ($igHistory as $igRow) {
+                        if ((string)($igRow['date'] ?? '') >= $igYearSince) {
+                            $igYearInter += (int)($igRow['interactions'] ?? 0);
+                        }
+                    }
+                    $igExpires = (int)($ig['token']['expires_at'] ?? 0);
+                ?>
+                <section class="card">
+                    <div class="section-head">
+                        <div>
+                            <h2>Instagram</h2>
+                            <p class="section-note">
+                                Zahlen des eigenen Accounts @<?= htmlspecialchars((string)($igProfile['username'] ?? 'rv_hard'), ENT_QUOTES, 'UTF-8') ?>
+                                · zuletzt aktualisiert: <?= htmlspecialchars($igRefreshed, ENT_QUOTES, 'UTF-8') ?>
+                            </p>
+                        </div>
+                        <div class="row">
+                            <a class="btn btn-muted" href="/cms/index.php?view=instagram&amp;refresh=instagram">Jetzt aktualisieren</a>
+                            <a class="btn btn-muted" href="https://www.instagram.com/<?= htmlspecialchars((string)($igProfile['username'] ?? 'rv_hard'), ENT_QUOTES, 'UTF-8') ?>/" target="_blank" rel="noopener">Profil öffnen</a>
+                        </div>
+                    </div>
+
+                    <?php if (!$igConfigured): ?>
+                    <div class="help-box">
+                        <h3>Noch nicht eingerichtet</h3>
+                        <p><?= htmlspecialchars((string)($ig['message'] ?? 'Instagram-Zugangsdaten fehlen.'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <ol style="margin:0.75rem 0 0 1.1rem; line-height:1.7;">
+                            <li>Instagram-Account muss ein <strong>Business-/Creator-Konto</strong> und mit der Facebook-Seite verknüpft sein. ✅ vorhanden</li>
+                            <li>Meta-App anlegen: <span class="mono">developers.facebook.com/apps</span> → Produkt „Instagram" hinzufügen.</li>
+                            <li>Berechtigungen: <span class="mono">instagram_basic</span>, <span class="mono">instagram_manage_insights</span>.</li>
+                            <li>In <span class="mono">cms/instagram-config.php</span> eintragen: <span class="mono">ig_user_id</span>, <span class="mono">access_token</span> (+ <span class="mono">app_id</span>/<span class="mono">app_secret</span> für die automatische Token-Verlängerung).</li>
+                        </ol>
+                    </div>
+                    <?php else: ?>
+
+                    <div class="dashboard-grid">
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format((int)($igProfile['followers'] ?? 0), 0, ',', '.') ?></div>
+                            <h3>Follower</h3>
+                            <p>Aktueller Stand<?= $igDays > 0 ? ' · Aufzeichnung seit ' . htmlspecialchars(date('d.m.Y', (int)strtotime((string)($igFirst['date'] ?? 'now'))), ENT_QUOTES, 'UTF-8') : '' ?>.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format((int)($igProfile['media_count'] ?? 0), 0, ',', '.') ?></div>
+                            <h3>Beiträge gesamt</h3>
+                            <p>Veröffentlichte Posts und Reels.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format($igAvgLikes, 0, ',', '.') ?></div>
+                            <h3>Ø Likes pro Beitrag</h3>
+                            <p>Durchschnitt der letzten <?= count($igRecent) ?> Beiträge.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format((int)($igTotals['interactions'] ?? 0), 0, ',', '.') ?></div>
+                            <h3>Interaktionen (30 Tage)</h3>
+                            <p>Likes, Kommentare, Saves und Shares.</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format((int)($igTotals['reach'] ?? 0), 0, ',', '.') ?></div>
+                            <h3>Reichweite (30 Tage)</h3>
+                            <p>Erreichte Konten (unique).</p>
+                        </div>
+                        <div class="dash-box">
+                            <div class="dash-kpi"><?= number_format((int)($igTotals['views'] ?? 0), 0, ',', '.') ?></div>
+                            <h3>Aufrufe (30 Tage)</h3>
+                            <p>Angezeigte/abgespielte Inhalte.</p>
+                        </div>
+                    </div>
+
+                    <div class="section-head" style="margin-top:1.75rem;">
+                        <div>
+                            <h3>Follower-Verlauf</h3>
+                            <p class="section-note">Aufzeichnung: <?= $igDays ?> Tag(e)<?= $igDays > 0 ? ' · seit ' . htmlspecialchars(date('d.m.Y', (int)strtotime((string)($igFirst['date'] ?? 'now'))), ENT_QUOTES, 'UTF-8') : '' ?> · Veränderung: <?= ($igGain >= 0 ? '+' : '') . number_format($igGain, 0, ',', '.') ?>.</p>
+                        </div>
+                    </div>
+                    <?php if (count($igChart) < 2): ?>
+                    <p class="section-note" style="margin:0;">Für einen Verlauf wird ab jetzt täglich ein Wert gespeichert – der Graph wächst mit der Zeit. (Die API liefert rückwirkend nur ca. 30 Tage.)</p>
+                    <?php else: ?>
+                    <div class="chart">
+                        <?php foreach ($igChart as $igRow): $igV = (int)($igRow['followers'] ?? 0); ?>
+                        <div class="chart-col" title="<?= htmlspecialchars((string)($igRow['date'] ?? ''), ENT_QUOTES, 'UTF-8') ?>: <?= number_format($igV, 0, ',', '.') ?> Follower">
+                            <span class="chart-col__bar" style="height:<?= max(6, (int)round(($igV - $igFMin) / $igFSpan * 100)) ?>%;"></span>
+                            <span class="chart-col__label"><?= htmlspecialchars(date('d.m.', (int)strtotime((string)($igRow['date'] ?? 'now'))), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="section-head" style="margin-top:1.75rem;">
+                        <div>
+                            <h3>Reichweite (30 Tage)</h3>
+                            <p class="section-note">Täglich erreichte Konten – sofern Insights verfügbar sind.</p>
+                        </div>
+                    </div>
+                    <?php if (empty($igReach)): ?>
+                    <p class="section-note" style="margin:0;">Keine Reichweiten-Daten verfügbar.</p>
+                    <?php else: ?>
+                    <div class="chart chart--sm">
+                        <?php foreach ($igReach as $igRow): $igV = (int)($igRow['value'] ?? 0); ?>
+                        <div class="chart-col" title="<?= htmlspecialchars((string)($igRow['date'] ?? ''), ENT_QUOTES, 'UTF-8') ?>: <?= number_format($igV, 0, ',', '.') ?>">
+                            <span class="chart-col__bar" style="height:<?= max(4, (int)round($igV / $igReachMax * 100)) ?>%;"></span>
+                            <span class="chart-col__label"><?= htmlspecialchars(date('d.m.', (int)strtotime((string)($igRow['date'] ?? 'now'))), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="section-head" style="margin-top:1.75rem;">
+                        <div>
+                            <h3>Letzte Beiträge</h3>
+                            <p class="section-note">Die <?= count($igRecent) ?> neuesten Posts mit Likes und Kommentaren.</p>
+                        </div>
+                    </div>
+                    <?php if (empty($igRecent)): ?>
+                    <p class="section-note" style="margin:0;">Keine Beiträge abrufbar.</p>
+                    <?php else: ?>
+                    <table>
+                        <thead><tr><th>Datum</th><th>Beitrag</th><th>Likes</th><th>Kommentare</th><th></th></tr></thead>
+                        <tbody>
+                        <?php foreach ($igRecent as $igRow): ?>
+                        <tr>
+                            <td class="mono"><?= htmlspecialchars(date('d.m.Y', (int)strtotime((string)($igRow['timestamp'] ?? 'now'))), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                                <?= htmlspecialchars((string)($igRow['caption'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                <?php if ((string)($igRow['type'] ?? '') !== ''): ?>
+                                <span class="mono"><?= htmlspecialchars((string)$igRow['type'], ENT_QUOTES, 'UTF-8') ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= number_format((int)($igRow['likes'] ?? 0), 0, ',', '.') ?></td>
+                            <td><?= number_format((int)($igRow['comments'] ?? 0), 0, ',', '.') ?></td>
+                            <td>
+                                <?php if ((string)($igRow['permalink'] ?? '') !== ''): ?>
+                                <a href="<?= htmlspecialchars((string)$igRow['permalink'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener">Ansehen</a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php endif; ?>
+
+                    <?php if ($igYearInter > 0): ?>
+                    <p class="section-note" style="margin-top:1rem;">Interaktionen in den letzten 365 Tagen (eigene Aufzeichnung): <strong><?= number_format($igYearInter, 0, ',', '.') ?></strong></p>
+                    <?php endif; ?>
+                    <?php if ($igExpires > 0): ?>
+                    <p class="section-note" style="margin-top:0.5rem;">Zugangs-Token gültig bis <?= htmlspecialchars(date('d.m.Y', $igExpires), ENT_QUOTES, 'UTF-8') ?>.</p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($igErrors)): ?>
+                    <div class="help-box" style="margin-top:1rem;">
+                        <h3>Hinweise der API</h3>
+                        <p style="margin:0;">Diese Angaben konnten nicht abgerufen werden:</p>
+                        <ul style="margin:0.5rem 0 0 1.1rem; line-height:1.6;">
+                            <?php foreach (array_slice($igErrors, 0, 8) as $igErr): ?>
+                            <li><?= htmlspecialchars((string)$igErr, ENT_QUOTES, 'UTF-8') ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php endif; ?>
+                </section>
+                <?php endif; ?>
+
                 <?php if ($view === 'termine'): ?>
                 <section class="card">
                     <div class="section-head">
@@ -3321,6 +3541,7 @@
                         <a class="btn btn-muted <?= $view === 'articles' ? 'is-active' : '' ?>" href="/cms/index.php?view=articles"><span>Artikel</span><span>→</span></a>
                         <a class="btn btn-muted <?= $view === 'termine' ? 'is-active' : '' ?>" href="/cms/index.php?view=termine"><span>Termine</span><span>→</span></a>
                         <a class="btn btn-muted <?= $view === 'statistik' ? 'is-active' : '' ?>" href="/cms/index.php?view=statistik"><span>Statistik</span><span>→</span></a>
+                        <a class="btn btn-muted <?= $view === 'instagram' ? 'is-active' : '' ?>" href="/cms/index.php?view=instagram"><span>Instagram</span><span>→</span></a>
                     </div>
                 </div>
 
