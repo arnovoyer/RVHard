@@ -2,6 +2,7 @@ const THEME_KEY = 'rv-hard-theme';
 
 applyStoredTheme();
 ensureHomeFontsStylesheet();
+ensureAos();
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch('/assets/navigationneu.html')
@@ -41,6 +42,37 @@ function ensureHomeFontsStylesheet() {
   link.rel = 'stylesheet';
   link.href = href;
   document.head.appendChild(link);
+}
+
+/* AOS (Scroll-Animationen) zentral bereitstellen.
+   Seiten, die AOS bereits selbst einbinden, bleiben unverändert: Die
+   Funktion greift nur, wenn die Seite Animationen (data-aos) nutzt und
+   AOS noch nicht geladen hat. So genügt neuen Seiten ein data-aos-
+   Attribut – ohne eigenes Boilerplate für CSS, JS und Initialisierung. */
+function ensureAos() {
+  if (!document.querySelector('[data-aos]')) {
+    return;
+  }
+
+  /* Seite bindet AOS schon selbst ein → nichts tun. */
+  if (document.querySelector('script[src*="/assets/vendor/aos/aos.js"]')) {
+    return;
+  }
+
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = '/assets/vendor/aos/aos.css?v=20261111';
+  document.head.appendChild(css);
+
+  const script = document.createElement('script');
+  script.src = '/assets/vendor/aos/aos.js?v=20261111';
+  script.defer = true;
+  script.addEventListener('load', () => {
+    if (window.AOS && typeof window.AOS.init === 'function') {
+      window.AOS.init({ duration: 1000, once: true, mirror: false });
+    }
+  });
+  document.head.appendChild(script);
 }
 
 function setTheme(theme) {

@@ -222,7 +222,7 @@ $fgCover = function ($ev) use ($fgRoot) {
     <script>
         window.addEventListener('load', () => {
             if (typeof AOS !== 'undefined') {
-                AOS.init({ duration: 800, once: true, mirror: false });
+                AOS.init({ duration: 1000, once: true, mirror: false });
             }
         });
     </script>

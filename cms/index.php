@@ -1718,6 +1718,19 @@
         $statEngage = array_slice($statEngage, 0, 15, true);
 
         $statNotFoundTable = is_array($siteStats['notfound'] ?? null) ? $siteStats['notfound'] : [];
+        /* Scanner-/Bot-Rauschen ausblenden (gemeinsame Liste mit cms/404.php),
+         * damit alte Einträge wie /readmail.php nicht in der Anzeige bleiben. */
+        $statNoiseRe = is_file(__DIR__ . '/stat-noise.php') ? require __DIR__ . '/stat-noise.php' : [];
+        if (is_array($statNoiseRe)) {
+            foreach (array_keys($statNotFoundTable) as $statNfPath) {
+                foreach ($statNoiseRe as $statNoiseOne) {
+                    if (preg_match($statNoiseOne, (string)$statNfPath)) {
+                        unset($statNotFoundTable[$statNfPath]);
+                        break;
+                    }
+                }
+            }
+        }
         uasort($statNotFoundTable, $statSortDesc);
         $statNotFoundTable = array_slice($statNotFoundTable, 0, 20, true);
 
