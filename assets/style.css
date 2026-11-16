@@ -4,6 +4,18 @@ body {
     overflow-x: hidden;
 }
 
+/* Mobile-Schutz: Medien nie breiter als der Container,
+   verhindert horizontalen Überlauf auf schmalen Screens. */
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+iframe {
+    max-width: 100%;
+}
+
 :root {
     --site-bg: #f7f7f7;
     --site-text: #222;
