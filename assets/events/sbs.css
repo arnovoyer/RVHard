@@ -2,19 +2,6 @@
   padding: 2rem;
 }
 
-.event-block {
-  border: 1px solid var(--site-border, #ccc);
-  border-radius: var(--radius-md, 12px);
-  padding: 1.5rem;
-  margin-bottom: 3rem;
-  background-color: var(--site-surface-soft, #f9f9f9);
-}
-
-.event-block h3 {
-  margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .event-button {
   display: inline-block;
   margin-top: 1rem;
