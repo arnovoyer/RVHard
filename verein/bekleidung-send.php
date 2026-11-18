@@ -23,9 +23,12 @@ $ARTIKEL_LISTE = [
 $GROESSEN_LISTE = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 /* =========================================================
-   🧪 TEST-MODUS: https://rv-hard.at/verein/bekleidung-send.php?test=rvhard
+   🧪 TEST-MODUS – läuft NUR bei lokalen Aufrufen (localhost).
+   Auf dem Live-Server ist der Zweig damit nicht erreichbar.
+   Lokal aufrufbar über: http://localhost/verein/bekleidung-send.php?test=rvhard
    ========================================================= */
-if (isset($_GET['test']) && $_GET['test'] === 'rvhard') {
+$testmodus_lokal = in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
+if ($testmodus_lokal && isset($_GET['test']) && $_GET['test'] === 'rvhard') {
     header('Content-Type: text/html; charset=utf-8');
     echo "<h1 style='color:#28a745;'>✅ Debug: /verein/bekleidung-send.php AKTUELL geladen!</h1>";
     echo "<p><strong>Pfad dieser Datei:</strong> " . __FILE__ . "</p>";
