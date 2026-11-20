@@ -712,6 +712,24 @@ function fgSanitizePhotoSrc(src, fallback = null) {
     return fallback;
 }
 
+/* 🔥 MINI-VORSCHAU (thumbnail) ABLEITEN
+   Das events.json enthält oft KEIN thumbnail-Feld, obwohl die kleinen Dateien
+   auf dem Server existieren. Dateiname-Konvention (siehe admin/upload.php):
+       <Original>._rvthumb.webp   (bzw. .jpg)
+   Deshalb leiten wir die kleine Vorschau aus dem Originalpfad ab. So laden die
+   Kacheln nur wenige KB statt der 8–12 MB Originale. Fehlt die Datei, greift der
+   data-fallback-Mechanismus (siehe renderGallery) → dann wird das Original geladen. */
+function fgThumbUrlOf(p) {
+    if (!p) return null;
+    if (p.thumbnail) {
+        const s = fgSanitizePhotoSrc(p.thumbnail, null);
+        if (s) { const u = fgSafeUrl(s, null, 'gallery-thumb'); if (u) return u; }
+    }
+    const src = p.src ? fgSanitizePhotoSrc(p.src, null) : null;
+    if (!src || !/\.(jpe?g|png|webp|gif)$/i.test(src)) return null;
+    return fgSafeUrl(src + '._rvthumb.webp', null, 'gallery-thumb');
+}
+
 function fgPhotoMatchesBib(photo, bibQuery, mode /* 'exact' | 'partial' */) {
     if (!bibQuery) return true;
     const q = String(bibQuery).toLowerCase().trim();
@@ -1255,10 +1273,8 @@ function fgRenderEventPage(event) {
                 safeSrc = FALLBACK_IMG;
                 console.warn('[Galerie] Unsichere oder lokale Foto-URL verworfen:', rawSrc);
             }
-            /* Thumbnail → ebenfalls double-check! */
-            const rawThumb = p.thumbnail;
-            const sanitizedThumb = rawThumb ? fgSanitizePhotoSrc(rawThumb, null) : safeSrc;
-            let thumb = fgSafeUrl(sanitizedThumb, safeSrc, `gallery-thumb-${idx}`);
+            /* Kleine Vorschau verwenden (aus Daten-Feld oder abgeleitet); sonst Original */
+            let thumb = fgThumbUrlOf(p);
             if (!thumb) thumb = safeSrc;
             const bibs = (p.bibNumbers || []).map(b => `<span class="fg-tag fg-tag--bib">${fgBibIsNumeric(b) ? '#' : ''}${fgEscapeHtml(b)}</span>`).join('');
             const brokenBadge = broken
@@ -1272,7 +1288,7 @@ function fgRenderEventPage(event) {
                         data-idx="${idx}"
                         role="button"
                         aria-label="${selectMode ? 'Bild auswählen' : 'Bild vergrößern'}">
-                    <img src="${fgEscapeHtml(thumb)}" alt="Foto" loading="lazy" decoding="async" fetchpriority="low" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
+                    <img src="${fgEscapeHtml(thumb)}" data-fallback="${fgEscapeHtml(safeSrc)}" alt="Foto" loading="lazy" decoding="async" fetchpriority="low" ${broken ? 'style="filter:grayscale(1);opacity:.65;"' : ''}>
                     <span class="fg-photo__check" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
                     <figcaption class="fg-photo__overlay">
                         ${brokenBadge}${bibs}
@@ -1301,6 +1317,15 @@ function fgRenderEventPage(event) {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
             });
         });
+
+        /* Fehlt die kleine Vorschau-Datei (404) → automatisch das Original aus data-fallback laden */
+        gallery.querySelectorAll('.fg-photo img').forEach(img => {
+            img.addEventListener('error', () => {
+                const fb = img.getAttribute('data-fallback');
+                if (fb && img.getAttribute('src') !== fb) img.setAttribute('src', fb);
+            });
+        });
+
         if (window.__FGBG) {
             window.__FGBG.log('info', `✅ Galerie gerendert: ${filtered.length} Bilder angezeigt.`);
             window.__FGBG.scanDom('Nach Galerie-Render');
@@ -1533,9 +1558,7 @@ function _fgLightboxBestDisplaySrc(p) {
     return null;
 }
 function _fgLightboxBestLQIP(p) { /* Low Quality Immediate Preview – falls Display noch lädt */
-    if (!p) return null;
-    if (p.thumbnail) { const s = fgSanitizePhotoSrc(p.thumbnail, null); if (s) return fgSafeUrl(s, null, 'lb-lqip'); }
-    return null;
+    return fgThumbUrlOf(p);
 }
 /* Vorbereitete Preload Bilder im Document versteckt halten (Browser cached automatisch!) */
 let _fgLightboxPreloaded = new Set();
@@ -1613,14 +1636,8 @@ function _fgRenderLightboxItem() {
         }
         return null;
     };
-    /* LQIP: thumbnail falls vorhanden, sonst Fallback */
-    const getLQIP = () => {
-        if (p && p.thumbnail) {
-            const s = fgSanitizePhotoSrc(p.thumbnail, null);
-            if (s) return fgSafeUrl(s, null, 'lb-lqip');
-        }
-        return null;
-    };
+    /* LQIP: kleine Vorschau (aus Daten-Feld oder abgeleitet) */
+    const getLQIP = () => fgThumbUrlOf(p);
 
     const displaySrc = getDisplay();
     const lqipSrc    = getLQIP();

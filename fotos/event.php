@@ -360,8 +360,14 @@ $fgStartHref = 'https://rv-hard.at/';
                      galerie.js übernimmt danach Filter, Lightbox usw.) -->
                 <div id="fg-gallery" class="fg-gallery" style="margin-top: 1.5rem;">
 <?php if ($fgPhotos): ?>
-<?php foreach ($fgPhotos as $fgI => $fgP): $fgSrcAttr = $fgPhotoUrl(is_array($fgP) ? ($fgP['thumbnail'] ?? $fgP['src'] ?? '') : $fgP); if ($fgSrcAttr === '') continue; ?>
-                    <figure class="fg-photo" data-idx="<?= (int)$fgI ?>"><img src="<?= $fgE($fgSrcAttr) ?>" alt="<?= $fgE(($fgName !== '' ? $fgName : 'Foto-Galerie') . ' – Foto ' . ($fgI + 1)) ?>" loading="lazy" decoding="async"></figure>
+<?php foreach ($fgPhotos as $fgI => $fgP):
+    $fgPSrc   = is_array($fgP) ? trim((string)($fgP['src'] ?? '')) : (string)$fgP;
+    $fgPThumb = (is_array($fgP) && !empty($fgP['thumbnail'])) ? trim((string)$fgP['thumbnail']) : '';
+    /* Kleine Vorschau nutzen (Feld oder abgeleitete ._rvthumb.webp) – sonst Original */
+    $fgSrcAttr      = $fgPhotoUrl($fgPThumb !== '' ? $fgPThumb : ($fgPSrc !== '' ? $fgPSrc . '._rvthumb.webp' : ''));
+    $fgFallbackAttr = $fgPhotoUrl($fgPSrc);
+    if ($fgSrcAttr === '') continue; ?>
+                    <figure class="fg-photo" data-idx="<?= (int)$fgI ?>"><img src="<?= $fgE($fgSrcAttr) ?>" data-fallback="<?= $fgE($fgFallbackAttr) ?>" alt="<?= $fgE(($fgName !== '' ? $fgName : 'Foto-Galerie') . ' – Foto ' . ($fgI + 1)) ?>" loading="lazy" decoding="async" onerror="this.onerror=null;if(this.dataset.fallback)this.src=this.dataset.fallback;"></figure>
 <?php endforeach; ?>
 <?php else: ?>
                     <div class="fg-empty"><strong><?= $fgEvent ? 'Für dieses Event sind noch keine Bilder veröffentlicht.' : 'Galerie ist nicht verfügbar.' ?></strong></div>
@@ -407,7 +413,7 @@ $fgStartHref = 'https://rv-hard.at/';
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261109" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261120a" defer><\/script>`);
         })();
     </script>
 

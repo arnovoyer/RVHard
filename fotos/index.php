@@ -215,7 +215,7 @@ $fgCover = function ($ev) use ($fgRoot) {
             const galerieBase = (b ? b + '/' : './') + 'assets/';
             document.write(`<script src="${assetBase}navigation-loader.js?v=20260918" defer><\/script>`);
             document.write(`<script src="${assetBase}nav.js?v=20260918" defer><\/script>`);
-            document.write(`<script src="${galerieBase}galerie.js?v=20261109" defer><\/script>`);
+            document.write(`<script src="${galerieBase}galerie.js?v=20261120a" defer><\/script>`);
         })();
     </script>
     <script src="assets/vendor/aos/aos.js?v=20261111" defer></script>
