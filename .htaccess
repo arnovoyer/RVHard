@@ -42,7 +42,7 @@ RewriteRule ^bekleidung(?:\.html)?/?$ /verein/bekleidung [R=301,L]
 RewriteRule ^templates/.*$ / [R=301,L]
 RewriteRule ^news\.json$ /news/ [R=301,L]
 # Alte SBS-Kurz-URL (war eine Meta-Refresh-Seite) -> echte 301-Weiterleitung
-RewriteRule ^sbs(?:\.html)?/?$ /events/sbs/summer-bike-series-2026 [R=301,L]
+RewriteRule ^sbs(?:\.html)?/?$ /events/sbs/summer-bike-series-2027 [R=301,L]
 
 # ================================================================
 #  0c. WEITERE 301-WEITERLEITUNGEN (aus der Google Search Console)
